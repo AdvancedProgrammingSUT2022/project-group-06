@@ -1,0 +1,5 @@
+Banana#1 0 0 Jungle Plantation
+Cattle#1 0 0 Grassland Pasture
+Deer#1 0 0 Forest,Tundra,Hills Camp
+Sheep#1 0 0 Grassland,Plain,Desert,Hills Pasture
+Wheat#1 0 0 Plain Farm

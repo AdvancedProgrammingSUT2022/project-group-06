@@ -1,6 +1,6 @@
 package models.maprelated;
 
-import java.util.HashMap;
+import controllers.Game;
 import java.util.ArrayList;
 
 public class Resource 
@@ -9,12 +9,34 @@ public class Resource
     private int production;
     private int gold;
     private String name;
-    private HashMap<String,String> requiredTechnologies;
+    private String requiredImprovement;
     private ArrayList<String> appropriateTerrain;
+    private ArrayList<String> appropriateFeature;
 
 
     public Resource(String name) 
     {
+        String info=Game.terrainInfo.get(name);
+        String[] splitInfo=info.split(" ");
+        this.food=Integer.parseInt(splitInfo[0]);
+        this.production=Integer.parseInt(splitInfo[1]);
+        this.gold=Integer.parseInt(splitInfo[2]);
+        this.requiredImprovement=splitInfo[4];
+
+        String[] terrainOrFeature=splitInfo[3].split(",");
+        for(String temp:terrainOrFeature)
+        {
+            if(Game.featureInfo.containsKey(temp))
+            {
+                appropriateFeature.add(temp);
+            }
+            else
+            {
+                appropriateTerrain.add(temp);
+            }
+
+        }
+    
         
     }
 
@@ -38,9 +60,9 @@ public class Resource
         return this.name;
     }
 
-    public HashMap<String,String> getRequiredTechnologies() 
+    public String getRequiredImprovement() 
     {
-        return this.requiredTechnologies;
+        return this.requiredImprovement;
     }
 
     public ArrayList<String> getAppropriateTerrain() 

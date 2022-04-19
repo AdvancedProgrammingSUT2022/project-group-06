@@ -10,12 +10,12 @@ import models.twopartyactions.Trade;
 
 public class Player 
 {//-currentProject
+    public static HashMap<String,Boolean> achievedTechnologies;
 
     private int gold;
     private int happiness;
     private int production;
     private int food;
-    private HashMap<String,Boolean> achievedTechnologies;
     private ArrayList<Unit> units;
     private ArrayList<City> cities;
     private int score;
