@@ -72,10 +72,7 @@ public class Player
         food-=amount;
     }
 
-    public HashMap<String,Boolean> getAchievedTechnologies() {
-        return this.achievedTechnologies;
-    }
-
+    
     public void unlockTechnology(String technology) {
        achievedTechnologies.put(technology,true);
     }

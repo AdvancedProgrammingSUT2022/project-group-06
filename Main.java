@@ -1,13 +1,17 @@
-import controllers.Game;
+import java.util.Scanner;
+
+import controllers.UserController;
+import views.LoginMenu;
 
 public class Main 
 {
     public static void main(String[] args)
     {
-        Game game=new Game();
-        game.run();  
-        System.out.println(Game.terrainInfo.get("Ocean"));
-
+        Scanner scanner=new Scanner(System.in);
+        LoginMenu loginMenu=new LoginMenu();
+        UserController.importSavedUsers();
+        loginMenu.run(scanner);
+        
     }
     
        
