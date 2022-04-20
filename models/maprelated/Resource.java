@@ -12,6 +12,7 @@ public class Resource
     private String requiredImprovement;
     private ArrayList<String> appropriateTerrain;
     private ArrayList<String> appropriateFeature;
+    private String requiredTechnology;
 
 
     public Resource(String name) 
@@ -22,6 +23,7 @@ public class Resource
         this.production=Integer.parseInt(splitInfo[1]);
         this.gold=Integer.parseInt(splitInfo[2]);
         this.requiredImprovement=splitInfo[4];
+        this.requiredTechnology=splitInfo[5];
 
         String[] terrainOrFeature=splitInfo[3].split(",");
         for(String temp:terrainOrFeature)

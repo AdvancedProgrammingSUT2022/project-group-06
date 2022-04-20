@@ -44,6 +44,24 @@ public class MainMenu extends Menu
         {
             UserController.loggedInUser=null;
             return true;
+        }else if((matcher=Commands.getMatcher(command, Commands.STARTGAME))!=null)
+        {
+            int check=mainController.startGame(command);
+            if(check==2)
+            {
+                game.run();
+                return false;
+            }
+            if(check==1)
+            {
+                System.out.println("user does not exist");
+                return false;
+            }
+            if(check==0)
+            {
+                System.out.println("invalid command!");
+                return false;
+            }
         }
 
 

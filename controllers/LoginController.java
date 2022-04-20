@@ -54,17 +54,17 @@ public class LoginController
             boolean checked=false;
             if(((passwordIndex=input.indexOf("--password"))!=-1)&&((usernameIndex=input.indexOf("--username"))!=-1)&&((nicknameIndex=input.indexOf("--nickname"))!=-1))
             {
-                passwordIndex+=10;
-                usernameIndex+=10;
-                nicknameIndex+=10;
+                passwordIndex+=11;
+                usernameIndex+=11;
+                nicknameIndex+=11;
                 checked=true;
             }
 
             if(((passwordIndex=input.indexOf("-p"))!=-1)&&((usernameIndex=input.indexOf("-u"))!=-1)&&((nicknameIndex=input.indexOf("-n"))!=-1))
             {
-                passwordIndex+=2;
-                usernameIndex+=2;
-                nicknameIndex+=2;
+                passwordIndex+=3;
+                usernameIndex+=3;
+                nicknameIndex+=3;
                 checked=true;
             }
             if(!checked)

@@ -12,9 +12,11 @@ public enum Commands
     SHOWCURRENTMENU("[ \\t]*menu[ \\t]+show\\-current[ \\t]*"),
     //Login Menu
     LOGIN("[ \\t]*user[ \\t]+login[ \\t]+.*"),
-    CREATEUSER("[ \\t]*create[ \\t]+user[ \\t]*.*"),
+    CREATEUSER("[ \\t]*user[ \\t]+create[ \\t]*.*"),
     //Main Menu
-    LOGOUT("[ \\t]*user[ \\t]+logout[ \\t]*");
+    LOGOUT("[ \\t]*user[ \\t]+logout[ \\t]*"),
+    STARTGAME("[ \\t]*play[ \\t]+game[ \\t]*.*");
+
     private String regex;
 
     Commands(String regex)

@@ -4,6 +4,7 @@ package controllers;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import models.Player;
@@ -14,6 +15,7 @@ public class Game
     public static HashMap<String,String> featureInfo=new HashMap<>();
     public static HashMap<String,String> resourceInfo=new HashMap<>();
     public static HashMap<String,String> technologyInfo=new HashMap<>();
+    
     
     public void initializeTerrainInfo()
     { 
@@ -27,6 +29,8 @@ public class Game
                 String name=read[0];
                 String info=read[1];
 
+                World.terrainNames.add(name);
+                
                 terrainInfo.put(name,info);
             }
             
@@ -47,6 +51,7 @@ public class Game
                 String[] read=temp.split("#");
                 String name=read[0];
                 String info=read[1];
+
 
                 featureInfo.put(name,info);
             }
@@ -92,6 +97,26 @@ public class Game
                 String[] read=temp.split("#");
                 String name=read[0];
                 String info=read[1];
+
+
+                ArrayList<String> terrains=new ArrayList<String>();
+                ArrayList<String> features=new ArrayList<String>();
+                    
+                String[] terrainOrFeature=read[1].split(" ")[3].split(",");
+                for(String temp1:terrainOrFeature)
+                {
+                    if(Game.featureInfo.containsKey(temp1))
+                    {
+                        features.add(temp1);
+                    }
+                    else
+                    {
+                        terrains.add(temp1);
+                    }
+
+                }
+            
+                World.resourceNames.add(name);
 
                 resourceInfo.put(name,info);
                 Player.achievedTechnologies.put(name, false);

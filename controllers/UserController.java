@@ -1,8 +1,9 @@
 package controllers;
 
 
-import java.io.FileWriter;
+
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,8 +14,8 @@ import models.User;
 public class UserController 
 {
     public static User loggedInUser=null;
-    public static HashMap<String,User> users;
-    public static ArrayList<String> nicknames;
+    public static HashMap<String,User> users=new HashMap<String,User>();
+    public static ArrayList<String> nicknames=new ArrayList<String>();
     
 
    
@@ -50,22 +51,16 @@ public class UserController
     {
         loggedInUser=null;
     }
-    public static void saveUsers()
+    public static void saveUsers() 
     {
         try{    
-            FileWriter user=new FileWriter("files/UserInfo.txt");
+            PrintWriter user=new PrintWriter("files/UserInfo.txt");
 
             //fw.write("Welcome to javaTpoint.");    
            
             users.forEach((key, value) -> {
 
-                try {
-                    user.write(key+" "+value.getPassword()+" "+value.getNickName()+"\n");
-
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                user.write(key+" "+value.getPassword()+" "+value.getNickName()+"\n");
                 
               
               });
@@ -79,6 +74,10 @@ public class UserController
         try 
          {
             String user=new String(Files.readAllBytes(Paths.get("files/UserInfo.txt")));
+            if(user.equals(""))
+            {
+                return;
+            }
             String[] readUser=user.split("\n");
             for(String temp:readUser)
             {
