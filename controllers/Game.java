@@ -116,6 +116,9 @@ public class Game
 
                 }
             
+                World.appropriateFeature.put(name, features);
+                World.appropriateTerrain.put(name, terrains);
+
                 World.resourceNames.add(name);
 
                 resourceInfo.put(name,info);
