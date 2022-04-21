@@ -1,11 +1,10 @@
 package models.maprelated;
 
-import controllers.Game;
-import enums.TerrainNames;
+import controllers.InitializeGameInfo;
 
 public class Terrain 
 {
-    private TerrainNames name;
+    private String name;
     private int food;
     private int production;
     private int gold;
@@ -15,8 +14,9 @@ public class Terrain
 
     public Terrain(String name)
     {
-        String info=Game.terrainInfo.get(name);
+        String info= InitializeGameInfo.terrainInfo.get(name);
         String[] splitInfo=info.split(" ");
+        this.name = name;
         this.food=Integer.parseInt(splitInfo[0]);
         this.production=Integer.parseInt(splitInfo[1]);
         this.gold=Integer.parseInt(splitInfo[2]);
@@ -25,7 +25,7 @@ public class Terrain
         
     }
 
-    public TerrainNames getName() 
+    public String getName()
     {
         return this.name;
     }

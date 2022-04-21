@@ -13,9 +13,9 @@ import models.User;
 
 public class UserController 
 {
-    public static User loggedInUser=null;
-    public static HashMap<String,User> users=new HashMap<String,User>();
-    public static ArrayList<String> nicknames=new ArrayList<String>();
+    public static User loggedInUser = null;
+    public static HashMap<String,User> users = new HashMap<String,User>();
+    public static ArrayList<String> nicknames = new ArrayList<String>();
     
 
    

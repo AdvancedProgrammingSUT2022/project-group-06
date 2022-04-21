@@ -1,6 +1,6 @@
 package models.maprelated;
 
-import controllers.Game;
+import controllers.InitializeGameInfo;
 import java.util.ArrayList;
 
 public class Resource 
@@ -10,15 +10,16 @@ public class Resource
     private int gold;
     private String name;
     private String requiredImprovement;
-    private ArrayList<String> appropriateTerrain;
-    private ArrayList<String> appropriateFeature;
+    private ArrayList<String> appropriateTerrain = new ArrayList<>();
+    private ArrayList<String> appropriateFeature = new ArrayList<>();
     private String requiredTechnology;
 
 
     public Resource(String name) 
     {
-        String info=Game.terrainInfo.get(name);
+        String info= InitializeGameInfo.resourceInfo.get(name);
         String[] splitInfo=info.split(" ");
+        this.name = name;
         this.food=Integer.parseInt(splitInfo[0]);
         this.production=Integer.parseInt(splitInfo[1]);
         this.gold=Integer.parseInt(splitInfo[2]);
@@ -28,7 +29,7 @@ public class Resource
         String[] terrainOrFeature=splitInfo[3].split(",");
         for(String temp:terrainOrFeature)
         {
-            if(Game.featureInfo.containsKey(temp))
+            if(InitializeGameInfo.featureInfo.containsKey(temp))
             {
                 appropriateFeature.add(temp);
             }
@@ -57,10 +58,6 @@ public class Resource
         return this.gold;
     }
 
-    public String getName()
-    {
-        return this.name;
-    }
 
     public String getRequiredImprovement() 
     {
@@ -72,6 +69,7 @@ public class Resource
         return this.appropriateTerrain;
     }
 
-   
-
+    public String getName() {
+        return name;
+    }
 }

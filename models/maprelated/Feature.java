@@ -1,11 +1,11 @@
 package models.maprelated;
 
-import controllers.Game;
-import enums.FeatureNames;
+import controllers.InitializeGameInfo;
 
 public class Feature 
 {
-    private FeatureNames name;
+
+    private String name;
     private int food;
     private int production;
     private int gold;
@@ -14,8 +14,9 @@ public class Feature
 
     public Feature(String name)
     {
-        String info=Game.featureInfo.get(name);
+        String info= InitializeGameInfo.featureInfo.get(name);
         String[] splitInfo=info.split(" ");
+        this.name = name;
         this.food=Integer.parseInt(splitInfo[0]);
         this.production=Integer.parseInt(splitInfo[1]);
         this.gold=Integer.parseInt(splitInfo[2]);
@@ -25,7 +26,7 @@ public class Feature
     }
 
 
-    public FeatureNames getName() 
+    public String getName()
     {
         return this.name;
     }

@@ -10,7 +10,7 @@ import models.twopartyactions.Trade;
 
 public class Player 
 {//-currentProject
-    public static HashMap<String,Boolean> achievedTechnologies;
+    public static HashMap<String,Boolean> achievedTechnologies = new HashMap<String,Boolean>();
 
     private int gold;
     private int happiness;
@@ -22,7 +22,11 @@ public class Player
     private ArrayList<Trade> trades;
     private ArrayList<String> notifications;
     private ArrayList<Combat> combats;
+    private String name;
 
+    public Player(String name) {
+        this.name = name;
+    }
 
 
     public int getGold() {
@@ -147,4 +151,7 @@ public class Player
     }
 
 
+    public String getName() {
+        return name;
+    }
 }

@@ -7,17 +7,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import enums.Color;
 import models.Player;
+import models.maprelated.*;
 
-public class Game 
+public class InitializeGameInfo
 {
     public static HashMap<String,String> terrainInfo=new HashMap<>();
     public static HashMap<String,String> featureInfo=new HashMap<>();
     public static HashMap<String,String> resourceInfo=new HashMap<>();
     public static HashMap<String,String> technologyInfo=new HashMap<>();
     
-    
-    public void initializeTerrainInfo()
+    public static void initializeTerrainInfo()
     { 
          try 
          {
@@ -40,7 +41,7 @@ public class Game
             e.printStackTrace();
         }   
     }
-    public void initializeFeatureInfo()
+    public static void initializeFeatureInfo()
     {
         try 
          {
@@ -62,7 +63,7 @@ public class Game
         }  
     }
      
-    public void initializeTechnologyInfo()
+    public static void initializeTechnologyInfo()
     {
         try 
          {
@@ -75,7 +76,8 @@ public class Game
                 String info=read[1];
 
                 technologyInfo.put(name,info);
-                
+                Player.achievedTechnologies.put(name, false);
+
             }
 
 
@@ -86,7 +88,7 @@ public class Game
             e.printStackTrace();
         }  
     }
-    public void initializeResourceInfo()
+    public static void initializeResourceInfo()
     {
         try 
          {
@@ -94,6 +96,7 @@ public class Game
             String[] readInfo=readResourceInfo.split("\n");
             for(String temp:readInfo)
             {
+
                 String[] read=temp.split("#");
                 String name=read[0];
                 String info=read[1];
@@ -105,7 +108,7 @@ public class Game
                 String[] terrainOrFeature=read[1].split(" ")[3].split(",");
                 for(String temp1:terrainOrFeature)
                 {
-                    if(Game.featureInfo.containsKey(temp1))
+                    if(InitializeGameInfo.featureInfo.containsKey(temp1))
                     {
                         features.add(temp1);
                     }
@@ -115,11 +118,12 @@ public class Game
                     }
 
                 }
-            
+                World.appropriateFeature.put(name,features);
+                World.appropriateTerrain.put(name, terrains);
+
                 World.resourceNames.add(name);
 
                 resourceInfo.put(name,info);
-                Player.achievedTechnologies.put(name, false);
             }
         } catch (IOException e)
         {
@@ -128,11 +132,41 @@ public class Game
         }  
 
     }
-    public void run()
+    private static void initializeHashMap() {
+        World.terrainPossibleFeature.put("Desert", new String[]{"Oasis", "FoodPlains"});
+        World.terrainPossibleFeature.put("Grassland", new String[]{"Forest", "Marsh"});
+        World.terrainPossibleFeature.put("Hills", new String[]{"Forest", "Jungle"});
+        World.terrainPossibleFeature.put("Plain", new String[]{"Forest", "Jungle"});
+        World.terrainPossibleFeature.put("Tundra", new String[]{"Forest"});
+
+        World.terrainColors.put("Desert", Color.ANSI_YELLOW_BACKGROUND);
+        World.terrainColors.put("Grassland", Color.ANSI_GREEN_BACKGROUND);
+        World.terrainColors.put("Hills", Color.ANSI_RED_BACKGROUND);
+        World.terrainColors.put("Mountain", Color.ANSI_BRAWN_BACKGROUND);
+        World.terrainColors.put("Ocean", Color.ANSI_BULE_BACKGROUND);
+        World.terrainColors.put("Plain", Color.ANSI_Bright_Green_BACKGROUND);
+        World.terrainColors.put("Snow", Color.ANSI_WHITE_BACKGROUND);
+        World.terrainColors.put("Tundra", Color.ANSI_BLACK_BACKGROUND);
+    }
+    public static void run()
     {
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
         initializeTechnologyInfo();
+        initializeHashMap();
+        Terrain terrain = new Terrain("Snow");
+        Resource resource = new Resource("Iron");
+        Feature feature = new Feature("Marsh");
+        Hex hex = new Hex(0, 0 ,terrain, feature);
     }    
 }
+/*        System.out.println(World.terrainNames);
+        System.out.println(World.resourceNames);*/
+/*        Technology technology = new Technology("Agriculture");
+        System.out.println( technology.GetneededPreviousTechnologies().get(0));*/
+/*        System.out.println(World.appropriateTerrain.get("Deer"));
+        System.out.println(World.appropriateFeature.get("Deer"));*/
+/*        System.out.println(featureInfo.get("FoodPlains"));
+        System.out.println(technologyInfo.get("BronzeWorking"));
+        System.out.println(resourceInfo.get("Furs"));*/

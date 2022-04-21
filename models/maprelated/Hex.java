@@ -1,7 +1,11 @@
 package models.maprelated;
 
+import enums.Color;
 import enums.HexState;
 import models.Player;
+import models.units.Civilian;
+import models.units.Military;
+import models.units.Unit;
 
 public class Hex
 {
@@ -11,8 +15,11 @@ public class Hex
     private Player owner;
     private Terrain terrain;
     private Feature feature;
+    private  Resource resource;
+    private Military military;
+    private Civilian civilian;
 
-    Hex(int x, int y, Terrain terrain, Feature feature)
+    public Hex(int x, int y, Terrain terrain, Feature feature)
     {
         this.x=x;
         this.y=y;
@@ -45,4 +52,19 @@ public class Hex
         return state;
     }
 
+    public Feature getFeature() {
+        return feature;
+    }
+
+    public Terrain getTerrain() {
+        return terrain;
+    }
+
+    public Resource getResource() {
+        return resource;
+    }
+
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
 }

@@ -3,7 +3,7 @@ package views;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-import controllers.Game;
+import controllers.InitializeGameInfo;
 import controllers.MainController;
 import controllers.UserController;
 import enums.Commands;
@@ -12,7 +12,7 @@ public class MainMenu extends Menu
 {
     MainController mainController= new MainController();
     ProfileMenu profileMenu= new ProfileMenu();
-    Game game=new Game();
+    InitializeGameInfo game=new InitializeGameInfo();
 
     public boolean checkCommand(String command,Scanner scanner)
     {
@@ -49,7 +49,8 @@ public class MainMenu extends Menu
             int check=mainController.startGame(command);
             if(check==2)
             {
-                game.run();
+                GameMenu gameMenu = new GameMenu();
+                gameMenu.run(scanner);
                 return false;
             }
             if(check==1)

@@ -18,5 +18,3 @@ Silk#0 0 2 Forest Plantation NN
 Silver#0 0 2 Tundra,Desert,Hills Mine NN
 Spices#0 0 2 Jungle Plantation NN
 Sugar#0 0 2 FloodPlain,Marsh Plantation NN
-
- 

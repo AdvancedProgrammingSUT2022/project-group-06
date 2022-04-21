@@ -2,7 +2,7 @@ package models.gainable;
 
 import java.util.ArrayList;
 
-import controllers.Game;
+import controllers.InitializeGameInfo;
 
 public class Technology 
 {
@@ -13,7 +13,7 @@ public class Technology
     public Technology(String name) 
     {
         this.name = name;
-        String[] info=Game.technologyInfo.get(name).split(" ");
+        String[] info= InitializeGameInfo.technologyInfo.get(name).split(" ");
         this.cost=Integer.parseInt(info[0]);
 
         String[] neededTechnologies=info[1].split(",");
