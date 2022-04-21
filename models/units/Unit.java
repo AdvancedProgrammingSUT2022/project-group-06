@@ -1,6 +1,7 @@
 package models.units;
  
 import enums.UnitState;
+import enums.UnitType;
 import models.maprelated.Hex;
 
 public class Unit 
@@ -11,7 +12,8 @@ public class Unit
     private Hex currentHex;
     private UnitState state;
     private int MP;
-
+    private UnitType type;
+    private int maxDistance;
 
 
     public int getHealth() {
@@ -57,5 +59,8 @@ public class Unit
         MP-=amount;
     }
 
-   
+
+    public int getMaxDistance() {
+        return maxDistance;
+    }
 }

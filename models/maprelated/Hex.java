@@ -16,8 +16,8 @@ public class Hex
     private Terrain terrain;
     private Feature feature;
     private  Resource resource;
-    private Military military;
-    private Civilian civilian;
+    private Military militaryUnit;
+    private Civilian civilianUnit;
 
     public Hex(int x, int y, Terrain terrain, Feature feature)
     {
@@ -66,5 +66,21 @@ public class Hex
 
     public void setResource(Resource resource) {
         this.resource = resource;
+    }
+
+    public Military getMilitaryUnit() {
+        return militaryUnit;
+    }
+
+    public void setMilitaryUnit(Military military) {
+        this.militaryUnit = military;
+    }
+
+    public Civilian getCivilianUnit() {
+        return civilianUnit;
+    }
+
+    public void setCivilianUnit(Civilian civilianUnit) {
+        this.civilianUnit = civilianUnit;
     }
 }

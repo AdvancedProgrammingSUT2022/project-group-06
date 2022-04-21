@@ -5,12 +5,13 @@ import java.util.HashMap;
 
 import models.maprelated.City;
 import models.twopartyactions.Combat;
+import models.units.Civilian;
+import models.units.Military;
 import models.units.Unit;
 import models.twopartyactions.Trade;
 
-public class Player 
-{//-currentProject
-    public static HashMap<String,Boolean> achievedTechnologies = new HashMap<String,Boolean>();
+public class Player {//-currentProject
+    public static HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
 
     private int gold;
     private int happiness;
@@ -22,6 +23,8 @@ public class Player
     private ArrayList<Trade> trades;
     private ArrayList<String> notifications;
     private ArrayList<Combat> combats;
+    private ArrayList<Military> militaries;
+    private ArrayList<Civilian> civilians;
     private String name;
 
     public Player(String name) {
@@ -34,11 +37,11 @@ public class Player
     }
 
     public void increaseGold(int amount) {
-        gold+=amount;
+        gold += amount;
     }
 
     public void decreaseGold(int amount) {
-        gold-=amount;
+        gold -= amount;
     }
 
 
@@ -47,10 +50,11 @@ public class Player
     }
 
     public void increaseHappiness(int amount) {
-        happiness+=amount;
+        happiness += amount;
     }
-    public void decreaseeHappiness(int amount) {
-        happiness-=amount;
+
+    public void decreaseHappiness(int amount) {
+        happiness -= amount;
     }
 
     public int getProduction() {
@@ -58,11 +62,11 @@ public class Player
     }
 
     public void increaseProduction(int amount) {
-        production+=amount;
+        production += amount;
     }
-    
+
     public void decreaseProduction(int amount) {
-        production-=amount;
+        production -= amount;
     }
 
     public int getFood() {
@@ -70,15 +74,16 @@ public class Player
     }
 
     public void increaseFood(int amount) {
-        food+=amount;
-    }
-    public void decreaseFood(int amount) {
-        food-=amount;
+        food += amount;
     }
 
-    
+    public void decreaseFood(int amount) {
+        food -= amount;
+    }
+
+
     public void unlockTechnology(String technology) {
-       achievedTechnologies.put(technology,true);
+        achievedTechnologies.put(technology, true);
     }
 
     public ArrayList<Unit> getUnits() {
@@ -100,21 +105,22 @@ public class Player
     public void addCity(City city) {
         cities.add(city);
     }
-    
+
     public void removeCity(City city) {
         cities.remove(city);
     }
-    
+
 
     public int getScore() {
         return this.score;
     }
 
     public void increaseScore(int amount) {
-        score+=amount;
+        score += amount;
     }
+
     public void decreaseScore(int amount) {
-        score-=amount;
+        score -= amount;
     }
 
 
@@ -135,7 +141,7 @@ public class Player
     }
 
     public void addNotifications(String notification) {
-       notifications.add(notification);
+        notifications.add(notification);
     }
 
     public ArrayList<Combat> getCombats() {
@@ -153,5 +159,21 @@ public class Player
 
     public String getName() {
         return name;
+    }
+
+    public ArrayList<Military> getMilitaries() {
+        return militaries;
+    }
+
+    public void setMilitaries(ArrayList<Military> militaries) {
+        this.militaries = militaries;
+    }
+
+    public ArrayList<Civilian> getCivilians() {
+        return civilians;
+    }
+
+    public void setCivilians(ArrayList<Civilian> civilians) {
+        this.civilians = civilians;
     }
 }
