@@ -33,16 +33,17 @@ public class MainController
         }
 
         StringBuilder playerNum2=new StringBuilder();
-        playerNum2.append("--p1");
+        playerNum2.append("-p1");
         int user2=0;
         int num2=2;
         while(true)
         { 
             if((user2=input.indexOf(playerNum2.toString()))!=-1)
             {
-                String getUsername=input.substring(user2+5);
+                String getUsername=input.substring(user2+4);
                 String username=getUsername.split("[ \\t]+")[0];
-
+                System.out.println("K"+username);
+                System.out.println("NN"+playerNum2.toString());
                 usernames.add(username);
 
             }
@@ -67,8 +68,10 @@ public class MainController
             {
                 return 1;
             }
+            GameController.players.add(temp);
         }
 
+        
         return 2;
 
         
