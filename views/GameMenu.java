@@ -26,7 +26,10 @@ public class GameMenu extends Menu {
             }
             else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            } else
+            }
+            else if (command.equals("exit menu"))
+                break;
+            else
                 System.out.print("invalid command!");
             command = scanner.nextLine();
         }

@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9f4e2686-0568-4355-829e-489a44d57110" name="Changes" comment="few movement methods added">
+    <list default="true" id="9f4e2686-0568-4355-829e-489a44d57110" name="Changes" comment="complete movement methods">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/views/GameMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,7 +65,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650574065293</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="complete movement methods">
+      <created>1650714134493</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1650714134493</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -84,6 +88,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="few movement methods added" />
-    <option name="LAST_COMMIT_MESSAGE" value="few movement methods added" />
+    <MESSAGE value="complete movement methods" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete movement methods" />
   </component>
 </project>
