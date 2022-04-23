@@ -11,127 +11,108 @@ import enums.Color;
 import models.Player;
 import models.maprelated.*;
 
-public class InitializeGameInfo
-{
-    public static HashMap<String,String> terrainInfo=new HashMap<>();
-    public static HashMap<String,String> featureInfo=new HashMap<>();
-    public static HashMap<String,String> resourceInfo=new HashMap<>();
-    public static HashMap<String,String> technologyInfo=new HashMap<>();
-    
-    public static void initializeTerrainInfo()
-    { 
-         try 
-         {
-            String readTerrainInfo=new String(Files.readAllBytes(Paths.get("files/TerrainInfo.txt")));
-            String[] readInfo=readTerrainInfo.split("\n");
-            for(String temp:readInfo)
-            {
-                String[] read=temp.split("#");
-                String name=read[0];
-                String info=read[1];
+public class InitializeGameInfo {
+    public static HashMap<String, String> terrainInfo = new HashMap<>();
+    public static HashMap<String, String> featureInfo = new HashMap<>();
+    public static HashMap<String, String> resourceInfo = new HashMap<>();
+    public static HashMap<String, String> technologyInfo = new HashMap<>();
+
+    public static void initializeTerrainInfo() {
+        try {
+            String readTerrainInfo = new String(Files.readAllBytes(Paths.get("files/TerrainInfo.txt")));
+            String[] readInfo = readTerrainInfo.split("\n");
+            for (String temp : readInfo) {
+                String[] read = temp.split("#");
+                String name = read[0];
+                String info = read[1];
 
                 World.terrainNames.add(name);
-                
-                terrainInfo.put(name,info);
+
+                terrainInfo.put(name, info);
             }
-            
-        } catch (IOException e)
-        {
+
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }   
+        }
     }
-    public static void initializeFeatureInfo()
-    {
-        try 
-         {
-            String readFeatureInfo=new String(Files.readAllBytes(Paths.get("files/FeatureInfo.txt")));
-            String[] readInfo=readFeatureInfo.split("\n");
-            for(String temp:readInfo)
-            {
-                String[] read=temp.split("#");
-                String name=read[0];
-                String info=read[1];
+
+    public static void initializeFeatureInfo() {
+        try {
+            String readFeatureInfo = new String(Files.readAllBytes(Paths.get("files/FeatureInfo.txt")));
+            String[] readInfo = readFeatureInfo.split("\n");
+            for (String temp : readInfo) {
+                String[] read = temp.split("#");
+                String name = read[0];
+                String info = read[1];
 
 
-                featureInfo.put(name,info);
+                featureInfo.put(name, info);
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }  
+        }
     }
-     
-    public static void initializeTechnologyInfo()
-    {
-        try 
-         {
-            String readTechnologyInfo=new String(Files.readAllBytes(Paths.get("files/TechnologyInfo.txt")));
-            String[] readInfo=readTechnologyInfo.split("\n");
-            for(String temp:readInfo)
-            {
-                String[] read=temp.split("#");
-                String name=read[0];
-                String info=read[1];
 
-                technologyInfo.put(name,info);
+    public static void initializeTechnologyInfo() {
+        try {
+            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get("files/TechnologyInfo.txt")));
+            String[] readInfo = readTechnologyInfo.split("\n");
+            for (String temp : readInfo) {
+                String[] read = temp.split("#");
+                String name = read[0];
+                String info = read[1];
+
+                technologyInfo.put(name, info);
                 Player.achievedTechnologies.put(name, false);
 
             }
 
 
-
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }  
+        }
     }
-    public static void initializeResourceInfo()
-    {
-        try 
-         {
-            String readResourceInfo=new String(Files.readAllBytes(Paths.get("files/ResourceInfo.txt")));
-            String[] readInfo=readResourceInfo.split("\n");
-            for(String temp:readInfo)
-            {
 
-                String[] read=temp.split("#");
-                String name=read[0];
-                String info=read[1];
+    public static void initializeResourceInfo() {
+        try {
+            String readResourceInfo = new String(Files.readAllBytes(Paths.get("files/ResourceInfo.txt")));
+            String[] readInfo = readResourceInfo.split("\n");
+            for (String temp : readInfo) {
+
+                String[] read = temp.split("#");
+                String name = read[0];
+                String info = read[1];
 
 
-                ArrayList<String> terrains=new ArrayList<String>();
-                ArrayList<String> features=new ArrayList<String>();
-                    
-                String[] terrainOrFeature=read[1].split(" ")[3].split(",");
-                for(String temp1:terrainOrFeature)
-                {
-                    if(InitializeGameInfo.featureInfo.containsKey(temp1))
-                    {
+                ArrayList<String> terrains = new ArrayList<String>();
+                ArrayList<String> features = new ArrayList<String>();
+
+                String[] terrainOrFeature = read[1].split(" ")[3].split(",");
+                for (String temp1 : terrainOrFeature) {
+                    if (InitializeGameInfo.featureInfo.containsKey(temp1)) {
                         features.add(temp1);
-                    }
-                    else
-                    {
+                    } else {
                         terrains.add(temp1);
                     }
 
                 }
-                World.appropriateFeature.put(name,features);
+                World.appropriateFeature.put(name, features);
                 World.appropriateTerrain.put(name, terrains);
 
                 World.resourceNames.add(name);
 
-                resourceInfo.put(name,info);
+                resourceInfo.put(name, info);
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }  
+        }
 
     }
+
     private static void initializeHashMap() {
         World.terrainPossibleFeature.put("Desert", new String[]{"Oasis", "FoodPlains"});
         World.terrainPossibleFeature.put("Grassland", new String[]{"Forest", "Marsh"});
@@ -147,9 +128,10 @@ public class InitializeGameInfo
         World.terrainColors.put("Plain", Color.ANSI_Bright_Green_BACKGROUND);
         World.terrainColors.put("Snow", Color.ANSI_WHITE_BACKGROUND);
         World.terrainColors.put("Tundra", Color.ANSI_BLACK_BACKGROUND);
+        World.terrainColors.put("Tundra", Color.ANSI_BLACK_BACKGROUND);
     }
-    public static void run()
-    {
+
+    public static void run() {
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
@@ -158,8 +140,8 @@ public class InitializeGameInfo
         Terrain terrain = new Terrain("Snow");
         Resource resource = new Resource("Iron");
         Feature feature = new Feature("Marsh");
-        Hex hex = new Hex(0, 0 ,terrain, feature);
-    }    
+        Hex hex = new Hex(0, 0, terrain, feature);
+    }
 }
 /*        System.out.println(World.terrainNames);
         System.out.println(World.resourceNames);*/

@@ -3,6 +3,7 @@ package views;
 import controllers.InitializeGameInfo;
 import controllers.GameController;
 import controllers.UnitController;
+import models.maprelated.Hex;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -12,7 +13,6 @@ public class GameMenu extends Menu {
     public void run(Scanner scanner) {
         InitializeGameInfo.run();
         String command = scanner.nextLine();
-        //      String[] inputs = input.split(" ");
         GameController.printWorld();
         Matcher matcher;
         while (true) {
@@ -56,21 +56,29 @@ public class GameMenu extends Menu {
 
 
     private static void moveUnitView(int x, int y) {
-        //in if ehtemalan cherte
         if (GameController.getSelectedUnit() == null) {
             System.out.println("You should choose a unit first");
         } else if (GameController.getPlayerCiviliansByLocation(GameController.getSelectedUnit().getCurrentHex().getX(), GameController.getSelectedUnit().getCurrentHex().getY()) == null
                 && GameController.getPlayerMilitaryByLocation(GameController.getSelectedUnit().getCurrentHex().getX(), GameController.getSelectedUnit().getCurrentHex().getY()) == null)
             System.out.println("You don't own this unit");
-        else if (GameController.isHexOccupied(GameController.getSelectedUnit(), x, y))
+        else if (GameController.isHexOccupied(x, y))
             System.out.println("This hex already has a unit of this type");
-        else if (!GameController.isDistanceValid(GameController.getSelectedUnit(), x, y))
-            System.out.println("This unit can't move this far");
         else {
-            System.out.println("Unit moved successfully");
-            GameController.moveUnit(GameController.getSelectedUnit(), x, y);
+            Hex nextHex = GameController.getNextHex(x, y);
+            for (int i = 0; i < GameController.getSelectedUnit().getMaxDistance(); i++) {
+                if (nextHex.getX() == x && nextHex.getY() == y) {
+                    System.out.println("The unit reached chosen destination");
+                    break;
+                }
+                if (!GameController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
+                    System.out.print("The unit can't move through this hex");
+                    break;
+                }
+                GameController.moveUnit(GameController.getSelectedUnit(), x, y);
+                nextHex = GameController.getNextHex(x, y);
+            }
+
         }
 
     }
-
 }

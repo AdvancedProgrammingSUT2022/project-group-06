@@ -105,11 +105,32 @@ public class GameController {
         return null;
     }
 
-    public static boolean isDistanceValid(Unit unit, int x, int y) {
-        return unit.getMaxDistance() > abs(unit.getCurrentHex().getX() - hex[x][y].getX()) + abs(unit.getCurrentHex().getY() - hex[x][y].getY());
+
+    public static Hex getNextHex(int finalX, int finalY) {
+        Unit unit = selectedUnit;
+        int deltaX = finalX - unit.getCurrentHex().getX();
+        int deltaY = finalY - unit.getCurrentHex().getY();
+        if (deltaX < 0 && deltaY < 0 && isPositionValid(unit.getCurrentHex().getX() - 1, unit.getCurrentHex().getY() - 1))
+            return hex[unit.getCurrentHex().getX() - 1][unit.getCurrentHex().getY() - 1];//bala chap
+        else if (deltaX < 0 && deltaY > 0 && isPositionValid(unit.getCurrentHex().getX() - 1, unit.getCurrentHex().getY() + 1))
+            return hex[unit.getCurrentHex().getX() - 1][unit.getCurrentHex().getY() + 1];//bala rast
+        else if (deltaX < 0 && isPositionValid(unit.getCurrentHex().getX() - 1, unit.getCurrentHex().getY()))
+            return hex[unit.getCurrentHex().getX() - 1][unit.getCurrentHex().getY()];//bala
+        else if (deltaY == 0 && isPositionValid(unit.getCurrentHex().getX() + 1, unit.getCurrentHex().getY()))
+            return hex[unit.getCurrentHex().getX() + 1][unit.getCurrentHex().getY()];//paeen
+        else if (deltaY > 0 && isPositionValid(unit.getCurrentHex().getX(), unit.getCurrentHex().getY() + 1))
+            return hex[unit.getCurrentHex().getX()][unit.getCurrentHex().getY() + 1];//paeen rast
+        else
+            return hex[unit.getCurrentHex().getX()][unit.getCurrentHex().getY() - 1];//paeen chap
     }
 
-    public static boolean isHexOccupied(Unit unit, int destinationX, int destinationY) {
+    public static boolean canMoveThrough(int x, int y) {
+        return !hex[x][y].getTerrain().getName().equals("mountain") && !hex[x][y].getTerrain().getName().equals("ocean");
+    }
+
+
+    public static boolean isHexOccupied(int destinationX, int destinationY) {
+        Unit unit = selectedUnit;
         return (unit instanceof Military && hex[destinationX][destinationY].getMilitaryUnit() != null)
                 || (unit instanceof Civilian && hex[destinationX][destinationY].getCivilianUnit() != null);
     }
@@ -124,6 +145,7 @@ public class GameController {
 
     public static void moveUnit(Unit unit, int x, int y) {
         unit.changeCurrentHex(hex[x][y]);
+        unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
     }
 
 }
