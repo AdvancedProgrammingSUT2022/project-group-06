@@ -6,57 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9f4e2686-0568-4355-829e-489a44d57110" name="Changes" comment="edit mvc and add river">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/ResourceInfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/files/ResourceInfo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/TechnologyInfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/files/TechnologyInfo.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/gainable/Technology.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/gainable/Technology.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Feature.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Feature.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Hex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Resource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Terrain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Civilian.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/units/Civilian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Military.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/units/Military.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/units/Unit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/GameController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/controllers/GameController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/InitializeGameInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/controllers/InitializeGameInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/LoginController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/controllers/LoginController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/MainController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/controllers/MainController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/UnitController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/controllers/UnitController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/controllers/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/Color.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/Color.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/Commands.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/Commands.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/FeatureNames.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/FeatureNames.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/HexState.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/HexState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/TerrainNames.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/TerrainNames.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/UnitState.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/UnitState.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/UnitType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/enums/UnitType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/User.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/User.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/gainable/Building.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/gainable/Building.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/gainable/Technology.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/gainable/Technology.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/City.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/City.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Feature.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Feature.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Hex.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Hex.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Resource.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Resource.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Terrain.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Terrain.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/World.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/World.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/twopartyactions/Combat.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/twopartyactions/Combat.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/twopartyactions/Trade.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/twopartyactions/Trade.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Civilian.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/units/Civilian.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Military.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/units/Military.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Settler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/units/Settler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Unit.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/units/Unit.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Worker.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/models/units/Worker.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/GameMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/views/GameMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/LoginMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/views/LoginMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/MainMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/views/MainMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/Menu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/views/Menu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/ProfileMenu.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/project-group-06/views/ProfileMenu.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/views/GameMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -123,7 +72,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1650566152637</updated>
-      <workItem from="1650740773651" duration="31757000" />
+      <workItem from="1650740773651" duration="33103000" />
     </task>
     <task id="LOCAL-00001" summary="few movement methods added">
       <created>1650574065293</created>
