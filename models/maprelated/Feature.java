@@ -56,5 +56,4 @@ public class Feature
         return this.combatModifiersPercentage;
     }
 
-    
 }

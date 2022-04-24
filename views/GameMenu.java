@@ -12,8 +12,9 @@ public class GameMenu extends Menu {
 
     public void run(Scanner scanner) {
         InitializeGameInfo.run();
+        GameController.GameControllerset();
+        System.out.println(GameController.printWorld());
         String command = scanner.nextLine();
-        GameController.printWorld();
         Matcher matcher;
         while (true) {
             if (command.equals("show map")) {
@@ -30,7 +31,7 @@ public class GameMenu extends Menu {
             else if (command.equals("exit menu"))
                 break;
             else
-                System.out.print("invalid command!");
+                System.out.println("invalid command!");
             command = scanner.nextLine();
         }
     }
