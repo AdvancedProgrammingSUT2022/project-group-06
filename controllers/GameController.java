@@ -3,6 +3,7 @@ package controllers;
 import enums.Color;
 import enums.HexState;
 import models.Player;
+import models.User;
 import models.maprelated.Hex;
 import models.maprelated.World;
 import models.units.Civilian;
@@ -15,7 +16,7 @@ import java.util.Objects;
 
 public class GameController {
 
-    private static ArrayList<String> players = new ArrayList<String>();
+    private static ArrayList<User> players = new ArrayList<User>();
     private static int turn;
     private static World world;
     private static int[] mapBoundaries;
@@ -25,7 +26,7 @@ public class GameController {
     private static ArrayList<Military> allMilitaries;
     private static Unit selectedUnit;
 
-    public static ArrayList<String> getPlayers() {
+    public static ArrayList<User> getPlayers() {
         return players;
     }
 

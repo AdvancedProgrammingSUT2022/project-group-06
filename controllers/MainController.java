@@ -66,9 +66,10 @@ public class MainController
         {
             if(!UserController.users.containsKey(temp))
             {
+                GameController.getPlayers().clear();
                 return 1;
             }
-            GameController.getPlayers().add(temp);
+            GameController.getPlayers().add(UserController.users.get(temp));
         }
 
         

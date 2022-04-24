@@ -235,7 +235,7 @@ public class InitializeGameInfo {
                 if (terrainPossibleFeature.get(pickedTerrainName) != null) {
                     feature = new Feature(randomPickANameS(terrainPossibleFeature.get(pickedTerrainName)));
                 }
-                hex[i][j] = new Hex(i, j, terrain, feature, HexState.FogOfWar);
+                hex[i][j] = new Hex(i, j, terrain, feature, HexState.visible);
             }
         }
     }

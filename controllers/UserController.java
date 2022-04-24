@@ -99,6 +99,8 @@ public class UserController {
     public static boolean isPasswordValid(String password) {
         return loggedInUser.getPassword().equals(password);
     }
+    
+
 
 }
 
