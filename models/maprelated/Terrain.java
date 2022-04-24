@@ -14,7 +14,7 @@ public class Terrain
 
     public Terrain(String name)
     {
-        String info= InitializeGameInfo.terrainInfo.get(name);
+        String info= InitializeGameInfo.getTerrainInfo().get(name);
         String[] splitInfo=info.split(" ");
         this.name = name;
         this.food=Integer.parseInt(splitInfo[0]);

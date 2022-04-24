@@ -68,7 +68,7 @@ public class MainController
             {
                 return 1;
             }
-            GameController.players.add(temp);
+            GameController.getPlayers().add(temp);
         }
 
         

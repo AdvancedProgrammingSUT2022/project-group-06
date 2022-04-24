@@ -13,7 +13,7 @@ public class Technology
     public Technology(String name) 
     {
         this.name = name;
-        String[] info= InitializeGameInfo.technologyInfo.get(name).split(" ");
+        String[] info= InitializeGameInfo.getTechnologyInfo().get(name).split(" ");
         this.cost=Integer.parseInt(info[0]);
 
         String[] neededTechnologies=info[1].split(",");

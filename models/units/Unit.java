@@ -2,6 +2,7 @@ package models.units;
  
 import enums.UnitState;
 import enums.UnitType;
+import models.Player;
 import models.maprelated.Hex;
 
 public class Unit 
@@ -14,7 +15,17 @@ public class Unit
     private int MP;
     private UnitType type;
     private int maxDistance;
+    private Player owner;
+    private String name;
 
+    Unit(String name, int speed, int militaryPower, UnitType type, int maxDistance, Player owner){
+        this.name = name;
+        this.speed = speed;
+        this.militaryPower = militaryPower;
+        this.type = type;
+        this.maxDistance = maxDistance;
+        this.owner = owner;
+    }
 
     public int getHealth() {
         return this.health;
@@ -62,5 +73,13 @@ public class Unit
 
     public int getMaxDistance() {
         return maxDistance;
+    }
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public String getName(){
+        return name;
     }
 }

@@ -14,7 +14,7 @@ public class Feature
 
     public Feature(String name)
     {
-        String info= InitializeGameInfo.featureInfo.get(name);
+        String info= InitializeGameInfo.getFeatureInfo().get(name);
         String[] splitInfo=info.split(" ");
         this.name = name;
         this.food=Integer.parseInt(splitInfo[0]);

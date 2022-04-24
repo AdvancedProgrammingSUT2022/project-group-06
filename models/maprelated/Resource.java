@@ -17,7 +17,7 @@ public class Resource
 
     public Resource(String name) 
     {
-        String info= InitializeGameInfo.resourceInfo.get(name);
+        String info= InitializeGameInfo.getResourceInfo().get(name);
         String[] splitInfo=info.split(" ");
         this.name = name;
         this.food=Integer.parseInt(splitInfo[0]);
@@ -29,7 +29,7 @@ public class Resource
         String[] terrainOrFeature=splitInfo[3].split(",");
         for(String temp:terrainOrFeature)
         {
-            if(InitializeGameInfo.featureInfo.containsKey(temp))
+            if(InitializeGameInfo.getFeatureInfo().containsKey(temp))
             {
                 appropriateFeature.add(temp);
             }

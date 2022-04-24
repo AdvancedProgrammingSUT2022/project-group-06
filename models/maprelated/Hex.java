@@ -17,6 +17,7 @@ public class Hex {
     private Resource resource;
     private Military militaryUnit;
     private Civilian civilianUnit;
+    private String improvement;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
 
     public Hex(int x, int y, Terrain terrain, Feature feature, HexState state) {
@@ -95,5 +96,13 @@ public class Hex {
             if(hasRiver[i]) return i;
         }
         return 7;
+    }
+
+    public void setImprovement(String improvement) {
+        this.improvement = improvement;
+    }
+
+    public String getImprovement() {
+        return improvement;
     }
 }

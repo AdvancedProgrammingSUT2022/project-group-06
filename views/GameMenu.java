@@ -12,23 +12,28 @@ public class GameMenu extends Menu {
 
     public void run(Scanner scanner) {
         InitializeGameInfo.run();
-        GameController.GameControllerset();
+        GameController.initializeGameController();
         System.out.println(GameController.printWorld());
         String command = scanner.nextLine();
         Matcher matcher;
         while (true) {
-            if (command.equals("show map")) {
-                System.out.println(GameController.printWorld());
+            if (command.equals("show all map")) {
+                System.out.println(GameController.printAllWorld());
+            } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+                System.out.println(GameController.showHexDetails(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            } else if ((matcher = getMatcher("map move (?<direction>(right|left|up|down)) (-c)(?<amount>\\d+)", command)) != null) {
+                System.out.println(GameController.moveMap(matcher.group("direction"),Integer.parseInt(matcher.group("amount"))));
+            } else if ((matcher = getMatcher("map show (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+                System.out.println(GameController.showPosition(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            } else if ((matcher = getMatcher("map show (--cityName|-c) (?<cityName>\\.+)", command)) != null) {
+                System.out.println("city");
             } else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectMilitary(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            }
-            else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            } else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectCivilian(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            }
-            else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            }
-            else if (command.equals("exit menu"))
+            } else if (command.equals("exit menu"))
                 break;
             else
                 System.out.println("invalid command!");

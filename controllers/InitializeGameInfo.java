@@ -12,18 +12,41 @@ import models.Player;
 import models.maprelated.*;
 
 public class InitializeGameInfo {
-    public static HashMap<String, String> terrainInfo = new HashMap<>();
-    public static HashMap<String, String> featureInfo = new HashMap<>();
-    public static HashMap<String, String> resourceInfo = new HashMap<>();
-    public static HashMap<String, String> technologyInfo = new HashMap<>();
-    public static ArrayList<String> terrainNames = new ArrayList<String>();
-    public static ArrayList<String> resourceNames = new ArrayList<String>();
-    public static HashMap<String, ArrayList<String>> appropriateTerrain = new HashMap<String, ArrayList<String>>();
-    public static HashMap<String, ArrayList<String>> appropriateFeature = new HashMap<String, ArrayList<String>>();
-    public static final HashMap<String, String[]> terrainPossibleFeature = new HashMap<String, String[]>();
+    private static HashMap<String, String> terrainInfo = new HashMap<>();
+    private static HashMap<String, String> featureInfo = new HashMap<>();
+    private static HashMap<String, String> resourceInfo = new HashMap<>();
+    private static HashMap<String, String> technologyInfo = new HashMap<>();
+    private static final ArrayList<String> terrainNames = new ArrayList<String>();
+    private static final ArrayList<String> resourceNames = new ArrayList<String>();
+    private static final HashMap<String, ArrayList<String>> appropriateTerrain = new HashMap<String, ArrayList<String>>();
+    private static final HashMap<String, ArrayList<String>> appropriateFeature = new HashMap<String, ArrayList<String>>();
+    private static final HashMap<String, String[]> terrainPossibleFeature = new HashMap<String, String[]>();
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
+    private static HashMap<String, Color> playerColor = new HashMap<String, Color>();
+
     private static final Random random = new Random();
     private static World world;
+
+
+    public static HashMap<String, String> getTerrainInfo() {
+        return terrainInfo;
+    }
+
+    public static HashMap<String, String> getFeatureInfo() {
+        return featureInfo;
+    }
+
+    public static HashMap<String, String> getResourceInfo() {
+        return resourceInfo;
+    }
+
+    public static HashMap<String, String> getTechnologyInfo() {
+        return technologyInfo;
+    }
+
+    public static HashMap<String, Color> getPlayerColor() {
+        return playerColor;
+    }
 
     public static World getWorld() {
         return world;
@@ -127,10 +150,10 @@ public class InitializeGameInfo {
 
     private static void initializeHashMap() {
         terrainPossibleFeature.put("Desert", new String[]{"Oasis", "FoodPlains"});
-        terrainPossibleFeature.put("Grassland", new String[]{"Forest", "Marsh"});
+        terrainPossibleFeature.put("Grassland", new String[]{"Jungle", "Marsh"});
         terrainPossibleFeature.put("Hills", new String[]{"Forest", "Jungle"});
         terrainPossibleFeature.put("Plain", new String[]{"Forest", "Jungle"});
-        terrainPossibleFeature.put("Tundra", new String[]{"Forest"});
+        terrainPossibleFeature.put("Tundra", new String[]{"Jungle"});
 
         terrainColors.put("Desert", Color.ANSI_YELLOW_BACKGROUND);
         terrainColors.put("Grassland", Color.ANSI_GREEN_BACKGROUND);
@@ -140,6 +163,12 @@ public class InitializeGameInfo {
         terrainColors.put("Plain", Color.ANSI_Bright_Green_BACKGROUND);
         terrainColors.put("Snow", Color.ANSI_WHITE_BACKGROUND);
         terrainColors.put("Tundra", Color.ANSI_BLACK_BACKGROUND);
+
+        playerColor.put("A", Color.RED);
+        playerColor.put("B", Color.BLUE);
+        playerColor.put("C", Color.GREEN);
+        playerColor.put("D", Color.YELLOW);
+        playerColor.put("E", Color.BLACK);
     }
 
     public static void run() {
@@ -154,34 +183,39 @@ public class InitializeGameInfo {
     private static void initializeGameWorld() {
         world = new World();
         initializeHex(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
-        //todo: initializeRiver
-        initializeResource(10,world.getHexInHeight(), world.getHexInWidth(), world.getHex());
+        initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeRiver(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         //initializePlayerTiles();
-        initializeCivilizations(3,world.getHexInHeight(), world.getHexInWidth());
+        initializeCivilizations(3, world.getHexInHeight(), world.getHexInWidth());
         //printResource();
     }
 /*    private void initializePlayerTiles() {
         Player[] players = new Player[2];
         players[0] = new Player("A");
         players[1] = new Player("B");
-        hex[0][0].setOwner(players[0]);
-        hex[0][1].setOwner(players[1]);
-    }
+        world.getHex()[0][0].setOwner(players[0]);
+        world.getHex()[0][1].setOwner(players[1]);
+    }*/
 
-    private void printResource() {
-        for (int i = 0; i < hexInHeight; i++) {
-            for (int j = 0; j < hexInWidth; j++) {
-                System.out.print(hex[i][j].getTerrain().getName());
-                if (hex[i][j].getResource() != null) {
-                    System.out.print(hex[i][j].getResource().getName());
-                }
-                if (hex[i][j].getFeature() != null) {
-                    System.out.print(hex[i][j].getFeature().getName());
+    /*    private static void printResource() {
+            Hex[][] hex = world.getHex();
+            for (int i = 0; i < world.getHexInHeight(); i++) {
+                for (int j = 0; j < world.getHexInWidth(); j++) {
+                    System.out.print("terrain: "+hex[i][j].getTerrain().getName());
+                    if (hex[i][j].getResource() != null) {
+                        System.out.print(" resource: " + hex[i][j].getResource().getName());
+                    }
+                    if (hex[i][j].getFeature() != null) {
+                        System.out.print(" feature: " + hex[i][j].getFeature().getName());
+                    }
+                    if (hex[i][j].getImprovement() != null) {
+                        System.out.print(" improvement: " + hex[i][j].getImprovement());
+                    }
+                    System.out.println(" x,y:"+i + " "+ j);
+
                 }
             }
-        }
-    }*/
+        }*/
     private static String randomPickAName(ArrayList<String> names) {
         return names.get(Math.abs(Math.abs(random.nextInt())) % names.size());
     }
@@ -189,6 +223,7 @@ public class InitializeGameInfo {
     private static String randomPickANameS(String[] names) {
         return names[Math.abs(random.nextInt()) % names.length];
     }
+
     private static void initializeHex(int hexInHeight, int hexInWidth, Hex[][] hex) {
         for (int i = 0; i < hexInHeight; i++) {
             for (int j = 0; j < hexInWidth; j++) {
@@ -204,6 +239,7 @@ public class InitializeGameInfo {
             }
         }
     }
+
     private static boolean isTerrainSuitable(ArrayList<String> PossibleTerrain, Hex tile) {
         if (PossibleTerrain.isEmpty()) return false;
         for (String s : PossibleTerrain) {
@@ -223,6 +259,7 @@ public class InitializeGameInfo {
         }
         return false;
     }
+
     private static void initializeResource(int numberOfTry, int hexInHeight, int hexInWidth, Hex[][] hex) {
         while (numberOfTry != 0) {
             //random resource
@@ -234,7 +271,7 @@ public class InitializeGameInfo {
             for (int i = 0; i < hexInHeight; i++) {
                 for (int j = 0; j < hexInWidth; j++) {
                     if ((isTerrainSuitable(PossibleTerrain, hex[i][j]) || isFeatureSuitable(PossibleFeature, hex[i][j])) &&
-                            (hex[i][j].getResource()==null|| !Objects.equals(hex[i][j].getResource().getName(), resourceName))) {
+                            (hex[i][j].getResource() == null || !Objects.equals(hex[i][j].getResource().getName(), resourceName))) {
                         //todo : random possibleHex
                         Resource resource = new Resource(resourceName);
                         hex[i][j].setResource(resource);
@@ -246,38 +283,41 @@ public class InitializeGameInfo {
         }
 
     }
+
     private static void initializeRiver(int hexInHeight, int hexInWidth, Hex[][] hex) {
-         int[][] oddDirection = new int[][]{{0,-1},{1,-1},{0,1},{1,1}};
-         int[][] evenDirection = new int[][]{{-1,-1},{0,-1},{-1,1},{0,1}};
+        int[][] oddDirection = new int[][]{{0, -1}, {1, -1}, {0, 1}, {1, 1}};
+        int[][] evenDirection = new int[][]{{-1, -1}, {0, -1}, {-1, 1}, {0, 1}};
         for (int k = 0; k < 10; ) {
-            int riverSide =Math.abs(random.nextInt())%4;
-            int i =Math.abs(random.nextInt())%(hexInHeight-2)+1;
-            int j = Math.abs(random.nextInt())%(hexInWidth-2)+1;
-            if(!hex[i][j].isRiver(riverSide)){
+            int riverSide = Math.abs(random.nextInt()) % 4;
+            int i = Math.abs(random.nextInt()) % (hexInHeight - 2) + 1;
+            int j = Math.abs(random.nextInt()) % (hexInWidth - 2) + 1;
+            if (!hex[i][j].isRiver(riverSide)) {
                 hex[i][j].setRiver(riverSide);
-                int[][] direction = j%2==1 ? oddDirection : evenDirection;
-                hex[i+direction[riverSide][0]][j+direction[riverSide][1]].setRiver(Math.abs(3-riverSide));
+                int[][] direction = j % 2 == 1 ? oddDirection : evenDirection;
+                hex[i + direction[riverSide][0]][j + direction[riverSide][1]].setRiver(Math.abs(3 - riverSide));
                 k++;
             }
         }
         for (int i = 0; i < hexInHeight; i++) {
             for (int j = 0; j < hexInWidth; j++) {
-                if(hex[i][j].getFeature() != null && Objects.equals(hex[i][j].getFeature().getName(), "FoodPlains")){
-                    int[][] direction = j%2==1 ? oddDirection : evenDirection;
-                    int riverSide=Math.abs(random.nextInt())%4;;
-                    while(i+direction[riverSide][0] >= hexInHeight ||i+direction[riverSide][0] <0||
-                            j+direction[riverSide][1] >= hexInWidth||j+direction[riverSide][1] <0){
-                        riverSide=Math.abs(random.nextInt())%4;
+                if (hex[i][j].getFeature() != null && Objects.equals(hex[i][j].getFeature().getName(), "FoodPlains")) {
+                    int[][] direction = j % 2 == 1 ? oddDirection : evenDirection;
+                    int riverSide = Math.abs(random.nextInt()) % 4;
+                    ;
+                    while (i + direction[riverSide][0] >= hexInHeight || i + direction[riverSide][0] < 0 ||
+                            j + direction[riverSide][1] >= hexInWidth || j + direction[riverSide][1] < 0) {
+                        riverSide = Math.abs(random.nextInt()) % 4;
                     }
-                    if(!hex[i][j].isRiver(riverSide)){
+                    if (!hex[i][j].isRiver(riverSide)) {
                         hex[i][j].setRiver(riverSide);
-                        hex[i+direction[riverSide][0]][j+direction[riverSide][1]].setRiver(Math.abs(3-riverSide));
+                        hex[i + direction[riverSide][0]][j + direction[riverSide][1]].setRiver(Math.abs(3 - riverSide));
                     }
                 }
             }
         }
     }
-    private static void initializeCivilizations(int numberOfPlayers,int hexInHeight, int hexInWidth) {
+
+    private static void initializeCivilizations(int numberOfPlayers, int hexInHeight, int hexInWidth) {
         Player[] players = new Player[numberOfPlayers];
         players[0] = new Player("A");
         players[1] = new Player("B");
@@ -287,7 +327,7 @@ public class InitializeGameInfo {
             ArrayList<Hex> playerHex = new ArrayList<>();
             while (playerHex.size() != numberOfPlayerHex) {
                 clear(playerHex);
-                initializePlayerHex(numberOfPlayerHex,  playerHex, players[i],Math.abs(random.nextInt()) % hexInHeight, Math.abs(random.nextInt()) % hexInWidth);
+                initializePlayerHex(numberOfPlayerHex, playerHex, players[i], Math.abs(random.nextInt()) % hexInHeight, Math.abs(random.nextInt()) % hexInWidth);
             }
 
             setPlayerHex(playerHex, players[i]);
@@ -300,42 +340,44 @@ public class InitializeGameInfo {
         }
         playerHex.clear();
     }
+
     private static int initializePlayerHex(int numberOfPlayerHex, ArrayList<Hex> playerHex, Player player, int i, int j) {
         int hexInHeight = world.getHexInHeight();
         int hexInWidth = world.getHexInWidth();
         Hex[][] hex = world.getHex();
-        if (playerHex.size() == numberOfPlayerHex || i >= hexInHeight || j >= hexInWidth || i < 0 || j < 0 ) {
+        if (playerHex.size() == numberOfPlayerHex || i >= hexInHeight || j >= hexInWidth || i < 0 || j < 0) {
             return playerHex.size();
         }
-        if( hex[i][j].getOwner() != null){
+        if (hex[i][j].getOwner() != null) {
             return playerHex.size();
         }
         playerHex.add(hex[i][j]);
         hex[i][j].setOwner(player);
         List<int[]> directions;
-        if(j%2 == 1) {
+        if (j % 2 == 1) {
             directions = new java.util.ArrayList<>(List.of(new int[]{-1, 0},
                     new int[]{0, -1}, new int[]{1, -1}, new int[]{1, 0}, new int[]{1, 1}, new int[]{0, 1}));
-        }else{
+        } else {
             directions = new java.util.ArrayList<>(List.of(new int[]{-1, 0},
                     new int[]{-1, -1}, new int[]{0, -1}, new int[]{1, 0}, new int[]{0, 1}, new int[]{-1, 1}));
         }
         while (directions.size() != 0) {
             int index = Math.abs(random.nextInt()) % directions.size();
-            index = Math.abs(index)%6;
+            index = Math.abs(index) % 6;
             int[] selectedDirection = directions.get(index);
-            int temp = initializePlayerHex(numberOfPlayerHex, playerHex,player, i + selectedDirection[0], j + selectedDirection[1]);
+            int temp = initializePlayerHex(numberOfPlayerHex, playerHex, player, i + selectedDirection[0], j + selectedDirection[1]);
             if (temp >= numberOfPlayerHex) {
                 break;
             }
             directions.remove(index);
         }
-        if(playerHex.size()< numberOfPlayerHex){
-            playerHex.get(playerHex.size()-1).setOwner(null);
-            playerHex.remove(playerHex.size()-1);
+        if (playerHex.size() < numberOfPlayerHex) {
+            playerHex.get(playerHex.size() - 1).setOwner(null);
+            playerHex.remove(playerHex.size() - 1);
         }
         return playerHex.size();
     }
+
     private static void setPlayerHex(ArrayList<Hex> playerHex, Player player) {
        /* for (int i = 0; i < 6; i++) {
             System.out.println(playerHex.get(i).getX()+ " " + playerHex.get(i).getY());
