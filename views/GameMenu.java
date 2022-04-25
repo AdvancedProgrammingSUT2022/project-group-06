@@ -74,7 +74,7 @@ public class GameMenu extends Menu {
             System.out.println("This hex already has a unit of this type");
         else {
             Hex nextHex = GameController.getNextHex(x, y);
-            for (int i = 0; i < GameController.getSelectedUnit().getMaxDistance(); i++) {
+            for (int i = 0; i < GameController.getSelectedUnit().getRange(); i++) {
                 if (nextHex.getX() == x && nextHex.getY() == y) {
                     System.out.println("The unit reached chosen destination");
                     break;
