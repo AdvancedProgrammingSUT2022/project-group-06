@@ -1,5 +1,6 @@
 package models.units;
 
+import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
 import models.Player;
@@ -8,24 +9,60 @@ import models.maprelated.Hex;
 public class Unit
 {
     private int health;
-    private int speed;
-    private int militaryPower;
+    private int combatStrength;
+    private int rangedStrength;
+    private int range;
     private Hex currentHex;
     private UnitState state;
     private int MP;
-    private UnitType type;
-    private int maxDistance;
-    private Player owner;
     private String name;
+    private int cost;
+    private String neededTech;
+    private String neededResource;
+    private Player owner;
 
-    Unit(String name, int speed, int militaryPower, UnitType type, int maxDistance, Player owner){
-        this.name = name;
-        this.speed = speed;
-        this.militaryPower = militaryPower;
-        this.type = type;
-        this.maxDistance = maxDistance;
-        this.owner = owner;
+    public Unit(String name,Hex hex )
+    {
+        this.currentHex=hex;
+        this.name=name;
+
+        String[] info=InitializeGameInfo.unitInfo.get(name).split(" ");
+        this.cost=Integer.parseInt(info[0]);
+        combatStrength=Integer.parseInt(info[1]);
+        rangedStrength=Integer.parseInt(info[2]);
+        range=Integer.parseInt(info[3]);
+        MP=Integer.parseInt(info[4]);
+        health=10;
+
+
+        String tech=info[6];
+        String resource=info[5];
+
+        if(tech.equals("NA"))
+        {
+            neededTech=null;
+        }
+        else
+        {
+            neededTech=tech;
+        }
+        if(resource.equals("NA"))
+        {
+            neededResource=null;
+        }
+        else
+        {
+            neededResource=resource;
+        }
+
     }
+
+
+
+    public Unit(String name, int speed, int militaryPower, UnitType type2, int maxDistance, Player owner) {
+    }
+
+
 
     public int getHealth() {
         return this.health;
@@ -39,10 +76,7 @@ public class Unit
         health-=amount;
     }
 
-    public int getSpeed() {
-        return this.speed;
-    }
-
+   
     public Hex getCurrentHex() {
         return this.currentHex;
     }
@@ -71,8 +105,8 @@ public class Unit
     }
 
 
-    public int getMaxDistance() {
-        return maxDistance;
+    public int getRange() {
+        return range;
     }
 
     public Player getOwner() {

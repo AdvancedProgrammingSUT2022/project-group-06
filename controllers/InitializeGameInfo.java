@@ -12,10 +12,13 @@ import models.Player;
 import models.maprelated.*;
 
 public class InitializeGameInfo {
+    public static HashMap<String, String> unitNeededResource=new HashMap<String,String>();
+    public static HashMap<String, String> unitNeededTech=new HashMap<String,String>();
     private static HashMap<String, String> terrainInfo = new HashMap<>();
     private static HashMap<String, String> featureInfo = new HashMap<>();
     private static HashMap<String, String> resourceInfo = new HashMap<>();
     private static HashMap<String, String> technologyInfo = new HashMap<>();
+    public static HashMap<String, String> unitInfo=new HashMap<>();    
     private static final ArrayList<String> terrainNames = new ArrayList<String>();
     private static final ArrayList<String> resourceNames = new ArrayList<String>();
     private static final HashMap<String, ArrayList<String>> appropriateTerrain = new HashMap<String, ArrayList<String>>();
@@ -52,6 +55,48 @@ public class InitializeGameInfo {
         return world;
     }
 
+    public static void initializeUnitInfo(){
+            
+        try {
+            String readUnitInfo = new String(Files.readAllBytes(Paths.get("files/UnitInfo.txt")));
+            String[] readInfo = readUnitInfo.split("\n");
+            for (String temp : readInfo) {
+                String[] read = temp.split("#");
+                String name = read[0];
+                String info = read[1];
+
+                String tech=info.split(" ")[6];
+                String resource=info.split(" ")[5];
+
+                if(tech.equals("NA"))
+                {
+                    unitInfo.put(name, null);
+                }
+                else
+                {
+                    unitInfo.put(name, tech);
+                }
+                if(resource.equals("NA"))
+                {
+                    unitNeededResource.put(name,null);
+                }
+                else
+                {
+                    unitNeededResource.put(name,resource);
+                }
+                
+              
+                
+            }
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
+    }
+    
     public static void initializeTerrainInfo() {
         try {
             String readTerrainInfo = new String(Files.readAllBytes(Paths.get("files/TerrainInfo.txt")));
@@ -178,6 +223,7 @@ public class InitializeGameInfo {
         initializeTechnologyInfo();
         initializeHashMap();
         initializeGameWorld();
+        initializeUnitInfo();
     }
 
     private static void initializeGameWorld() {
