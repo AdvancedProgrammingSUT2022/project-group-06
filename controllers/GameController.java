@@ -181,7 +181,7 @@ public class GameController {
         }
         for (int n = mapBoundaries[0]; n < mapBoundaries[1]; n++) {
             for (int m = mapBoundaries[2]; m < mapBoundaries[3]; m++) {
-                if(hex[n][m].getState() == HexState.Visible)drawHex(hex[n][m]);
+                if (hex[n][m].getState() == HexState.Visible) drawHex(hex[n][m]);
                 else drawFogOfWar(hex[n][m]);
             }
         }
@@ -285,23 +285,31 @@ public class GameController {
         return null;
     }
 
+    private static int[] getDirectionIndex(int[][] direction, int dx, int dy, Unit unit) {
+        if (dx != 0) dx = dx / Math.abs(dx);
+        if (dy != 0) dy = dy / Math.abs(dy);
+        for (int[] ints : direction) {
+            if (ints[0] == dx && ints[1] == dy && isPositionValid(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
+                return ints;
+        }
+        return null;
+    }
 
     public static Hex getNextHex(int finalX, int finalY) {
         Unit unit = selectedUnit;
+        int[] direction;
+        int[][] oddDirection = new int[][]{{-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
+        int[][] evenDirection = new int[][]{{-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
         int deltaX = finalX - unit.getCurrentHex().getX();
         int deltaY = finalY - unit.getCurrentHex().getY();
-        if (deltaX < 0 && deltaY < 0 && isPositionValid(unit.getCurrentHex().getX() - 1, unit.getCurrentHex().getY() - 1))
-            return hex[unit.getCurrentHex().getX() - 1][unit.getCurrentHex().getY() - 1];//bala chap
-        else if (deltaX < 0 && deltaY > 0 && isPositionValid(unit.getCurrentHex().getX() - 1, unit.getCurrentHex().getY() + 1))
-            return hex[unit.getCurrentHex().getX() - 1][unit.getCurrentHex().getY() + 1];//bala rast
-        else if (deltaX < 0 && isPositionValid(unit.getCurrentHex().getX() - 1, unit.getCurrentHex().getY()))
-            return hex[unit.getCurrentHex().getX() - 1][unit.getCurrentHex().getY()];//bala
-        else if (deltaY == 0 && isPositionValid(unit.getCurrentHex().getX() + 1, unit.getCurrentHex().getY()))
-            return hex[unit.getCurrentHex().getX() + 1][unit.getCurrentHex().getY()];//paeen
-        else if (deltaY > 0 && isPositionValid(unit.getCurrentHex().getX(), unit.getCurrentHex().getY() + 1))
-            return hex[unit.getCurrentHex().getX()][unit.getCurrentHex().getY() + 1];//paeen rast
-        else
-            return hex[unit.getCurrentHex().getX()][unit.getCurrentHex().getY() - 1];//paeen chap
+
+        if (unit.getCurrentHex().getY() % 2 == 0) {
+            direction = getDirectionIndex(evenDirection, deltaX, deltaY, unit);
+        } else {
+            direction = getDirectionIndex(oddDirection, deltaX, deltaY, unit);
+        }
+        return hex[unit.getCurrentHex().getX() + direction[0]][unit.getCurrentHex().getY() + direction[1]];
+
     }
 
     public static boolean canMoveThrough(int x, int y) {
@@ -324,9 +332,26 @@ public class GameController {
     }
 
     public static void moveUnit(Unit unit, int x, int y) {
+        changeView(x, y);
         unit.changeCurrentHex(hex[x][y]);
         unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
     }
 
+    private static void changeView(int x, int y) {
+        int[][] oddDirection = new int[][]{{0, 0}, {-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
+        int[][] evenDirection = new int[][]{{0, 0}, {-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
+        int[][] direction;
 
+        if (y % 2 == 0) direction = evenDirection;
+        else direction = oddDirection;
+
+        for (int j = 0; j < 7; j++) {
+            x = x + direction[j][0];
+            y = y + direction[j][0];
+            for (int i = 0; i < 7; i++) {
+                if (isPositionValid(x + direction[i][0], y + direction[i][1]))
+                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible);
+            }
+        }
+    }
 }

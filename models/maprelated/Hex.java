@@ -28,6 +28,9 @@ public class Hex {
         this.state = state;
     }
 
+    public void setState(HexState hexState) {
+        this.state = hexState;
+    }
     public void setOwner(Player owner) {
         this.owner = owner;
     }
