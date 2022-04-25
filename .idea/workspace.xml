@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="9f4e2686-0568-4355-829e-489a44d57110" name="Changes" comment="edit mvc and add river">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Hex.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
