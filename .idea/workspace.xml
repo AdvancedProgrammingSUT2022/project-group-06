@@ -7,7 +7,18 @@
     <list default="true" id="9f4e2686-0568-4355-829e-489a44d57110" name="Changes" comment="edit mvc and add river">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/City.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/maprelated/Feature.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Feature.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Hex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/maprelated/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Resource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/maprelated/Terrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/Terrain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/maprelated/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/maprelated/World.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/units/Civilian.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/units/Civilian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/units/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/models/units/Unit.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,6 +86,7 @@
       <option name="presentableId" value="Default" />
       <updated>1650566152637</updated>
       <workItem from="1650740773651" duration="33103000" />
+      <workItem from="1650913082513" duration="378000" />
     </task>
     <task id="LOCAL-00001" summary="few movement methods added">
       <created>1650574065293</created>

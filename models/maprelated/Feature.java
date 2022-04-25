@@ -2,7 +2,7 @@ package models.maprelated;
 
 import controllers.InitializeGameInfo;
 
-public class Feature 
+public class Feature
 {
 
     private String name;
@@ -31,22 +31,22 @@ public class Feature
         return this.name;
     }
 
-    public int getFood() 
+    public int getFood()
     {
         return this.food;
     }
 
-    public int getProduction() 
+    public int getProduction()
     {
         return this.production;
     }
- 
-    public int getGold() 
+
+    public int getGold()
     {
         return this.gold;
     }
 
-    public int getMovePoint() 
+    public int getMovePoint()
     {
         return this.movePoint;
     }

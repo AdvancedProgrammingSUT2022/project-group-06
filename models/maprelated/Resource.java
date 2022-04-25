@@ -3,7 +3,7 @@ package models.maprelated;
 import controllers.InitializeGameInfo;
 import java.util.ArrayList;
 
-public class Resource 
+public class Resource
 {
     private int food;
     private int production;
@@ -15,7 +15,7 @@ public class Resource
     private String requiredTechnology;
 
 
-    public Resource(String name) 
+    public Resource(String name)
     {
         String info= InitializeGameInfo.getResourceInfo().get(name);
         String[] splitInfo=info.split(" ");
@@ -39,32 +39,32 @@ public class Resource
             }
 
         }
-    
-        
+
+
     }
 
-    public int getFood() 
+    public int getFood()
     {
         return this.food;
     }
 
-    public int getProduction() 
+    public int getProduction()
     {
         return this.production;
     }
 
-    public int getGold() 
+    public int getGold()
     {
         return this.gold;
     }
 
 
-    public String getRequiredImprovement() 
+    public String getRequiredImprovement()
     {
         return this.requiredImprovement;
     }
 
-    public ArrayList<String> getAppropriateTerrain() 
+    public ArrayList<String> getAppropriateTerrain()
     {
         return this.appropriateTerrain;
     }

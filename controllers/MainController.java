@@ -2,7 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
-public class MainController 
+public class MainController
 {
     public int startGame(String input)
     {
@@ -13,7 +13,7 @@ public class MainController
         int user=0;
         int num=2;
         while(true)
-        { 
+        {
             if((user=input.indexOf(playerNum.toString()))!=-1)
             {
                 String getUsername=input.substring(user+10);
@@ -37,7 +37,7 @@ public class MainController
         int user2=0;
         int num2=2;
         while(true)
-        { 
+        {
             if((user2=input.indexOf(playerNum2.toString()))!=-1)
             {
                 String getUsername=input.substring(user2+4);
@@ -56,7 +56,7 @@ public class MainController
             playerNum2.append(num2);
             num2++;
         }
-      
+
         if(usernames.isEmpty())
         {
             return 0;
@@ -66,15 +66,14 @@ public class MainController
         {
             if(!UserController.users.containsKey(temp))
             {
-                GameController.getPlayers().clear();
                 return 1;
             }
-            GameController.getPlayers().add(UserController.users.get(temp));
+            GameController.getPlayers().add(temp);
         }
 
-        
+
         return 2;
 
-        
+
     }
 }

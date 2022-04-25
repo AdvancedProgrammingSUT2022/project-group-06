@@ -51,10 +51,6 @@ public class Hex {
         return state;
     }
 
-    public void setState(HexState hexState) {
-        this.state = hexState;
-    }
-
     public Feature getFeature() {
         return feature;
     }

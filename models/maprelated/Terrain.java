@@ -2,7 +2,7 @@ package models.maprelated;
 
 import controllers.InitializeGameInfo;
 
-public class Terrain 
+public class Terrain
 {
     private String name;
     private int food;
@@ -22,7 +22,7 @@ public class Terrain
         this.gold=Integer.parseInt(splitInfo[2]);
         this.combatModifiersPercentage=Integer.parseInt(splitInfo[3]);
         this.movePoint=Integer.parseInt(splitInfo[4]);
-        
+
     }
 
     public String getName()
@@ -30,22 +30,22 @@ public class Terrain
         return this.name;
     }
 
-    public int getFood() 
+    public int getFood()
     {
         return this.food;
     }
 
-    public int getProduction() 
+    public int getProduction()
     {
         return this.production;
     }
- 
-    public int getGold() 
+
+    public int getGold()
     {
         return this.gold;
     }
 
-    public int getMovePoint() 
+    public int getMovePoint()
     {
         return this.movePoint;
     }
@@ -55,5 +55,5 @@ public class Terrain
         return this.combatModifiersPercentage;
     }
 
-    
+
 }

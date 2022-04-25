@@ -4,7 +4,7 @@ package models.maprelated;
 import java.util.ArrayList;
 import models.gainable.Building;
 
-public class City 
+public class City
 {
     private int population;
     private int defencePower;
@@ -72,14 +72,14 @@ public class City
     }
 
     public void increaseGold(int amount) {
-       gold+= amount;
+        gold+= amount;
 
     }
 
     public void decreaseGold(int amount) {
         gold-=amount;
-        
-     }
+
+    }
 
     public int getProduction() {
         return this.production;
@@ -106,8 +106,8 @@ public class City
 
     }
 
-   
-    
 
-    
+
+
+
 }
