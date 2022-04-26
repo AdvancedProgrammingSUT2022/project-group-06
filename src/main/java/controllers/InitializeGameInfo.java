@@ -58,7 +58,7 @@ public class InitializeGameInfo {
     public static void initializeUnitInfo(){
             
         try {
-            String readUnitInfo = new String(Files.readAllBytes(Paths.get("files/UnitInfo.txt")));
+            String readUnitInfo = new String(Files.readAllBytes(Paths.get("../resources/files/UnitInfo.txt")));
             String[] readInfo = readUnitInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -99,7 +99,7 @@ public class InitializeGameInfo {
     
     public static void initializeTerrainInfo() {
         try {
-            String readTerrainInfo = new String(Files.readAllBytes(Paths.get("files/TerrainInfo.txt")));
+            String readTerrainInfo = new String(Files.readAllBytes(Paths.get("../resources/files/TerrainInfo.txt")));
             String[] readInfo = readTerrainInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -119,7 +119,7 @@ public class InitializeGameInfo {
 
     public static void initializeFeatureInfo() {
         try {
-            String readFeatureInfo = new String(Files.readAllBytes(Paths.get("files/FeatureInfo.txt")));
+            String readFeatureInfo = new String(Files.readAllBytes(Paths.get("../resources/files/FeatureInfo.txt")));
             String[] readInfo = readFeatureInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -137,7 +137,7 @@ public class InitializeGameInfo {
 
     public static void initializeTechnologyInfo() {
         try {
-            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get("files/TechnologyInfo.txt")));
+            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get("../resources/files/TechnologyInfo.txt")));
             String[] readInfo = readTechnologyInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -158,7 +158,7 @@ public class InitializeGameInfo {
 
     public static void initializeResourceInfo() {
         try {
-            String readResourceInfo = new String(Files.readAllBytes(Paths.get("files/ResourceInfo.txt")));
+            String readResourceInfo = new String(Files.readAllBytes(Paths.get("../resources/files/ResourceInfo.txt")));
             String[] readInfo = readResourceInfo.split("\n");
             for (String temp : readInfo) {
 
