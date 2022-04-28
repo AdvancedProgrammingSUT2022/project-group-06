@@ -5,102 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/GameController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/InitializeGameInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/LoginController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/MainController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/UnitController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/UserController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/Color.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/Commands.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/FeatureNames.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/HexState.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/TerrainNames.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/UnitState.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/UnitType.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/FeatureInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/ResourceInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/TechnologyInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/TerrainInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/UnitInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/files/UserInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/Player.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/gainable/Building.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/gainable/Technology.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/City.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Feature.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Hex.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Resource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/Terrain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/maprelated/World.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/twopartyactions/Combat.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/twopartyactions/Trade.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Civilian.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Military.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Settler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Unit.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/units/Worker.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/.idea/.name" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/Main.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/UML.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/GameController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/InitializeGameInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/LoginController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/MainController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/UnitController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/controllers/UserController.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/Color.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/Commands.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/FeatureNames.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/HexState.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/TerrainNames.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/UnitState.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/enums/UnitType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/files/FeatureInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/files/ResourceInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/files/TechnologyInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/files/TerrainInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/files/UnitInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/files/UserInfo.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/Player.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/User.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/gainable/Building.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/gainable/Technology.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/City.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Feature.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Hex.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Resource.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/Terrain.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/maprelated/World.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/twopartyactions/Combat.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/twopartyactions/Trade.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Civilian.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Military.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Settler.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Unit.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/models/units/Worker.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/project-group-06.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/GameMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/LoginMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/MainMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/Menu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/project-group-06/views/ProfileMenu.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/GameMenu.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/LoginMenu.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/MainMenu.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/Menu.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/ProfileMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,6 +16,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -130,9 +43,25 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="civilization" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -149,10 +78,41 @@
       <workItem from="1650963678995" duration="93000" />
       <workItem from="1650963808964" duration="29000" />
       <workItem from="1651005295059" duration="444000" />
+      <workItem from="1651049452895" duration="1220000" />
+      <workItem from="1651050691475" duration="107000" />
+      <workItem from="1651050817328" duration="8654000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="ctyCombat" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

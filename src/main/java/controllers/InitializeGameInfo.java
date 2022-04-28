@@ -1,8 +1,10 @@
 package controllers;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -58,7 +60,10 @@ public class InitializeGameInfo {
     public static void initializeUnitInfo(){
             
         try {
-            String readUnitInfo = new String(Files.readAllBytes(Paths.get("../resources/files/UnitInfo.txt")));
+            String resourceName = "files/UnitInfo.txt";
+            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            String readUnitInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             String[] readInfo = readUnitInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -99,7 +104,11 @@ public class InitializeGameInfo {
     
     public static void initializeTerrainInfo() {
         try {
-            String readTerrainInfo = new String(Files.readAllBytes(Paths.get("../resources/files/TerrainInfo.txt")));
+            String resourceName = "files/TerrainInfo.txt";
+            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            String readTerrainInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+
             String[] readInfo = readTerrainInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -107,7 +116,6 @@ public class InitializeGameInfo {
                 String info = read[1];
 
                 terrainNames.add(name);
-
                 terrainInfo.put(name, info);
             }
 
@@ -119,7 +127,10 @@ public class InitializeGameInfo {
 
     public static void initializeFeatureInfo() {
         try {
-            String readFeatureInfo = new String(Files.readAllBytes(Paths.get("../resources/files/FeatureInfo.txt")));
+            String resourceName = "files/FeatureInfo.txt";
+            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            String readFeatureInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             String[] readInfo = readFeatureInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -137,7 +148,10 @@ public class InitializeGameInfo {
 
     public static void initializeTechnologyInfo() {
         try {
-            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get("../resources/files/TechnologyInfo.txt")));
+            String resourceName = "files/TechnologyInfo.txt";
+            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             String[] readInfo = readTechnologyInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -158,7 +172,10 @@ public class InitializeGameInfo {
 
     public static void initializeResourceInfo() {
         try {
-            String readResourceInfo = new String(Files.readAllBytes(Paths.get("../resources/files/ResourceInfo.txt")));
+            String resourceName = "files/ResourceInfo.txt";
+            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            String readResourceInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             String[] readInfo = readResourceInfo.split("\n");
             for (String temp : readInfo) {
 
