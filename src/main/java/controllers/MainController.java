@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.ArrayList;
 
+import models.Player;
+
 public class MainController
 {
     public int startGame(String input)
@@ -68,7 +70,7 @@ public class MainController
             {
                 return 1;
             }
-            GameController.getPlayers().add(temp);
+            Player newPlayer=new Player(temp);
         }
 
 

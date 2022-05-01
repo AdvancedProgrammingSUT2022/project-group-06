@@ -7,10 +7,11 @@ import models.maprelated.Hex;
 public class Military extends Unit 
 {
 
-    Military(String name, int speed, int militaryPower, UnitType type, int maxDistance, Player owner) {
-        super(name, speed, militaryPower, type, maxDistance, owner);
+    public Military(String name,Hex currentHex)
+    {
+      super(name, currentHex);
+      
     }
-
     public Boolean isMovementPossible(Hex destination, Unit source)
     {
         return false;

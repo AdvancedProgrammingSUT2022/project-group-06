@@ -1,5 +1,7 @@
 package models.units;
 
+import java.util.ArrayList;
+
 import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
@@ -8,6 +10,7 @@ import models.maprelated.Hex;
 
 public class Unit
 {
+    private static ArrayList<Unit> units=new ArrayList<Unit>();
     private int health;
     private int combatStrength;
     private int rangedStrength;
@@ -21,11 +24,11 @@ public class Unit
     private String neededResource;
     private Player owner;
 
-    public Unit(String name,Hex hex )
+    public Unit(String name,Hex hex)
     {
-        this.currentHex=hex;
+        
         this.name=name;
-
+        this.currentHex=hex;
         String[] info=InitializeGameInfo.unitInfo.get(name).split(" ");
         this.cost=Integer.parseInt(info[0]);
         combatStrength=Integer.parseInt(info[1]);
@@ -54,6 +57,9 @@ public class Unit
         {
             neededResource=resource;
         }
+
+
+        units.add(this);
 
     }
 

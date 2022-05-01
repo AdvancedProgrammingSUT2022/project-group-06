@@ -5,10 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Resource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Resource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Civilian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Civilian.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Military.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Military.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Settler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Settler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Worker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/files/ResourceInfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/files/ResourceInfo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,7 +62,7 @@
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="civilization" />
+      <module name="project-group-06" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -81,6 +92,8 @@
       <workItem from="1651049452895" duration="1220000" />
       <workItem from="1651050691475" duration="107000" />
       <workItem from="1651050817328" duration="8654000" />
+      <workItem from="1651227568193" duration="985000" />
+      <workItem from="1651410722294" duration="1820000" />
     </task>
     <servers />
   </component>

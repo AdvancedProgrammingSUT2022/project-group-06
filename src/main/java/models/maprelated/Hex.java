@@ -28,6 +28,7 @@ public class Hex {
         this.state = state;
     }
 
+
     public void setState(HexState hexState) {
         this.state = hexState;
     }

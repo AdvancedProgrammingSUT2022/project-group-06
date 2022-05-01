@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import controllers.GameController;
 import models.maprelated.City;
 import models.twopartyactions.Combat;
 import models.units.Civilian;
@@ -29,6 +30,7 @@ public class Player {//-currentProject
 
     public Player(String name) {
         this.name = name;
+        GameController.addPlayer(this);
     }
 
 

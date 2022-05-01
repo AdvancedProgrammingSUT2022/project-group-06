@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class Resource
 {
+    private static ArrayList<Resource> resources=new ArrayList<Resource>();
     private int food;
     private int production;
     private int gold;
@@ -13,6 +14,7 @@ public class Resource
     private ArrayList<String> appropriateTerrain = new ArrayList<>();
     private ArrayList<String> appropriateFeature = new ArrayList<>();
     private String requiredTechnology;
+    private String type;
 
 
     public Resource(String name)
@@ -25,6 +27,7 @@ public class Resource
         this.gold=Integer.parseInt(splitInfo[2]);
         this.requiredImprovement=splitInfo[4];
         this.requiredTechnology=splitInfo[5];
+        this.type=splitInfo[6];
 
         String[] terrainOrFeature=splitInfo[3].split(",");
         for(String temp:terrainOrFeature)
@@ -41,8 +44,13 @@ public class Resource
         }
 
 
+        resources.add(this);
     }
 
+    public String getType()
+    {
+        return type;
+    }
     public int getFood()
     {
         return this.food;

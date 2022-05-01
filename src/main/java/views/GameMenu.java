@@ -1,9 +1,14 @@
 package views;
 
 import controllers.InitializeGameInfo;
+import controllers.CityController;
 import controllers.GameController;
 import controllers.UnitController;
+import models.Player;
+import models.maprelated.City;
 import models.maprelated.Hex;
+
+import static org.mockito.ArgumentMatchers.matches;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -14,10 +19,82 @@ public class GameMenu extends Menu {
         InitializeGameInfo.run();
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
+        int playerCount=0;
+        Player currentPlayer=GameController.getPlayers().get(playerCount);
+
         String command = scanner.nextLine();
         Matcher matcher;
         while (true) {
-            if (command.equals("show all map")) {
+
+            if((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null)
+            {
+                System.out.println(CityController.buildCity(currentPlayer,matcher.group("name")));
+            } else if((matcher = getMatcher("unit select (--unitname|-un) (?<unitname>[a-zA-Z]+) (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
+            {
+                
+            }else if(command.equals("city show resources"))
+            {  
+                System.out.println(CityController.showResources());
+            } else if((matcher = getMatcher("show unemployed citizens", command)) != null)
+            {
+                System.out.println(CityController.showUnemployed());
+
+            }else if((matcher = getMatcher("tile select (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
+            {
+                System.out.println(CityController.selectHex(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            } else if((matcher = getMatcher("city select (?<cityname>[a-zA-Z_ ]+)", command))!=null)
+            {
+                System.out.println(CityController.selectCity(matcher.group("cityname")));
+            } else if(command.equals("next turn"))
+            {
+                if(playerCount==GameController.getPlayers().size()-1)
+                {
+                    playerCount=0;
+                    currentPlayer=GameController.getPlayers().get(playerCount);
+                }
+                else
+                {
+                    playerCount++;
+                    currentPlayer=GameController.getPlayers().get(playerCount);
+                }
+            } else if((matcher = getMatcher("buy tile ", command)) != null)
+            {
+                String result=CityController.presaleTiles();
+                if(result==null)
+                {
+                    System.out.println("select a city first");
+                }else if(result.equals("there are no tiles around your city"))
+                {
+                    System.out.println(result);
+                }else
+                {
+                    System.out.println(result);
+                    String buyString=new String("");
+                    while(true)
+                    {
+                        buyString=scanner.nextLine();
+                        if(buyString.equals("exit"))
+                        {
+                            break;
+                        }else if((matcher = getMatcher("\\d+", buyString)) != null)
+                        {
+                            int number=Integer.parseInt(buyString);
+                            if(number<1||number>CityController.getToBuyTiles().size())
+                            {
+                                System.out.println("invalid number");
+                            }
+                            System.out.println(CityController.buyHex(currentPlayer,number));
+                            break;
+                        }
+
+                        System.out.println("invalid command, please enter a number or -exit- to leave this menu");
+                    }
+                    GameController.setSelectedCity(null);
+                }
+            } else if((matcher = getMatcher("unit make (--unittype|-ut) (?<unittype>[a-zA-Z]+) (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null)
+            {
+                System.out.println(CityController.makeUnit(currentPlayer,matcher.group("unittype"),matcher.group("unitname")));
+            } else if (command.equals("show all map")) {
                 System.out.println(GameController.printAllWorld());
             } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 System.out.println(GameController.showHexDetails(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));

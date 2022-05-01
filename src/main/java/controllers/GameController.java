@@ -3,6 +3,7 @@ package controllers;
 import enums.Color;
 import enums.HexState;
 import models.Player;
+import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
 import models.units.Civilian;
@@ -15,20 +16,54 @@ import java.util.Objects;
 
 public class GameController {
 
-    private static ArrayList<String> players = new ArrayList<String>();
+    private static ArrayList<Player> players = new ArrayList<Player>();
     private static int turn;
     private static World world;
     private static int[] mapBoundaries;
     private static Hex[][] hex;
     private static Player loggedInPlayer;
-    private static ArrayList<Civilian> allCivilians;
-    private static ArrayList<Military> allMilitaries;
+    private static ArrayList<Civilian> allCivilians=new ArrayList<Civilian>();
+    private static ArrayList<Military> allMilitaries=new ArrayList<Military>();
     private static Unit selectedUnit;
+    private static Hex selectedHex;
+    private static City selectedCity;
 
-    public static ArrayList<String> getPlayers() {
-        return players;
+    public static void addALlCivilians(Civilian newCivilian)
+    {
+        allCivilians.add(newCivilian);
+    }
+    public static void addAllMilitary(Military newMilitary)
+    {
+        allMilitaries.add(newMilitary);
+    }
+    public static void setSelectedHex(Hex newHex)
+    {
+        selectedHex=newHex;
     }
 
+    public static World getWorld()
+    {
+        return world;
+    }
+    public static void setSelectedCity(City newCity)
+    {
+        selectedCity=newCity;
+    }
+    public static City getSelectedCity()
+    {
+        return selectedCity;
+    }
+    public static ArrayList<Player> getPlayers() {
+        return players;
+    }
+    public static void addPlayer(Player newPlayer)
+    {
+        players.add(newPlayer);
+    }
+    public static Hex getSelectedHex()
+    {
+        return selectedHex;
+    }
     public static void initializeGameController() {
         world = InitializeGameInfo.getWorld();
         turn = 0;

@@ -1,20 +1,20 @@
-Banana#1 0 0 Jungle Plantation NN 
-Cattle#1 0 0 Grassland Pasture NN 
-Deer#1 0 0 Forest,Tundra,Hills Camp NN 
-Sheep#1 0 0 Grassland,Plain,Desert,Hills Pasture NN 
-Wheat#1 0 0 Plain Farm NN 
-Caol#0 1 0 Plain,Hills,Grassland Mine ScientificTheory 
-Horses#0 1 0 Grassland,Plain,Tundra Pasture AnimalHusbandry 
-Iron#0 1 0 Grassland,Plain,Desert,Tundra,Snow,Hills Mine IronWorking 
-Cotton#0 0 2 Grassland,Plain,Desert Plantation NN 
-Dyes#0 0 2 Jungle,Forest Plantation NN 
-Furs#0 0 2 Forest,Tundra Camp NN 
-Gems#0 0 3 Jungle,Grassland,Plain,Desert,Tundra,Hills Mine NN 
-Gold#0 0 2 Grassland,Plain,Desert,Hills Mine NN 
-Incense#0 0 2 Desert,Plain Plantation NN 
-Ivory#0 0 2 Plain Camp NN 
-Marble#0 0 2 Grassland,Plain,Desert,Tundra,Hills Quarry NN 
-Silk#0 0 2 Forest Plantation NN 
-Silver#0 0 2 Tundra,Desert,Hills Mine NN 
-Spices#0 0 2 Jungle Plantation NN 
-Sugar#0 0 2 FloodPlain,Marsh Plantation NN 
+Banana#1 0 0 Jungle Plantation NN Bonus 
+Cattle#1 0 0 Grassland Pasture NN Bonus 
+Deer#1 0 0 Forest,Tundra,Hills Camp NN Bonus 
+Sheep#1 0 0 Grassland,Plain,Desert,Hills Pasture NN Bonus 
+Wheat#1 0 0 Plain Farm NN Bonus 
+Caol#0 1 0 Plain,Hills,Grassland Mine ScientificTheory Strategic 
+Horses#0 1 0 Grassland,Plain,Tundra Pasture AnimalHusbandry Strategic 
+Iron#0 1 0 Grassland,Plain,Desert,Tundra,Snow,Hills Mine IronWorking Strategic 
+Cotton#0 0 2 Grassland,Plain,Desert Plantation NN Luxury 
+Dyes#0 0 2 Jungle,Forest Plantation NN Luxury 
+Furs#0 0 2 Forest,Tundra Camp NN Luxury 
+Gems#0 0 3 Jungle,Grassland,Plain,Desert,Tundra,Hills Mine NN Luxury 
+Gold#0 0 2 Grassland,Plain,Desert,Hills Mine NN Luxury 
+Incense#0 0 2 Desert,Plain Plantation NN Luxury 
+Ivory#0 0 2 Plain Camp NN Luxury 
+Marble#0 0 2 Grassland,Plain,Desert,Tundra,Hills Quarry NN Luxury 
+Silk#0 0 2 Forest Plantation NN Luxury 
+Silver#0 0 2 Tundra,Desert,Hills Mine NN Luxury  
+Spices#0 0 2 Jungle Plantation NN Luxury 
+Sugar#0 0 2 FloodPlain,Marsh Plantation NN Luxury 

@@ -75,11 +75,11 @@ public class InitializeGameInfo {
 
                 if(tech.equals("NA"))
                 {
-                    unitInfo.put(name, null);
+                    unitNeededTech.put(name, null);
                 }
                 else
                 {
-                    unitInfo.put(name, tech);
+                    unitNeededTech.put(name, tech);
                 }
                 if(resource.equals("NA"))
                 {
@@ -90,7 +90,7 @@ public class InitializeGameInfo {
                     unitNeededResource.put(name,resource);
                 }
                 
-              
+              unitInfo.put(name, info);
                 
             }
 
@@ -239,8 +239,9 @@ public class InitializeGameInfo {
         initializeResourceInfo();
         initializeTechnologyInfo();
         initializeHashMap();
-        initializeGameWorld();
         initializeUnitInfo();
+        initializeGameWorld();
+        
     }
 
     private static void initializeGameWorld() {
