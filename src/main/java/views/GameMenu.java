@@ -30,9 +30,6 @@ public class GameMenu extends Menu {
             if((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null)
             {
                 System.out.println(CityController.buildCity(currentPlayer,matcher.group("name")));
-            } else if((matcher = getMatcher("unit select (--unittype|-ut) (?<unittype>[a-zA-Z]+)", command)) != null)
-            {
-                System.out.println(CityController.selectUnit(matcher.group("unittype")));
             }else if(command.equals("city show resources"))
             {  
                 System.out.println(CityController.showResources());

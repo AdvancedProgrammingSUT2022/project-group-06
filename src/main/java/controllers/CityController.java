@@ -17,31 +17,7 @@ public class CityController
     private static ArrayList<Hex> toBuyTiles=new ArrayList<Hex>();
 
   
-    public static String selectUnit(String type)
-    {
-        
-        if(!type.equals("Civilian")&&!type.equals("Military"))
-        {
-            return "invalid unittype";
-        }
-
-        if(GameController.getSelectedHex()==null)
-        {
-            return "select a tile first";
-        }
-        if(type.equals("Civilian"))
-        {
-            GameController.setSelectedUnit(GameController.getSelectedHex().getCivilianUnit());
-        }
-        if(type.equals("Military"))
-        {
-            GameController.setSelectedUnit(GameController.getSelectedHex().getMilitaryUnit());
-        }
-        
-        GameController.setSelectedHex(null);
-        return "unit selected successfully";
-    }
-
+   
 
     public static String showResources()
     {
