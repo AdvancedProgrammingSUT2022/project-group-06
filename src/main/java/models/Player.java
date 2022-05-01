@@ -14,7 +14,7 @@ import models.twopartyactions.Trade;
 public class Player {//-currentProject
     public static HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
 
-    private int gold;
+    private int gold=1000000;
     private int happiness;
     private int production;
     private int food;

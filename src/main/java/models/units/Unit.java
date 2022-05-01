@@ -64,6 +64,10 @@ public class Unit
     }
 
 
+    public int getCost()
+    {
+        return cost;
+    }
 
     public Unit(String name, int speed, int militaryPower, UnitType type2, int maxDistance, Player owner) {
     }

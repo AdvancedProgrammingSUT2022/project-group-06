@@ -9,6 +9,7 @@ import models.maprelated.World;
 import models.units.Civilian;
 import models.units.Military;
 import models.units.Unit;
+import controllers.InitializeGameInfo;
 
 import java.util.ArrayList;
 import java.util.List;

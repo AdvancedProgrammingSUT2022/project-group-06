@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 
 import models.Player;
+import models.gainable.Technology;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Civilian;
@@ -16,6 +17,32 @@ public class CityController
     private static ArrayList<Hex> toBuyTiles=new ArrayList<Hex>();
 
   
+    public static String selectUnit(String type)
+    {
+        
+        if(!type.equals("Civilian")&&!type.equals("Military"))
+        {
+            return "invalid unittype";
+        }
+
+        if(GameController.getSelectedHex()==null)
+        {
+            return "select a tile first";
+        }
+        if(type.equals("Civilian"))
+        {
+            GameController.setSelectedUnit(GameController.getSelectedHex().getCivilianUnit());
+        }
+        if(type.equals("Military"))
+        {
+            GameController.setSelectedUnit(GameController.getSelectedHex().getMilitaryUnit());
+        }
+        
+        GameController.setSelectedHex(null);
+        return "unit selected successfully";
+    }
+
+
     public static String showResources()
     {
         if(GameController.getSelectedCity()==null)
@@ -132,21 +159,29 @@ public class CityController
         
         
         Unit newUnit=new Unit(name,GameController.getSelectedHex());
-        GameController.setSelectedCity(null);
-        GameController.setSelectedHex(null);
-        
+        if(currentPlayer.getGold()<newUnit.getCost())
+        {
+            return "you don't have enough money";
+        }
+
+
+
         if(type.equals("Civilian"))
         {
             Civilian newCivilian=new Civilian(name,GameController.getSelectedHex());
+            GameController.getSelectedHex().setCivilianUnit(newCivilian);
             GameController.addALlCivilians(newCivilian);
         }
         if(type.equals("Military"))
         {
             Military newMilitary=new Military(name,GameController.getSelectedHex());
+            GameController.getSelectedHex().setMilitaryUnit(newMilitary);
             GameController.addAllMilitary(newMilitary);
         }
 
-
+    GameController.setSelectedCity(null);
+        GameController.setSelectedHex(null);
+        
         return "unit created successfully";
     }
 
@@ -269,7 +304,7 @@ public class CityController
             {
                 counter++;
                 toBuyTiles.add(tempHex);
-                availableHexs.append(counter+"\\)"+" x: "+tempHex.getX()+" y: "+tempHex.getY()+"\n");
+                availableHexs.append(counter+")"+" x: "+tempHex.getX()+" y: "+tempHex.getY()+"\n");
             }
 
 

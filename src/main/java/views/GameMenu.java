@@ -11,6 +11,7 @@ import models.maprelated.Hex;
 import static org.mockito.ArgumentMatchers.matches;
 
 import java.util.Scanner;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 
 public class GameMenu extends Menu {
@@ -29,9 +30,9 @@ public class GameMenu extends Menu {
             if((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null)
             {
                 System.out.println(CityController.buildCity(currentPlayer,matcher.group("name")));
-            } else if((matcher = getMatcher("unit select (--unitname|-un) (?<unitname>[a-zA-Z]+) (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
+            } else if((matcher = getMatcher("unit select (--unittype|-ut) (?<unittype>[a-zA-Z]+)", command)) != null)
             {
-                
+                System.out.println(CityController.selectUnit(matcher.group("unittype")));
             }else if(command.equals("city show resources"))
             {  
                 System.out.println(CityController.showResources());
@@ -42,7 +43,7 @@ public class GameMenu extends Menu {
             }else if((matcher = getMatcher("tile select (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
             {
                 System.out.println(CityController.selectHex(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
-            } else if((matcher = getMatcher("city select (?<cityname>[a-zA-Z_ ]+)", command))!=null)
+            } else if((matcher = getMatcher("city select (--cityname|-cn) (?<cityname>[a-zA-Z_ ]+)", command))!=null)
             {
                 System.out.println(CityController.selectCity(matcher.group("cityname")));
             } else if(command.equals("next turn"))
@@ -57,7 +58,7 @@ public class GameMenu extends Menu {
                     playerCount++;
                     currentPlayer=GameController.getPlayers().get(playerCount);
                 }
-            } else if((matcher = getMatcher("buy tile ", command)) != null)
+            } else if((matcher = getMatcher("buy tile", command)) != null)
             {
                 String result=CityController.presaleTiles();
                 if(result==null)
