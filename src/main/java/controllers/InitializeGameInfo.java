@@ -264,9 +264,9 @@ public class InitializeGameInfo {
         initializeHex(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeRiver(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
-        //initializePlayerTiles();
         initializeCivilizations(numberOFPlayers, world.getHexInHeight(), world.getHexInWidth());
         //printResource();
+        //players.get(0).addToRevealedHexes(world.getHex()[0][0]);
     }
 /*    private void initializePlayerTiles() {
         Player[] players = new Player[2];

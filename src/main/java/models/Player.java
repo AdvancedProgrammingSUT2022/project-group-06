@@ -31,7 +31,18 @@ public class Player {//-currentProject
     private ArrayList<Civilian> civilians;
     private String name;
     //todo: handel city tile in reveled
-    private static HashMap<int[], Hex> reveledHexes = new HashMap<>();
+    private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
+
+    public void addToRevealedHexes(Hex hex){
+        hex.setState(HexState.Revealed, this);
+        //todo: rest of hex fields
+        Hex hexCopy = new Hex(hex.getX(),hex.getY(),hex.getTerrain(),hex.getFeature());
+        reveledHexes.put(hex,hexCopy);
+    }
+
+    public  HashMap<Hex, Hex> getReveledHexes() {
+        return reveledHexes;
+    }
 
     public Player(String name) {
         this.name = name;

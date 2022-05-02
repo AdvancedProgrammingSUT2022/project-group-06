@@ -256,7 +256,10 @@ public class GameController {
         for (int n = mapBoundaries[0]; n < mapBoundaries[1]; n++) {
             for (int m = mapBoundaries[2]; m < mapBoundaries[3]; m++) {
                 if (hex[n][m].getState(currentPlayer) == HexState.Visible) drawHex(hex[n][m]);
-                else drawFogOfWar(hex[n][m]);
+                else if (hex[n][m].getState(currentPlayer) == HexState.FogOfWar) drawFogOfWar(hex[n][m]);
+                else {
+                    drawHex(currentPlayer.getReveledHexes().get(hex[n][m]));
+                }
             }
         }
     }
@@ -400,7 +403,7 @@ public class GameController {
             y = y + direction[j][0];
             for (int i = 0; i < 7; i++) {
                 if (isPositionValid(x + direction[i][0], y + direction[i][1]))
-                    hex[x + direction[i][0]][y + direction[i][1]].setState( HexState.Visible,currentPlayer);
+                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
             }
         }
     }

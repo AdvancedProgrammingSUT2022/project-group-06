@@ -88,7 +88,7 @@ public class CombatController {
         //todo: handel tile train and feature
         //todo: assarat asib
         int unitStrength = selectedUnit.getRangedStrength() * selectedUnit.getCurrentHex().getTerrain().getCombatModifiersPercentage();
-        //todo : garisson saze defaie tape divar padeganNezami??
+        //todo : garisson saze defaie tape divar padeganNezami and tape??
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
             city.setHitPoint(1);
