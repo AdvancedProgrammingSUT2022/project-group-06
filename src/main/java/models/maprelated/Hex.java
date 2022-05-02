@@ -37,7 +37,10 @@ public class Hex {
         this.feature = feature;
         this.state = state;
     }
-
+    public boolean getHasCitizen()
+    {
+        return hasCitizen;
+    }
 
     public void setState(HexState hexState) {
         this.state = hexState;

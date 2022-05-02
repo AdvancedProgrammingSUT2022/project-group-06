@@ -1,5 +1,6 @@
 package controllers;
 
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 
 import models.Player;
@@ -16,6 +17,33 @@ public class CityController {
     private static final Hex[][] hex = GameController.getWorld().getHex();
     private static final Player loggedInPlayer = GameController.getLoggedInPlayer();
 
+    public static void finalizeTrophy(City theCity)
+    {
+        int count=0;
+        for(Hex tempHex:theCity.getHexs())
+        {
+            if(tempHex.getHasCitizen())
+            {
+                count++;
+            }
+        }
+
+        theCity.setTrophy(count+3);
+
+    }
+    public static String showTrophies()
+    {
+        StringBuilder trophy=new StringBuilder();
+        if(GameController.getSelectedCity()==null)
+        {
+            return "select a city first";
+        }
+
+        finalizeTrophy(GameController.getSelectedCity());
+        trophy.append(GameController.getSelectedCity().getTrophy());
+        GameController.setSelectedCity(null);
+        return trophy.toString();
+    }
 
     public static String showResources() {
         if (GameController.getSelectedCity() == null) {
@@ -41,21 +69,7 @@ public class CityController {
 
     }
 
-    public static String showUnemployed() {
-        if (GameController.getSelectedCity() == null) {
-            return "select a city first";
-        }
-        StringBuilder notWorking = new StringBuilder();
-        for (Civilian temp : Civilian.geiCivilians()) {
-            if (temp.getIsWorking() == false) {
-                notWorking.append(temp.getName() + " " + temp.getCurrentHex());
-            }
-        }
-
-
-        return "";
-    }
-
+    
     public static String selectHex(int x, int y) {
         if (x < 0 || y < 0 || x > 9 || y > 9) {
             return "invalid x or y";

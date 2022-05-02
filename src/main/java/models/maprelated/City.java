@@ -24,6 +24,7 @@ public class City implements Combatable{
     private int since;
     private int gold;
     private int production;
+    private int trophy;
     private Military militaryUnit = null;
     private Civilian civilianUnit = null;
     private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
@@ -32,6 +33,16 @@ public class City implements Combatable{
     private int hitPoint = 20;
     private  Hex capital;
 
+    public void setTrophy(int value)
+    {
+        trophy=value;
+    }
+
+    public int getTrophy()
+    {
+        return trophy;
+    }
+    
     public City(Player owner, String name, Hex beginingHex) {
         this.owner = owner;
         this.name = name;
