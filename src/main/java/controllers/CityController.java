@@ -1,6 +1,5 @@
 package controllers;
 
-import java.time.temporal.Temporal;
 import java.util.ArrayList;
 
 import models.Player;
@@ -15,7 +14,7 @@ import models.units.Unit;
 public class CityController {
     private static ArrayList<Hex> toBuyTiles = new ArrayList<Hex>();
     private static final Hex[][] hex = GameController.getWorld().getHex();
-    private static final Player loggedInPlayer = GameController.getLoggedInPlayer();
+    private static final Player currentPlayer = GameController.getCurrentPlayer();
 
     public static void finalizeTrophy(City theCity)
     {
@@ -93,7 +92,7 @@ public class CityController {
     }
 
 
-    public static String makeUnit(Player currentPlayer, String type, String name) {
+    public static String makeUnit(String type, String name) {
 
         if (!type.equals("Civilian") && !type.equals("Military")) {
             return "invalid unit type";
@@ -156,7 +155,7 @@ public class CityController {
     }
 
 
-    public static String buildCity(Player currentPlayer, String name) {
+    public static String buildCity( String name) {
 
         if (GameController.getSelectedUnit() == null || (GameController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
@@ -258,7 +257,8 @@ public class CityController {
 
     }
 
-    public static String buyHex(Player buyer, int count) {
+    public static String buyHex( int count) {
+        Player buyer = currentPlayer;
         int price = GameController.getSelectedCity().getHexs().size() * 5;
         if (buyer.getGold() < price) {
             return "you don't have enough money";
@@ -280,7 +280,7 @@ public class CityController {
         if(GameController.isOutOfBounds(x, y)){
             return "out of bounds";
         }
-        if (hex[x][y].getOwner() != loggedInPlayer) {
+        if (hex[x][y].getOwner() != currentPlayer) {
             return "this tile is not yours";
         }
         if (!hex[x][y].isHasCitizen()) return "there is no citizen";
@@ -294,7 +294,7 @@ public class CityController {
         if(GameController.isOutOfBounds(x, y)){
             return "out of bounds";
         }
-        if (hex[x][y].getOwner() != loggedInPlayer) {
+        if (hex[x][y].getOwner() != currentPlayer) {
             return "this tile is not yours";
         }
         if (!hex[x][y].isHasCitizen()) return "there is already a citizen";

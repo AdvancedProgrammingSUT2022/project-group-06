@@ -13,22 +13,16 @@ import java.util.regex.Matcher;
 
 public class GameMenu extends Menu {
     private static Scanner scanner;
-    private static int playerCount;
-    private static Player currentPlayer;
     public void run(Scanner gameScanner) {
         scanner = gameScanner;
         InitializeGameInfo.run();
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
-        playerCount=0;
-        currentPlayer=GameController.getPlayers().get(playerCount);
-
         String command = scanner.nextLine();
         Matcher matcher;
         while (true) {
-
             if((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null){
-                System.out.println(CityController.buildCity(currentPlayer,matcher.group("name")));
+                System.out.println(CityController.buildCity(matcher.group("name")));
             }else if(command.equals("city show trophies")){
                 System.out.println(CityController.showTrophies());
             }else if(command.equals("city show resources")){  
@@ -38,11 +32,11 @@ public class GameMenu extends Menu {
             } else if((matcher = getMatcher("city select (--cityname|-cn) (?<cityname>[a-zA-Z_ ]+)", command))!=null){
                 System.out.println(CityController.selectCity(matcher.group("cityname")));
             } else if(command.equals("next turn")){
-                System.out.println(changeTurn());
+                System.out.println(GameController.changeTurn());
             } else if((matcher = getMatcher("buy tile", command)) != null){
                System.out.println(buyTile(matcher));
             } else if((matcher = getMatcher("unit make (--unittype|-ut) (?<unittype>[a-zA-Z]+) (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null){
-                System.out.println(CityController.makeUnit(currentPlayer,matcher.group("unittype"),matcher.group("unitname")));
+                System.out.println(CityController.makeUnit(matcher.group("unittype"),matcher.group("unitname")));
             } else if (command.equals("show all map")) {
                 System.out.println(GameController.printAllWorld());
             } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -59,8 +53,6 @@ public class GameMenu extends Menu {
                 selectCivilian(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            } else if (command.equals("next turn")) {
-                GameController.changeTurn();
             }else if ((matcher = getMatcher("Remove citizen at (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+) from work", command)) != null) {
                 System.out.println(CityController.removeCitizenFromWork(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("lock an citizen to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -104,7 +96,7 @@ public class GameMenu extends Menu {
                     }
 
                     GameController.setSelectedCity(null);
-                    return CityController.buyHex(currentPlayer,number);
+                    return CityController.buyHex(number);
                     
                 }
 
@@ -114,21 +106,6 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static String changeTurn()
-    {
-        if(playerCount==GameController.getPlayers().size()-1)
-        {
-            playerCount=0;
-            currentPlayer=GameController.getPlayers().get(playerCount);
-        }
-        else
-        {
-            playerCount++;
-            currentPlayer=GameController.getPlayers().get(playerCount);
-        }
-
-        return "Turn changed successfully";
-    }
 
     private static void selectMilitary(int x, int y) {
         if (!GameController.isPositionValid(x, y))

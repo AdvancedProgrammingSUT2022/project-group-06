@@ -151,4 +151,9 @@ public class Unit implements Combatable
     public String defend(Combatable attacker) {
         return null;
     }
+
+    @Override
+    public void healPerTurn() {
+
+    }
 }

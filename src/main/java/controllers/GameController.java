@@ -7,9 +7,9 @@ import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
 import models.units.Civilian;
+import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
-import controllers.InitializeGameInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,12 +22,14 @@ public class GameController {
     private static World world;
     private static int[] mapBoundaries;
     private static Hex[][] hex;
-    private static Player loggedInPlayer;
+    private static Player currentPlayer;
     private static ArrayList<Civilian> allCivilians=new ArrayList<Civilian>();
     private static ArrayList<Military> allMilitaries=new ArrayList<Military>();
     private static Unit selectedUnit;
     private static Hex selectedHex;
     private static City selectedCity;
+    private static int playerCount;
+    private static ArrayList<Combatable> hurtElements;
 
     public static void addALlCivilians(Civilian newCivilian)
     {
@@ -66,12 +68,13 @@ public class GameController {
         return selectedHex;
     }
     public static void initializeGameController() {
+        playerCount=0;
+        currentPlayer=GameController.getPlayers().get(playerCount);
         world = InitializeGameInfo.getWorld();
         turn = 0;
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
     }
-
     public static String printAllWorld() {
         StringBuilder stringWorld = new StringBuilder();
         initializeString(new int[]{0, 9, 0, 9}, world.getString());
@@ -253,16 +256,16 @@ public class GameController {
         return x >= 0 && y >= 0 && x <= 10 && y <= 10;
     }
 
-    public static Player getLoggedInPlayer() {
-        return loggedInPlayer;
+    public static Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
-    public static void setLoggedInPlayer(Player player) {
-        loggedInPlayer = player;
+    public static void setCurrentPlayer(Player player) {
+        currentPlayer = player;
     }
 
     public static Military getPlayerMilitaryByLocation(int x, int y) {
-        List<Military> militaries = loggedInPlayer.getMilitaries();
+        List<Military> militaries = currentPlayer.getMilitaries();
         for (Military military : militaries) {
             if (military.getCurrentHex().getX() == x && military.getCurrentHex().getY() == y)
                 return military;
@@ -271,7 +274,7 @@ public class GameController {
     }
 
     public static Civilian getPlayerCiviliansByLocation(int x, int y) {
-        List<Civilian> civilians = loggedInPlayer.getCivilians();
+        List<Civilian> civilians = currentPlayer.getCivilians();
         for (Civilian civilian : civilians) {
             if (civilian.getCurrentHex().getX() == x && civilian.getCurrentHex().getY() == y)
                 return civilian;
@@ -390,17 +393,33 @@ public class GameController {
             }
         }
     }
-
-    public static void changeTurn() {
-
+    public static String changeTurn()
+    {
+        playerCount = (playerCount==GameController.getPlayers().size()-1) ? 0 : playerCount+1;
+        currentPlayer=GameController.getPlayers().get(playerCount);
+        //todo: complete followings
+        //feedUnits and citizens(bikar ye mahsol baghie 2 food)
+        //healUnits and cities(1hit point)//handel tarmim asib
+        heal();
+        //increase gold food and since(3 capital 1 citizen)...//citizen productions
+        //decrease turn of project kavosh, city (UNIT/BUILDING) produce
+        //manage harekat chand nobati ye nobat bere jelo
+        //handle siege units
+        //hazine tamir O negahdari buldings
+        //roshd shar ezafe shodan sharvanda
+        //improvements
+        turn++;
+        return "Turn changed successfully";
     }
 
+    private static void heal() {
+        //todo: add harm elements to aaray list and add heal units
+        for (Combatable combatable: hurtElements) {combatable.healPerTurn();}
+    }
+
+
     public static boolean isOutOfBounds(int x, int y) {
-        if (y >= world.getHexInWidth() ||
-                x >= world.getHexInHeight() || x < 0 || y < 0) {
-            return true;
-        }
-        return false;
+        return y >= world.getHexInWidth() || x >= world.getHexInHeight() || x < 0 || y < 0;
     }
 
 }

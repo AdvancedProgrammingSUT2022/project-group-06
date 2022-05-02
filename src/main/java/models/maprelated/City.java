@@ -106,6 +106,11 @@ public class City implements Combatable{
         return null;
     }
 
+    @Override
+    public void healPerTurn() {
+        this.hitPoint++;
+    }
+
     public Military getMilitaryUnit() {
         return militaryUnit;
     }

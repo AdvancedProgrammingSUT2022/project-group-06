@@ -8,4 +8,6 @@ public interface Combatable {
     String attack(Combatable defender);
 
     String defend(Combatable attacker);
+
+    void healPerTurn();
 }
