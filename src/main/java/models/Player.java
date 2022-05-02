@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import controllers.GameController;
+import controllers.InitializeGameInfo;
+import enums.HexState;
 import models.maprelated.City;
+import models.maprelated.Hex;
 import models.twopartyactions.Combat;
 import models.units.Civilian;
 import models.units.Military;
@@ -27,10 +30,12 @@ public class Player {//-currentProject
     private ArrayList<Military> militaries;
     private ArrayList<Civilian> civilians;
     private String name;
+    //todo: handel city tile in reveled
+    private static HashMap<int[], Hex> reveledHexes = new HashMap<>();
 
     public Player(String name) {
         this.name = name;
-        GameController.addPlayer(this);
+        InitializeGameInfo.getPlayers().add(this);
     }
 
 

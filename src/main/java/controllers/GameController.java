@@ -12,72 +12,107 @@ import models.units.Military;
 import models.units.Unit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class GameController {
 
-    private static ArrayList<Player> players = new ArrayList<Player>();
+    private static ArrayList<Player> players = InitializeGameInfo.getPlayers();
     private static int turn;
     private static World world;
     private static int[] mapBoundaries;
     private static Hex[][] hex;
     private static Player currentPlayer;
-    private static ArrayList<Civilian> allCivilians=new ArrayList<Civilian>();
-    private static ArrayList<Military> allMilitaries=new ArrayList<Military>();
+    private static ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
+    private static ArrayList<Military> allMilitaries = new ArrayList<Military>();
     private static Unit selectedUnit;
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Combatable> hurtElements;
 
-    public static void addALlCivilians(Civilian newCivilian)
-    {
+    public static void addALlCivilians(Civilian newCivilian) {
         allCivilians.add(newCivilian);
     }
-    public static void addAllMilitary(Military newMilitary)
-    {
+
+    public static void addAllMilitary(Military newMilitary) {
         allMilitaries.add(newMilitary);
     }
-    public static void setSelectedHex(Hex newHex)
-    {
-        selectedHex=newHex;
+
+    public static void setSelectedHex(Hex newHex) {
+        selectedHex = newHex;
     }
 
-    public static World getWorld()
-    {
+    public static World getWorld() {
         return world;
     }
-    public static void setSelectedCity(City newCity)
-    {
-        selectedCity=newCity;
+
+    public static void setSelectedCity(City newCity) {
+        selectedCity = newCity;
     }
-    public static City getSelectedCity()
-    {
+
+    public static City getSelectedCity() {
         return selectedCity;
     }
+
     public static ArrayList<Player> getPlayers() {
         return players;
     }
-    public static void addPlayer(Player newPlayer)
-    {
+
+    public static void addPlayer(Player newPlayer) {
         players.add(newPlayer);
     }
-    public static Hex getSelectedHex()
-    {
+
+    public static Hex getSelectedHex() {
         return selectedHex;
     }
+
     public static void initializeGameController() {
-        playerCount=0;
-        currentPlayer=GameController.getPlayers().get(playerCount);
+        playerCount = 0;
+        currentPlayer = players.get(playerCount);
         world = InitializeGameInfo.getWorld();
         turn = 0;
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
+        removeOwnerOfHexes();
     }
+
+    private static void removeOwnerOfHexes() {
+        for (int i = 0; i < world.getHexInHeight(); i++) {
+            for (int j = 0; j < world.getHexInWidth(); j++) {
+                hex[i][j].setOwner(null);
+            }
+        }
+    }
+
+    public static ArrayList<Civilian> getAllCivilians() {
+        return allCivilians;
+    }
+
+    public static ArrayList<Military> getAllMilitaries() {
+        return allMilitaries;
+    }
+
+    public static void addMilitary(Military military) {
+        allMilitaries.add(military);
+    }
+
+    public static void addCivilian(Civilian civilian) {
+        allCivilians.add(civilian);
+    }
+
+    public static void removeMilitary(Military military) {
+        allMilitaries.remove(military);
+    }
+
+    public static void removeCivilian(Civilian civilian) {
+        allCivilians.remove(civilian);
+    }
+
     public static String printAllWorld() {
         StringBuilder stringWorld = new StringBuilder();
-        initializeString(new int[]{0, 9, 0, 9}, world.getString());
+        initializeString(new int[]{0, 10, 0, 10}, world.getString());
         for (int i = 0; i < world.getWorldHeight(); i++) {
             for (int j = 0; j < world.getWorldWidth(); j++) {
                 stringWorld.append(world.getString()[i][j]);
@@ -220,7 +255,7 @@ public class GameController {
         }
         for (int n = mapBoundaries[0]; n < mapBoundaries[1]; n++) {
             for (int m = mapBoundaries[2]; m < mapBoundaries[3]; m++) {
-                if (hex[n][m].getState() == HexState.Visible) drawHex(hex[n][m]);
+                if (hex[n][m].getState(currentPlayer) == HexState.Visible) drawHex(hex[n][m]);
                 else drawFogOfWar(hex[n][m]);
             }
         }
@@ -280,30 +315,6 @@ public class GameController {
                 return civilian;
         }
         return null;
-    }
-
-    public static ArrayList<Civilian> getAllCivilians() {
-        return allCivilians;
-    }
-
-    public static ArrayList<Military> getAllMilitaries() {
-        return allMilitaries;
-    }
-
-    public static void addMilitary(Military military) {
-        allMilitaries.add(military);
-    }
-
-    public static void addCivilian(Civilian civilian) {
-        allCivilians.add(civilian);
-    }
-
-    public static void removeMilitary(Military military) {
-        allMilitaries.remove(military);
-    }
-
-    public static void removeCivilian(Civilian civilian) {
-        allCivilians.remove(civilian);
     }
 
     public static Military getMilitaryByLocation(int x, int y) {
@@ -389,18 +400,18 @@ public class GameController {
             y = y + direction[j][0];
             for (int i = 0; i < 7; i++) {
                 if (isPositionValid(x + direction[i][0], y + direction[i][1]))
-                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible);
+                    hex[x + direction[i][0]][y + direction[i][1]].setState( HexState.Visible,currentPlayer);
             }
         }
     }
-    public static String changeTurn()
-    {
-        playerCount = (playerCount==GameController.getPlayers().size()-1) ? 0 : playerCount+1;
-        currentPlayer=GameController.getPlayers().get(playerCount);
+
+    public static String changeTurn() {
+        playerCount = (playerCount == GameController.getPlayers().size() - 1) ? 0 : playerCount + 1;
+        currentPlayer = GameController.getPlayers().get(playerCount);
         //todo: complete followings
         //feedUnits and citizens(bikar ye mahsol baghie 2 food)
         //healUnits and cities(1hit point)//handel tarmim asib
-        heal();
+        //heal();
         //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         //manage harekat chand nobati ye nobat bere jelo
@@ -414,7 +425,9 @@ public class GameController {
 
     private static void heal() {
         //todo: add harm elements to aaray list and add heal units
-        for (Combatable combatable: hurtElements) {combatable.healPerTurn();}
+        for (Combatable combatable : hurtElements) {
+            combatable.healPerTurn();
+        }
     }
 
 

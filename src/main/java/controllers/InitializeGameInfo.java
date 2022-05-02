@@ -14,13 +14,13 @@ import models.Player;
 import models.maprelated.*;
 
 public class InitializeGameInfo {
-    public static HashMap<String, String> unitNeededResource=new HashMap<String,String>();
-    public static HashMap<String, String> unitNeededTech=new HashMap<String,String>();
+    public static HashMap<String, String> unitNeededResource = new HashMap<String, String>();
+    public static HashMap<String, String> unitNeededTech = new HashMap<String, String>();
     private static HashMap<String, String> terrainInfo = new HashMap<>();
     private static HashMap<String, String> featureInfo = new HashMap<>();
     private static HashMap<String, String> resourceInfo = new HashMap<>();
     private static HashMap<String, String> technologyInfo = new HashMap<>();
-    public static HashMap<String, String> unitInfo=new HashMap<>();    
+    public static HashMap<String, String> unitInfo = new HashMap<>();
     private static final ArrayList<String> terrainNames = new ArrayList<String>();
     private static final ArrayList<String> resourceNames = new ArrayList<String>();
     private static final HashMap<String, ArrayList<String>> appropriateTerrain = new HashMap<String, ArrayList<String>>();
@@ -28,10 +28,28 @@ public class InitializeGameInfo {
     private static final HashMap<String, String[]> terrainPossibleFeature = new HashMap<String, String[]>();
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
     private static HashMap<String, Color> playerColor = new HashMap<String, Color>();
+    private static ArrayList<Player> players = new ArrayList<Player>();
+    private static int numberOFPlayers = 3;
 
     private static final Random random = new Random();
     private static World world;
 
+
+    public static ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public static void setPlayers(ArrayList<Player> players) {
+        InitializeGameInfo.players = players;
+    }
+
+    public static int getNumberOFPlayers() {
+        return numberOFPlayers;
+    }
+
+    public static void setNumberOFPlayers(int numberOFPlayers) {
+        InitializeGameInfo.numberOFPlayers = numberOFPlayers;
+    }
 
     public static HashMap<String, String> getTerrainInfo() {
         return terrainInfo;
@@ -57,8 +75,8 @@ public class InitializeGameInfo {
         return world;
     }
 
-    public static void initializeUnitInfo(){
-            
+    public static void initializeUnitInfo() {
+
         try {
             String resourceName = "files/UnitInfo.txt";
             ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
@@ -70,28 +88,22 @@ public class InitializeGameInfo {
                 String name = read[0];
                 String info = read[1];
 
-                String tech=info.split(" ")[6];
-                String resource=info.split(" ")[5];
+                String tech = info.split(" ")[6];
+                String resource = info.split(" ")[5];
 
-                if(tech.equals("NA"))
-                {
+                if (tech.equals("NA")) {
                     unitNeededTech.put(name, null);
-                }
-                else
-                {
+                } else {
                     unitNeededTech.put(name, tech);
                 }
-                if(resource.equals("NA"))
-                {
-                    unitNeededResource.put(name,null);
+                if (resource.equals("NA")) {
+                    unitNeededResource.put(name, null);
+                } else {
+                    unitNeededResource.put(name, resource);
                 }
-                else
-                {
-                    unitNeededResource.put(name,resource);
-                }
-                
-              unitInfo.put(name, info);
-                
+
+                unitInfo.put(name, info);
+
             }
 
         } catch (IOException e) {
@@ -101,7 +113,7 @@ public class InitializeGameInfo {
 
 
     }
-    
+
     public static void initializeTerrainInfo() {
         try {
             String resourceName = "files/TerrainInfo.txt";
@@ -234,6 +246,9 @@ public class InitializeGameInfo {
     }
 
     public static void run() {
+        new Player("A");
+        new Player("B");
+        new Player("C");
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
@@ -241,7 +256,7 @@ public class InitializeGameInfo {
         initializeHashMap();
         initializeUnitInfo();
         initializeGameWorld();
-        
+
     }
 
     private static void initializeGameWorld() {
@@ -250,7 +265,7 @@ public class InitializeGameInfo {
         initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeRiver(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         //initializePlayerTiles();
-        initializeCivilizations(3, world.getHexInHeight(), world.getHexInWidth());
+        initializeCivilizations(numberOFPlayers, world.getHexInHeight(), world.getHexInWidth());
         //printResource();
     }
 /*    private void initializePlayerTiles() {
@@ -299,7 +314,7 @@ public class InitializeGameInfo {
                 if (terrainPossibleFeature.get(pickedTerrainName) != null) {
                     feature = new Feature(randomPickANameS(terrainPossibleFeature.get(pickedTerrainName)));
                 }
-                hex[i][j] = new Hex(i, j, terrain, feature, HexState.Visible);
+                hex[i][j] = new Hex(i, j, terrain, feature);
             }
         }
     }
@@ -382,19 +397,14 @@ public class InitializeGameInfo {
     }
 
     private static void initializeCivilizations(int numberOfPlayers, int hexInHeight, int hexInWidth) {
-        Player[] players = new Player[numberOfPlayers];
-        players[0] = new Player("A");
-        players[1] = new Player("B");
-        players[2] = new Player("C");
         for (int i = 0; i < numberOfPlayers; i++) {
             int numberOfPlayerHex = 10;
             ArrayList<Hex> playerHex = new ArrayList<>();
             while (playerHex.size() != numberOfPlayerHex) {
                 clear(playerHex);
-                initializePlayerHex(numberOfPlayerHex, playerHex, players[i], Math.abs(random.nextInt()) % hexInHeight, Math.abs(random.nextInt()) % hexInWidth);
+                initializePlayerHex(numberOfPlayerHex, playerHex, players.get(i), Math.abs(random.nextInt()) % hexInHeight, Math.abs(random.nextInt()) % hexInWidth);
             }
-
-            setPlayerHex(playerHex, players[i]);
+            setPlayerHex(playerHex, players.get(i));
         }
     }
 
@@ -443,12 +453,14 @@ public class InitializeGameInfo {
     }
 
     private static void setPlayerHex(ArrayList<Hex> playerHex, Player player) {
-       /* for (int i = 0; i < 6; i++) {
+/*        for (int i = 0; i < playerHex.size(); i++) {
             System.out.println(playerHex.get(i).getX()+ " " + playerHex.get(i).getY());
         }
+        System.out.println(playerHex.size());
         System.out.println("===================");*/
         for (Hex hex : playerHex) {
-            hex.setOwner(player);
+            //hex.setOwner(player);
+            hex.setState(HexState.Visible,player);
         }
 
     }

@@ -1,5 +1,7 @@
 package models.maprelated;
 
+import controllers.GameController;
+import controllers.InitializeGameInfo;
 import enums.Color;
 import enums.HexState;
 import models.Player;
@@ -7,8 +9,9 @@ import models.units.Civilian;
 import models.units.Military;
 import models.units.Unit;
 
+import java.util.HashMap;
+
 public class Hex {
-    private HexState state;
     private int x;
     private int y;
     private Player owner = null;
@@ -21,6 +24,7 @@ public class Hex {
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
     private boolean hasCitizen = false;
     private City nameOfCity = null;
+    private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
 
     public boolean isHasCitizen() {
         return hasCitizen;
@@ -30,21 +34,24 @@ public class Hex {
         this.hasCitizen = hasCitizen;
     }
 
-    public Hex(int x, int y, Terrain terrain, Feature feature, HexState state) {
+    public Hex(int x, int y, Terrain terrain, Feature feature) {
         this.x = x;
         this.y = y;
         this.terrain = terrain;
         this.feature = feature;
-        this.state = state;
+        for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers(); i++) {
+            this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i), HexState.FogOfWar);
+        }
     }
-    public boolean getHasCitizen()
-    {
+
+    public boolean getHasCitizen() {
         return hasCitizen;
     }
 
-    public void setState(HexState hexState) {
-        this.state = hexState;
+    public void setState(HexState hexState, Player player) {
+        this.StateOfHexForEachPlayer.put(player,hexState);
     }
+
     public void setOwner(Player owner) {
         this.owner = owner;
     }
@@ -64,8 +71,8 @@ public class Hex {
         return owner;
     }
 
-    public HexState getState() {
-        return state;
+    public HexState getState(Player player) {
+        return StateOfHexForEachPlayer.get(player);
     }
 
     public Feature getFeature() {
@@ -108,9 +115,10 @@ public class Hex {
     public boolean isRiver(int dir) {
         return hasRiver[dir];
     }
-    public int riverDir(){
+
+    public int riverDir() {
         for (int i = 0; i < 4; i++) {
-            if(hasRiver[i]) return i;
+            if (hasRiver[i]) return i;
         }
         return 7;
     }
@@ -126,7 +134,8 @@ public class Hex {
     public void setCapital(City city) {
         this.nameOfCity = city;
     }
-    public City getCapital(){
+
+    public City getCapital() {
         return this.nameOfCity;
     }
 }
