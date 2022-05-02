@@ -390,4 +390,17 @@ public class GameController {
             }
         }
     }
+
+    public static void changeTurn() {
+
+    }
+
+    public static boolean isOutOfBounds(int x, int y) {
+        if (y >= world.getHexInWidth() ||
+                x >= world.getHexInHeight() || x < 0 || y < 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

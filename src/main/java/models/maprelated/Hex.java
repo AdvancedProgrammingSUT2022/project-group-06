@@ -19,6 +19,16 @@ public class Hex {
     private Civilian civilianUnit;
     private String improvement;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
+    private boolean hasCitizen = false;
+    private City nameOfCity = null;
+
+    public boolean isHasCitizen() {
+        return hasCitizen;
+    }
+
+    public void setHasCitizen(boolean hasCitizen) {
+        this.hasCitizen = hasCitizen;
+    }
 
     public Hex(int x, int y, Terrain terrain, Feature feature, HexState state) {
         this.x = x;
@@ -108,5 +118,12 @@ public class Hex {
 
     public String getImprovement() {
         return improvement;
+    }
+
+    public void setCapital(City city) {
+        this.nameOfCity = city;
+    }
+    public City getCapital(){
+        return this.nameOfCity;
     }
 }

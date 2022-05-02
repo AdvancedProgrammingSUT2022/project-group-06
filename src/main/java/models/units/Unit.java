@@ -8,7 +8,7 @@ import enums.UnitType;
 import models.Player;
 import models.maprelated.Hex;
 
-public class Unit
+public class Unit implements Combatable
 {
     private static ArrayList<Unit> units=new ArrayList<Unit>();
     private int health;
@@ -63,6 +63,21 @@ public class Unit
 
     }
 
+    public int getCombatStrength() {
+        return combatStrength;
+    }
+
+    public void setCombatStrength(int combatStrength) {
+        this.combatStrength = combatStrength;
+    }
+
+    public int getRangedStrength() {
+        return rangedStrength;
+    }
+
+    public void setRangedStrength(int rangedStrength) {
+        this.rangedStrength = rangedStrength;
+    }
 
     public int getCost()
     {
@@ -125,5 +140,15 @@ public class Unit
 
     public String getName(){
         return name;
+    }
+
+    @Override
+    public String attack(Combatable defender) {
+        return null;
+    }
+
+    @Override
+    public String defend(Combatable attacker) {
+        return null;
     }
 }
