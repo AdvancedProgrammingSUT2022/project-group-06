@@ -46,6 +46,9 @@ public class Player {//-currentProject
 
     public Player(String name) {
         this.name = name;
+        //initial happiness
+        //todo: later should be calculated based on game difficulty
+        this.happiness = 10;
         InitializeGameInfo.getPlayers().add(this);
     }
 

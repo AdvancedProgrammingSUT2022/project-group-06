@@ -16,25 +16,21 @@ public class CityController {
     private static final Hex[][] hex = GameController.getWorld().getHex();
     private static final Player currentPlayer = GameController.getCurrentPlayer();
 
-    public static void finalizeTrophy(City theCity)
-    {
-        int count=0;
-        for(Hex tempHex:theCity.getHexs())
-        {
-            if(tempHex.getHasCitizen())
-            {
+    public static void finalizeTrophy(City theCity) {
+        int count = 0;
+        for (Hex tempHex : theCity.getHexs()) {
+            if (tempHex.getHasCitizen()) {
                 count++;
             }
         }
 
-        theCity.setTrophy(count+3);
+        theCity.setTrophy(count + 3);
 
     }
-    public static String showTrophies()
-    {
-        StringBuilder trophy=new StringBuilder();
-        if(GameController.getSelectedCity()==null)
-        {
+
+    public static String showTrophies() {
+        StringBuilder trophy = new StringBuilder();
+        if (GameController.getSelectedCity() == null) {
             return "select a city first";
         }
 
@@ -68,7 +64,7 @@ public class CityController {
 
     }
 
-    
+
     public static String selectHex(int x, int y) {
         if (x < 0 || y < 0 || x > 9 || y > 9) {
             return "invalid x or y";
@@ -121,6 +117,9 @@ public class CityController {
 //            return "you can't have two civilian units in a city";
 //        }
 
+        if (name.equals("Settler") && currentPlayer.getHappiness() < 0)
+            return "your civilization is unhappy";
+
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
@@ -155,7 +154,7 @@ public class CityController {
     }
 
 
-    public static String buildCity( String name) {
+    public static String buildCity(String name) {
 
         if (GameController.getSelectedUnit() == null || (GameController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
@@ -172,6 +171,8 @@ public class CityController {
 
 
         City newCity = new City(currentPlayer, name, GameController.getSelectedUnit().getCurrentHex());
+        currentPlayer.decreaseHappiness(1); //happiness decrease as num of cities increase
+        if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
         GameController.setSelectedUnit(null);
 
@@ -257,7 +258,7 @@ public class CityController {
 
     }
 
-    public static String buyHex( int count) {
+    public static String buyHex(int count) {
         Player buyer = currentPlayer;
         int price = GameController.getSelectedCity().getHexs().size() * 5;
         if (buyer.getGold() < price) {
@@ -269,6 +270,8 @@ public class CityController {
 
         buyer.decreaseGold(price);
         GameController.getSelectedCity().addHex(toBuyTiles.get(count - 1));
+        if (toBuyTiles.get(count - 1).getResource().getType().equals("Luxury"))
+            GameController.happinessDueToLuxuries(toBuyTiles.get(count - 1).getResource().getName());
         toBuyTiles.get(count - 1).setOwner(buyer);
 
         return "new hex added to your city successfully";
@@ -277,7 +280,7 @@ public class CityController {
 
 
     public static String removeCitizenFromWork(int x, int y) {
-        if(GameController.isOutOfBounds(x, y)){
+        if (GameController.isOutOfBounds(x, y)) {
             return "out of bounds";
         }
         if (hex[x][y].getOwner() != currentPlayer) {
@@ -291,19 +294,19 @@ public class CityController {
     }
 
     public static String lockCitizenTo(int x, int y) {
-        if(GameController.isOutOfBounds(x, y)){
+        if (GameController.isOutOfBounds(x, y)) {
             return "out of bounds";
         }
         if (hex[x][y].getOwner() != currentPlayer) {
             return "this tile is not yours";
         }
         if (!hex[x][y].isHasCitizen()) return "there is already a citizen";
-        if(GameController.getSelectedCity().getNumberOfUnemployedCitizen() > 0){
+        if (GameController.getSelectedCity().getNumberOfUnemployedCitizen() > 0) {
             GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
             //todo: afzayesh
             hex[x][y].setHasCitizen(true);
             return "citizen locked";
-        }else return "unemployed a citizen firt";
+        } else return "unemployed a citizen firt";
 
     }
 

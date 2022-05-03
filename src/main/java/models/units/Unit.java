@@ -26,7 +26,6 @@ public class Unit implements Combatable
 
     public Unit(String name,Hex hex)
     {
-        
         this.name=name;
         this.currentHex=hex;
         String[] info=InitializeGameInfo.unitInfo.get(name).split(" ");

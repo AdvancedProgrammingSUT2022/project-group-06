@@ -421,6 +421,8 @@ public class GameController {
         //handle siege units
         //hazine tamir O negahdari buldings
         //roshd shar ezafe shodan sharvanda
+        currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
+        if (currentPlayer.getHappiness() < 0) unhappinessEffects();
         //improvements
         turn++;
         return "Turn changed successfully";
@@ -438,4 +440,21 @@ public class GameController {
         return y >= world.getHexInWidth() || x >= world.getHexInHeight() || x < 0 || y < 0;
     }
 
+    public static void unhappinessEffects() {
+        //todo: stop city growth
+        for (int i = 0; i < currentPlayer.getMilitaries().size(); i++) {
+            currentPlayer.getMilitaries().get(i).setCombatStrength((int) (currentPlayer.getMilitaries().get(i).getCombatStrength() * 0.75));
+        } //combat strength for military units decrease 25%
+    }
+
+    public static void happinessDueToLuxuries(String name) {
+        for (int i = 0; i < currentPlayer.getCities().size(); i++) {
+            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
+                if (currentPlayer.getCities().get(i).getHexs().get(j).getResource().getName().equals(name))
+                    return;
+            }
+        }
+
+        currentPlayer.increaseHappiness(1); //new luxuries add to happiness
+    }
 }
