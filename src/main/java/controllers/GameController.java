@@ -26,7 +26,6 @@ public class GameController {
     private static Player currentPlayer;
     private static ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
     private static ArrayList<Military> allMilitaries = new ArrayList<Military>();
-    private static Unit selectedUnit;
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
@@ -338,79 +337,17 @@ public class GameController {
         return null;
     }
 
-    private static int[] getDirectionIndex(int[][] direction, int dx, int dy, Unit unit) {
-        if (dx != 0) dx = dx / Math.abs(dx);
-        if (dy != 0) dy = dy / Math.abs(dy);
-        for (int[] ints : direction) {
-            if (ints[0] == dx && ints[1] == dy && isPositionValid(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
-                return ints;
-        }
-        return null;
-    }
-
-    public static Hex getNextHex(int finalX, int finalY) {
-        Unit unit = selectedUnit;
-        int[] direction;
-        int[][] oddDirection = new int[][]{{-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
-        int[][] evenDirection = new int[][]{{-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
-        int deltaX = finalX - unit.getCurrentHex().getX();
-        int deltaY = finalY - unit.getCurrentHex().getY();
-
-        if (unit.getCurrentHex().getY() % 2 == 0) {
-            direction = getDirectionIndex(evenDirection, deltaX, deltaY, unit);
-        } else {
-            direction = getDirectionIndex(oddDirection, deltaX, deltaY, unit);
-        }
-        return hex[unit.getCurrentHex().getX() + direction[0]][unit.getCurrentHex().getY() + direction[1]];
-
-    }
-
-    public static boolean canMoveThrough(int x, int y) {
-        return !hex[x][y].getTerrain().getName().equals("mountain") && !hex[x][y].getTerrain().getName().equals("ocean");
-    }
-
-
-    public static boolean isHexOccupied(int destinationX, int destinationY) {
-        Unit unit = selectedUnit;
-        return (unit instanceof Military && hex[destinationX][destinationY].getMilitaryUnit() != null)
-                || (unit instanceof Civilian && hex[destinationX][destinationY].getCivilianUnit() != null);
-    }
-
-    public static Unit getSelectedUnit() {
-        return selectedUnit;
-    }
-
-    public static void setSelectedUnit(Unit selectedUnit) {
-        GameController.selectedUnit = selectedUnit;
-    }
-
-    public static void moveUnit(Unit unit, int x, int y) {
-        changeView(x, y);
-        unit.changeCurrentHex(hex[x][y]);
-        unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
-    }
-
-    private static void changeView(int x, int y) {
-        int[][] oddDirection = new int[][]{{0, 0}, {-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
-        int[][] evenDirection = new int[][]{{0, 0}, {-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
-        int[][] direction;
-
-        if (y % 2 == 0) direction = evenDirection;
-        else direction = oddDirection;
-
-        for (int j = 0; j < 7; j++) {
-            x = x + direction[j][0];
-            y = y + direction[j][0];
-            for (int i = 0; i < 7; i++) {
-                if (isPositionValid(x + direction[i][0], y + direction[i][1]))
-                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
-            }
+    private static void heal() {
+        //todo: add harm elements to aaray list and add heal units
+        for (Combatable combatable : hurtElements) {
+            combatable.healPerTurn();
         }
     }
 
     public static String changeTurn() {
         playerCount = (playerCount == GameController.getPlayers().size() - 1) ? 0 : playerCount + 1;
         currentPlayer = GameController.getPlayers().get(playerCount);
+        UnitController.setCurrentPlayer(currentPlayer);
         //todo: complete followings
         //feedUnits and citizens(bikar ye mahsol baghie 2 food)
         //healUnits and cities(1hit point)//handel tarmim asib
@@ -424,17 +361,11 @@ public class GameController {
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
         //improvements
+        for (Player player : players)
+            player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
         turn++;
         return "Turn changed successfully";
     }
-
-    private static void heal() {
-        //todo: add harm elements to aaray list and add heal units
-        for (Combatable combatable : hurtElements) {
-            combatable.healPerTurn();
-        }
-    }
-
 
     public static boolean isOutOfBounds(int x, int y) {
         return y >= world.getHexInWidth() || x >= world.getHexInHeight() || x < 0 || y < 0;

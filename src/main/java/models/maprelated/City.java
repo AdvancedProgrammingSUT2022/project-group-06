@@ -35,7 +35,8 @@ public class City implements Combatable{
 
     public void setTrophy(int value)
     {
-        trophy=value;
+        owner.setTrophies(owner.getTrophies() + (value - this.trophy));
+        trophy = value;
     }
 
     public int getTrophy()
@@ -161,10 +162,12 @@ public class City implements Combatable{
                 }
             }
         }
+        owner.increasePopulation(amount);
     }
 
     public void decreasePopulation(int amount) {
         population -= amount;
+        owner.decreasePopulation(amount);
     }
 
     public void increaseMeleeDefensivePower(int amount) {

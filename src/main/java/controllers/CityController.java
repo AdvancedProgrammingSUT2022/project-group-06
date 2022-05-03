@@ -156,12 +156,12 @@ public class CityController {
 
     public static String buildCity(String name) {
 
-        if (GameController.getSelectedUnit() == null || (GameController.getSelectedUnit() instanceof Settler)) {
+        if (UnitController.getSelectedUnit() == null || (UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
         }
 
         for (City temp : City.getCities()) {
-            if (temp.getHexs().contains(GameController.getSelectedUnit().getCurrentHex())) {
+            if (temp.getHexs().contains(UnitController.getSelectedUnit().getCurrentHex())) {
                 return "this hex is already part of a city";
             }
             if (temp.getName().equals(name)) {
@@ -170,11 +170,11 @@ public class CityController {
         }
 
 
-        City newCity = new City(currentPlayer, name, GameController.getSelectedUnit().getCurrentHex());
+        City newCity = new City(currentPlayer, name, UnitController.getSelectedUnit().getCurrentHex());
         currentPlayer.decreaseHappiness(1); //happiness decrease as num of cities increase
         if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
-        GameController.setSelectedUnit(null);
+        UnitController.setSelectedUnit(null);
 
         return "new city created successfully";
     }

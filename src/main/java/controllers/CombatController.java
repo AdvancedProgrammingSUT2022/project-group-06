@@ -9,7 +9,7 @@ import models.units.Unit;
 import views.GameMenu;
 
 public class CombatController {
-    private static Unit selectedUnit = GameController.getSelectedUnit();
+    private static Unit selectedUnit = UnitController.getSelectedUnit();
     private static Hex[][] hex = GameController.getWorld().getHex();
 
     public static Hex[][] getHex() {

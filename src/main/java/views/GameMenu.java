@@ -113,7 +113,7 @@ public class GameMenu extends Menu {
         else if (!UnitController.hasMilitary(x, y))
             System.out.println("There is no military unit in this hex");
         else {
-            GameController.setSelectedUnit(GameController.getMilitaryByLocation(x, y));
+            UnitController.setSelectedUnit(GameController.getMilitaryByLocation(x, y));
             System.out.println("The military unit was selected successfully");
         }
     }
@@ -124,33 +124,33 @@ public class GameMenu extends Menu {
         else if (!UnitController.hasCivilian(x, y))
             System.out.println("There is no civilian unit in this hex");
         else {
-            GameController.setSelectedUnit(GameController.getCiviliansByLocation(x, y));
+            UnitController.setSelectedUnit(GameController.getCiviliansByLocation(x, y));
             System.out.println("The Civilian unit was selected successfully");
         }
     }
 
 
     private static void moveUnitView(int x, int y) {
-        if (GameController.getSelectedUnit() == null) {
+        if (UnitController.getSelectedUnit() == null) {
             System.out.println("You should choose a unit first");
-        } else if (GameController.getPlayerCiviliansByLocation(GameController.getSelectedUnit().getCurrentHex().getX(), GameController.getSelectedUnit().getCurrentHex().getY()) == null
-                && GameController.getPlayerMilitaryByLocation(GameController.getSelectedUnit().getCurrentHex().getX(), GameController.getSelectedUnit().getCurrentHex().getY()) == null)
+        } else if (GameController.getPlayerCiviliansByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null
+                && GameController.getPlayerMilitaryByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null)
             System.out.println("You don't own this unit");
-        else if (GameController.isHexOccupied(x, y))
+        else if (UnitController.isHexOccupied(x, y))
             System.out.println("This hex already has a unit of this type");
         else {
-            Hex nextHex = GameController.getNextHex(x, y);
-            for (int i = 0; i < GameController.getSelectedUnit().getRange(); i++) {
+            Hex nextHex = UnitController.getNextHex(x, y);
+            for (int i = 0; i < UnitController.getSelectedUnit().getRange(); i++) {
                 if (nextHex.getX() == x && nextHex.getY() == y) {
                     System.out.println("The unit reached chosen destination");
                     break;
                 }
-                if (!GameController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
+                if (!UnitController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
                     System.out.print("The unit can't move through this hex");
                     break;
                 }
-                GameController.moveUnit(GameController.getSelectedUnit(), x, y);
-                nextHex = GameController.getNextHex(x, y);
+                UnitController.moveUnit(UnitController.getSelectedUnit(), x, y);
+                nextHex = UnitController.getNextHex(x, y);
             }
 
         }
@@ -158,14 +158,14 @@ public class GameMenu extends Menu {
     }
 
     private static boolean handelErrors(int x,int y) {
-        if (GameController.getSelectedUnit() == null) {
+        if (UnitController.getSelectedUnit() == null) {
             System.out.println("You should choose a unit first");
             return false;
-        } else if (GameController.getPlayerCiviliansByLocation(GameController.getSelectedUnit().getCurrentHex().getX(), GameController.getSelectedUnit().getCurrentHex().getY()) == null
-                && GameController.getPlayerMilitaryByLocation(GameController.getSelectedUnit().getCurrentHex().getX(), GameController.getSelectedUnit().getCurrentHex().getY()) == null){
+        } else if (GameController.getPlayerCiviliansByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null
+                && GameController.getPlayerMilitaryByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null){
             System.out.println("You don't own this unit");
             return false;
-        }else if (GameController.isHexOccupied(x, y)){
+        }else if (UnitController.isHexOccupied(x, y)){
             System.out.println("This hex already has a unit of this type");
             return false;
         }
@@ -175,7 +175,7 @@ public class GameMenu extends Menu {
     private void attackUnitView(int x, int y) {
         //todo: errors
         if(handelErrors(x,y)){
-            if(GameController.getSelectedUnit() instanceof Civilian){
+            if(UnitController.getSelectedUnit() instanceof Civilian){
                 System.out.println("you can not attack with a civilian unit");
                 return;
             }

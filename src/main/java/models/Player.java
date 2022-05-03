@@ -21,6 +21,8 @@ public class Player {//-currentProject
     private int happiness;
     private int production;
     private int food;
+    private int trophies;
+    private int population;
     private ArrayList<Unit> units;
     private ArrayList<City> cities;
     private int score;
@@ -52,6 +54,25 @@ public class Player {//-currentProject
         InitializeGameInfo.getPlayers().add(this);
     }
 
+    public void setTrophies(int trophies) {
+        this.trophies = trophies;
+    }
+
+    public int getTrophies() {
+        return this.trophies;
+    }
+
+    public void increasePopulation(int amount) {
+        this.population += amount;
+    }
+
+    public void decreasePopulation(int amount) {
+        this.population -= amount;
+    }
+
+    public int getPopulation() {
+        return this.population;
+    }
 
     public int getGold() {
         return this.gold;
