@@ -188,7 +188,7 @@ public class GameMenu extends Menu {
         System.out.println("you win the battle select a number: \n 1.delete it \n 2.add it to your territory");
         switch (scanner.nextInt()){
             case 1:
-                CombatController.deleteCity(city, player);
+                City.deleteCity(city);
                 break;
             case 2:
                 CombatController.addCityToTerritory(city, player);

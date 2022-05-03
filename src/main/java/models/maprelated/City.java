@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import controllers.CityController;
 import controllers.CombatController;
 import controllers.GameController;
+import controllers.InitializeGameInfo;
 import models.Player;
 import models.gainable.Building;
 import models.units.Civilian;
@@ -33,16 +34,6 @@ public class City implements Combatable{
     private int hitPoint = 20;
     private  Hex capital;
 
-    public void setTrophy(int value)
-    {
-        trophy=value;
-    }
-
-    public int getTrophy()
-    {
-        return trophy;
-    }
-    
     public City(Player owner, String name, Hex beginingHex) {
         this.owner = owner;
         this.name = name;
@@ -52,12 +43,27 @@ public class City implements Combatable{
         gold = 0;
         production = 0;
         hexs.add(beginingHex);
+        beginingHex.setOwner(owner);
+        beginingHex.setCity(this);
         this.capital = beginingHex;
-        CombatController.getHex()[beginingHex.getX()][beginingHex.getY()].setCapital(this);
+        beginingHex.setCapital(this);
         health = 20;
         this.numberOfUnemployedCitizen = 0;
     }
 
+    public void setTrophy(int value)
+    {
+        trophy=value;
+    }
+
+    public int getTrophy()
+    {
+        return trophy;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
     public Hex getCapital() {
         return capital;
     }
@@ -111,6 +117,21 @@ public class City implements Combatable{
         this.hitPoint++;
     }
 
+    @Override
+    public boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int unitY ){
+        return false;
+    }
+
+    @Override
+    public int getX() {
+        return capital.getX();
+    }
+
+    @Override
+    public int getY() {
+        return capital.getY();
+    }
+
     public Military getMilitaryUnit() {
         return militaryUnit;
     }
@@ -145,9 +166,20 @@ public class City implements Combatable{
     }
 
     public void addHex(Hex hex) {
+        hex.setOwner(this.owner);
+        hex.setCity(this);
         hexs.add(hex);
     }
 
+    public static void deleteCity(City city){
+        //todo : if garrison delete the unit from all unit list
+        city.getCapital().setCapital(null);
+        for (Hex hex: city.hexs){
+            hex.setOwner(null);
+            hex.setCity(null);
+            cities.remove(city);
+        }
+    }
     public int getPopulation() {
         return this.population;
     }
@@ -249,7 +281,6 @@ public class City implements Combatable{
 
     public void removeConstructingBuilding(Building building) {
         constructingBuldings.remove(building);
-
     }
 
 

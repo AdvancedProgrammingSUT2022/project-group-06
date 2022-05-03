@@ -23,7 +23,8 @@ public class Hex {
     private String improvement;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
     private boolean hasCitizen = false;
-    private City nameOfCity = null;
+    private City capital = null;
+    private City city = null;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
 
     public boolean isHasCitizen() {
@@ -42,6 +43,14 @@ public class Hex {
         for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers(); i++) {
             this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i), HexState.FogOfWar);
         }
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public boolean getHasCitizen() {
@@ -65,9 +74,6 @@ public class Hex {
     }
 
     public Player getOwner() {
-        if (this.owner == null) {
-            return null;
-        }
         return owner;
     }
 
@@ -132,10 +138,10 @@ public class Hex {
     }
 
     public void setCapital(City city) {
-        this.nameOfCity = city;
+        this.capital = city;
     }
 
     public City getCapital() {
-        return this.nameOfCity;
+        return this.capital;
     }
 }

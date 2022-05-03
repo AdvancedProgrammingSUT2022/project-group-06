@@ -1,5 +1,7 @@
 package models.units;
 
+import controllers.GameController;
+import enums.HexState;
 import models.maprelated.City;
 import models.maprelated.Hex;
 

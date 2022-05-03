@@ -30,10 +30,10 @@ public class CombatController {
         } else
             return "there is no city or unit to attack";
         if (defender.getOwner() == attacker.getOwner()) return "you can not attack to your self";
-        //todo: dar mahdode kashi kenari
-/*        if(attacker.isInPosibbleCombatRange()){
-            return "out of range";
-        }*/
+
+        if(attacker.isInPossibleCombatRange(x, y,0, attacker.getX(), attacker.getY())){
+            return "out of sight range";
+        }
 
         if (selectedUnit instanceof Ranged) {
             if (defenderCity != null) {
@@ -63,10 +63,10 @@ public class CombatController {
     }
 
     private static String meleeCityCombat(City city) {
-        //todo: handel tile train and feature
+        //handel tile train and feature
         int unitStrength = selectedUnit.getCombatStrength() * selectedUnit.getCurrentHex().getTerrain().getCombatModifiersPercentage();
         //todo: assarat asib
-        //todo : garisson saze defaie tapedivar ??
+        //todo : garisson saze defaie tapedivar & tape
         city.decreaseHitPoint(unitStrength);
         selectedUnit.decreaseHealth(city.getMeleeDefensivePower());
         if (selectedUnit.getHealth() <= 0) {
@@ -81,13 +81,14 @@ public class CombatController {
     }
 
     private static void killUnit() {
+
     }
 
     private static String rangedCityCombat(City city) {
         if (city.getHitPoint() == 1) return "you can not attack to this city";
-        //todo: handel tile train and feature
-        //todo: assarat asib
+        // handel tile train and feature
         int unitStrength = selectedUnit.getRangedStrength() * selectedUnit.getCurrentHex().getTerrain().getCombatModifiersPercentage();
+        //todo: assarat asib
         //todo : garisson saze defaie tape divar padeganNezami and tape??
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
@@ -104,10 +105,9 @@ public class CombatController {
         return "";
     }
 
-    public static void deleteCity(City city, Player player) {
-        //todo : if garrison delete the unit
-    }
-
     public static void addCityToTerritory(City city, Player player) {
+        city.setOwner(player);
+        //todo: check correction
+        city.setHitPoint(0);
     }
 }
