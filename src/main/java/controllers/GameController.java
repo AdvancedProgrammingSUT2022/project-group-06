@@ -388,4 +388,38 @@ public class GameController {
 
         currentPlayer.increaseHappiness(1); //new luxuries add to happiness
     }
+
+
+
+    public static String cheatGold(int amount)
+    {
+        currentPlayer.increaseGold(amount);
+        return "gold increased successfully";
+    }
+    public static String cheatTurn(int amount)
+    {
+        turn+=amount;
+        return "turn increased successfully";
+    }
+
+    public static String showResearchMenu()
+    {
+        StringBuilder research=new StringBuilder("");
+        
+        currentPlayer.getAchievedTechnologies().forEach((key, value) -> {
+            research.append(key+" status: ");
+            if(value==false)
+            {
+                research.append("not achieved\n");
+            }
+            else
+            {
+                research.append("achieved\n");
+            }
+            
+        });
+
+
+        return research.toString();
+    }
 }

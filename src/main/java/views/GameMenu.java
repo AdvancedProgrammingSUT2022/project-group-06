@@ -23,6 +23,12 @@ public class GameMenu extends Menu {
         while (true) {
             if((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null){
                 System.out.println(CityController.buildCity(matcher.group("name")));
+            }else if(command.equals("show research menu")){
+                System.out.println(GameController.showResearchMenu());
+            }else if((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null){
+                System.out.println(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
+            }else if((matcher = getMatcher("increase (--turn|-t) (?<amount>\\d+)", command)) != null){
+                System.out.println(GameController.cheatTurn((Integer.parseInt(matcher.group("amount")))));
             }else if(command.equals("city show trophies")){
                 System.out.println(CityController.showTrophies());
             }else if(command.equals("city show resources")){  

@@ -15,7 +15,8 @@ import models.units.Unit;
 import models.twopartyactions.Trade;
 
 public class Player {//-currentProject
-    public static HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
+    private static ArrayList<String> technologies=new ArrayList<String>();
+    private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
 
     private int gold=1000000;
     private int happiness;
@@ -35,6 +36,17 @@ public class Player {//-currentProject
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
 
+    public HashMap<String,Boolean> getAchievedTechnologies()
+    {
+        return achievedTechnologies;
+    }
+
+    
+    public static void setTechnologies(ArrayList<String> set)
+    {
+        technologies=set;
+    }
+
     public void addToRevealedHexes(Hex hex){
         hex.setState(HexState.Revealed, this);
         //todo: rest of hex fields
@@ -51,6 +63,12 @@ public class Player {//-currentProject
         //initial happiness
         //todo: later should be calculated based on game difficulty
         this.happiness = 10;
+        InitializeGameInfo.getPlayers().add(this);
+        for(String temp:technologies)
+        {
+            achievedTechnologies.put(temp, false);
+        }
+        this.name = name;
         InitializeGameInfo.getPlayers().add(this);
     }
 

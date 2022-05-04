@@ -165,16 +165,17 @@ public class InitializeGameInfo {
             File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
             String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             String[] readInfo = readTechnologyInfo.split("\n");
+            ArrayList<String> setArray=new ArrayList<String>();
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
                 String name = read[0];
                 String info = read[1];
 
                 technologyInfo.put(name, info);
-                Player.achievedTechnologies.put(name, false);
+                setArray.add(name);
 
             }
-
+            Player.setTechnologies(setArray);
 
         } catch (IOException e) {
             // TODO Auto-generated catch block

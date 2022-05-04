@@ -23,13 +23,21 @@ public class Hex {
     private String improvement;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
     private boolean hasCitizen = false;
-    private City nameOfCity = null;
+    private City capital= null;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
-
+    private City city=null;
     public boolean isHasCitizen() {
         return hasCitizen;
     }
 
+    public City getCity()
+    {
+        return city;
+    }
+    public void setCity(City newCity)
+    {
+        city=newCity;
+    }
     public void setHasCitizen(boolean hasCitizen) {
         this.hasCitizen = hasCitizen;
     }
@@ -132,10 +140,10 @@ public class Hex {
     }
 
     public void setCapital(City city) {
-        this.nameOfCity = city;
+        this.capital = city;
     }
 
     public City getCapital() {
-        return this.nameOfCity;
+        return this.capital;
     }
 }

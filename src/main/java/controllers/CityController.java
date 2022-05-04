@@ -175,7 +175,10 @@ public class CityController {
         if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
         UnitController.setSelectedUnit(null);
-
+        UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
+        UnitController.getSelectedUnit().getCurrentHex().setOwner(currentPlayer);
+        currentPlayer.addCity(newCity);
+        UnitController.setSelectedUnit(null);
         return "new city created successfully";
     }
 
