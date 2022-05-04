@@ -2,6 +2,7 @@ package models.units;
 
 import java.util.ArrayList;
 
+import controllers.GameController;
 import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
@@ -154,5 +155,30 @@ public class Unit implements Combatable
     @Override
     public void healPerTurn() {
 
+    }
+
+    @Override
+    public  boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int unitY ) {
+        if (seenRange == (this.getRange()==0 ? 1 : this.getRange())) return false;
+        boolean res = false;
+        int[][] direction = GameController.getDirection(unitY);
+        for (int[] ints : direction) {
+            if (unitX + ints[0] == x && unitY + ints[1] == y) {
+                return true;
+            }
+            res = isInPossibleCombatRange(x, y, seenRange + 1, unitX + ints[0], unitY + ints[1]);
+            if(res) break;
+        }
+        return res;
+    }
+
+    @Override
+    public int getX() {
+        return this.getCurrentHex().getX();
+    }
+
+    @Override
+    public int getY() {
+        return this.getCurrentHex().getY();
     }
 }

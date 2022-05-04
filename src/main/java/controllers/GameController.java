@@ -11,10 +11,7 @@ import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class GameController {
 
@@ -26,6 +23,7 @@ public class GameController {
     private static Player currentPlayer;
     private static ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
     private static ArrayList<Military> allMilitaries = new ArrayList<Military>();
+    private static Unit selectedUnit;
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
@@ -75,6 +73,12 @@ public class GameController {
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        /*City city = new City(players.get(0),"Asemaneh",world.getHex()[0][0]);
+        world.getHex()[0][0].setCity(city);
+        world.getHex()[0][0].setState(HexState.Visible, currentPlayer);
+        city.addHex(world.getHex()[0][1]);
+        world.getHex()[0][1].setState(HexState.Visible, currentPlayer);*/
+
     }
 
     private static void removeOwnerOfHexes() {
@@ -178,8 +182,16 @@ public class GameController {
 
     private static void drawHexDetails(int align, int minI, int minJ, String[][] string, Hex hex, String color) {
         //string[minI + 1 + align][minJ + 6] = color + "\033[0;33m" + "A" + Color.ANSI_RESET.getCharacter();
-        if (hex.getOwner() != null)
-            string[minI + 1 + align][minJ + 6] = color + "\033[0;33m" + hex.getOwner().getName() + Color.ANSI_RESET.getCharacter();
+        if (hex.getOwner() != null){
+            Color playerColor = InitializeGameInfo.getPlayerColor().get(hex.getOwner().getName());
+            char cityName;
+            if(hex.getCapital() != null){
+                cityName = hex.getCapital().getName().toUpperCase().charAt(0);
+            }else {
+                cityName = hex.getCity().getName().toLowerCase().charAt(0);
+            }
+            string[minI + 1 + align][minJ + 6] =  "\033[0;33m" + playerColor.getCharacter()+ cityName + Color.ANSI_RESET.getCharacter();
+        }
         if (hex.getCivilianUnit() != null) {
             Color unitColor = InitializeGameInfo.getPlayerColor().get(hex.getCivilianUnit().getOwner().getName());
             string[minI + 3 + align][minJ + 4] = color + unitColor.getCharacter() + "C" + Color.ANSI_RESET.getCharacter();
@@ -367,6 +379,11 @@ public class GameController {
         return y >= world.getHexInWidth() || x >= world.getHexInHeight() || x < 0 || y < 0;
     }
 
+    public static int[][] getDirection(int y){
+        int[][] oddDirection = {{-1, 0}, {0, -1},{1, -1},{1, 0}, {1, 1}, {0, 1}};
+        int[][] evenDirection = {{-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {0, 1}, {-1, 1}};
+        return y % 2 == 1 ? oddDirection : evenDirection;
+    }
     public static void unhappinessEffects() {
         //todo: stop city growth
         for (int i = 0; i < currentPlayer.getMilitaries().size(); i++) {
@@ -401,7 +418,7 @@ public class GameController {
     public static String showResearchMenu()
     {
         StringBuilder research=new StringBuilder("");
-        
+
         currentPlayer.getAchievedTechnologies().forEach((key, value) -> {
             research.append(key+" status: ");
             if(value==false)
@@ -412,7 +429,7 @@ public class GameController {
             {
                 research.append("achieved\n");
             }
-            
+
         });
 
 
