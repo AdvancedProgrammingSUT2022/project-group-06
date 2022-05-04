@@ -60,6 +60,8 @@ public class GameMenu extends Menu {
                 selectCivilian(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+            } else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+                attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             } else if ((matcher = getMatcher("Remove citizen at (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+) from work", command)) != null) {
                 System.out.println(CityController.removeCitizenFromWork(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("lock an citizen to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -160,31 +162,19 @@ public class GameMenu extends Menu {
 
     }
 
-    private static boolean handelErrors(int x, int y) {
-        if (UnitController.getSelectedUnit() == null) {
-            System.out.println("You should choose a unit first");
-            return false;
-        } else if (GameController.getPlayerCiviliansByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null
-                && GameController.getPlayerMilitaryByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null) {
-            System.out.println("You don't own this unit");
-            return false;
-        } else if (UnitController.isHexOccupied(x, y)) {
-            System.out.println("This hex already has a unit of this type");
-            return false;
-        }
-        return true;
-    }
 
     private void attackUnitView(int x, int y) {
-        //todo: errors
-        if (handelErrors(x, y)) {
-            if (UnitController.getSelectedUnit() instanceof Civilian) {
-                System.out.println("you can not attack with a civilian unit");
-                return;
-            }
-            String combatResult = CombatController.attackUnit(x, y);
-            System.out.println(combatResult);
+        //todo : mp
+        if (UnitController.getSelectedUnit() == null) {
+            System.out.println("You should choose a unit first");
+            return;
         }
+        if (UnitController.getSelectedUnit() instanceof Civilian) {
+            System.out.println("you can not attack with a civilian unit");
+            return;
+        }
+        String combatResult = CombatController.attackUnit(x, y);
+        System.out.println(combatResult);
     }
 
     public static void cityCombatMenu(City city, Player player) {

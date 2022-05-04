@@ -20,7 +20,6 @@ public class CombatController {
         City defenderCity = hex[x][y].getCapital();
         Combatable attacker = selectedUnit;
         Combatable defender;
-        //todo: check capital
         if (defenderCity != null) {
             defender = defenderCity;
         } else if (hex[x][y].getMilitaryUnit() != null) {
@@ -34,7 +33,12 @@ public class CombatController {
         if(attacker.isInPossibleCombatRange(x, y,0, attacker.getX(), attacker.getY())){
             return "out of sight range";
         }
+        attacker.attack(defender);
+        defender.defend(attacker);
+        return  handelCombatType(defenderCity, x, y);
+    }
 
+    private static String handelCombatType(City defenderCity, int x, int y){
         if (selectedUnit instanceof Ranged) {
             if (defenderCity != null) {
                 return rangedCityCombat(defenderCity);
@@ -53,7 +57,6 @@ public class CombatController {
         }
         return null;
     }
-
     private static String meleeCivilianCombat(int x, int y) {
         return null;
     }
