@@ -23,6 +23,8 @@ public class Hex {
     private String improvement;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
     private boolean hasCitizen = false;
+    private boolean hasRoad;
+    private boolean hasRailRoad;
     private City capital= null;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
     private City city=null;
@@ -45,6 +47,8 @@ public class Hex {
     public Hex(int x, int y, Terrain terrain, Feature feature) {
         this.x = x;
         this.y = y;
+        hasRoad = false;
+        hasRailRoad = false;
         this.terrain = terrain;
         this.feature = feature;
         for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers(); i++) {
@@ -145,5 +149,21 @@ public class Hex {
 
     public City getCapital() {
         return this.capital;
+    }
+
+    public boolean hasRoad() {
+        return this.hasRoad;
+    }
+
+    public void setHasRoad(boolean hasRoad) {
+        this.hasRoad = hasRoad;
+    }
+
+    public boolean hasRailRoad() {
+        return this.hasRailRoad;
+    }
+
+    public void setHasRailRoad(boolean hasRailRoad) {
+        this.hasRailRoad = hasRailRoad;
     }
 }

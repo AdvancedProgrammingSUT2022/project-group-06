@@ -1,14 +1,14 @@
 package controllers;
 
 import enums.HexState;
+import enums.TerrainNames;
 import models.Player;
 import models.maprelated.Hex;
 import models.units.Civilian;
 import models.units.Military;
 import models.units.Unit;
 
-import static controllers.GameController.getWorld;
-import static controllers.GameController.isPositionValid;
+import static controllers.GameController.*;
 
 public class UnitController {
 
@@ -42,7 +42,7 @@ public class UnitController {
         if (dx != 0) dx = dx / Math.abs(dx);
         if (dy != 0) dy = dy / Math.abs(dy);
         for (int[] ints : direction) {
-            if (ints[0] == dx && ints[1] == dy && isPositionValid(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
+            if (ints[0] == dx && ints[1] == dy && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
                 return ints;
         }
         return null;
@@ -101,9 +101,47 @@ public class UnitController {
             x = x + direction[j][0];
             y = y + direction[j][0];
             for (int i = 0; i < 7; i++) {
-                if (isPositionValid(x + direction[i][0], y + direction[i][1]))
+                if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1]))
                     hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
             }
         }
+    }
+
+    public static String constructRoad(int x, int y) {
+        if (GameController.isOutOfBounds(x, y))
+            return "chosen position is not valid";
+        if (selectedUnit == null)
+            return "you should choose a unit first";
+        if (!selectedUnit.getName().equals("Worker"))
+            return "you should choose a worker unit";
+        if (!currentPlayer.getAchievedTechnologies().get("TheWheel"))
+            return "you don't have required technology for building roads";
+        if (hex[x][y].hasRoad())
+            return "this hex already has road";
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain))
+            return "you can't construct road on mountain";
+        if (hex[x][y].getTerrain().equals(TerrainNames.Ocean))
+            return "you can't construct road on ocean";
+        //Todo: can't build roads on ice
+        //todo: construct road in 3 turns
+        return "the road will be constructed in 3 turns";
+    }
+
+    public static String constructRailRoad(int x, int y) {
+        if (GameController.isOutOfBounds(x, y))
+            return "chosen position is not valid";
+        if (!selectedUnit.getName().equals("Worker"))
+            return "you should choose a worker unit";
+        if (!currentPlayer.getAchievedTechnologies().get("Road"))
+            return "you don't have required technology for building roads";
+        if (hex[x][y].hasRailRoad())
+            return "this hex already has railroad";
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain))
+            return "you can't construct railroad on mountain";
+        if (hex[x][y].getTerrain().equals(TerrainNames.Ocean))
+            return "you can't construct railroad on ocean";
+        //Todo: can't build roads on ice
+        //todo: construct road in 3 turns
+        return "the railroad will be constructed in 3 turns";
     }
 }

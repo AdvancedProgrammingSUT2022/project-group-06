@@ -24,7 +24,7 @@ public class CityController {
             }
         }
 
-        theCity.setTrophy(count + 3);
+      //  theCity.setTrophy(count + 3);
 
     }
 
@@ -35,7 +35,7 @@ public class CityController {
         }
 
         finalizeTrophy(GameController.getSelectedCity());
-        trophy.append(GameController.getSelectedCity().getTrophy());
+   //     trophy.append(GameController.getSelectedCity().getTrophy());
         GameController.setSelectedCity(null);
         return trophy.toString();
     }

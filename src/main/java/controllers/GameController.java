@@ -289,10 +289,6 @@ public class GameController {
         return detail.toString();
     }
 
-    public static boolean isPositionValid(int x, int y) {
-        return x >= 0 && y >= 0 && x <= 10 && y <= 10;
-    }
-
     public static Player getCurrentPlayer() {
         return currentPlayer;
     }
