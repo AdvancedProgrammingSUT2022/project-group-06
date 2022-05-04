@@ -68,8 +68,6 @@ public class Player {//-currentProject
         {
             achievedTechnologies.put(temp, false);
         }
-        this.name = name;
-        InitializeGameInfo.getPlayers().add(this);
     }
 
     public void setTrophies(int trophies) {

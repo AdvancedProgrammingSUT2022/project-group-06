@@ -23,7 +23,6 @@ public class GameController {
     private static Player currentPlayer;
     private static ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
     private static ArrayList<Military> allMilitaries = new ArrayList<Military>();
-    private static Unit selectedUnit;
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
