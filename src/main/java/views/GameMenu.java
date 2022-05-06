@@ -145,18 +145,14 @@ public class GameMenu extends Menu {
             System.out.println("This hex already has a unit of this type");
         else {
             Hex nextHex = UnitController.getNextHex(x, y);
-            for (int i = 0; i < UnitController.getSelectedUnit().getRange(); i++) {
-                if (nextHex.getX() == x && nextHex.getY() == y) {
-                    System.out.println("The unit reached chosen destination");
-                    break;
-                }
-                if (!UnitController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
-                    System.out.print("The unit can't move through this hex");
-                    break;
-                }
-                UnitController.moveUnit(UnitController.getSelectedUnit(), x, y);
-                nextHex = UnitController.getNextHex(x, y);
+            if (nextHex.getX() == x && nextHex.getY() == y) {
+                System.out.println("The unit reached chosen destination");
             }
+            if (!UnitController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
+                System.out.print("The unit can't move through this hex");
+            }
+            UnitController.moveUnit(UnitController.getSelectedUnit(), x, y);
+            // nextHex = UnitController.getNextHex(x, y);
 
         }
 

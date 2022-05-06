@@ -7,9 +7,9 @@ import models.maprelated.Hex;
 
 public class Worker extends Civilian 
 {
-    public Worker(String name,Hex currentHex)
+    public Worker(String name,Hex currentHex, Player owner)
     {
-      super(name, currentHex);
+      super(name, currentHex, owner);
     
     } 
     private int turn;

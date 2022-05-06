@@ -8,8 +8,8 @@ public class Military extends Unit
 {
 
 
-    public Military(String name, Hex hex) {
-        super(name, hex);
+    public Military(String name, Hex hex, Player owner) {
+        super(name, hex, owner);
     }
     @Override
     public String attack(Combatable defender) {

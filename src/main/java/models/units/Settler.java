@@ -8,9 +8,9 @@ public class Settler extends Civilian
 {
     
 
-    public Settler(String name,Hex currentHex)
+    public Settler(String name,Hex currentHex, Player owner)
     {
-      super(name, currentHex);
+      super(name, currentHex, owner);
     } 
 
     public void explore()

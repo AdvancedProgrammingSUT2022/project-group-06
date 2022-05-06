@@ -25,8 +25,9 @@ public class Unit implements Combatable
     private String neededResource;
     private Player owner;
 
-    public Unit(String name,Hex hex)
+    public Unit(String name,Hex hex, Player owner)
     {
+        this.owner = owner;
         this.name=name;
         this.currentHex=hex;
         String[] info=InitializeGameInfo.unitInfo.get(name).split(" ");

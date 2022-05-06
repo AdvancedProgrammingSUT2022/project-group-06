@@ -125,20 +125,22 @@ public class CityController {
         }
 
 
-        Unit newUnit = new Unit(name, GameController.getSelectedHex());
+        Unit newUnit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
         if (currentPlayer.getGold() < newUnit.getCost()) {
             return "you don't have enough money";
         }
 
 
         if (type.equals("Civilian")) {
-            Civilian newCivilian = new Civilian(name, GameController.getSelectedHex());
+            Civilian newCivilian = new Civilian(name, GameController.getSelectedHex(), currentPlayer);
             GameController.getSelectedHex().setCivilianUnit(newCivilian);
+            currentPlayer.addToCivilians(newCivilian);
             GameController.addALlCivilians(newCivilian);
         }
         if (type.equals("Military")) {
-            Military newMilitary = new Military(name, GameController.getSelectedHex());
+            Military newMilitary = new Military(name, GameController.getSelectedHex(), currentPlayer);
             GameController.getSelectedHex().setMilitaryUnit(newMilitary);
+            currentPlayer.addToMilitaries(newMilitary);
             GameController.addAllMilitary(newMilitary);
         }
 

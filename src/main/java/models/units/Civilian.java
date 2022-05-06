@@ -11,9 +11,9 @@ public class Civilian extends Unit
     private static ArrayList<Civilian> civilians=new ArrayList<Civilian>();
     private boolean isWorking;
 
-    public Civilian(String name,Hex currentHex)
+    public Civilian(String name,Hex currentHex, Player owner)
     {
-      super(name, currentHex);
+      super(name, currentHex, owner);
       this.isWorking=false;
       
       civilians.add(this);

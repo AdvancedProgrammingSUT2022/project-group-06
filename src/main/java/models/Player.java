@@ -60,6 +60,8 @@ public class Player {//-currentProject
 
     public Player(String name) {
         this.name = name;
+        civilians = new ArrayList<Civilian>();
+        militaries = new ArrayList<Military>();
         //initial happiness
         //todo: later should be calculated based on game difficulty
         this.happiness = 10;
@@ -223,12 +225,20 @@ public class Player {//-currentProject
         return militaries;
     }
 
+    public void addToMilitaries(Military military) {
+        this.militaries.add(military);
+    }
+
     public void setMilitaries(ArrayList<Military> militaries) {
         this.militaries = militaries;
     }
 
     public ArrayList<Civilian> getCivilians() {
         return civilians;
+    }
+
+    public void addToCivilians(Civilian civilian) {
+        this.civilians.add(civilian);
     }
 
     public void setCivilians(ArrayList<Civilian> civilians) {
