@@ -126,6 +126,10 @@ public class Hex {
         return hasRiver[dir];
     }
 
+    public boolean[] getHasRiver() {
+        return hasRiver;
+    }
+
     public int riverDir() {
         for (int i = 0; i < 4; i++) {
             if (hasRiver[i]) return i;

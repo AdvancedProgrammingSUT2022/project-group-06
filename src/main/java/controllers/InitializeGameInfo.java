@@ -4,7 +4,6 @@ package controllers;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -35,6 +34,12 @@ public class InitializeGameInfo {
     private static World world;
 
 
+    public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
+        return appropriateTerrain;
+    }
+    public static HashMap<String, ArrayList<String>> getAppropriateFeature(){
+        return appropriateFeature;
+    }
     public static ArrayList<Player> getPlayers() {
         return players;
     }
@@ -76,7 +81,6 @@ public class InitializeGameInfo {
     }
 
     public static void initializeUnitInfo() {
-
         try {
             String resourceName = "files/UnitInfo.txt";
             ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
@@ -105,13 +109,10 @@ public class InitializeGameInfo {
                 unitInfo.put(name, info);
 
             }
-
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
     }
 
     public static void initializeTerrainInfo() {
@@ -223,7 +224,7 @@ public class InitializeGameInfo {
 
     }
 
-    private static void initializeHashMap() {
+    public static void initializeHashMap() {
         terrainPossibleFeature.put("Desert", new String[]{"Oasis", "FoodPlains"});
         terrainPossibleFeature.put("Grassland", new String[]{"Jungle", "Marsh"});
         terrainPossibleFeature.put("Hills", new String[]{"Forest", "Jungle"});
@@ -260,7 +261,7 @@ public class InitializeGameInfo {
 
     }
 
-    private static void initializeGameWorld() {
+    public static void initializeGameWorld() {
         world = new World();
         initializeHex(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
@@ -304,7 +305,7 @@ public class InitializeGameInfo {
         return names[Math.abs(random.nextInt()) % names.length];
     }
 
-    private static void initializeHex(int hexInHeight, int hexInWidth, Hex[][] hex) {
+    public static void initializeHex(int hexInHeight, int hexInWidth, Hex[][] hex) {
         for (int i = 0; i < hexInHeight; i++) {
             for (int j = 0; j < hexInWidth; j++) {
                 //random terrain
@@ -340,7 +341,7 @@ public class InitializeGameInfo {
         return false;
     }
 
-    private static void initializeResource(int numberOfTry, int hexInHeight, int hexInWidth, Hex[][] hex) {
+    public static void initializeResource(int numberOfTry, int hexInHeight, int hexInWidth, Hex[][] hex) {
         while (numberOfTry != 0) {
             //random resource
             String resourceName = randomPickAName(resourceNames);
@@ -364,7 +365,7 @@ public class InitializeGameInfo {
 
     }
 
-    private static void initializeRiver(int hexInHeight, int hexInWidth, Hex[][] hex) {
+    public static void initializeRiver(int hexInHeight, int hexInWidth, Hex[][] hex) {
         int[][] oddDirection = new int[][]{{0, -1}, {1, -1}, {0, 1}, {1, 1}};
         int[][] evenDirection = new int[][]{{-1, -1}, {0, -1}, {-1, 1}, {0, 1}};
         for (int k = 0; k < 10; ) {
@@ -397,7 +398,7 @@ public class InitializeGameInfo {
         }
     }
 
-    private static void initializeCivilizations(int numberOfPlayers, int hexInHeight, int hexInWidth) {
+    public static void initializeCivilizations(int numberOfPlayers, int hexInHeight, int hexInWidth) {
         for (int i = 0; i < numberOfPlayers; i++) {
             int numberOfPlayerHex = 10;
             ArrayList<Hex> playerHex = new ArrayList<>();
