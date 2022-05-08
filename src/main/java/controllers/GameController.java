@@ -3,6 +3,10 @@ package controllers;
 import enums.Color;
 import enums.HexState;
 import models.Player;
+import models.gainable.Building;
+import models.gainable.Construction;
+import models.gainable.Improvement;
+import models.gainable.Technology;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
@@ -11,6 +15,7 @@ import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.util.*;
 
 public class GameController {
@@ -27,6 +32,7 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Combatable> hurtElements;
+    private static ArrayList<Construction> unfinishedProjects;
 
     public static void addALlCivilians(Civilian newCivilian) {
         allCivilians.add(newCivilian);
@@ -351,6 +357,33 @@ public class GameController {
         }
     }
 
+    public static void finishConstruction() {
+        for (Construction unfinishedProject : unfinishedProjects) {
+            unfinishedProject.decreaseLeftTurns();
+            if (unfinishedProject.getLeftTurns() == 0) {
+                if (unfinishedProject instanceof Building)
+                    finishBuilding();
+                else if (unfinishedProject instanceof Technology)
+                    achieveTechnology();
+                else if (unfinishedProject instanceof Improvement)
+                    finishImprovement();
+            }
+        }
+    }
+
+    public static void finishBuilding() {
+        //todo
+    }
+
+    public static void achieveTechnology(){
+        //todo
+    }
+
+    public static void finishImprovement() {
+        //todo
+    }
+
+
     public static String changeTurn() {
         playerCount = (playerCount == GameController.getPlayers().size() - 1) ? 0 : playerCount + 1;
         currentPlayer = GameController.getPlayers().get(playerCount);
@@ -361,6 +394,7 @@ public class GameController {
         //heal();
         //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
+        finishConstruction();
         //manage harekat chand nobati ye nobat bere jelo
         //handle siege units
         //hazine tamir O negahdari buldings
