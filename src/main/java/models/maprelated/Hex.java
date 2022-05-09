@@ -5,6 +5,7 @@ import controllers.InitializeGameInfo;
 import enums.Color;
 import enums.HexState;
 import models.Player;
+import models.TimeVariantProcess;
 import models.units.Civilian;
 import models.units.Military;
 import models.units.Unit;
@@ -20,7 +21,6 @@ public class Hex {
     private Resource resource;
     private Military militaryUnit;
     private Civilian civilianUnit;
-    private String improvement;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
     private boolean hasCitizen = false;
     private City capital = null;
@@ -28,7 +28,12 @@ public class Hex {
     private boolean hasRoad;
     private boolean hasRailRoad;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
+    private String improvement=null;
 
+    public void setFeature(Terrain newFeature)
+    {
+        terrain=newFeature;
+    }
     public boolean isHasCitizen() {
         return hasCitizen;
     }
@@ -38,6 +43,7 @@ public class Hex {
     }
 
     public Hex(int x, int y, Terrain terrain, Feature feature) {
+        improvement=null;
         this.x = x;
         this.y = y;
         hasRoad = false;

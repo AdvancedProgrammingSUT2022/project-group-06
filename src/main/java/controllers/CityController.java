@@ -2,7 +2,10 @@ package controllers;
 
 import java.util.ArrayList;
 
+import org.mockito.internal.invocation.StubInfoImpl;
+
 import models.Player;
+import models.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Civilian;
@@ -24,7 +27,7 @@ public class CityController {
             }
         }
 
-      //  theCity.setTrophy(count + 3);
+        theCity.setTrophy(count + 3);
 
     }
 
@@ -35,7 +38,7 @@ public class CityController {
         }
 
         finalizeTrophy(GameController.getSelectedCity());
-   //     trophy.append(GameController.getSelectedCity().getTrophy());
+        trophy.append(GameController.getSelectedCity().getTrophy());
         GameController.setSelectedCity(null);
         return trophy.toString();
     }
@@ -88,11 +91,7 @@ public class CityController {
     }
 
 
-    public static String makeUnit(String type, String name) {
-
-        if (!type.equals("Civilian") && !type.equals("Military")) {
-            return "invalid unit type";
-        }
+    public static String startMakingUnit(String type, String name) {
         if (GameController.getSelectedHex() == null) {
             return "select a tile first";
         }
@@ -123,31 +122,55 @@ public class CityController {
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
-
-
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
-        if (currentPlayer.getGold() < newUnit.getCost()) {
-            return "you don't have enough money";
+        if (currentPlayer.getGold() >= newUnit.getCost()) {
+            makeUnit(type, name, GameController.getSelectedHex());
+            currentPlayer.decreaseGold(newUnit.getCost());
+            return "Unit created successfully";
         }
 
+        int goldPerTurn = 0;
+        for (City temp : GameController.getCurrentPlayer().getCities()) {
+            goldPerTurn += temp.getGold();
+        }
+        int duration;
+        if (newUnit.getCost() < goldPerTurn) {
+            duration = 1;
+        } else if (goldPerTurn == 0) {
+            return "you have no income os it's impossible to start making a unit right now";
+        } else {
+            duration = (newUnit.getCost() / goldPerTurn) + 1;
+        }
+        TimeVariantProcess process = new TimeVariantProcess(duration, GameController.getTurn(), GameController.getSelectedHex(), name, type);
+        GameController.getCurrentPlayer().addTimeVariantProcesses(process);
+
+
+        return "pricess for builing an unit started successfully";
+    }
+
+
+    public static void makeUnit(String type, String name, Hex hex) {
 
         if (type.equals("Civilian")) {
-            Civilian newCivilian = new Civilian(name, GameController.getSelectedHex(), currentPlayer);
-            GameController.getSelectedHex().setCivilianUnit(newCivilian);
+            Civilian newCivilian = new Civilian(name, hex, currentPlayer);
+            GameController.getCurrentPlayer().decreaseGold(newCivilian.getCost());
+            hex.setCivilianUnit(newCivilian);
             currentPlayer.addToCivilians(newCivilian);
+            currentPlayer.addUnit(newCivilian);
+            Unit.getUnits().add(newCivilian);
             GameController.addALlCivilians(newCivilian);
         }
         if (type.equals("Military")) {
-            Military newMilitary = new Military(name, GameController.getSelectedHex(), currentPlayer);
-            GameController.getSelectedHex().setMilitaryUnit(newMilitary);
+            Military newMilitary = new Military(name, hex, currentPlayer);
+            GameController.getCurrentPlayer().decreaseGold(newMilitary.getCost());
+            hex.setMilitaryUnit(newMilitary);
             currentPlayer.addToMilitaries(newMilitary);
+            currentPlayer.addUnit(newMilitary);
+            Unit.getUnits().add(newMilitary);
             GameController.addAllMilitary(newMilitary);
         }
 
-        GameController.setSelectedCity(null);
-        GameController.setSelectedHex(null);
 
-        return "unit created successfully";
     }
 
 
@@ -176,7 +199,6 @@ public class CityController {
         currentPlayer.decreaseHappiness(1); //happiness decrease as num of cities increase
         if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
-        UnitController.setSelectedUnit(null);
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setOwner(currentPlayer);
         currentPlayer.addCity(newCity);
@@ -317,5 +339,16 @@ public class CityController {
 
     public static int showUnEmployedCitizen() {
         return GameController.getSelectedCity().getPopulation();
+    }
+
+    public static String cityBanner() {
+        if (GameController.getSelectedCity() == null) {
+            return "please select a city first";
+        }
+
+        StringBuilder cityBanner = new StringBuilder();
+        cityBanner.append(GameController.getSelectedCity().getName() + " hitpoint: " + GameController.getSelectedCity().getHitPoint());
+        GameController.setSelectedCity(null);
+        return cityBanner.toString();
     }
 }

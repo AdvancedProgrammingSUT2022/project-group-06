@@ -28,6 +28,7 @@ public class InitializeGameInfo {
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
     private static HashMap<String, Color> playerColor = new HashMap<String, Color>();
     private static ArrayList<Player> players = new ArrayList<Player>();
+
     private static int numberOFPlayers = 3;
 
     private static final Random random = new Random();

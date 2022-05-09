@@ -2,6 +2,7 @@ package views;
 
 import controllers.*;
 import models.Player;
+import models.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Civilian;
@@ -16,14 +17,32 @@ public class GameMenu extends Menu {
 
     public void run(Scanner gameScanner) {
         scanner = gameScanner;
+
         InitializeGameInfo.run();
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
         String command = scanner.nextLine();
         Matcher matcher;
+
         while (true) {
             if ((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null) {
                 System.out.println(CityController.buildCity(matcher.group("name")));
+            } else if (command.equals("shit")) {
+                System.out.println(GameController.getCurrentPlayer().getName());
+            } else if (command.equals("farm build")) {
+                System.out.println(GameController.startBuildFarm());
+            } else if (command.equals("mine build")) {
+                System.out.println(GameController.startBuildMine());
+            } else if (command.equals("economic overview")) {
+                System.out.println(GameController.economicOverview());
+            } else if (command.equals("notification history")) {
+                System.out.println(GameController.notificationHistory());
+            } else if (command.equals("unit list panel")) {
+                System.out.println(GameController.unitsPanel());
+            } else if (command.equals("city banner")) {
+                System.out.println(CityController.cityBanner());
+            } else if (command.equals("city list panel")) {
+                System.out.println(GameController.citiesPanel());
             } else if (command.equals("show research menu")) {
                 System.out.println(GameController.showResearchMenu());
             } else if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
@@ -40,10 +59,11 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.selectCity(matcher.group("cityname")));
             } else if (command.equals("next turn")) {
                 System.out.println(GameController.changeTurn());
+                GameController.checkTimeVariantProcesses();
             } else if ((matcher = getMatcher("buy tile", command)) != null) {
                 System.out.println(buyTile(matcher));
-            } else if ((matcher = getMatcher("unit make (--unittype|-ut) (?<unittype>[a-zA-Z]+) (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
-                System.out.println(CityController.makeUnit(matcher.group("unittype"), matcher.group("unitname")));
+            } else if ((matcher = getMatcher("unit make (--unittype|-ut) (?<unittype>Civilian||Military) (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
+                System.out.println(CityController.startMakingUnit(matcher.group("unittype"), matcher.group("unitname")));
             } else if (command.equals("show all map")) {
                 System.out.println(GameController.printAllWorld());
             } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {

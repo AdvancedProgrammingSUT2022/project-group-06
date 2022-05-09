@@ -3,6 +3,7 @@ package controllers;
 import enums.Color;
 import enums.HexState;
 import models.Player;
+import models.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
@@ -10,7 +11,9 @@ import models.units.Civilian;
 import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
+import models.units.Worker;
 
+import java.net.URI;
 import java.util.*;
 
 public class GameController {
@@ -28,6 +31,10 @@ public class GameController {
     private static int playerCount;
     private static ArrayList<Combatable> hurtElements;
 
+    public static int getTurn()
+    {
+        return turn;
+    }
     public static void addALlCivilians(Civilian newCivilian) {
         allCivilians.add(newCivilian);
     }
@@ -352,9 +359,22 @@ public class GameController {
     }
 
     public static String changeTurn() {
-        playerCount = (playerCount == GameController.getPlayers().size() - 1) ? 0 : playerCount + 1;
+        if(playerCount==GameController.getPlayers().size()-1)
+        {
+            playerCount=0;
+            turn ++;
+        }else{
+            playerCount++;
+        }
+        
         currentPlayer = GameController.getPlayers().get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
+        int goldPerTurn=0;
+        for(City temp:GameController.getCurrentPlayer().getCities())
+        {
+            goldPerTurn+=temp.getGold();
+        }
+        currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
         //todo: complete followings
         //feedUnits and citizens(bikar ye mahsol baghie 2 food)
         //healUnits and cities(1hit point)//handel tarmim asib
@@ -370,7 +390,7 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        turn++;
+        
         return "Turn changed successfully";
     }
 
@@ -434,4 +454,201 @@ public class GameController {
 
         return research.toString();
     }
+    public static String citiesPanel()
+    {
+        StringBuilder citiesList=new StringBuilder();
+        int count=1;
+        for(City temp:currentPlayer.getCities())
+        {
+            citiesList.append(count+") "+temp.getName()+"\n");
+            count++;
+        }
+        return citiesList.toString();
+    }
+
+    public static String unitsPanel()
+    {
+        StringBuilder unitsList=new StringBuilder();
+        int count=1;
+        for(Unit temp:currentPlayer.getUnits())
+        {
+            unitsList.append(count+") "+temp.getName()+": "+"state: "+temp.getState()+" x: "+temp.getX()+" y: "+temp.getY()+"\n");
+            count++;
+        }
+        return unitsList.toString();
+    }
+
+    public static String notificationHistory()
+    {
+        StringBuilder notificationsList=new StringBuilder();
+        int count=0;
+        for(int temp:currentPlayer.getNotificationsTurns())
+        {
+            notificationsList.append("turn: "+temp+" notification: "+currentPlayer.getNotifications().get(count)+"\n");
+            count++;
+        }
+        return notificationsList.toString();
+    }
+    public static String economicOverview()
+    {
+        StringBuilder economicInfo=new StringBuilder();
+        int count=1;
+        for(City temp: currentPlayer.getCities())
+        {
+            economicInfo.append(count+") cityname: "+temp.getName()+"\n");
+            economicInfo.append("\\t\\tpoplulation: "+temp.getPopulation()+"\n");
+            economicInfo.append("\\t\\tmelee defensive power: "+temp.getMeleeDefensivePower()+"\n");
+            economicInfo.append("\\t\\tranged defensive power: "+temp.getRangedDefencePower()+"\n");
+            economicInfo.append("\\t\\tfood: "+temp.getFood()+"\n");
+            economicInfo.append("\\t\\tgold "+temp.getGold()+"\n");
+            economicInfo.append("\\t\\ttrophy: "+temp.getTrophy()+"\n");
+            //TODO add production 
+            
+        }
+
+        return economicInfo.toString();
+
+    }
+
+    private static String isMakingMinePossible()
+    {
+        Hex hex=UnitController.getSelectedUnit().getCurrentHex();
+        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a Worker first";
+        }
+       
+        if(!currentPlayer.getAchievedTechnologies().get("Mining"))
+        {
+            return "you have not achieve the Mining technology yet";
+        }
+        if(hex.getResource()==null||(hex.getResource().getName().equals("Ice||FoodPlains"))||(hex.getTerrain().getName().equals("Mountain||Ocean")))
+        {
+            return "you can not make a Mine on this tile";
+        }
+
+
+        return null;
+    }
+    public static String startBuildMine()
+    {
+        String isPossible;
+        if((isPossible=isMakingMinePossible())!=null)
+        {
+            return isPossible;
+        }
+        int duration;
+        switch(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName())
+        {
+            case "Jungle":
+                duration=13;
+                break;
+            case "Forest":
+                duration=10;
+                break;
+            case "Marsh":
+                duration=12;
+                break;
+            default:
+                duration=6;
+                break;
+        }
+        
+        TimeVariantProcess addNew=new TimeVariantProcess(duration,turn, UnitController.getSelectedUnit().getCurrentHex(), "Farm",null);
+        currentPlayer.addTimeVariantProcesses(addNew);
+        return "process for building a farm successfully started";   
+    }
+
+    private static String isMakingFarmPossible(Hex hex)
+    {
+        
+        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a Worker first";
+        }
+       
+        if(hex.getFeature().getName().equals("Ice"))
+        {
+            return "you can not make a Farm on Ice";
+        }
+
+        return null;
+    }
+
+
+    public static String startBuildFarm()
+    {
+        Hex hex=UnitController.getSelectedUnit().getCurrentHex();
+        String isPossible;
+        if((isPossible=isMakingFarmPossible(hex))!=null)
+        {
+            return isPossible;
+        }
+        int duration;
+        switch(hex.getFeature().getName())
+        {
+            case "Jungle":
+                duration=10;
+                break;
+            case "Forest":
+                duration=13;
+                break;
+            case "Marsh":
+                duration=12;
+                break;
+            default:
+                duration=6;
+                break;
+        }
+        
+        TimeVariantProcess addNew=new TimeVariantProcess(duration,turn, UnitController.getSelectedUnit().getCurrentHex(), "Farm",null);
+        currentPlayer.addTimeVariantProcesses(addNew);
+        return "process for building a farm successfully started";
+    }
+
+    public static void makeFarm(TimeVariantProcess process)
+    {
+        process.getHex().setImprovement(process.getName());
+        if(process.getHex().getFeature().getName().equals("Farm||Jungle||Forest"))
+        {
+            process.getHex().setFeature(null);
+        }
+        process.getHex().getCity().increaseFood(1);
+
+    }
+
+    public static void makeMine(TimeVariantProcess process)
+    {
+        process.getHex().setImprovement(process.getName());
+        if(process.getHex().getFeature().getName().equals("Farm||Jungle||Forest"))
+        {
+            process.getHex().setFeature(null);
+        }
+        process.getHex().getCity().increaseProduction(1);
+
+    }
+
+    public static void checkTimeVariantProcesses()
+    {
+        
+        for(TimeVariantProcess process: currentPlayer.getTimeVariantProcesses())
+        {
+            if(turn-process.getBeginningTurn()==process.getDuration())
+            {
+                if(process.getName().equals("Farm"))
+                {
+                    makeFarm(process);
+                }else if(process.getName().equals("Mine"))
+                {
+                    makeMine(process);
+                }else{
+                    CityController.makeUnit(process.getType(), process.getName(),process.getHex());;
+                }
+                currentPlayer.getTimeVariantProcesses().remove(process);
+            }
+        }
+        
+    }
+
+
 }

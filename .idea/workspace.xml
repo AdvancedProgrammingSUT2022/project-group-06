@@ -7,14 +7,12 @@
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="add happiness">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Civilian.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Civilian.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Melee.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Melee.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Military.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Military.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Ranged.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Ranged.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Settler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Settler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Worker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Worker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +65,7 @@
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="MavenProject" />
+      <module name="project-group-06" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,6 +98,8 @@
       <workItem from="1651227568193" duration="985000" />
       <workItem from="1651410722294" duration="3638000" />
       <workItem from="1651485409496" duration="169000" />
+      <workItem from="1651916400611" duration="1971000" />
+      <workItem from="1652067936418" duration="1787000" />
     </task>
     <task id="LOCAL-00001" summary="add happiness">
       <created>1651564842058</created>

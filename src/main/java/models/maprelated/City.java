@@ -32,15 +32,24 @@ public class City implements Combatable{
     private Player owner = null;
     private int hitPoint = 20;
     private  Hex capital;
+    private int trophy=0;
 
 
+    public int getTrophy()
+    {
+        return trophy;
+    }
+    public void setTrophy(int amount)
+    {
+        trophy=amount;
+    }
     public City(Player owner, String name, Hex beginingHex) {
         this.owner = owner;
         this.name = name;
         population = 1;
         food = 0;
         since = 0;
-        gold = 0;
+        gold = 40;
         production = 0;
         hexs.add(beginingHex);
         beginingHex.setOwner(owner);

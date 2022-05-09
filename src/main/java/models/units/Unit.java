@@ -7,6 +7,7 @@ import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
 import models.Player;
+import models.TimeVariantProcess;
 import models.maprelated.Hex;
 
 public class Unit implements Combatable
@@ -37,6 +38,7 @@ public class Unit implements Combatable
         range=Integer.parseInt(info[3]);
         MP=Integer.parseInt(info[4]);
         health=10;
+        state=UnitState.Sleep;
 
 
         String tech=info[6];
@@ -60,8 +62,12 @@ public class Unit implements Combatable
         }
 
 
-        units.add(this);
+        //units.add(this);
 
+    }
+    public static ArrayList<Unit> getUnits()
+    {
+        return units;
     }
 
     public int getCombatStrength() {

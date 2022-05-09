@@ -15,46 +15,56 @@ import models.units.Unit;
 import models.twopartyactions.Trade;
 
 public class Player {//-currentProject
-    private static ArrayList<String> technologies=new ArrayList<String>();
+    private static ArrayList<String> technologies = new ArrayList<String>();
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
 
-    private int gold=1000000;
+    private int gold = 89;
     private int happiness;
     private int production;
     private int food;
     private int trophies;
     private int population;
-    private ArrayList<Unit> units;
-    private ArrayList<City> cities;
+    private ArrayList<Unit> units = new ArrayList<Unit>();
+    private ArrayList<City> cities = new ArrayList<City>();
     private int score;
-    private ArrayList<Trade> trades;
-    private ArrayList<String> notifications;
-    private ArrayList<Combat> combats;
-    private ArrayList<Military> militaries;
-    private ArrayList<Civilian> civilians;
+    private ArrayList<Trade> trades = new ArrayList<Trade>();
+    private ArrayList<String> notifications = new ArrayList<String>();
+    private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
+    private ArrayList<Combat> combats = new ArrayList<Combat>();
+    private ArrayList<Military> militaries = new ArrayList<Military>();
+    private ArrayList<Civilian> civilians = new ArrayList<Civilian>();
     private String name;
+    private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
 
-    public HashMap<String,Boolean> getAchievedTechnologies()
-    {
+
+    public void addTimeVariantProcesses(TimeVariantProcess addNew) {
+        timeVariantProcesses.add(addNew);
+    }
+
+
+    public ArrayList<TimeVariantProcess> getTimeVariantProcesses() {
+        return timeVariantProcesses;
+    }
+
+    public HashMap<String, Boolean> getAchievedTechnologies() {
         return achievedTechnologies;
     }
 
-    
-    public static void setTechnologies(ArrayList<String> set)
-    {
-        technologies=set;
+
+    public static void setTechnologies(ArrayList<String> set) {
+        technologies = set;
     }
 
-    public void addToRevealedHexes(Hex hex){
+    public void addToRevealedHexes(Hex hex) {
         hex.setState(HexState.Revealed, this);
         //todo: rest of hex fields
-        Hex hexCopy = new Hex(hex.getX(),hex.getY(),hex.getTerrain(),hex.getFeature());
-        reveledHexes.put(hex,hexCopy);
+        Hex hexCopy = new Hex(hex.getX(), hex.getY(), hex.getTerrain(), hex.getFeature());
+        reveledHexes.put(hex, hexCopy);
     }
 
-    public  HashMap<Hex, Hex> getReveledHexes() {
+    public HashMap<Hex, Hex> getReveledHexes() {
         return reveledHexes;
     }
 
@@ -66,8 +76,7 @@ public class Player {//-currentProject
         //todo: later should be calculated based on game difficulty
         this.happiness = 10;
         InitializeGameInfo.getPlayers().add(this);
-        for(String temp:technologies)
-        {
+        for (String temp : technologies) {
             achievedTechnologies.put(temp, false);
         }
     }
@@ -198,6 +207,14 @@ public class Player {//-currentProject
 
     public ArrayList<String> getNotifications() {
         return this.notifications;
+    }
+
+    public ArrayList<Integer> getNotificationsTurns() {
+        return this.notificationsTurns;
+    }
+
+    public void setNotificationsTurns(int turn) {
+        notificationsTurns.add(turn);
     }
 
     public void addNotifications(String notification) {
