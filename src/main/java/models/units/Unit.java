@@ -29,8 +29,10 @@ public class Unit implements Combatable , Construction
     protected String neededResource;
     protected Player owner;
     //todo: set combat type
-  
+
     protected String combatType;
+
+    protected boolean isFirstFortify = true;
 
     int leftTurns;
 
@@ -46,7 +48,7 @@ public class Unit implements Combatable , Construction
     {
         return backUpMP;
     }
-  
+
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
@@ -110,6 +112,14 @@ public class Unit implements Combatable , Construction
         }
 
     }
+    public boolean isFirstFortify() {
+        return isFirstFortify;
+    }
+
+    public void setFirstFortify(boolean firstFortify) {
+        isFirstFortify = firstFortify;
+    }
+
     public static ArrayList<Unit> getUnits()
     {
         return units;
@@ -244,12 +254,12 @@ public class Unit implements Combatable , Construction
     @Override
     public void zeroMpWorker() {
         // TODO Auto-generated method stub
-        
+
     }
     @Override
     public Unit getWorker() {
         // TODO Auto-generated method stub
         return null;
     }
-   
+
 }

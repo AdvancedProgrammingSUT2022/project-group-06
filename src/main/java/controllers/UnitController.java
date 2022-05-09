@@ -14,6 +14,8 @@ import models.units.Siege;
 import models.units.Unit;
 import models.units.Worker;
 
+import java.util.Objects;
+
 import static controllers.GameController.*;
 
 public class UnitController {
@@ -117,7 +119,7 @@ public class UnitController {
 
         for (int j = 0; j < 7; j++) {
             x = x + direction[j][0];
-            y = y + direction[j][0];
+            y = y + direction[j][1];
             for (int i = 0; i < 7; i++) {
                 if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
                     hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
@@ -218,21 +220,26 @@ public class UnitController {
         return "siege is ready now";
     }
     public static String fortify(){
-        if(selectedUnit == null) return "you did not select a unit";
-        if(selectedUnit.getCombatType() == "Mounted") return "a Mounted unit can not fortify";
-        if(selectedUnit.getCombatType() == "Armored") return "a Armored unit can not fortify";
-
+        if(selectedUnit == null || selectedUnit instanceof Civilian) return "you did not select a military unit";
+        if(Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
+        if(Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
+        selectedUnit.setState(UnitState.Fortified);
         return "fortified successfully";
     }
-    public static String garrison(int x, int y){
-        if(hex[x][y].getCapital() == null){
-            System.out.println("there is no capital");
-        }if(hex[x][y].getOwner() != currentPlayer){
-            System.out.println("this is not your city");
+
+    public static String garrison(){
+        if(selectedUnit == null || selectedUnit instanceof Civilian) {
+            return "you did not select a military unit";
+        }if(selectedUnit.getCurrentHex().getCapital() == null){
+            return "there is no capital";
+        }if(selectedUnit.getCurrentHex().getOwner() != currentPlayer){
+            return ("this is not your city");
         }
         return "garrisoned successfully";
     }
+
     public static String alert(){
+        selectedUnit.setState(UnitState.Alert);
         return "alerted successfully";
     }
     public static void deleteUnit(int x, int y){
@@ -248,13 +255,16 @@ public class UnitController {
         return "successfully sleep";
     }
     public static String wakeUpUnit(){
-        if(selectedUnit.getState() == UnitState.Sleep){
+        if(selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert){
             selectedUnit.setState(UnitState.Active);
             return "successfully waked up";
         }
         return "unit is already awake";
     }
     public static String pillage(){
+        if(selectedUnit == null) return "select a military unit first";
+        if(selectedUnit instanceof Civilian)return "selected unit is a civilian";
+        selectedUnit.getCurrentHex().setPillaged(true);
         return "pillaged successfully";
     }
 }

@@ -39,7 +39,17 @@ public class Improvement implements Construction {
     public void build() {
         zeroMpWorker();
         switch(name)
-        {
+        {   case "remove jungle":
+            case "remove forest":
+            case "remove marsh":
+                deleteFeature();
+                break;
+            case "remove road":
+                removeRoad();
+                break;
+            case "repair":
+                repair();
+                break;
             case "Farm":
                 makeFarm();
                 break;
@@ -54,16 +64,16 @@ public class Improvement implements Construction {
                 break;
             case "Lumber":
                 makeLumber();
-                break;     
+                break;
             case "Camp":
                 makeCamp();
                 break;
             case "Plantation":
                 makePlantation();
-                break;           
+                break;
             case "Quarry":
                 makeQuarry();
-                break;    
+                break;
             case "Factory":
                 makeFactory();;
                 break;
@@ -90,6 +100,20 @@ public class Improvement implements Construction {
         hex.addImprovement(this);
 
     }
+
+    private void repair() {
+        hex.setPillaged(false);
+    }
+
+    private void removeRoad() {
+        hex.setHasRailRoad(false);
+        hex.setHasRoad(false);
+    }
+
+    private void deleteFeature() {
+        hex.setFeature(null);
+    }
+
     private void makeFarm()
     {
         hex.getCity().increaseFood(1);
@@ -102,7 +126,7 @@ public class Improvement implements Construction {
         {
             hex.getCity().increaseFood(hex.getResource().getFood());
         }
-        
+
 
     }
 
@@ -114,7 +138,7 @@ public class Improvement implements Construction {
         {
             hex.setFeature(null);
         }
-       
+
         if(hex.getResource()!=null)
         {
             if(hex.getResource().getName().equals("Gems||Gold||Silver"))
@@ -126,7 +150,7 @@ public class Improvement implements Construction {
                 hex.getCity().increaseProduction(hex.getResource().getProduction());
             }
         }
-       
+
 
     }
 
@@ -173,7 +197,7 @@ public class Improvement implements Construction {
     private void makeQuarry()
     {
         hex.addImprovement(this);
-        
+
         if(hex.getResource()!=null&&hex.getResource().getName().equals("Marble"))
         {
             hex.getCity().increaseGold(hex.getResource().getGold());
@@ -202,9 +226,9 @@ public class Improvement implements Construction {
     public void zeroMpWorker() {
         worker.setBackUpMp(worker.getMP());
         worker.setMP(0);
-        
+
     }
 
     
- 
+
 }

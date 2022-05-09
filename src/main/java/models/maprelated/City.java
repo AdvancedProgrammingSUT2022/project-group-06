@@ -2,6 +2,7 @@ package models.maprelated;
 
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import controllers.CityController;
 import controllers.CombatController;
@@ -59,6 +60,9 @@ public class City implements Combatable {
         beginingHex.setCapital(this);
         health = 20;
         this.numberOfUnemployedCitizen = 0;
+        if(Objects.equals(this.capital.getTerrain().getName(), "Hills")){
+            hitPoint += 3;
+        }
     }
 
     public void setOwner(Player owner) {

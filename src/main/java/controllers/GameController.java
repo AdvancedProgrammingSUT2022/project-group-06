@@ -439,17 +439,40 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        //reset unit actions
+        //reset unit MP
         return "Turn changed successfully";
     }
 
     private static String unitActions() {
         for (Military military : currentPlayer.getMilitaries()) {
             if (!(military.getState()== UnitState.Sleep) && military.getMP() != 0) {
-                return "unit in " + military.getX() + "," + military.getY() + "coordenates needs order";
+                if(military.getState()== UnitState.Alert){
+                    if(enemyIsNear(getDirection(military.getY()),military.getX(),military.getY()))return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
+                }else
+                    return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
+            }
+        }
+        for (Civilian civilian : currentPlayer.getCivilians()) {
+            if (!(civilian.getState()== UnitState.Sleep) && civilian.getMP() != 0) {
+                return "unit in " + civilian.getX() + "," + civilian.getY() + "coordinates needs order";
             }
         }
         return null;
+    }
+
+    private static boolean enemyIsNear(int[][] direction, int x,int y) {
+        for (int j = 0; j < direction.length; j++) {
+            x = x + direction[j][0];
+            y = y + direction[j][1];
+            for (int i = 0; i < direction.length; i++) {
+                if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
+                    if(hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit()!=null&&
+                       hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit().getOwner()!= currentPlayer);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static boolean isOutOfBounds(int x, int y) {
@@ -556,14 +579,14 @@ public class GameController {
             economicInfo.append("\\t\\tgold "+temp.getGold()+"\n");
             economicInfo.append("\\t\\ttrophy: "+temp.getTrophy()+"\n");
             economicInfo.append("\\t\\tproduction: "+temp.getProduction()+"\n");
-            
+
             for(Construction construction:currentPlayer.getUnfinishedProjects())
             {
                 if(construction.getHex().getCity().getName().equals(temp.getName()))
                 {
                     economicInfo.append("\\t\\tpending project: "+construction.getName()+"-> turn left: "+construction.getLeftTurns()+"\n");
                 }
-                
+
             }
 
         }
@@ -588,13 +611,10 @@ public class GameController {
         {
             return "you can not make a Mine on this tile";
         }
-
-
         return null;
     }
     public static String startBuildMine()
     {
-        
 
         String isPossible;
         if((isPossible=isMakingMinePossible())!=null)
@@ -603,8 +623,8 @@ public class GameController {
         }
         Improvement Mine=new Improvement("Mine",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
         String type= UnitController.getSelectedUnit().getCurrentHex().getFeature().getName();
-       
-       
+
+
         if(type.equals("Jungle")){
             Mine.setLeftTurns(13);
         }else if(type.equals("Forest")){
@@ -614,7 +634,7 @@ public class GameController {
         }else{
             Mine.setLeftTurns(6);
         }
-       
+
         currentPlayer.addUnfinishedProject(Mine);
         return "process for building a Mine successfully started";
     }
@@ -650,8 +670,8 @@ public class GameController {
         }
 
         Improvement Farm=new Improvement("Farm",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
-       
-       
+
+
         String type=UnitController.getSelectedUnit().getCurrentHex().getFeature().getName();
 
         if(type.equals("Jungle")){
@@ -663,13 +683,76 @@ public class GameController {
         }else{
             Farm.setLeftTurns(6);
         }
-      
+
 
         currentPlayer.addUnfinishedProject(Farm);
         return "process for building a farm successfully started";
 
     }
+    public static String removeError(String name) {
+        if(!(UnitController.getSelectedUnit() instanceof Worker)){
+            return "choose a worker";
+        }
+        if(!Objects.equals(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName(), name)) return "this tile dont have"+name;
+        return null;
+    }
 
+    public static String removeJungle() {
+        String error;
+        if((error = removeError("Jungle"))!= null){
+            return error;
+        }Improvement delete =new Improvement("remove jungle",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        delete.setLeftTurns(7);
+        currentPlayer.addUnfinishedProject(delete);
+        return "process for deleting a jungle successfully started";
+    }
+
+    public static String removeForest() {
+        String error;
+        if((error = removeError("forest"))!= null){
+            return error;
+        }
+        Improvement delete =new Improvement("remove forest",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        delete.setLeftTurns(4);
+        currentPlayer.addUnfinishedProject(delete);
+        return "process for deleting a forest successfully started";
+    }
+
+    public static String removeMarsh() {
+        String error;
+        if((error = removeError("Marsh"))!= null){
+            return error;
+        }Improvement delete =new Improvement("remove marsh",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        delete.setLeftTurns(6);
+        currentPlayer.addUnfinishedProject(delete);
+        return "process for deleting a marsh successfully started";
+    }
+
+    public static String removeRailRoad() {
+        if(!(UnitController.getSelectedUnit() instanceof Worker)){
+            return "choose a worker";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().hasRailRoad() || !UnitController.getSelectedUnit().getCurrentHex().hasRoad()) {
+            return "this tile dont have road or railroad";
+        }
+        Improvement delete =new Improvement("remove road",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        delete.setLeftTurns(7);
+        currentPlayer.addUnfinishedProject(delete);
+        return "process for deleting a road successfully started";
+    }
+
+    public static String repair() {
+        if(!(UnitController.getSelectedUnit() instanceof Worker)){
+            return "choose a worker";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().isPillaged()) {
+            return "this tile is not pillaged";
+        }
+        Improvement repair =new Improvement("repair",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        repair.setLeftTurns(3);
+        currentPlayer.addUnfinishedProject(repair);
+        return "process repairing started";
+    }
     public static String startMakeingTradingPost()
     {
         if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
@@ -712,7 +795,7 @@ public class GameController {
         Improvement lumber=new Improvement("lumber", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         lumber.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(lumber);
-        return "process for building a Lumber Mill started";   
+        return "process for building a Lumber Mill started";
     }
 
     public static String makingPasture()
@@ -737,7 +820,7 @@ public class GameController {
         Improvement Pasture=new Improvement("Pasture", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         Pasture.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(Pasture);
-        return "process for building a Pasture started";   
+        return "process for building a Pasture started";
     }
     public static String makingCamp()
     {
@@ -761,9 +844,9 @@ public class GameController {
         Improvement camp=new Improvement("camp", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         camp.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(camp);
-        return "process for building a camp started";   
+        return "process for building a camp started";
     }
-   
+
     public static String makePlantation()
     {
         if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
@@ -775,7 +858,7 @@ public class GameController {
         {
             return "you can not have two Improvements in one tile";
         }
-       
+
         Improvement plantation=new Improvement("Plantation",UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         plantation.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(plantation);
@@ -825,7 +908,7 @@ public class GameController {
             if(process.getLeftTurns()==0)
             {
                 process.getWorker().setMP(process.getWorker().getBackUpMp());
-    
+
                 if(process instanceof Unit)
                 {
                     UnitController.makeUnit(process.getName(), process.getHex());
@@ -859,7 +942,7 @@ public class GameController {
         demographics.append("total number of military units: "+currentPlayer.getMilitaries().size()+"\n");
         demographics.append("total number of civilian units: "+currentPlayer.getCivilians().size()+"\n");
         demographics.append("population: "+currentPlayer.getPopulation());
-        
+
 
 
 
@@ -877,7 +960,7 @@ public class GameController {
         for(Construction construction: currentPlayer.getUnfinishedProjects())
         {
 
-            
+
             if(construction.getHex().equals(GameController.getSelectedHex()))
             {
                 currentPlayer.getUnfinishedProjects().remove(construction);
@@ -915,5 +998,5 @@ public class GameController {
 
 
 
-     
+
 }
