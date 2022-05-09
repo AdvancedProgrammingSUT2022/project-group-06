@@ -2,12 +2,14 @@ package controllers;
 
 import enums.HexState;
 import enums.TerrainNames;
+import enums.UnitState;
 import models.Player;
 import models.maprelated.Hex;
 import models.units.Civilian;
 import models.units.Military;
 import models.units.Ranged;
 import models.units.Settler;
+import models.units.Siege;
 import models.units.Unit;
 import models.units.Worker;
 
@@ -29,7 +31,11 @@ public class UnitController {
     }
 
     public static boolean hasMilitary(int x, int y) {
+        // TODO: ask traneh why??
+        return GameController.getWorld().getHex()[x][y].getMilitaryUnit() != null;
+/*
         return GameController.getMilitaryByLocation(x, y) != null;
+*/
     }
 
     public static boolean hasCivilian(int x, int y) {
@@ -188,11 +194,57 @@ public class UnitController {
                 break;
             case "Archery":
                 Ranged newRanged=new Ranged(name, hex, currentPlayer);
-                newRanged.build();    
+                newRanged.build();
         }
-   
-        
-        
-        
+
+
+
+
+    }
+    public static String setUpSiegeForRangeAttack(){
+        if(selectedUnit == null) return "you did not select a unit";
+        if(! (selectedUnit instanceof Siege)) return "selected unit is not a siege";
+        ((Siege)selectedUnit).setReadyToAttack(true);
+        return "siege is ready now";
+    }
+    public static String fortify(){
+        if(selectedUnit == null) return "you did not select a unit";
+        if(selectedUnit.getCombatType() == "Mounted") return "a Mounted unit can not fortify";
+        if(selectedUnit.getCombatType() == "Armored") return "a Armored unit can not fortify";
+
+        return "fortified successfully";
+    }
+    public static String garrison(int x, int y){
+        if(hex[x][y].getCapital() == null){
+            System.out.println("there is no capital");
+        }if(hex[x][y].getOwner() != currentPlayer){
+            System.out.println("this is not your city");
+        }
+        return "garrisoned successfully";
+    }
+    public static String alert(){
+        return "alerted successfully";
+    }
+    public static void deleteUnit(int x, int y){
+        //todo: ask is any list of unit to remove
+        hex[x][y].setMilitaryUnit(null);
+        selectedUnit = null;
+    }
+    public static String sleepUnit(){
+        if(selectedUnit.getState() == UnitState.Sleep){
+            return "unit is already sleep";
+        }
+        selectedUnit.setState(UnitState.Sleep);
+        return "successfully sleep";
+    }
+    public static String wakeUpUnit(){
+        if(selectedUnit.getState() == UnitState.Sleep){
+            selectedUnit.setState(UnitState.Active);
+            return "successfully waked up";
+        }
+        return "unit is already awake";
+    }
+    public static String pillage(){
+        return "pillaged successfully";
     }
 }

@@ -7,5 +7,4 @@ public enum UnitState
     Alert(),
     Fortified(),
     Garrisoned();
-        
 }

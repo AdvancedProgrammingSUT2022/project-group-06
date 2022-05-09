@@ -109,10 +109,7 @@ public class InitializeGameInfoTest {
                         result = false;
                     }
                 }else if(Objects.equals(terrain.getName(), "Jungle")){
-                    if(hexes[i][j].getFeature() != null ||!Objects.equals(hexes[i][j].getFeature().getName(), "Grassland")||
-                            !Objects.equals(hexes[i][j].getFeature().getName(), "Tundra")||
-                            !Objects.equals(hexes[i][j].getFeature().getName(), "Plain")||
-                            !Objects.equals(hexes[i][j].getFeature().getName(), "Hills")){
+                    if(hexes[i][j].getFeature() != null ||!hexes[i][j].getFeature().getName().matches("Grassland|Tundra|Plain|Hills")){
                         result = false;
                     }
                 }else if(Objects.equals(terrain.getName(), "Marsh")){

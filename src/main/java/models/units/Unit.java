@@ -9,6 +9,7 @@ import enums.UnitType;
 import models.Player;
 import models.gainable.Construction;
 
+import models.maprelated.City;
 import models.maprelated.Hex;
 
 public class Unit implements Combatable , Construction
@@ -26,9 +27,11 @@ public class Unit implements Combatable , Construction
     protected String neededTech;
     protected String neededResource;
     protected Player owner;
+    //todo: set combat type
+    private String combatType;
 
     int leftTurns;
-    
+
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
@@ -46,7 +49,7 @@ public class Unit implements Combatable , Construction
 
     @Override
     public void build() {
-        
+
 
     }
 
@@ -55,8 +58,7 @@ public class Unit implements Combatable , Construction
     {
         return currentHex;
     }
-
-    public Unit(String name,Hex hex, Player owner) 
+    public Unit(String name,Hex hex, Player owner)
     {
         this.owner = owner;
         this.name=name;
@@ -68,7 +70,6 @@ public class Unit implements Combatable , Construction
         range=Integer.parseInt(info[3]);
         MP=Integer.parseInt(info[4]);
         health=10;
-        state=UnitState.Sleep;
 
 
         String tech=info[6];
@@ -91,13 +92,20 @@ public class Unit implements Combatable , Construction
             neededResource=resource;
         }
 
-
-        //units.add(this);
-
     }
     public static ArrayList<Unit> getUnits()
     {
         return units;
+    }
+
+    public String getCombatType() {
+        return combatType;
+    }
+
+    public int calculateCombatModifier(Combatable defender) {
+        int changes = 0;
+        changes += 100 + this.currentHex.getTerrain().getCombatModifiersPercentage();
+        return this.combatStrength * changes/100;
     }
 
     public int getCombatStrength() {
@@ -120,11 +128,6 @@ public class Unit implements Combatable , Construction
     {
         return cost;
     }
-
-    public Unit(String name, int speed, int militaryPower, UnitType type2, int maxDistance, Player owner) {
-    }
-
-
 
     public int getHealth() {
         return this.health;
@@ -150,7 +153,9 @@ public class Unit implements Combatable , Construction
     public UnitState getState() {
         return this.state;
     }
-
+    public void setState(UnitState state){
+        this.state = state;
+    }
     public void changeUnitState(UnitState state) {
         this.state = state;
     }

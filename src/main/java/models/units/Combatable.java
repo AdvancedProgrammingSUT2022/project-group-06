@@ -4,7 +4,7 @@ import models.Player;
 import models.maprelated.Hex;
 
 public interface Combatable {
-    public Player getOwner();
+    Player getOwner();
 
     String attack(Combatable defender);
 

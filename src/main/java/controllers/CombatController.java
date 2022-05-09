@@ -5,12 +5,15 @@ import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Combatable;
 import models.units.Ranged;
+import models.units.Siege;
 import models.units.Unit;
 import views.GameMenu;
 
 public class CombatController {
     private static Unit selectedUnit = UnitController.getSelectedUnit();
     private static Hex[][] hex = GameController.getWorld().getHex();
+    private static Combatable attacker;
+    private static Combatable defender;
 
     public static Hex[][] getHex() {
         return hex;
@@ -18,8 +21,7 @@ public class CombatController {
 
     public static String attackUnit(int x, int y) {
         City defenderCity = hex[x][y].getCapital();
-        Combatable attacker = selectedUnit;
-        Combatable defender;
+        attacker = selectedUnit;
         if (defenderCity != null) {
             defender = defenderCity;
         } else if (hex[x][y].getMilitaryUnit() != null) {
@@ -30,16 +32,19 @@ public class CombatController {
             return "there is no city or unit to attack";
         if (defender.getOwner() == attacker.getOwner()) return "you can not attack to your self";
 
-        if(attacker.isInPossibleCombatRange(x, y,0, attacker.getX(), attacker.getY())){
+        if(!attacker.isInPossibleCombatRange(x, y,0, attacker.getX(), attacker.getY())){
             return "out of sight range";
         }
-        attacker.attack(defender);
-        defender.defend(attacker);
+/*        attacker.attack(calculateCombatModifier());
+        defender.defend(calculateCombatModifier());*/
         return  handelCombatType(defenderCity, x, y);
     }
 
     private static String handelCombatType(City defenderCity, int x, int y){
         if (selectedUnit instanceof Ranged) {
+            if(selectedUnit instanceof Siege){
+                if(!((Siege) selectedUnit).isReadyToAttack()) return "siege unit is not ready";
+            }
             if (defenderCity != null) {
                 return rangedCityCombat(defenderCity);
             } else if (hex[x][y].getMilitaryUnit() != null) {
@@ -48,7 +53,9 @@ public class CombatController {
                 return RangedToCivilianCombat(x, y);
             }
         } else {
-            if (defenderCity!= null) return meleeCityCombat(defenderCity);
+            if (defenderCity!= null) {
+                return meleeCityCombat(defenderCity);
+            }
             else if(hex[x][y].getMilitaryUnit() != null) {
                 return meleeUnitCombat(x, y);
             }else if(hex[x][y].getCivilianUnit() != null) {
@@ -66,14 +73,17 @@ public class CombatController {
     }
 
     private static String meleeCityCombat(City city) {
+//        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         //handel tile train and feature
-        int unitStrength = selectedUnit.getCombatStrength() * selectedUnit.getCurrentHex().getTerrain().getCombatModifiersPercentage();
+        int unitStrength = selectedUnit.calculateCombatModifier(city);
         //todo: assarat asib
         //todo : garisson saze defaie tapedivar & tape
+//        System.out.println(unitStrength);
         city.decreaseHitPoint(unitStrength);
         selectedUnit.decreaseHealth(city.getMeleeDefensivePower());
+//        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         if (selectedUnit.getHealth() <= 0) {
-            killUnit();
+            UnitController.deleteUnit(selectedUnit.getX(),selectedUnit.getY());
             return "you lose the battle unit is death";
         }
         if (city.getHitPoint() <= 0) {
@@ -83,20 +93,19 @@ public class CombatController {
         return "attack is done";
     }
 
-    private static void killUnit() {
-
-    }
-
     private static String rangedCityCombat(City city) {
-        if (city.getHitPoint() == 1) return "you can not attack to this city";
+        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
+        if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
         // handel tile train and feature
-        int unitStrength = selectedUnit.getRangedStrength() * selectedUnit.getCurrentHex().getTerrain().getCombatModifiersPercentage();
+        int unitStrength = selectedUnit.calculateCombatModifier(city);
+        System.out.println(unitStrength);
         //todo: assarat asib
         //todo : garisson saze defaie tape divar padeganNezami and tape??
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
             city.setHitPoint(1);
         }
+        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         return "attack is done";
     }
 
@@ -110,7 +119,8 @@ public class CombatController {
 
     public static void addCityToTerritory(City city, Player player) {
         city.setOwner(player);
-        //todo: check correction
+        //todo: check correction : yanni nemikad dige kar dige ba azafe kardan be teritory kard?
+        //todo : ask if any list of city for player
         city.setHitPoint(0);
     }
 }
