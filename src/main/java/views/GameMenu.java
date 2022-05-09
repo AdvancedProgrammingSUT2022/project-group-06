@@ -119,6 +119,7 @@ public class GameMenu extends Menu {
             System.out.println("There is no military unit in this hex");
         else {
             UnitController.setSelectedUnit(GameController.getMilitaryByLocation(x, y));
+
             System.out.println("The military unit was selected successfully");
         }
     }

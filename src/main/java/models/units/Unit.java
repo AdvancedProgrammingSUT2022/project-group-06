@@ -7,6 +7,7 @@ import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
 import models.Player;
+import models.maprelated.City;
 import models.maprelated.Hex;
 
 public class Unit implements Combatable
@@ -24,7 +25,9 @@ public class Unit implements Combatable
     private String neededTech;
     private String neededResource;
     private Player owner;
-
+    private boolean isSleep = false;
+    //todo: set combat type
+    private String combatType;
     public Unit(String name,Hex hex, Player owner)
     {
         this.owner = owner;
@@ -64,6 +67,25 @@ public class Unit implements Combatable
 
     }
 
+    public String getCombatType() {
+        return combatType;
+    }
+
+
+    public boolean isSleep() {
+        return isSleep;
+    }
+
+    public void setSleep(boolean sleep) {
+        isSleep = sleep;
+    }
+
+    public int calculateCombatModifier(Combatable defender) {
+        int changes = 0;
+        changes += 100 + this.currentHex.getTerrain().getCombatModifiersPercentage();
+        return this.combatStrength * changes/100;
+    }
+
     public int getCombatStrength() {
         return combatStrength;
     }
@@ -84,11 +106,6 @@ public class Unit implements Combatable
     {
         return cost;
     }
-
-    public Unit(String name, int speed, int militaryPower, UnitType type2, int maxDistance, Player owner) {
-    }
-
-
 
     public int getHealth() {
         return this.health;

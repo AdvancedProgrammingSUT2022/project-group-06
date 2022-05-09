@@ -123,14 +123,10 @@ public class CityController {
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
-
-
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
         if (currentPlayer.getGold() < newUnit.getCost()) {
             return "you don't have enough money";
         }
-
-
         if (type.equals("Civilian")) {
             Civilian newCivilian = new Civilian(name, GameController.getSelectedHex(), currentPlayer);
             GameController.getSelectedHex().setCivilianUnit(newCivilian);
@@ -177,6 +173,11 @@ public class CityController {
         if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
         UnitController.setSelectedUnit(null);
+        if(UnitController.getSelectedUnit() == null){
+            System.out.println("f");
+        }else if(UnitController.getSelectedUnit().getCurrentHex() == null){
+            System.out.println("u");
+        }
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setOwner(currentPlayer);
         currentPlayer.addCity(newCity);

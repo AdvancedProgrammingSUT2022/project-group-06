@@ -6,10 +6,7 @@ import models.Player;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
-import models.units.Civilian;
-import models.units.Combatable;
-import models.units.Military;
-import models.units.Unit;
+import models.units.*;
 
 import java.util.*;
 
@@ -72,12 +69,21 @@ public class GameController {
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
-        /*City city = new City(players.get(0),"Asemaneh",world.getHex()[0][0]);
-        world.getHex()[0][0].setCity(city);
-        world.getHex()[0][0].setState(HexState.Visible, currentPlayer);
+        City city = makeCityForTesting(0, 0);
         city.addHex(world.getHex()[0][1]);
-        world.getHex()[0][1].setState(HexState.Visible, currentPlayer);*/
+        makeCityForTesting(0, 4);
+        makeCityForTesting(1, 2);
+        world.getHex()[0][1].setState(HexState.Visible, currentPlayer);
+        Ranged Archer = new Ranged("Archer", world.getHex()[1][0], players.get(0));
+        world.getHex()[1][0].setMilitaryUnit(Archer);
+        world.getHex()[1][0].setState(HexState.Visible, currentPlayer);
+    }
 
+    private static City makeCityForTesting(int x, int y) {
+        City city = new City(players.get(1), "Asemaneh", world.getHex()[x][y]);
+        world.getHex()[x][y].setCity(city);
+        world.getHex()[x][y].setState(HexState.Visible, currentPlayer);
+        return city;
     }
 
     private static void removeOwnerOfHexes() {
@@ -181,15 +187,15 @@ public class GameController {
 
     private static void drawHexDetails(int align, int minI, int minJ, String[][] string, Hex hex, String color) {
         //string[minI + 1 + align][minJ + 6] = color + "\033[0;33m" + "A" + Color.ANSI_RESET.getCharacter();
-        if (hex.getOwner() != null){
+        if (hex.getOwner() != null) {
             Color playerColor = InitializeGameInfo.getPlayerColor().get(hex.getOwner().getName());
             char cityName;
-            if(hex.getCapital() != null){
+            if (hex.getCapital() != null) {
                 cityName = hex.getCapital().getName().toUpperCase().charAt(0);
-            }else {
+            } else {
                 cityName = hex.getCity().getName().toLowerCase().charAt(0);
             }
-            string[minI + 1 + align][minJ + 6] =  "\033[0;33m" + playerColor.getCharacter()+ cityName + Color.ANSI_RESET.getCharacter();
+            string[minI + 1 + align][minJ + 6] = "\033[0;33m" + playerColor.getCharacter() + cityName + Color.ANSI_RESET.getCharacter();
         }
         if (hex.getCivilianUnit() != null) {
             Color unitColor = InitializeGameInfo.getPlayerColor().get(hex.getCivilianUnit().getOwner().getName());
@@ -327,21 +333,24 @@ public class GameController {
     }
 
     public static Military getMilitaryByLocation(int x, int y) {
-        List<Military> militaries = allMilitaries;
+        return GameController.getWorld().getHex()[x][y].getMilitaryUnit();
+        // TODO: 5/8/2022 ask traneh why
+/*        List<Military> militaries = allMilitaries;
         for (Military military : militaries) {
             if (military.getCurrentHex().getX() == x && military.getCurrentHex().getY() == y)
                 return military;
         }
-        return null;
+        return null;*/
     }
 
     public static Civilian getCiviliansByLocation(int x, int y) {
-        List<Civilian> civilians = allCivilians;
+        return world.getHex()[x][y].getCivilianUnit();
+        //todo : ask why?
+/*        List<Civilian> civilians = allCivilians;
         for (Civilian civilian : civilians) {
             if (civilian.getCurrentHex().getX() == x && civilian.getCurrentHex().getY() == y)
                 return civilian;
-        }
-        return null;
+        }*/
     }
 
     private static void heal() {
@@ -370,19 +379,32 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
+        String unitOrders = unitActions();
+        if(unitOrders != null)return unitOrders;
         turn++;
+        //reset
         return "Turn changed successfully";
+    }
+
+    private static String unitActions() {
+        for (Military military : currentPlayer.getMilitaries()) {
+            if (!military.isSleep() && military.getactions != 0) {
+                return "unit in " + military.getX() + "," + military.getY() + "coordenates needs order";
+            }
+        }
+        return null;
     }
 
     public static boolean isOutOfBounds(int x, int y) {
         return y >= world.getHexInWidth() || x >= world.getHexInHeight() || x < 0 || y < 0;
     }
 
-    public static int[][] getDirection(int y){
-        int[][] oddDirection = {{-1, 0}, {0, -1},{1, -1},{1, 0}, {1, 1}, {0, 1}};
+    public static int[][] getDirection(int y) {
+        int[][] oddDirection = {{-1, 0}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}};
         int[][] evenDirection = {{-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {0, 1}, {-1, 1}};
         return y % 2 == 1 ? oddDirection : evenDirection;
     }
+
     public static void unhappinessEffects() {
         //todo: stop city growth
         for (int i = 0; i < currentPlayer.getMilitaries().size(); i++) {
@@ -402,30 +424,24 @@ public class GameController {
     }
 
 
-
-    public static String cheatGold(int amount)
-    {
+    public static String cheatGold(int amount) {
         currentPlayer.increaseGold(amount);
         return "gold increased successfully";
     }
-    public static String cheatTurn(int amount)
-    {
-        turn+=amount;
+
+    public static String cheatTurn(int amount) {
+        turn += amount;
         return "turn increased successfully";
     }
 
-    public static String showResearchMenu()
-    {
-        StringBuilder research=new StringBuilder("");
+    public static String showResearchMenu() {
+        StringBuilder research = new StringBuilder("");
 
         currentPlayer.getAchievedTechnologies().forEach((key, value) -> {
-            research.append(key+" status: ");
-            if(value==false)
-            {
+            research.append(key + " status: ");
+            if (value == false) {
                 research.append("not achieved\n");
-            }
-            else
-            {
+            } else {
                 research.append("achieved\n");
             }
 
