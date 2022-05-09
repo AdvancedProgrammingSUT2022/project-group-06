@@ -76,8 +76,13 @@ public class CombatController {
 //        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         //handel tile train and feature
         int unitStrength = selectedUnit.calculateCombatModifier(city);
+        unitStrength = (selectedUnit.isFirstFortify()) ? unitStrength*125/100 :unitStrength*150/100;
+        int cityStrength = city.getHitPoint();
         //todo: assarat asib
-        //todo : garisson saze defaie tapedivar & tape
+        //todo : saze defaie divar
+        if(city.getCapital().getMilitaryUnit() != null){
+            cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
+        }
 //        System.out.println(unitStrength);
         city.decreaseHitPoint(unitStrength);
         selectedUnit.decreaseHealth(city.getMeleeDefensivePower());
@@ -86,26 +91,29 @@ public class CombatController {
             UnitController.deleteUnit(selectedUnit.getX(),selectedUnit.getY());
             return "you lose the battle unit is death";
         }
-        if (city.getHitPoint() <= 0) {
+        if (cityStrength <= 0) {
             GameMenu.cityCombatMenu(city, selectedUnit.getOwner());
             return "done";
         }
+        selectedUnit.setMP(0);
         return "attack is done";
     }
 
     private static String rangedCityCombat(City city) {
-        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
+/*        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );*/
         if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
         // handel tile train and feature
         int unitStrength = selectedUnit.calculateCombatModifier(city);
-        System.out.println(unitStrength);
+        unitStrength = (selectedUnit.isFirstFortify()) ? unitStrength*125/100 :unitStrength*150/100;
+        /*        System.out.println(unitStrength);*/
         //todo: assarat asib
-        //todo : garisson saze defaie tape divar padeganNezami and tape??
+        //todo :saze defaie divar
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
             city.setHitPoint(1);
         }
-        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
+/*        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );*/
+        selectedUnit.setMP(0);
         return "attack is done";
     }
 

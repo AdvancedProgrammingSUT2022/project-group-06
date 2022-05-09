@@ -29,6 +29,7 @@ public class Hex {
     private City city = null;
     private boolean hasRoad;
     private boolean hasRailRoad;
+    private boolean isPillaged = false;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
     private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
 
@@ -148,6 +149,14 @@ public class Hex {
     public void addImprovement(Improvement improvement) {
         improvements.add(improvement);
         
+    }
+
+    public boolean isPillaged() {
+        return isPillaged;
+    }
+
+    public void setPillaged(boolean pillaged) {
+        isPillaged = pillaged;
     }
 
     public ArrayList<Improvement> getImprovement() {

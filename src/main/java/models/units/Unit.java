@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import controllers.GameController;
 import controllers.InitializeGameInfo;
 import enums.UnitState;
-import enums.UnitType;
 import models.Player;
 import models.gainable.Construction;
 
-import models.maprelated.City;
 import models.maprelated.Hex;
 
 public class Unit implements Combatable , Construction
@@ -22,6 +20,7 @@ public class Unit implements Combatable , Construction
     protected Hex currentHex;
     protected UnitState state;
     protected int MP;
+    protected int constantMP;
     protected String name;
     protected int cost;
     protected String neededTech;
@@ -29,6 +28,8 @@ public class Unit implements Combatable , Construction
     protected Player owner;
     //todo: set combat type
     private String combatType;
+
+    private boolean isFirstFortify = true;
 
     int leftTurns;
 
@@ -69,6 +70,7 @@ public class Unit implements Combatable , Construction
         rangedStrength=Integer.parseInt(info[2]);
         range=Integer.parseInt(info[3]);
         MP=Integer.parseInt(info[4]);
+        constantMP = MP;
         health=10;
 
 
@@ -93,6 +95,19 @@ public class Unit implements Combatable , Construction
         }
 
     }
+
+    public void setMP(int MP) {
+        this.MP = MP;
+    }
+
+    public boolean isFirstFortify() {
+        return isFirstFortify;
+    }
+
+    public void setFirstFortify(boolean firstFortify) {
+        isFirstFortify = firstFortify;
+    }
+
     public static ArrayList<Unit> getUnits()
     {
         return units;

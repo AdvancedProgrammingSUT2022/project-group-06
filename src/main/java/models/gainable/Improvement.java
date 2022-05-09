@@ -39,9 +39,35 @@ public class Improvement implements Construction {
                 break;
             case "Mine":
                 makeMine();
-                break;    
+                break;
+            case "remove jungle":
+            case "remove forest":
+            case "remove marsh":
+                deleteFeature();
+                break;
+            case "remove road":
+                removeRoad();
+                break;
+            case "repair":
+                repair();
+                break;
+
         }
     }
+
+    private void repair() {
+        hex.setPillaged(false);
+    }
+
+    private void removeRoad() {
+        hex.setHasRailRoad(false);
+        hex.setHasRoad(false);
+    }
+
+    private void deleteFeature() {
+        hex.setFeature(null);
+    }
+
     private void makeFarm()
     {
         hex.getCity().increaseFood(1);
