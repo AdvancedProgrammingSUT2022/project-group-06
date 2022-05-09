@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.mockito.internal.invocation.StubInfoImpl;
 
 import models.Player;
-import models.TimeVariantProcess;
+import models.gainable.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Civilian;

@@ -3,7 +3,11 @@ package controllers;
 import enums.Color;
 import enums.HexState;
 import models.Player;
-import models.TimeVariantProcess;
+import models.gainable.Building;
+import models.gainable.Construction;
+import models.gainable.Improvement;
+import models.gainable.Technology;
+import models.gainable.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
@@ -14,6 +18,7 @@ import models.units.Unit;
 import models.units.Worker;
 
 import java.net.URI;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.util.*;
 
 public class GameController {
@@ -30,6 +35,7 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Combatable> hurtElements;
+    private static ArrayList<Construction> unfinishedProjects;
 
     public static int getTurn()
     {
@@ -358,6 +364,33 @@ public class GameController {
         }
     }
 
+    public static void finishConstruction() {
+        for (Construction unfinishedProject : unfinishedProjects) {
+            unfinishedProject.decreaseLeftTurns();
+            if (unfinishedProject.getLeftTurns() == 0) {
+                if (unfinishedProject instanceof Building)
+                    finishBuilding();
+                else if (unfinishedProject instanceof Technology)
+                    achieveTechnology();
+                else if (unfinishedProject instanceof Improvement)
+                    finishImprovement();
+            }
+        }
+    }
+
+    public static void finishBuilding() {
+        //todo
+    }
+
+    public static void achieveTechnology(){
+        //todo
+    }
+
+    public static void finishImprovement() {
+        //todo
+    }
+
+
     public static String changeTurn() {
         if(playerCount==GameController.getPlayers().size()-1)
         {
@@ -366,7 +399,7 @@ public class GameController {
         }else{
             playerCount++;
         }
-        
+
         currentPlayer = GameController.getPlayers().get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
         int goldPerTurn=0;
@@ -381,6 +414,7 @@ public class GameController {
         //heal();
         //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
+        finishConstruction();
         //manage harekat chand nobati ye nobat bere jelo
         //handle siege units
         //hazine tamir O negahdari buldings
@@ -390,7 +424,7 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        
+
         return "Turn changed successfully";
     }
 
@@ -502,8 +536,8 @@ public class GameController {
             economicInfo.append("\\t\\tfood: "+temp.getFood()+"\n");
             economicInfo.append("\\t\\tgold "+temp.getGold()+"\n");
             economicInfo.append("\\t\\ttrophy: "+temp.getTrophy()+"\n");
-            //TODO add production 
-            
+            //TODO add production
+
         }
 
         return economicInfo.toString();
@@ -517,7 +551,7 @@ public class GameController {
         {
             return "select a Worker first";
         }
-       
+
         if(!currentPlayer.getAchievedTechnologies().get("Mining"))
         {
             return "you have not achieve the Mining technology yet";
@@ -553,20 +587,20 @@ public class GameController {
                 duration=6;
                 break;
         }
-        
+
         TimeVariantProcess addNew=new TimeVariantProcess(duration,turn, UnitController.getSelectedUnit().getCurrentHex(), "Farm",null);
         currentPlayer.addTimeVariantProcesses(addNew);
-        return "process for building a farm successfully started";   
+        return "process for building a farm successfully started";
     }
 
     private static String isMakingFarmPossible(Hex hex)
     {
-        
+
         if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
         {
             return "select a Worker first";
         }
-       
+
         if(hex.getFeature().getName().equals("Ice"))
         {
             return "you can not make a Farm on Ice";
@@ -600,7 +634,7 @@ public class GameController {
                 duration=6;
                 break;
         }
-        
+
         TimeVariantProcess addNew=new TimeVariantProcess(duration,turn, UnitController.getSelectedUnit().getCurrentHex(), "Farm",null);
         currentPlayer.addTimeVariantProcesses(addNew);
         return "process for building a farm successfully started";
@@ -608,7 +642,7 @@ public class GameController {
 
     public static void makeFarm(TimeVariantProcess process)
     {
-        process.getHex().setImprovement(process.getName());
+        process.getHex().addImprovement(process.getName());
         if(process.getHex().getFeature().getName().equals("Farm||Jungle||Forest"))
         {
             process.getHex().setFeature(null);
@@ -630,7 +664,7 @@ public class GameController {
 
     public static void checkTimeVariantProcesses()
     {
-        
+
         for(TimeVariantProcess process: currentPlayer.getTimeVariantProcesses())
         {
             if(turn-process.getBeginningTurn()==process.getDuration())
@@ -647,7 +681,7 @@ public class GameController {
                 currentPlayer.getTimeVariantProcesses().remove(process);
             }
         }
-        
+
     }
 
 

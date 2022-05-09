@@ -1,14 +1,17 @@
-package models;
+package models.gainable;
 
 import models.maprelated.Hex;
 
-public class TimeVariantProcess implements Construction
+public class TimeVariantProcess 
 {
     int duration;
     int beginningTurn;
     Hex hex;
     String name;
     String type;
+
+
+    
 
 
     public TimeVariantProcess(int duration, int beginningTurn, Hex hex, String name,String type) {

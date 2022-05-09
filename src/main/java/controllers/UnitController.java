@@ -14,7 +14,7 @@ public class UnitController {
 
     private static Unit selectedUnit;
     private static Hex[][] hex = getWorld().getHex();
-    private static Player currentPlayer;
+    private static Player currentPlayer = GameController.getCurrentPlayer();
 
 
     public static Player getCurrentPlayer() {
@@ -66,7 +66,7 @@ public class UnitController {
     }
 
     public static boolean canMoveThrough(int x, int y) {
-        return !hex[x][y].getTerrain().getName().equals("mountain") && !hex[x][y].getTerrain().getName().equals("ocean");
+        return !hex[x][y].getTerrain().getName().equals("Mountain") && !hex[x][y].getTerrain().getName().equals("Ocean");
     }
 
     public static boolean isHexOccupied(int destinationX, int destinationY) {
@@ -84,7 +84,15 @@ public class UnitController {
     }
 
     public static void moveUnit(Unit unit, int x, int y) {
+        setRevealedTiles();
         changeView(x, y);
+        if (unit instanceof Civilian) {
+            unit.getCurrentHex().setCivilianUnit(null);
+            hex[x][y].setCivilianUnit((Civilian) unit);
+        } else {
+            unit.getCurrentHex().setMilitaryUnit(null);
+            hex[x][y].setMilitaryUnit((Military) unit);
+        }
         unit.changeCurrentHex(hex[x][y]);
         unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
     }
@@ -101,8 +109,26 @@ public class UnitController {
             x = x + direction[j][0];
             y = y + direction[j][0];
             for (int i = 0; i < 7; i++) {
-                if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1]))
+                if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
                     hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
+                    currentPlayer.addToRevealedHexes(hex[x + direction[i][0]][y + direction[i][1]]);
+                }
+            }
+        }
+    }
+
+    private static void setRevealedTiles() {
+        for (int i = 0; i < getWorld().getHexInWidth(); i++) {
+            for (int j = 0; j < getWorld().getHexInHeight(); j++) {
+               // System.out.println(i + " " + j);
+                if (currentPlayer == null)
+                    System.out.println("cp is null");
+                if (hex[i][j].getState(currentPlayer) == null)
+                    System.out.println("is null");
+                if (hex[i][j].getState(currentPlayer).equals(HexState.Visible)) {
+                    hex[i][j].setState(HexState.Revealed, currentPlayer);
+                    currentPlayer.addToRevealedHexes(hex[i][j]);
+                }
             }
         }
     }

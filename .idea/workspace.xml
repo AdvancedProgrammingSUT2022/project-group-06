@@ -5,20 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="add happiness">
+      <change afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Construction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Improvement.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Building.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Technology.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Technology.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -130,7 +137,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="main" />
+                        <option value="N1" />
                       </list>
                     </value>
                   </entry>

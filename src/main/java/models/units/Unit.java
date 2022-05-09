@@ -7,10 +7,10 @@ import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
 import models.Player;
-import models.TimeVariantProcess;
+import models.gainable.TimeVariantProcess;
 import models.maprelated.Hex;
 
-public class Unit implements Combatable
+public class Unit implements Combatable 
 {
     private static ArrayList<Unit> units=new ArrayList<Unit>();
     private int health;

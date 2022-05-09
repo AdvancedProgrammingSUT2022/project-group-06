@@ -3,6 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import models.gainable.TimeVariantProcess;
 import controllers.GameController;
 import controllers.InitializeGameInfo;
 import enums.HexState;

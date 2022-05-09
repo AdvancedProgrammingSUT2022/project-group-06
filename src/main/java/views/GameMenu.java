@@ -2,7 +2,7 @@ package views;
 
 import controllers.*;
 import models.Player;
-import models.TimeVariantProcess;
+import models.gainable.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Civilian;
@@ -165,13 +165,12 @@ public class GameMenu extends Menu {
             System.out.println("This hex already has a unit of this type");
         else {
             Hex nextHex = UnitController.getNextHex(x, y);
-            if (nextHex.getX() == x && nextHex.getY() == y) {
-                System.out.println("The unit reached chosen destination");
-            }
             if (!UnitController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
                 System.out.print("The unit can't move through this hex");
+            } else if (nextHex.getX() == x && nextHex.getY() == y) {
+                System.out.println("The unit reached chosen destination");
+                UnitController.moveUnit(UnitController.getSelectedUnit(), x, y);
             }
-            UnitController.moveUnit(UnitController.getSelectedUnit(), x, y);
             // nextHex = UnitController.getNextHex(x, y);
 
         }
