@@ -6,7 +6,10 @@ import models.Player;
 import models.maprelated.Hex;
 import models.units.Civilian;
 import models.units.Military;
+import models.units.Ranged;
+import models.units.Settler;
 import models.units.Unit;
+import models.units.Worker;
 
 import static controllers.GameController.*;
 
@@ -169,5 +172,27 @@ public class UnitController {
         //Todo: can't build roads on ice
         //todo: construct road in 3 turns
         return "the railroad will be constructed in 3 turns";
+    }
+
+    public static void makeUnit(String name, Hex hex) {
+
+        switch(InitializeGameInfo.unitInfo.get(name).split(" ")[6])
+        {
+            case "Settler":
+                Settler newSettler=new Settler(name, hex, currentPlayer);
+                newSettler.build();
+                break;
+            case "Worker":
+                Worker newWorker=new Worker(name, hex,currentPlayer);
+                newWorker.build();
+                break;
+            case "Archery":
+                Ranged newRanged=new Ranged(name, hex, currentPlayer);
+                newRanged.build();    
+        }
+   
+        
+        
+        
     }
 }

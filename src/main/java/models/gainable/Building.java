@@ -1,5 +1,7 @@
 package models.gainable;
 
+import models.maprelated.Hex;
+
 public class Building implements Construction
 {
     private int cost;
@@ -39,5 +41,17 @@ public class Building implements Construction
     @Override
     public void build() {
 
+    }
+
+    @Override
+    public String getName() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public Hex getHex() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

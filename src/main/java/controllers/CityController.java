@@ -2,16 +2,15 @@ package controllers;
 
 import java.util.ArrayList;
 
-import org.mockito.internal.invocation.StubInfoImpl;
+
 
 import models.Player;
-import models.gainable.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
-import models.units.Civilian;
-import models.units.Military;
+import models.units.Ranged;
 import models.units.Settler;
 import models.units.Unit;
+import models.units.Worker;
 
 
 public class CityController {
@@ -91,7 +90,7 @@ public class CityController {
     }
 
 
-    public static String startMakingUnit(String type, String name) {
+    public static String startMakingUnit(String name) {
         if (GameController.getSelectedHex() == null) {
             return "select a tile first";
         }
@@ -124,8 +123,7 @@ public class CityController {
         }
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
         if (currentPlayer.getGold() >= newUnit.getCost()) {
-            makeUnit(type, name, GameController.getSelectedHex());
-            currentPlayer.decreaseGold(newUnit.getCost());
+            UnitController.makeUnit(name, GameController.getSelectedHex());
             return "Unit created successfully";
         }
 
@@ -133,45 +131,25 @@ public class CityController {
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
         }
-        int duration;
+        
+        Unit unit=new Unit(name, GameController.getSelectedHex(), currentPlayer);
+        
+        
         if (newUnit.getCost() < goldPerTurn) {
-            duration = 1;
+            unit.setLeftTurns(1);;
         } else if (goldPerTurn == 0) {
-            return "you have no income os it's impossible to start making a unit right now";
+            return "you have no income so it's impossible to start making a unit right now";
         } else {
-            duration = (newUnit.getCost() / goldPerTurn) + 1;
+            unit.setLeftTurns((newUnit.getCost() / goldPerTurn) + 1);
         }
-        TimeVariantProcess process = new TimeVariantProcess(duration, GameController.getTurn(), GameController.getSelectedHex(), name, type);
-        GameController.getCurrentPlayer().addTimeVariantProcesses(process);
 
-
+        currentPlayer.addUnfinishedProject(unit);
+        
         return "pricess for builing an unit started successfully";
     }
 
 
-    public static void makeUnit(String type, String name, Hex hex) {
-
-        if (type.equals("Civilian")) {
-            Civilian newCivilian = new Civilian(name, hex, currentPlayer);
-            GameController.getCurrentPlayer().decreaseGold(newCivilian.getCost());
-            hex.setCivilianUnit(newCivilian);
-            currentPlayer.addToCivilians(newCivilian);
-            currentPlayer.addUnit(newCivilian);
-            Unit.getUnits().add(newCivilian);
-            GameController.addALlCivilians(newCivilian);
-        }
-        if (type.equals("Military")) {
-            Military newMilitary = new Military(name, hex, currentPlayer);
-            GameController.getCurrentPlayer().decreaseGold(newMilitary.getCost());
-            hex.setMilitaryUnit(newMilitary);
-            currentPlayer.addToMilitaries(newMilitary);
-            currentPlayer.addUnit(newMilitary);
-            Unit.getUnits().add(newMilitary);
-            GameController.addAllMilitary(newMilitary);
-        }
-
-
-    }
+    
 
 
     public static ArrayList<Hex> getToBuyTiles() {
@@ -184,7 +162,10 @@ public class CityController {
         if (UnitController.getSelectedUnit() == null || (UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
         }
-
+        if(UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Ocean||Mountain"))
+        {
+            return "you can not build a city on this tile";
+        }
         for (City temp : City.getCities()) {
             if (temp.getHexs().contains(UnitController.getSelectedUnit().getCurrentHex())) {
                 return "this hex is already part of a city";

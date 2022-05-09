@@ -9,12 +9,13 @@ import controllers.GameController;
 import controllers.InitializeGameInfo;
 import models.Player;
 import models.gainable.Building;
+import models.gainable.Construction;
 import models.units.Civilian;
 import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 
-public class City implements Combatable{
+public class City implements Combatable {
     private static ArrayList<City> cities = new ArrayList<City>();
 
     private String name;
@@ -283,6 +284,11 @@ public class City implements Combatable{
     public void removeConstructingBuilding(Building building) {
         constructingBuldings.remove(building);
     }
+
+
+ 
+        
+    
 
 
 }

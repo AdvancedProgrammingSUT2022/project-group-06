@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import models.gainable.TimeVariantProcess;
+import models.gainable.Construction;
 import controllers.GameController;
 import controllers.InitializeGameInfo;
 import enums.HexState;
@@ -35,19 +35,22 @@ public class Player {//-currentProject
     private ArrayList<Military> militaries = new ArrayList<Military>();
     private ArrayList<Civilian> civilians = new ArrayList<Civilian>();
     private String name;
-    private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
+    private static ArrayList<Construction> unfinishedProjects=new ArrayList<Construction>();
+    //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
 
 
-    public void addTimeVariantProcesses(TimeVariantProcess addNew) {
-        timeVariantProcesses.add(addNew);
+    public ArrayList<Construction> getUnfinishedProjects()
+    {
+        return unfinishedProjects;
     }
-
-
-    public ArrayList<TimeVariantProcess> getTimeVariantProcesses() {
-        return timeVariantProcesses;
+    
+    public void addUnfinishedProject(Construction construction)
+    {
+        unfinishedProjects.add(construction);
     }
+  
 
     public HashMap<String, Boolean> getAchievedTechnologies() {
         return achievedTechnologies;

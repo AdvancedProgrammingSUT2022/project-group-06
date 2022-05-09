@@ -7,7 +7,6 @@ import models.gainable.Building;
 import models.gainable.Construction;
 import models.gainable.Improvement;
 import models.gainable.Technology;
-import models.gainable.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.maprelated.World;
@@ -35,7 +34,7 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Combatable> hurtElements;
-    private static ArrayList<Construction> unfinishedProjects;
+    
 
     public static int getTurn()
     {
@@ -365,7 +364,7 @@ public class GameController {
     }
 
     public static void finishConstruction() {
-        for (Construction unfinishedProject : unfinishedProjects) {
+        for (Construction unfinishedProject : currentPlayer.getUnfinishedProjects()) {
             unfinishedProject.decreaseLeftTurns();
             if (unfinishedProject.getLeftTurns() == 0) {
                 if (unfinishedProject instanceof Building)
@@ -565,32 +564,32 @@ public class GameController {
         return null;
     }
     public static String startBuildMine()
-    {
+    {   
+        Improvement Mine=new Improvement("Mine",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        
         String isPossible;
         if((isPossible=isMakingMinePossible())!=null)
         {
             return isPossible;
         }
-        int duration;
         switch(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName())
         {
             case "Jungle":
-                duration=13;
+                Mine.setLeftTurns(13);
                 break;
             case "Forest":
-                duration=10;
+                Mine.setLeftTurns(10);
                 break;
             case "Marsh":
-                duration=12;
+                Mine.setLeftTurns(12);
                 break;
             default:
-                duration=6;
+                Mine.setLeftTurns(6);
                 break;
         }
 
-        TimeVariantProcess addNew=new TimeVariantProcess(duration,turn, UnitController.getSelectedUnit().getCurrentHex(), "Farm",null);
-        currentPlayer.addTimeVariantProcesses(addNew);
-        return "process for building a farm successfully started";
+        currentPlayer.addUnfinishedProject(Mine);
+        return "process for building a Mine successfully started";
     }
 
     private static String isMakingFarmPossible(Hex hex)
@@ -612,73 +611,53 @@ public class GameController {
 
     public static String startBuildFarm()
     {
-        Hex hex=UnitController.getSelectedUnit().getCurrentHex();
+        Improvement Farm=new Improvement("Farm",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        
         String isPossible;
-        if((isPossible=isMakingFarmPossible(hex))!=null)
+        if((isPossible=isMakingMinePossible())!=null)
         {
             return isPossible;
         }
-        int duration;
-        switch(hex.getFeature().getName())
+        switch(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName())
         {
             case "Jungle":
-                duration=10;
+                Farm.setLeftTurns(10);
                 break;
             case "Forest":
-                duration=13;
+                Farm.setLeftTurns(13);
                 break;
             case "Marsh":
-                duration=12;
+                Farm.setLeftTurns(12);;
                 break;
             default:
-                duration=6;
+                Farm.setLeftTurns(6);;
                 break;
         }
 
-        TimeVariantProcess addNew=new TimeVariantProcess(duration,turn, UnitController.getSelectedUnit().getCurrentHex(), "Farm",null);
-        currentPlayer.addTimeVariantProcesses(addNew);
+        currentPlayer.addUnfinishedProject(Farm);
         return "process for building a farm successfully started";
+        
     }
 
-    public static void makeFarm(TimeVariantProcess process)
-    {
-        process.getHex().addImprovement(process.getName());
-        if(process.getHex().getFeature().getName().equals("Farm||Jungle||Forest"))
-        {
-            process.getHex().setFeature(null);
-        }
-        process.getHex().getCity().increaseFood(1);
-
-    }
-
-    public static void makeMine(TimeVariantProcess process)
-    {
-        process.getHex().setImprovement(process.getName());
-        if(process.getHex().getFeature().getName().equals("Farm||Jungle||Forest"))
-        {
-            process.getHex().setFeature(null);
-        }
-        process.getHex().getCity().increaseProduction(1);
-
-    }
-
+    
     public static void checkTimeVariantProcesses()
     {
 
-        for(TimeVariantProcess process: currentPlayer.getTimeVariantProcesses())
+        for(Construction process: currentPlayer.getUnfinishedProjects())
         {
-            if(turn-process.getBeginningTurn()==process.getDuration())
+
+            if(process.getLeftTurns()==0)
             {
-                if(process.getName().equals("Farm"))
+                if(process instanceof Unit)
                 {
-                    makeFarm(process);
-                }else if(process.getName().equals("Mine"))
-                {
-                    makeMine(process);
-                }else{
-                    CityController.makeUnit(process.getType(), process.getName(),process.getHex());;
+                    UnitController.makeUnit(process.getName(), process.getHex());
+                    currentPlayer.getUnfinishedProjects().remove(process);
+                    continue;
                 }
-                currentPlayer.getTimeVariantProcesses().remove(process);
+                process.build();
+                currentPlayer.getUnfinishedProjects().remove(process);
+            }else{
+                process.decreaseLeftTurns();
             }
         }
 

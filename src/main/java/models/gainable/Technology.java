@@ -3,6 +3,7 @@ package models.gainable;
 import java.util.ArrayList;
 
 import controllers.InitializeGameInfo;
+import models.maprelated.Hex;
 
 public class Technology implements Construction {
     private String name;
@@ -53,6 +54,12 @@ public class Technology implements Construction {
     @Override
     public void build() {
 
+    }
+
+    @Override
+    public Hex getHex() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

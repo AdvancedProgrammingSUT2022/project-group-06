@@ -7,26 +7,56 @@ import controllers.InitializeGameInfo;
 import enums.UnitState;
 import enums.UnitType;
 import models.Player;
-import models.gainable.TimeVariantProcess;
+import models.gainable.Construction;
+
 import models.maprelated.Hex;
 
-public class Unit implements Combatable 
+public class Unit implements Combatable , Construction
 {
-    private static ArrayList<Unit> units=new ArrayList<Unit>();
-    private int health;
-    private int combatStrength;
-    private int rangedStrength;
-    private int range;
-    private Hex currentHex;
-    private UnitState state;
-    private int MP;
-    private String name;
-    private int cost;
-    private String neededTech;
-    private String neededResource;
-    private Player owner;
+    protected static ArrayList<Unit> units=new ArrayList<Unit>();
+    protected int health;
+    protected int combatStrength;
+    protected int rangedStrength;
+    protected int range;
+    protected Hex currentHex;
+    protected UnitState state;
+    protected int MP;
+    protected String name;
+    protected int cost;
+    protected String neededTech;
+    protected String neededResource;
+    protected Player owner;
 
-    public Unit(String name,Hex hex, Player owner)
+    int leftTurns;
+    
+    @Override
+    public void setLeftTurns(int leftTurns) {
+        this.leftTurns = leftTurns;
+    }
+
+    @Override
+    public int getLeftTurns() {
+        return this.leftTurns;
+    }
+
+    @Override
+    public void decreaseLeftTurns() {
+        this.leftTurns -= 1;
+    }
+
+    @Override
+    public void build() {
+        
+
+    }
+
+    @Override
+    public Hex getHex()
+    {
+        return currentHex;
+    }
+
+    public Unit(String name,Hex hex, Player owner) 
     {
         this.owner = owner;
         this.name=name;

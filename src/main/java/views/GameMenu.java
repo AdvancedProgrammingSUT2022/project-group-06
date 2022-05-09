@@ -2,12 +2,10 @@ package views;
 
 import controllers.*;
 import models.Player;
-import models.gainable.TimeVariantProcess;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Civilian;
 
-import static org.mockito.ArgumentMatchers.matches;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -62,8 +60,8 @@ public class GameMenu extends Menu {
                 GameController.checkTimeVariantProcesses();
             } else if ((matcher = getMatcher("buy tile", command)) != null) {
                 System.out.println(buyTile(matcher));
-            } else if ((matcher = getMatcher("unit make (--unittype|-ut) (?<unittype>Civilian||Military) (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
-                System.out.println(CityController.startMakingUnit(matcher.group("unittype"), matcher.group("unitname")));
+            } else if ((matcher = getMatcher("unit make (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
+                System.out.println(CityController.startMakingUnit(matcher.group("unitname")));
             } else if (command.equals("show all map")) {
                 System.out.println(GameController.printAllWorld());
             } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {

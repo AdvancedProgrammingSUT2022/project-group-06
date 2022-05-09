@@ -5,7 +5,6 @@ import controllers.InitializeGameInfo;
 import enums.Color;
 import enums.HexState;
 import models.Player;
-import models.gainable.TimeVariantProcess;
 import models.gainable.Improvement;
 import models.units.Civilian;
 import models.units.Military;
@@ -31,7 +30,7 @@ public class Hex {
     private boolean hasRoad;
     private boolean hasRailRoad;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
-    private ArrayList<String> improvements=new ArrayList<String>();
+    private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
 
     public void setFeature(Terrain newFeature)
     {
@@ -146,12 +145,12 @@ public class Hex {
         return 7;
     }
 
-    public void addImprovement(String improvement) {
+    public void addImprovement(Improvement improvement) {
         improvements.add(improvement);
         
     }
 
-    public ArrayList<String> getImprovement() {
+    public ArrayList<Improvement> getImprovement() {
         return improvements;
     }
 
