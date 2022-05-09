@@ -653,7 +653,7 @@ public class GameController {
 
     public static void makeMine(TimeVariantProcess process)
     {
-        process.getHex().setImprovement(process.getName());
+        process.getHex().addImprovement(process.getName());
         if(process.getHex().getFeature().getName().equals("Farm||Jungle||Forest"))
         {
             process.getHex().setFeature(null);
