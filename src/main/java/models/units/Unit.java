@@ -22,16 +22,31 @@ public class Unit implements Combatable , Construction
     protected Hex currentHex;
     protected UnitState state;
     protected int MP;
+    protected int backUpMP;
     protected String name;
     protected int cost;
     protected String neededTech;
     protected String neededResource;
     protected Player owner;
     //todo: set combat type
-    private String combatType;
+  
+    protected String combatType;
 
     int leftTurns;
 
+    public void setMP(int amount)
+    {
+        MP=amount;
+    }
+    public void setBackUpMp(int amount)
+    {
+        backUpMP=amount;
+    }
+    public int getBackUpMp()
+    {
+        return backUpMP;
+    }
+  
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
@@ -69,7 +84,9 @@ public class Unit implements Combatable , Construction
         rangedStrength=Integer.parseInt(info[2]);
         range=Integer.parseInt(info[3]);
         MP=Integer.parseInt(info[4]);
+        combatType=info[7];
         health=10;
+
 
 
         String tech=info[6];
@@ -223,4 +240,16 @@ public class Unit implements Combatable , Construction
     public int getY() {
         return this.getCurrentHex().getY();
     }
+
+    @Override
+    public void zeroMpWorker() {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public Unit getWorker() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+   
 }

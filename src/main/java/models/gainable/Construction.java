@@ -1,6 +1,8 @@
 package models.gainable;
 
 import models.maprelated.Hex;
+import models.units.Unit;
+import models.units.Worker;
 
 public interface Construction {
 
@@ -15,4 +17,10 @@ public interface Construction {
     String getName();
 
     Hex getHex();
+
+    void zeroMpWorker();
+
+    Unit getWorker();
+
+  
 }

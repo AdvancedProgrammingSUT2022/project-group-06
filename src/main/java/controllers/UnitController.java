@@ -6,6 +6,7 @@ import enums.UnitState;
 import models.Player;
 import models.maprelated.Hex;
 import models.units.Civilian;
+import models.units.Melee;
 import models.units.Military;
 import models.units.Ranged;
 import models.units.Settler;
@@ -181,24 +182,33 @@ public class UnitController {
     }
 
     public static void makeUnit(String name, Hex hex) {
-
-        switch(InitializeGameInfo.unitInfo.get(name).split(" ")[6])
-        {
-            case "Settler":
-                Settler newSettler=new Settler(name, hex, currentPlayer);
-                newSettler.build();
-                break;
-            case "Worker":
-                Worker newWorker=new Worker(name, hex,currentPlayer);
-                newWorker.build();
-                break;
-            case "Archery":
+        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        if(type.equals("Settler")){
+            Settler newSettler=new Settler(name, hex, currentPlayer);
+            newSettler.build();
+        } else if(type.equals("Worker")){
+            Worker newWorker=new Worker(name, hex,currentPlayer);
+            newWorker.build();
+        } else if(type.equals("Archery")){
+            Ranged newRanged=new Ranged(name, hex, currentPlayer);
+            newRanged.build();
+        } else if(type.equals("Siege")){
+            Siege newSiege=new Siege(name, hex, currentPlayer);
+            newSiege.build();
+        }else if(type.equals("Melee")){
+            Melee newMelee=new Melee(name, hex, currentPlayer);
+            newMelee.build();
+        }else{
+            int temp=Integer.parseInt(InitializeGameInfo.unitInfo.get(name));
+            if(temp==0)
+            {
+                Melee newMelee=new Melee(name, hex, currentPlayer);
+                newMelee.build();
+            }else{
                 Ranged newRanged=new Ranged(name, hex, currentPlayer);
                 newRanged.build();
+            }
         }
-
-
-
 
     }
     public static String setUpSiegeForRangeAttack(){

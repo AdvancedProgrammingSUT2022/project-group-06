@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 
@@ -9,27 +10,62 @@ public class LoginController
 {
     UserController userController=new UserController();
 
-    public String login(String input)
+
+    private ArrayList<Integer> getIndexLogin(String input)
     {
         int passwordIndex=0,usernameIndex=0;
         boolean checked=false;
+        boolean checked2=false;
         if(((passwordIndex=input.indexOf("--password"))!=-1)&&((usernameIndex=input.indexOf("--username"))!=-1))
         {
             passwordIndex+=10;
             usernameIndex+=10;
             checked=true;
+            checked2=true;
         }
 
-        if(((passwordIndex=input.indexOf("-p"))!=-1)&&((usernameIndex=input.indexOf("-u"))!=-1))
+        if(!checked2&&((passwordIndex=input.indexOf("-p"))!=-1)&&((usernameIndex=input.indexOf("-u"))!=-1))
         {
             passwordIndex+=2;
             usernameIndex+=2;
             checked=true;
         }
-        if(!checked)
+
+        ArrayList<Integer> result=new ArrayList<Integer>();
+        result.add(passwordIndex);
+        result.add(usernameIndex);
+        if(checked)
+        {
+            result.add(1);
+        }
+        else
+        {
+            result.add(0);
+        }
+        
+        
+        return result;
+        
+    }
+
+
+
+    public String login(String input)
+    {
+        int passwordIndex=0,usernameIndex=0;
+        int checked=0;
+        
+        ArrayList<Integer> results=getIndexLogin(input);
+
+        passwordIndex=results.get(0);
+        usernameIndex=results.get(1);
+        checked=results.get(2);
+
+        if(checked==0)
         {
             return "invalid command!";
         }
+
         String getPassword=input.substring(passwordIndex+1);
         String password=getPassword.split("[ \\t]+")[0];
 
@@ -47,7 +83,9 @@ public class LoginController
         return "user logged in successfully!";
     }
 
-    public String createUser(String input)
+
+
+    private ArrayList<Integer> getIndexCreateUser(String input)
     {
         int passwordIndex=0,usernameIndex=0,nicknameIndex=0;
 
@@ -69,7 +107,33 @@ public class LoginController
             nicknameIndex+=3;
             checked=true;
         }
-        if(!checked)
+
+        ArrayList<Integer> result=new ArrayList<Integer>();
+        result.add(passwordIndex);
+        result.add(usernameIndex);
+        result.add(nicknameIndex);
+        if(checked)
+        {
+            result.add(1);
+        }else{
+            result.add(0);
+        }
+
+
+        return result;
+
+    }
+
+    public String createUser(String input)
+    {
+        int passwordIndex=0,usernameIndex=0,nicknameIndex=0;
+        int checked;
+        ArrayList<Integer> results=getIndexCreateUser(input);
+        passwordIndex=results.get(0);
+        usernameIndex=results.get(1);
+        nicknameIndex=results.get(2);
+        checked=results.get(3);
+        if(checked==0)
         {
             return "invalid command!";
         }

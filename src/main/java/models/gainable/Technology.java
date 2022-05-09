@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import controllers.InitializeGameInfo;
 import models.maprelated.Hex;
+import models.units.Unit;
+import models.units.Worker;
 
 public class Technology implements Construction {
     private String name;
     private int cost;
     private ArrayList<String> neededPreviousTechnologies = new ArrayList<>();
     private int leftTurns;
+   
 
     public Technology(String name) {
         this.name = name;
@@ -61,5 +64,19 @@ public class Technology implements Construction {
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public void zeroMpWorker() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public Unit getWorker() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+   
 
 }

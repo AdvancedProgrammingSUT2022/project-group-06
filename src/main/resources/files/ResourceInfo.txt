@@ -3,7 +3,7 @@ Cattle#1 0 0 Grassland Pasture NN Bonus
 Deer#1 0 0 Forest,Tundra,Hills Camp NN Bonus 
 Sheep#1 0 0 Grassland,Plain,Desert,Hills Pasture NN Bonus 
 Wheat#1 0 0 Plain Farm NN Bonus 
-Caol#0 1 0 Plain,Hills,Grassland Mine ScientificTheory Strategic 
+Coal#0 1 0 Plain,Hills,Grassland Mine ScientificTheory Strategic 
 Horses#0 1 0 Grassland,Plain,Tundra Pasture AnimalHusbandry Strategic 
 Iron#0 1 0 Grassland,Plain,Desert,Tundra,Snow,Hills Mine IronWorking Strategic 
 Cotton#0 0 2 Grassland,Plain,Desert Plantation NN Luxury 

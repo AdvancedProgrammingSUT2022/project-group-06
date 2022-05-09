@@ -143,6 +143,7 @@ public class CityController {
             unit.setLeftTurns((newUnit.getCost() / goldPerTurn) + 1);
         }
 
+       
         currentPlayer.addUnfinishedProject(unit);
         
         return "pricess for builing an unit started successfully";
@@ -159,7 +160,7 @@ public class CityController {
 
     public static String buildCity(String name) {
 
-        if (UnitController.getSelectedUnit() == null || (UnitController.getSelectedUnit() instanceof Settler)) {
+        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
         }
         if(UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Ocean||Mountain"))

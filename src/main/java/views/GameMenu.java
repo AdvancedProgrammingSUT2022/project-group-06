@@ -10,6 +10,11 @@ import models.units.Civilian;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
+import org.mockito.internal.invocation.MatchersBinder;
+
+
+
+
 public class GameMenu extends Menu {
     private static Scanner scanner;
 
@@ -19,14 +24,38 @@ public class GameMenu extends Menu {
         InitializeGameInfo.run();
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
-        String command = scanner.nextLine();
+        String command=new String() ;
+        
+        if(startGame(scanner , command))
+        {
+            return ;
+        }
+        
+        command= scanner.nextLine();
         Matcher matcher;
+
 
         while (true) {
             if ((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null) {
                 System.out.println(CityController.buildCity(matcher.group("name")));
-            } else if (command.equals("shit")) {
-                System.out.println(GameController.getCurrentPlayer().getName());
+            } else if(command.equals("construction delete")){
+                System.out.println(GameController.deleteConstruction());
+            }else if(command.equals("demographic screen")){
+                System.out.println(GameController.demographicScreen());
+            }else if(command.equals("unit activate")){
+                System.out.println(GameController.activateUnit());
+            }else if(command.equals("quarry build")){
+                System.out.println(GameController.makeQuarry());
+            } else if(command.equals("plantation build")){ 
+                System.out.println(GameController.makePlantation());
+            } else if(command.equals("camp build")){
+                System.out.println(GameController.makingCamp());
+            } else if(command.equals("pasture build")){
+                System.out.println(GameController.makingPasture());
+            } else if(command.equals("lumber mill build")){
+                System.out.println(GameController.makingLumberMill());
+            } else if(command.equals("post build")){
+                System.out.println(GameController.startMakeingTradingPost());
             } else if (command.equals("farm build")) {
                 System.out.println(GameController.startBuildFarm());
             } else if (command.equals("mine build")) {
@@ -98,6 +127,45 @@ public class GameMenu extends Menu {
         }
     }
 
+    private static boolean startGame(Scanner scanner,String command)
+    {
+        System.out.println("welcome to civilization");
+        System.out.println("one of the most pointless games ever made that has been created by a company that most probabley prides itself");
+        System.out.println("on its ability to create a game with just enough meaningless tasks and ridiculous functions to ensure that in a");
+        System.out.println("comparison between actually finishing the game and death, death would seem like the only option you have left");
+        System.out.println("we in advance offer our heartfelt condolences and pray to god that you are smart enough to exit the game right now");
+        System.out.println("and save yourself from this endless torture. in order to do that, please type -Exit-\n");
+
+        System.out.println("if you hate your life and have decided to end it by continuing to play this game, then please select a tile and then choose");
+        System.out.println("a name for your very first city");
+
+        Matcher matcher;
+        while(true)
+        {
+            command=scanner.nextLine();
+            if(command.equals("Exit"))
+            {
+                return true;
+            } else if ((matcher = getMatcher("tile select (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+                System.out.println(CityController.selectHex(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+                break;
+            }
+
+            System.out.println("invalid command");
+        }
+
+        System.out.println("enter your city's name");
+        command=scanner.nextLine();
+
+
+        CityController.startMakingUnit("Settler");
+        selectCivilian(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY());
+        CityController.buildCity(command);
+
+        return false;
+
+
+    }
 
     private static String buyTile(Matcher matcher) {
         String result = CityController.presaleTiles();

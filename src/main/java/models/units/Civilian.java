@@ -20,6 +20,7 @@ public class Civilian extends Unit
       GameController.getCurrentPlayer().addToCivilians(this);
       GameController.getCurrentPlayer().addUnit(this);
       GameController.addALlCivilians(this);
+      
     }
     
     public Civilian(String name,Hex currentHex, Player owner)

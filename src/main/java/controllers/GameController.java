@@ -555,7 +555,16 @@ public class GameController {
             economicInfo.append("\\t\\tfood: "+temp.getFood()+"\n");
             economicInfo.append("\\t\\tgold "+temp.getGold()+"\n");
             economicInfo.append("\\t\\ttrophy: "+temp.getTrophy()+"\n");
-            //TODO add production
+            economicInfo.append("\\t\\tproduction: "+temp.getProduction()+"\n");
+            
+            for(Construction construction:currentPlayer.getUnfinishedProjects())
+            {
+                if(construction.getHex().getCity().getName().equals(temp.getName()))
+                {
+                    economicInfo.append("\\t\\tpending project: "+construction.getName()+"-> turn left: "+construction.getLeftTurns()+"\n");
+                }
+                
+            }
 
         }
 
@@ -566,7 +575,7 @@ public class GameController {
     private static String isMakingMinePossible()
     {
         Hex hex=UnitController.getSelectedUnit().getCurrentHex();
-        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
         {
             return "select a Worker first";
         }
@@ -585,42 +594,45 @@ public class GameController {
     }
     public static String startBuildMine()
     {
-        Improvement Mine=new Improvement("Mine",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        
 
         String isPossible;
         if((isPossible=isMakingMinePossible())!=null)
         {
             return isPossible;
         }
-        switch(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName())
-        {
-            case "Jungle":
-                Mine.setLeftTurns(13);
-                break;
-            case "Forest":
-                Mine.setLeftTurns(10);
-                break;
-            case "Marsh":
-                Mine.setLeftTurns(12);
-                break;
-            default:
-                Mine.setLeftTurns(6);
-                break;
+        Improvement Mine=new Improvement("Mine",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+        String type= UnitController.getSelectedUnit().getCurrentHex().getFeature().getName();
+       
+       
+        if(type.equals("Jungle")){
+            Mine.setLeftTurns(13);
+        }else if(type.equals("Forest")){
+            Mine.setLeftTurns(10);
+        }else if(type.equals("Marsh")){
+            Mine.setLeftTurns(12);
+        }else{
+            Mine.setLeftTurns(6);
         }
-
+       
         currentPlayer.addUnfinishedProject(Mine);
         return "process for building a Mine successfully started";
     }
 
-    private static String isMakingFarmPossible(Hex hex)
+    private static String isMakingFarmPossible()
     {
 
-        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
         {
             return "select a Worker first";
         }
 
-        if(hex.getFeature().getName().equals("Ice"))
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+
+        if(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Ice"))
         {
             return "you can not make a Farm on Ice";
         }
@@ -631,43 +643,189 @@ public class GameController {
 
     public static String startBuildFarm()
     {
-        Improvement Farm=new Improvement("Farm",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
-
         String isPossible;
-        if((isPossible=isMakingMinePossible())!=null)
+        if((isPossible=isMakingFarmPossible())!=null)
         {
             return isPossible;
         }
-        switch(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName())
-        {
-            case "Jungle":
-                Farm.setLeftTurns(10);
-                break;
-            case "Forest":
-                Farm.setLeftTurns(13);
-                break;
-            case "Marsh":
-                Farm.setLeftTurns(12);;
-                break;
-            default:
-                Farm.setLeftTurns(6);;
-                break;
+
+        Improvement Farm=new Improvement("Farm",UnitController.getSelectedUnit(),UnitController.getSelectedUnit().getCurrentHex());
+       
+       
+        String type=UnitController.getSelectedUnit().getCurrentHex().getFeature().getName();
+
+        if(type.equals("Jungle")){
+            Farm.setLeftTurns(10);
+        }else if(type.equals("Forest")){
+            Farm.setLeftTurns(13);
+        }else if(type.equals("Marsh")){
+            Farm.setLeftTurns(12);
+        }else{
+            Farm.setLeftTurns(6);
         }
+      
 
         currentPlayer.addUnfinishedProject(Farm);
         return "process for building a farm successfully started";
 
     }
 
+    public static String startMakeingTradingPost()
+    {
+        if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Plain||Desert||Grassland|||Tundra"))
+        {
+            return "you can not build a TradingPost on this tile";
+        }
 
+        Improvement post=new Improvement("post", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        post.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(post);
+        return "process for building a TradingPost started";
+    }
+    public static String makingLumberMill()
+    {
+        if(!currentPlayer.getAchievedTechnologies().get("Construction"))
+        {
+            return "you have not achieved the required technology to build a Lumber Mill";
+        }
+        if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle"))
+        {
+            return "you can not build a Lumber Mill on this tile";
+        }
+
+        Improvement lumber=new Improvement("lumber", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        lumber.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(lumber);
+        return "process for building a Lumber Mill started";   
+    }
+
+    public static String makingPasture()
+    {
+        if(!currentPlayer.getAchievedTechnologies().get("AnimalHusbandry"))
+        {
+            return "you have not achieved the required technology to build a Pasture";
+        }
+        if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Desert||Plain||Grassland||Tundra||Hills"))
+        {
+            return "you can not build a Pasture on this tile";
+        }
+
+        Improvement Pasture=new Improvement("Pasture", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        Pasture.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(Pasture);
+        return "process for building a Pasture started";   
+    }
+    public static String makingCamp()
+    {
+        if(!currentPlayer.getAchievedTechnologies().get("Trapping"))
+        {
+            return "you have not achieved the required technology to build a Camp";
+        }
+        if(UnitController.getSelectedUnit()==null||!(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle||Tundra||Hills||Plain"))
+        {
+            return "you can not build a Camp on this tile";
+        }
+
+        Improvement camp=new Improvement("camp", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        camp.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(camp);
+        return "process for building a camp started";   
+    }
+   
+    public static String makePlantation()
+    {
+        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+       
+        Improvement plantation=new Improvement("Plantation",UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        plantation.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(plantation);
+        return "process for building a plantation started";
+    }
+    public static String makeQuarry()
+    {
+        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+        Improvement quarry=new Improvement("Quarry",UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        quarry.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(quarry);
+        return "process for building a quarry started";
+    }
+    public static String makeFactory()
+    {
+        if(UnitController.getSelectedUnit()==null||(UnitController.getSelectedUnit() instanceof Worker))
+        {
+            return "select a worker first";
+        }
+        if(isConstructionPossible())
+        {
+            return "you can not have two Improvements in one tile";
+        }
+        Improvement factory=new Improvement("Factory",UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
+        factory.setLeftTurns(5);
+        currentPlayer.addUnfinishedProject(factory);
+        return "process for building a Factory started";
+    }
     public static void checkTimeVariantProcesses()
     {
 
         for(Construction process: currentPlayer.getUnfinishedProjects())
         {
 
+            if(process instanceof Unit)
+            {
+                Unit previewUnit=new Unit(process.getName(),process.getHex(), currentPlayer);
+                currentPlayer.decreaseGold(previewUnit.getCost()/process.getLeftTurns());
+            }
             if(process.getLeftTurns()==0)
             {
+                process.getWorker().setMP(process.getWorker().getBackUpMp());
+    
                 if(process instanceof Unit)
                 {
                     UnitController.makeUnit(process.getName(), process.getHex());
@@ -683,5 +841,79 @@ public class GameController {
 
     }
 
+    public static String activateUnit()
+    {
+        if(UnitController.getSelectedUnit()==null)
+        {
+            return "select a unit first";
+        }
 
+        UnitController.getSelectedUnit().changeUnitState(UnitState.Active);
+        return "unit activated successu=fully";
+    }
+
+    public static String demographicScreen()
+    {
+        StringBuilder demographics=new StringBuilder();
+        demographics.append("total wealth: "+currentPlayer.getGold()+"\n");
+        demographics.append("total number of military units: "+currentPlayer.getMilitaries().size()+"\n");
+        demographics.append("total number of civilian units: "+currentPlayer.getCivilians().size()+"\n");
+        demographics.append("population: "+currentPlayer.getPopulation());
+        
+
+
+
+        return demographics.toString();
+    }
+
+    public static String deleteConstruction()
+    {
+        if(GameController.getSelectedHex()==null)
+        {
+            return "select a tile first";
+        }
+
+
+        for(Construction construction: currentPlayer.getUnfinishedProjects())
+        {
+
+            
+            if(construction.getHex().equals(GameController.getSelectedHex()))
+            {
+                currentPlayer.getUnfinishedProjects().remove(construction);
+                return "construction was deleted successfully";
+            }
+
+
+        }
+
+
+        return "this tile does not have an on going construction";
+    }
+
+    public static Boolean isConstructionPossible()
+    {
+        for(Construction temp :UnitController.getSelectedUnit().getCurrentHex().getImprovement())
+        {
+            if(!temp.getName().equals("Road||Railroad"))
+            {
+                return false;
+            }
+        }
+
+        for(Construction temp:currentPlayer.getUnfinishedProjects())
+        {
+            if(UnitController.getSelectedUnit().getCurrentHex().equals(temp.getHex()))
+            {
+                return false;
+            }
+        }
+
+
+        return true;
+    }
+
+
+
+     
 }
