@@ -255,10 +255,17 @@ public class UnitController {
         return "pillaged successfully";
     }
 
+    public static void forceEndMovement(Movement movement) {
+        unfinishedMovements.remove(movement);
+    }
 
     public static void moveUnit(Movement movement) {
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement.getDestination().getX(), movement.getDestination().getY());
+        if (nextHex == null || nextHex.getOwner() != currentPlayer) {
+            forceEndMovement(movement);
+            return;
+        }
         int x = nextHex.getX();
         int y = nextHex.getY();
 
