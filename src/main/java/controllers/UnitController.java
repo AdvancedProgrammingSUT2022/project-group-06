@@ -8,6 +8,7 @@ import models.gainable.Improvement;
 import models.maprelated.Hex;
 import models.maprelated.Movement;
 import models.units.Civilian;
+import models.units.Melee;
 import models.units.Military;
 import models.units.Ranged;
 import models.units.Settler;
@@ -16,6 +17,8 @@ import models.units.Unit;
 import models.units.Worker;
 
 import java.util.ArrayList;
+
+import java.util.Objects;
 
 import static controllers.GameController.*;
 
@@ -114,7 +117,7 @@ public class UnitController {
     private static void setRevealedTiles() {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
             for (int j = 0; j < getWorld().getHexInHeight(); j++) {
-                // System.out.println(i + " " + j);
+               // System.out.println(i + " " + j);
                 if (currentPlayer == null)
                     System.out.println("cp is null");
                 if (hex[i][j].getState(currentPlayer) == null)
@@ -168,76 +171,87 @@ public class UnitController {
     }
 
     public static void makeUnit(String name, Hex hex) {
-
-        switch (InitializeGameInfo.unitInfo.get(name).split(" ")[6]) {
-            case "Settler":
-                Settler newSettler = new Settler(name, hex, currentPlayer);
-                newSettler.build();
-                break;
-            case "Worker":
-                Worker newWorker = new Worker(name, hex, currentPlayer);
-                newWorker.build();
-                break;
-            case "Archery":
-                Ranged newRanged = new Ranged(name, hex, currentPlayer);
+        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        if(type.equals("Settler")){
+            Settler newSettler=new Settler(name, hex, currentPlayer);
+            newSettler.build();
+        } else if(type.equals("Worker")){
+            Worker newWorker=new Worker(name, hex,currentPlayer);
+            newWorker.build();
+        } else if(type.equals("Archery")){
+            Ranged newRanged=new Ranged(name, hex, currentPlayer);
+            newRanged.build();
+        } else if(type.equals("Siege")){
+            Siege newSiege=new Siege(name, hex, currentPlayer);
+            newSiege.build();
+        }else if(type.equals("Melee")){
+            Melee newMelee=new Melee(name, hex, currentPlayer);
+            newMelee.build();
+        }else{
+            int temp=Integer.parseInt(InitializeGameInfo.unitInfo.get(name));
+            if(temp==0)
+            {
+                Melee newMelee=new Melee(name, hex, currentPlayer);
+                newMelee.build();
+            }else{
+                Ranged newRanged=new Ranged(name, hex, currentPlayer);
                 newRanged.build();
+            }
         }
 
-
     }
-
-    public static String setUpSiegeForRangeAttack() {
-        if (selectedUnit == null) return "you did not select a unit";
-        if (!(selectedUnit instanceof Siege)) return "selected unit is not a siege";
-        ((Siege) selectedUnit).setReadyToAttack(true);
+    public static String setUpSiegeForRangeAttack(){
+        if(selectedUnit == null) return "you did not select a unit";
+        if(! (selectedUnit instanceof Siege)) return "selected unit is not a siege";
+        ((Siege)selectedUnit).setReadyToAttack(true);
         return "siege is ready now";
     }
-
-    public static String fortify() {
-        if (selectedUnit == null) return "you did not select a unit";
-        if (selectedUnit.getCombatType() == "Mounted") return "a Mounted unit can not fortify";
-        if (selectedUnit.getCombatType() == "Armored") return "a Armored unit can not fortify";
-
+    public static String fortify(){
+        if(selectedUnit == null || selectedUnit instanceof Civilian) return "you did not select a military unit";
+        if(Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
+        if(Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
+        selectedUnit.setState(UnitState.Fortified);
         return "fortified successfully";
     }
 
-    public static String garrison(int x, int y) {
-        if (hex[x][y].getCapital() == null) {
-            System.out.println("there is no capital");
-        }
-        if (hex[x][y].getOwner() != currentPlayer) {
-            System.out.println("this is not your city");
+    public static String garrison(){
+        if(selectedUnit == null || selectedUnit instanceof Civilian) {
+            return "you did not select a military unit";
+        }if(selectedUnit.getCurrentHex().getCapital() == null){
+            return "there is no capital";
+        }if(selectedUnit.getCurrentHex().getOwner() != currentPlayer){
+            return ("this is not your city");
         }
         return "garrisoned successfully";
     }
 
-    public static String alert() {
+    public static String alert(){
+        selectedUnit.setState(UnitState.Alert);
         return "alerted successfully";
     }
-
-    public static void deleteUnit(int x, int y) {
+    public static void deleteUnit(int x, int y){
         //todo: ask is any list of unit to remove
         hex[x][y].setMilitaryUnit(null);
         selectedUnit = null;
     }
-
-    public static String sleepUnit() {
-        if (selectedUnit.getState() == UnitState.Sleep) {
+    public static String sleepUnit(){
+        if(selectedUnit.getState() == UnitState.Sleep){
             return "unit is already sleep";
         }
         selectedUnit.setState(UnitState.Sleep);
         return "successfully sleep";
     }
-
-    public static String wakeUpUnit() {
-        if (selectedUnit.getState() == UnitState.Sleep) {
+    public static String wakeUpUnit(){
+        if(selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert){
             selectedUnit.setState(UnitState.Active);
             return "successfully waked up";
         }
         return "unit is already awake";
     }
-
-    public static String pillage() {
+    public static String pillage(){
+        if(selectedUnit == null) return "select a military unit first";
+        if(selectedUnit instanceof Civilian)return "selected unit is a civilian";
+        selectedUnit.getCurrentHex().setPillaged(true);
         return "pillaged successfully";
     }
 

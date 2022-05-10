@@ -15,6 +15,11 @@ public class Improvement implements Construction {
         this.hex=hex;
         this.worker=unit;
     }
+
+    public Unit getWorker()
+    {
+        return worker;
+    }
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
@@ -32,19 +37,83 @@ public class Improvement implements Construction {
 
     @Override
     public void build() {
+        zeroMpWorker();
         switch(name)
-        {
+        {   case "remove jungle":
+            case "remove forest":
+            case "remove marsh":
+                deleteFeature();
+                break;
+            case "remove road":
+                removeRoad();
+                break;
+            case "repair":
+                repair();
+                break;
             case "Farm":
                 makeFarm();
                 break;
             case "Mine":
                 makeMine();
                 break;
-            case "Road":
-                makeRoad();
+            case "Post":
+                makePost();
                 break;
+            case "Pasture":
+                makePasture();
+                break;
+            case "Lumber":
+                makeLumber();
+                break;
+            case "Camp":
+                makeCamp();
+                break;
+            case "Plantation":
+                makePlantation();
+                break;
+            case "Quarry":
+                makeQuarry();
+                break;
+            case "Factory":
+                makeFactory();;
+                break;
+
+
         }
     }
+
+    private void makeCamp()
+    {
+        hex.addImprovement(this);
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Furs||Ivory"))
+        {
+            hex.getCity().increaseGold(hex.getResource().getGold());
+        }
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Deer"))
+        {
+            hex.getCity().increaseFood(hex.getResource().getFood());
+        }
+    }
+    private void makePost()
+    {
+        hex.getCity().increaseGold(1);
+        hex.addImprovement(this);
+
+    }
+
+    private void repair() {
+        hex.setPillaged(false);
+    }
+
+    private void removeRoad() {
+        hex.setHasRailRoad(false);
+        hex.setHasRoad(false);
+    }
+
+    private void deleteFeature() {
+        hex.setFeature(null);
+    }
+
     private void makeFarm()
     {
         hex.getCity().increaseFood(1);
@@ -53,6 +122,11 @@ public class Improvement implements Construction {
         {
             hex.setFeature(null);
         }
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Wheat"))
+        {
+            hex.getCity().increaseFood(hex.getResource().getFood());
+        }
+
 
     }
 
@@ -65,12 +139,80 @@ public class Improvement implements Construction {
             hex.setFeature(null);
         }
 
+        if(hex.getResource()!=null)
+        {
+            if(hex.getResource().getName().equals("Gems||Gold||Silver"))
+            {
+                hex.getCity().increaseGold(hex.getResource().getGold());
+            }
+            if(hex.getResource().getName().equals("Iron||Coal"))
+            {
+                hex.getCity().increaseProduction(hex.getResource().getProduction());
+            }
+        }
+
+
+    }
+
+    private void makeLumber()
+    {
+        hex.getCity().increaseProduction(1);
+        hex.addImprovement(this);
+
+    }
+
+    private void makePasture()
+    {
+        hex.addImprovement(this);
+        if(hex.getResource()!=null)
+        {
+            if(hex.getResource().getName().equals("Horses"))
+            {
+                hex.getCity().increaseProduction(hex.getResource().getProduction());
+            }
+            if(hex.getResource().getName().equals("Sheep"))
+            {
+                hex.getCity().increaseFood(hex.getResource().getFood());
+            }
+        }
+    }
+
+    private void makePlantation()
+    {
+        hex.addImprovement(this);
+        if(hex.getResource()!=null)
+        {
+            String resource=hex.getResource().getName();
+            if(resource.equals("Banana"))
+            {
+                hex.getCity().increaseFood(hex.getResource().getFood());
+            }
+            if(resource.equals("Silk||Sugar||Cotton||Incense||Dyes"))
+            {
+                hex.getCity().increaseGold(hex.getResource().getGold());
+            }
+        }
+    }
+
+    private void makeQuarry()
+    {
+        hex.addImprovement(this);
+
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Marble"))
+        {
+            hex.getCity().increaseGold(hex.getResource().getGold());
+        }
+    }
+    private void makeFactory()
+    {
+        hex.addImprovement(this);
+        hex.getCity().increaseProduction(2);
     }
 
     private void makeRoad() {
         hex.setHasRoad(true);
     }
-    @Override
+   @Override
     public Hex getHex()
     {
         return hex;
@@ -84,5 +226,13 @@ public class Improvement implements Construction {
     {
         this.hex=newHex;
     }
+    @Override
+    public void zeroMpWorker() {
+        worker.setBackUpMp(worker.getMP());
+        worker.setMP(0);
+
+    }
+
+
 
 }
