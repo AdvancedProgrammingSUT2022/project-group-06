@@ -377,33 +377,6 @@ public class GameController {
         }
     }
 
-    public static void finishConstruction() {
-        for (Construction unfinishedProject : currentPlayer.getUnfinishedProjects()) {
-            unfinishedProject.decreaseLeftTurns();
-            if (unfinishedProject.getLeftTurns() == 0) {
-                if (unfinishedProject instanceof Building)
-                    finishBuilding();
-                else if (unfinishedProject instanceof Technology)
-                    achieveTechnology();
-                else if (unfinishedProject instanceof Improvement)
-                    finishImprovement();
-            }
-        }
-    }
-
-    public static void finishBuilding() {
-        //todo
-    }
-
-    public static void achieveTechnology(){
-        //todo
-    }
-
-    public static void finishImprovement() {
-        //todo
-    }
-
-
     public static String changeTurn() {
         String unitOrders = unitActions();
         if(unitOrders != null)return unitOrders;
@@ -429,8 +402,7 @@ public class GameController {
         //heal();
         //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
-        finishConstruction();
-        //manage harekat chand nobati ye nobat bere jelo
+        UnitController.changeTurn();
         //handle siege units
         //hazine tamir O negahdari buldings
         //roshd shar ezafe shodan sharvanda
@@ -446,7 +418,7 @@ public class GameController {
     private static String unitActions() {
         for (Military military : currentPlayer.getMilitaries()) {
             if (!(military.getState()== UnitState.Sleep) && military.getMP() != 0) {
-                return "unit in " + military.getX() + "," + military.getY() + "coordenates needs order";
+                return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
             }
         }
         return null;
@@ -658,7 +630,6 @@ public class GameController {
         return "process for building a farm successfully started";
 
     }
-
 
     public static void checkTimeVariantProcesses()
     {

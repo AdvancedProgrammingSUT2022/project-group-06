@@ -39,7 +39,10 @@ public class Improvement implements Construction {
                 break;
             case "Mine":
                 makeMine();
-                break;    
+                break;
+            case "Road":
+                makeRoad();
+                break;
         }
     }
     private void makeFarm()
@@ -63,6 +66,10 @@ public class Improvement implements Construction {
         }
 
     }
+
+    private void makeRoad() {
+        hex.setHasRoad(true);
+    }
     @Override
     public Hex getHex()
     {
@@ -78,5 +85,4 @@ public class Improvement implements Construction {
         this.hex=newHex;
     }
 
-    
 }

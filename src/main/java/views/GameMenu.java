@@ -135,6 +135,8 @@ public class GameMenu extends Menu {
             System.out.println("Entered position is not valid");
         else if (!UnitController.hasMilitary(x, y))
             System.out.println("There is no military unit in this hex");
+        else if (GameController.getPlayerMilitaryByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null)
+            System.out.println("You don't own this unit");
         else {
             UnitController.setSelectedUnit(GameController.getMilitaryByLocation(x, y));
 
@@ -147,6 +149,8 @@ public class GameMenu extends Menu {
             System.out.println("Entered position is not valid");
         else if (!UnitController.hasCivilian(x, y))
             System.out.println("There is no civilian unit in this hex");
+        else if (GameController.getPlayerCiviliansByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null)
+            System.out.println("You don't own this unit");
         else {
             UnitController.setSelectedUnit(GameController.getCiviliansByLocation(x, y));
             System.out.println("The Civilian unit was selected successfully");
@@ -155,25 +159,7 @@ public class GameMenu extends Menu {
 
 
     private static void moveUnitView(int x, int y) {
-        if (UnitController.getSelectedUnit() == null) {
-            System.out.println("You should choose a unit first");
-        } else if (GameController.getPlayerCiviliansByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null
-                && GameController.getPlayerMilitaryByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null)
-            System.out.println("You don't own this unit");
-        else if (UnitController.isHexOccupied(x, y))
-            System.out.println("This hex already has a unit of this type");
-        else {
-            Hex nextHex = UnitController.getNextHex(x, y);
-            if (!UnitController.canMoveThrough(nextHex.getX(), nextHex.getY())) {
-                System.out.print("The unit can't move through this hex");
-            } else if (nextHex.getX() == x && nextHex.getY() == y) {
-                System.out.println("The unit reached chosen destination");
-                UnitController.moveUnit(UnitController.getSelectedUnit(), x, y);
-            }
-            // nextHex = UnitController.getNextHex(x, y);
-
-        }
-
+        System.out.println(UnitController.startMovement(x, y));
     }
 
 

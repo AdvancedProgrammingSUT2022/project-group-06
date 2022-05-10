@@ -38,14 +38,13 @@ public class Technology implements Construction {
         this.leftTurns = leftTurns;
     }
 
-    public ArrayList<String> GetneededPreviousTechnologies() {
+    public ArrayList<String> getNeededPreviousTechnologies() {
         return neededPreviousTechnologies;
     }
 
     public String getName() {
         return this.name;
     }
-
 
     public int getCost() {
         return this.cost;
