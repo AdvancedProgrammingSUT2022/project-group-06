@@ -252,7 +252,42 @@ public class UnitController {
         if(selectedUnit == null) return "select a military unit first";
         if(selectedUnit instanceof Civilian)return "selected unit is a civilian";
         selectedUnit.getCurrentHex().setPillaged(true);
+        
+        if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
+        
+
+        
+
         return "pillaged successfully";
+    }
+
+    private static void reverseImprovement()
+    {
+        for(Improvement temp:selectedUnit.getCurrentHex().getImprovement())
+        {
+            String type=temp.getName();
+            switch(type)
+            {
+                case "Camp":
+                    Improvement.reverseCamp(selectedUnit.getCurrentHex());
+                    break;
+                case "Farm":    
+                    Improvement.reverseFarm(selectedUnit.getCurrentHex());
+                    break;
+                case "Mine":    
+                    Improvement.reverseMine(selectedUnit.getCurrentHex());
+                    break;
+                case "Pasture":   
+                    Improvement.reversePasture(selectedUnit.getCurrentHex());
+                    break;
+                case "Plantation":
+                    Improvement.reversePlantation(selectedUnit.getCurrentHex());
+                    break;
+                case "Quarry":
+                    Improvement.reverseQuarry(selectedUnit.getCurrentHex());
+                    break;
+            }
+        }
     }
 
     public static void forceEndMovement(Movement movement) {

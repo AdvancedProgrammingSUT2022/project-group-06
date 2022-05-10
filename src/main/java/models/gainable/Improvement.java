@@ -82,6 +82,17 @@ public class Improvement implements Construction {
         }
     }
 
+    public static void reverseCamp(Hex hex)
+    {
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Furs||Ivory"))
+        {
+            hex.getCity().decreaseGold(hex.getResource().getGold());
+        }
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Deer"))
+        {
+            hex.getCity().decreaseFood(hex.getResource().getFood());
+        }
+    }
     private void makeCamp()
     {
         hex.addImprovement(this);
@@ -94,6 +105,7 @@ public class Improvement implements Construction {
             hex.getCity().increaseFood(hex.getResource().getFood());
         }
     }
+    
     private void makePost()
     {
         hex.getCity().increaseGold(1);
@@ -114,6 +126,16 @@ public class Improvement implements Construction {
         hex.setFeature(null);
     }
 
+    public static void reverseFarm(Hex hex)
+    {
+        hex.getCity().decreaseFood(1);
+        
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Wheat"))
+        {
+            hex.getCity().decreaseFood(hex.getResource().getFood());
+        }
+
+    }
     private void makeFarm()
     {
         hex.getCity().increaseFood(1);
@@ -130,6 +152,22 @@ public class Improvement implements Construction {
 
     }
 
+    public static void reverseMine(Hex hex)
+    {
+        hex.getCity().decreaseProduction(1);
+        
+        if(hex.getResource()!=null)
+        {
+            if(hex.getResource().getName().equals("Gems||Gold||Silver"))
+            {
+                hex.getCity().decreaseGold(hex.getResource().getGold());
+            }
+            if(hex.getResource().getName().equals("Iron||Coal"))
+            {
+                hex.getCity().decreaseProduction(hex.getResource().getProduction());
+            }
+        }
+    }
     private void makeMine()
     {
         hex.getCity().increaseProduction(1);
@@ -161,6 +199,20 @@ public class Improvement implements Construction {
 
     }
 
+    public static void reversePasture(Hex hex)
+    {
+        if(hex.getResource()!=null)
+        {
+            if(hex.getResource().getName().equals("Horses"))
+            {
+                hex.getCity().decreaseProduction(hex.getResource().getProduction());
+            }
+            if(hex.getResource().getName().equals("Sheep"))
+            {
+                hex.getCity().decreaseFood(hex.getResource().getFood());
+            }
+        }
+    }
     private void makePasture()
     {
         hex.addImprovement(this);
@@ -173,6 +225,23 @@ public class Improvement implements Construction {
             if(hex.getResource().getName().equals("Sheep"))
             {
                 hex.getCity().increaseFood(hex.getResource().getFood());
+            }
+        }
+    }
+
+    public static void reversePlantation(Hex hex)
+    {
+        
+        if(hex.getResource()!=null)
+        {
+            String resource=hex.getResource().getName();
+            if(resource.equals("Banana"))
+            {
+                hex.getCity().decreaseFood(hex.getResource().getFood());
+            }
+            if(resource.equals("Silk||Sugar||Cotton||Incense||Dyes"))
+            {
+                hex.getCity().decreaseGold(hex.getResource().getGold());
             }
         }
     }
@@ -191,6 +260,14 @@ public class Improvement implements Construction {
             {
                 hex.getCity().increaseGold(hex.getResource().getGold());
             }
+        }
+    }
+
+    public static void reverseQuarry(Hex hex)
+    {
+        if(hex.getResource()!=null&&hex.getResource().getName().equals("Marble"))
+        {
+            hex.getCity().decreaseGold(hex.getResource().getGold());
         }
     }
 

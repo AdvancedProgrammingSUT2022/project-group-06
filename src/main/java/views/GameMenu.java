@@ -133,14 +133,14 @@ public class GameMenu extends Menu {
     private static boolean startGame(Scanner scanner,String command)
     {
         System.out.println("welcome to civilization");
-        System.out.println("one of the most pointless games ever made that has been created by a company that most probabley prides itself");
-        System.out.println("on its ability to create a game with just enough meaningless tasks and ridiculous functions to ensure that in a");
-        System.out.println("comparison between actually finishing the game and death, death would seem like the only option you have left");
-        System.out.println("we in advance offer our heartfelt condolences and pray to god that you are smart enough to exit the game right now");
-        System.out.println("and save yourself from this endless torture. in order to do that, please type -Exit-\n");
+        System.out.println("one of the most pointless games ever made that has\nbeen created by a company that most probabley prides itself");
+        System.out.println("on its ability to create a game with just enough \nmeaningless tasks and ridiculous functions to ensure that in a");
+        System.out.println("comparison between actually finishing the game and \ndeath, death would seem like the only option you have left");
+        System.out.println("we in advance offer our heartfelt condolences and \npray to god that you are smart enough to exit the game right now");
+        System.out.println("and save yourself from this endless torture.\n in order to do that, please type -Exit-\n");
 
-        System.out.println("if you hate your life and have decided to end it by continuing to play this game, then please select a tile and then choose");
-        System.out.println("a name for your very first city");
+        System.out.println("if you hate your life and have decided to end it by continuing to play this game,\nthen please select a tile and then choose a name for your very first city");
+        //System.out.println("a name for your very first city");
 
         Matcher matcher;
         while(true)
