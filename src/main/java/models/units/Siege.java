@@ -22,6 +22,8 @@ public class Siege extends Ranged implements Combatable{
         }
         changes += this.getCurrentHex().getTerrain().getCombatModifiersPercentage();
         this.isReadyToAttack = false;
+        changes += (this.isFirstFortify()) ? 25  : 50;
+        changes += (1 - (this.health/this.maxHealth))*100;
         return this.getCombatStrength() * (100 + changes)/100;
     }
 

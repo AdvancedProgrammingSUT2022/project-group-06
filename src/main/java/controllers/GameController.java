@@ -37,7 +37,6 @@ public class GameController {
     private static int playerCount;
     private static ArrayList<Combatable> hurtElements;
 
-
     public static int getTurn()
     {
         return turn;
@@ -86,20 +85,21 @@ public class GameController {
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
-       /* City city = makeCityForTesting(0, 0);
-        city.addHex(world.getHex()[0][1]);
-        makeCityForTesting(0, 4);
-        makeCityForTesting(1, 2);
+        City city1 = makeCityForTesting(0, 0,"asy");
+        city1.addHex(world.getHex()[0][1]);
+        City city2 =makeCityForTesting(5, 7,"aseman");
+        City city3 =makeCityForTesting(1, 2,"asemane");
         world.getHex()[0][1].setState(HexState.Visible, currentPlayer);
         Ranged Archer = new Ranged("Archer", world.getHex()[1][0], players.get(0));
         world.getHex()[1][0].setMilitaryUnit(Archer);
         world.getHex()[1][0].setState(HexState.Visible, currentPlayer);
- */   }
+    }
 
-    private static City makeCityForTesting(int x, int y) {
-        City city = new City(players.get(1), "Asemaneh", world.getHex()[x][y]);
+    private static City makeCityForTesting(int x, int y,String name) {
+        City city = new City(players.get(1), name, world.getHex()[x][y]);
         world.getHex()[x][y].setCity(city);
         world.getHex()[x][y].setState(HexState.Visible, currentPlayer);
+        currentPlayer.addCity(city);
         return city;
     }
 
@@ -189,7 +189,18 @@ public class GameController {
         if (x < 0 || y < 0 || x >= world.getHexInHeight() || y >= world.getHexInWidth()) {
             return "oops invalid cell!";
         }
-        int maxX = x, maxY = y, minY = y, minX = x;
+        //if(hex[x][y].getState(currentPlayer) == HexState.FogOfWar) return "he zerange inja fog of ware";
+        return getString(x, y, y, x);
+    }
+
+    public static String showCity(String cityName) {
+        City city;
+        if((city = isCityValid(cityName) ) == null)return "oops invalid city name!";
+        if(city.getCapital().getState(currentPlayer) == HexState.FogOfWar) return "you have not seen the city";
+        return getString(city.getX(), city.getY(),  city.getY(), city.getX());
+    }
+
+    private static String getString(int maxX, int maxY, int minY, int minX) {
         while (maxX - minX < 3) {
             if (maxX < world.getHexInHeight()) maxX++;
             if (minX > 0 && maxX - minX < 3) minX--;
@@ -200,6 +211,15 @@ public class GameController {
         }
         mapBoundaries = new int[]{minX, maxX, minY, maxY};
         return printWorld();
+    }
+
+    private static City isCityValid(String cityName) {
+        for (Player player: players) {
+            for (City city: player.getCities()) {
+                if (Objects.equals(city.getName(), cityName)) return city;
+            }
+        }
+        return null;
     }
 
     private static void drawHexDetails(int align, int minI, int minJ, String[][] string, Hex hex, String color) {
@@ -371,7 +391,7 @@ public class GameController {
     }
 
     private static void heal() {
-        //todo: add harm elements to aaray list and add heal units
+        //todo: add harm elements to aray list and add heal units
         for (Combatable combatable : hurtElements) {
             combatable.healPerTurn();
         }
@@ -412,7 +432,7 @@ public class GameController {
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
         //reset unit MP
-        return "Turn changed successfully";
+        return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
     private static String unitActions() {
@@ -967,8 +987,5 @@ public class GameController {
 
         return true;
     }
-
-
-
 
 }

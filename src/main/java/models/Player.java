@@ -40,7 +40,6 @@ public class Player {//-currentProject
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
 
-
     public ArrayList<Construction> getUnfinishedProjects()
     {
         return unfinishedProjects;

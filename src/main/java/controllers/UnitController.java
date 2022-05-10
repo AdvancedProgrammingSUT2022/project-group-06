@@ -229,10 +229,11 @@ public class UnitController {
         selectedUnit.setState(UnitState.Alert);
         return "alerted successfully";
     }
-    public static void deleteUnit(int x, int y){
-        //todo: ask is any list of unit to remove
-        hex[x][y].setMilitaryUnit(null);
+    public static String deleteUnit(Unit unit){
+        unit.getOwner().removeUnit( unit);
+        unit.getCurrentHex().setMilitaryUnit(null);
         selectedUnit = null;
+        return "unit deleted";
     }
     public static String sleepUnit(){
         if(selectedUnit.getState() == UnitState.Sleep){
