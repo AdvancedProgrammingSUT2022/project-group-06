@@ -3,8 +3,6 @@ package views;
 import controllers.*;
 import models.Player;
 import models.maprelated.City;
-import models.maprelated.Hex;
-import models.maprelated.World;
 import models.units.Civilian;
 import models.units.Military;
 import models.units.Settler;
@@ -67,17 +65,9 @@ public class GameMenu extends Menu {
                 System.out.println(buyTile(matcher));
             } else if ((matcher = getMatcher("unit make (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
                 System.out.println(CityController.startMakingUnit(matcher.group("unitname")));
-            } else if (command.equals("show all map")) {
-                System.out.println(GameController.printAllWorld());
-            } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                System.out.println(GameController.showHexDetails(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
-            } else if ((matcher = getMatcher("map move (?<direction>(right|left|up|down)) (-c)(?<amount>\\d+)", command)) != null) {
-                System.out.println(GameController.moveMap(matcher.group("direction"), Integer.parseInt(matcher.group("amount"))));
-            } else if ((matcher = getMatcher("map show (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                System.out.println(GameController.showPosition(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
-            } else if ((matcher = getMatcher("map show (--cityName|-c) (?<cityName>.+)", command)) != null) {
-                System.out.println(GameController.showCity(matcher.group("cityName")));
-            } else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            } else if(mapCommands(command)){
+                continue;
+            }else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectMilitary(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 orderToSelectedUnit(scanner);
             } else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -95,6 +85,27 @@ public class GameMenu extends Menu {
                 System.out.println("invalid command!");
             command = scanner.nextLine();
         }
+    }
+
+    private boolean mapCommands(String command) {
+        Matcher matcher;
+        if (command.equals("show all map")) {
+            System.out.println(GameController.printAllWorld());
+            return true;
+        } else if ((matcher = getMatcher("map show details (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            System.out.println(GameController.showHexDetails(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            return true;
+        } else if ((matcher = getMatcher("map move (?<direction>(right|left|up|down)) (-c)(?<amount>\\d+)", command)) != null) {
+            System.out.println(GameController.moveMap(matcher.group("direction"), Integer.parseInt(matcher.group("amount"))));
+            return true;
+        } else if ((matcher = getMatcher("map show (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            System.out.println(GameController.showPosition(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            return true;
+        } else if ((matcher = getMatcher("map show (--cityName|-c) (?<cityName>.+)", command)) != null) {
+            System.out.println(GameController.showCity(matcher.group("cityName")));
+            return true;
+        }
+        return false;
     }
 
     private static boolean startGame(Scanner scanner,String command) {
@@ -159,14 +170,27 @@ public class GameMenu extends Menu {
             System.out.println(UnitController.pillage());
         }else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-        }  else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+        }  else {
+            isSelect = orderToAllUnits(isSelect, command);
+        }
+        }
+    }
+
+    private boolean orderToAllUnits(boolean isSelect, String command) {
+        Matcher matcher;
+        if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }else if(command.equals("unselect unit")){
                 UnitController.setSelectedUnit(null);
                 isSelect=false;
-            }
+        } else if(mapCommands(command)){
+            return isSelect;
+        }else{
+            System.out.println("invalid command");
         }
+        return isSelect;
     }
+
     private void orderToSettler(Scanner scanner) {
         boolean isSelect = true;
         Matcher matcher;
@@ -181,12 +205,7 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
-            } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            }else if(command.equals("unselect unit")){
-                UnitController.setSelectedUnit(null);
-                isSelect=false;
-            }
+            } else isSelect = orderToAllUnits(isSelect, command);
         }
     }
     private void orderToWorker(Scanner scanner) {
@@ -205,8 +224,6 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
-            } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             }else if(command.equals("quarry build")){
                 System.out.println(GameController.makeQuarry());
             } else if(command.equals("plantation build")){
@@ -233,10 +250,7 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.removeRailRoad());
             }else if(command.equals("repair")){
                 System.out.println(GameController.repair());
-            }else if(command.equals("unselect unit")){
-                UnitController.setSelectedUnit(null);
-                isSelect=false;
-            }
+            } else isSelect = orderToAllUnits(isSelect, command);
         }
     }
     private static String buyTile(Matcher matcher) {
