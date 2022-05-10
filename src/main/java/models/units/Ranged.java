@@ -32,6 +32,8 @@ public class Ranged extends Military implements Combatable{
             changes += -20;
         }
         changes += 100 + this.getCurrentHex().getTerrain().getCombatModifiersPercentage();
-        return this.getCombatStrength() * changes/100;
+        changes += (this.isFirstFortify()) ? 25  : 50;
+        changes += (1 - (this.health/this.maxHealth))*100;
+        return this.getCombatStrength() * (100 + changes)/100;
     }
 }

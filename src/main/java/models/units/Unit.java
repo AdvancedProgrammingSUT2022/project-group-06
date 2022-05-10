@@ -15,6 +15,7 @@ import models.maprelated.Hex;
 public class Unit implements Combatable , Construction
 {
     protected static ArrayList<Unit> units=new ArrayList<Unit>();
+    final protected int maxHealth = 10;
     protected int health;
     protected int combatStrength;
     protected int rangedStrength;
@@ -87,7 +88,7 @@ public class Unit implements Combatable , Construction
         range=Integer.parseInt(info[3]);
         MP=Integer.parseInt(info[4]);
         combatType=info[7];
-        health=10;
+        health=maxHealth;
 
 
 
@@ -132,7 +133,9 @@ public class Unit implements Combatable , Construction
     public int calculateCombatModifier(Combatable defender) {
         int changes = 0;
         changes += 100 + this.currentHex.getTerrain().getCombatModifiersPercentage();
-        return this.combatStrength * changes/100;
+        changes += (this.isFirstFortify()) ? 25  : 50;
+        changes += (1 - (this.health/this.maxHealth))*100;
+        return this.combatStrength * (100+changes)/100;
     }
 
     public int getCombatStrength() {

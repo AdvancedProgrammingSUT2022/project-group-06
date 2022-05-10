@@ -21,46 +21,21 @@ public class GameMenu extends Menu {
 
     public void run(Scanner gameScanner) {
         scanner = gameScanner;
-
         InitializeGameInfo.run();
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
-        String command=new String() ;
-
-        if(startGame(scanner , command))
-        {
-            return ;
-        }
-
+        String command= "";
+        //if(startGame(scanner , command)) {return;}
         command= scanner.nextLine();
         Matcher matcher;
 
-
         while (true) {
-            if ((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null) {
-                System.out.println(CityController.buildCity(matcher.group("name")));
-            } else if(command.equals("construction delete")){
+            if(command.equals("construction delete")){
                 System.out.println(GameController.deleteConstruction());
             }else if(command.equals("demographic screen")){
                 System.out.println(GameController.demographicScreen());
             }else if(command.equals("unit activate")){
                 System.out.println(GameController.activateUnit());
-            }else if(command.equals("quarry build")){
-                System.out.println(GameController.makeQuarry());
-            } else if(command.equals("plantation build")){
-                System.out.println(GameController.makePlantation());
-            } else if(command.equals("camp build")){
-                System.out.println(GameController.makingCamp());
-            } else if(command.equals("pasture build")){
-                System.out.println(GameController.makingPasture());
-            } else if(command.equals("lumber mill build")){
-                System.out.println(GameController.makingLumberMill());
-            } else if(command.equals("post build")){
-                System.out.println(GameController.startMakeingTradingPost());
-            } else if (command.equals("farm build")) {
-                System.out.println(GameController.startBuildFarm());
-            } else if (command.equals("mine build")) {
-                System.out.println(GameController.startBuildMine());
             } else if (command.equals("economic overview")) {
                 System.out.println(GameController.economicOverview());
             } else if (command.equals("notification history")) {
@@ -100,29 +75,21 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.moveMap(matcher.group("direction"), Integer.parseInt(matcher.group("amount"))));
             } else if ((matcher = getMatcher("map show (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 System.out.println(GameController.showPosition(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
-            } else if ((matcher = getMatcher("map show (--cityName|-c) (?<cityName>\\.+)", command)) != null) {
-                System.out.println("city");
+            } else if ((matcher = getMatcher("map show (--cityName|-c) (?<cityName>.+)", command)) != null) {
+                System.out.println(GameController.showCity(matcher.group("cityName")));
             } else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectMilitary(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-                //orderToSelectedUnit(scanner);
+                orderToSelectedUnit(scanner);
             } else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectCivilian(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-                //orderToSelectedUnit(scanner);
-            } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            } else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            } else if ((matcher = getMatcher("Remove citizen at (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+) from work", command)) != null) {
+                orderToSelectedUnit(scanner);
+            }else if ((matcher = getMatcher("Remove citizen at (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+) from work", command)) != null) {
                 System.out.println(CityController.removeCitizenFromWork(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("lock an citizen to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 System.out.println(CityController.lockCitizenTo(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if (command.equals("show unemployed citizens")) {
                 System.out.println(CityController.showUnEmployedCitizen());
-            } else if ((matcher = getMatcher("construct road (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
-                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            else if ((matcher = getMatcher("construct railroad (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
-                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            else if (command.equals("exit menu"))
+            }else if (command.equals("exit menu"))
                 break;
             else
                 System.out.println("invalid command!");
@@ -130,15 +97,13 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static boolean startGame(Scanner scanner,String command)
-    {
-        System.out.println("welcome to civilization");
-        System.out.println("one of the most pointless games ever made that has\nbeen created by a company that most probabley prides itself");
+    private static boolean startGame(Scanner scanner,String command) {
+        System.out.println("hi "+GameController.getCurrentPlayer().getName()+" ,welcome to civilization");
+        System.out.println("one of the most pointless games ever made that has\nbeen created by a company that most probably prides itself");
         System.out.println("on its ability to create a game with just enough \nmeaningless tasks and ridiculous functions to ensure that in a");
         System.out.println("comparison between actually finishing the game and \ndeath, death would seem like the only option you have left");
         System.out.println("we in advance offer our heartfelt condolences and \npray to god that you are smart enough to exit the game right now");
         System.out.println("and save yourself from this endless torture.\n in order to do that, please type -Exit-\n");
-
         System.out.println("if you hate your life and have decided to end it by continuing to play this game,\nthen please select a tile and then choose a name for your very first city");
         //System.out.println("a name for your very first city");
 
@@ -160,16 +125,12 @@ public class GameMenu extends Menu {
         System.out.println("enter your city's name");
         command=scanner.nextLine();
 
-
         CityController.startMakingUnit("Settler");
         selectCivilian(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY());
         CityController.buildCity(command);
-
         return false;
-
-
     }
-    /*private void orderToSelectedUnit(Scanner scanner) {
+    private void orderToSelectedUnit(Scanner scanner) {
         if(UnitController.getSelectedUnit() instanceof Worker)orderToWorker(scanner);
         else if(UnitController.getSelectedUnit() instanceof Settler)orderToSettler(scanner);
         else if(UnitController.getSelectedUnit() instanceof Military)orderToMilitary(scanner);
@@ -184,7 +145,9 @@ public class GameMenu extends Menu {
             System.out.println(UnitController.sleepUnit());
         }else if(command.equals("wake")){
             System.out.println(UnitController.wakeUpUnit());
-        }else if(command.equals("alert")){
+        } else if(command.equals("delete")){
+            System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
+        } else if(command.equals("alert")){
             System.out.println(UnitController.alert());
         }else if(command.equals("garrison")){
             System.out.println(UnitController.garrison());
@@ -194,10 +157,10 @@ public class GameMenu extends Menu {
             System.out.println(UnitController.setUpSiegeForRangeAttack());
         }else if(command.equals("pillage")){
             System.out.println(UnitController.pillage());
-        }else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-            moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-        } else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+        }else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+        }  else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }else if(command.equals("unselect unit")){
                 UnitController.setSelectedUnit(null);
                 isSelect=false;
@@ -216,7 +179,9 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.sleepUnit());
             }else if(command.equals("wake")){
                 System.out.println(UnitController.wakeUpUnit());
-            }else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            } else if(command.equals("delete")){
+                System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
+            } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             }else if(command.equals("unselect unit")){
                 UnitController.setSelectedUnit(null);
@@ -232,14 +197,28 @@ public class GameMenu extends Menu {
             command = scanner.nextLine();
             if(command.equals("sleep")){
                 System.out.println(UnitController.sleepUnit());
-            }else if(command.equals("wake")){
+            } else if ((matcher = getMatcher("construct road (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
+                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+            else if ((matcher = getMatcher("construct railroad (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
+                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+            else if(command.equals("wake")) {
                 System.out.println(UnitController.wakeUpUnit());
-            }else if ((matcher = getMatcher("construct road (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null)
-                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            else if ((matcher = getMatcher("construct railroad (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null){
-                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-            }else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            } else if(command.equals("delete")){
+                System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
+            } else if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+            }else if(command.equals("quarry build")){
+                System.out.println(GameController.makeQuarry());
+            } else if(command.equals("plantation build")){
+                System.out.println(GameController.makePlantation());
+            } else if(command.equals("camp build")){
+                System.out.println(GameController.makingCamp());
+            } else if(command.equals("pasture build")){
+                System.out.println(GameController.makingPasture());
+            } else if(command.equals("lumber mill build")){
+                System.out.println(GameController.makingLumberMill());
+            } else if(command.equals("post build")){
+                System.out.println(GameController.startMakeingTradingPost());
             } else if (command.equals("farm build")) {
                 System.out.println(GameController.startBuildFarm());
             } else if (command.equals("mine build")) {
@@ -260,7 +239,6 @@ public class GameMenu extends Menu {
             }
         }
     }
-*/
     private static String buyTile(Matcher matcher) {
         String result = CityController.presaleTiles();
         if (result == null) {
@@ -297,7 +275,7 @@ public class GameMenu extends Menu {
             System.out.println("Entered position is not valid");
         else if (!UnitController.hasMilitary(x, y))
             System.out.println("There is no military unit in this hex");
-        else if (GameController.getPlayerMilitaryByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null)
+        else if (GameController.getWorld().getHex()[x][y].getMilitaryUnit().getOwner() != GameController.getCurrentPlayer())
             System.out.println("You don't own this unit");
         else {
             UnitController.setSelectedUnit(GameController.getMilitaryByLocation(x, y));

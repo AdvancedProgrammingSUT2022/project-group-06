@@ -76,9 +76,7 @@ public class CombatController {
 //        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         //handel tile train and feature
         int unitStrength = selectedUnit.calculateCombatModifier(city);
-        unitStrength = (selectedUnit.isFirstFortify()) ? unitStrength*125/100 :unitStrength*150/100;
         int cityStrength = city.getHitPoint();
-        //todo: assarat asib
         //todo : saze defaie divar
         if(city.getCapital().getMilitaryUnit() != null){
             cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
@@ -88,7 +86,7 @@ public class CombatController {
         selectedUnit.decreaseHealth(city.getMeleeDefensivePower());
 //        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         if (selectedUnit.getHealth() <= 0) {
-            UnitController.deleteUnit(selectedUnit.getX(),selectedUnit.getY());
+            UnitController.deleteUnit(selectedUnit);
             return "you lose the battle unit is death";
         }
         if (cityStrength <= 0) {
@@ -104,9 +102,7 @@ public class CombatController {
         if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
         // handel tile train and feature
         int unitStrength = selectedUnit.calculateCombatModifier(city);
-        unitStrength = (selectedUnit.isFirstFortify()) ? unitStrength*125/100 :unitStrength*150/100;
         /*        System.out.println(unitStrength);*/
-        //todo: assarat asib
         //todo :saze defaie divar
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
@@ -126,9 +122,11 @@ public class CombatController {
     }
 
     public static void addCityToTerritory(City city, Player player) {
-        city.setOwner(player);
         //todo: check correction : yanni nemikad dige kar dige ba azafe kardan be teritory kard?
-        //todo : ask if any list of city for player
+        Player looser = city.getOwner();
+        city.setOwner(player);
+        looser.removeCity(city);
+        player.addCity(city);
         city.setHitPoint(0);
     }
 }
