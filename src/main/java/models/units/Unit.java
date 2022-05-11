@@ -226,19 +226,19 @@ public class Unit implements Combatable , Construction
 
     @Override
     public void healPerTurn() {
-
+        this.health += 1;
     }
 
     @Override
-    public  boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int unitY ) {
+    public  boolean isInPossibleCombatRange(int x, int y, int seenRange ,int attackerX ,int attackerY) {
         if (seenRange == (this.getRange()==0 ? 1 : this.getRange())) return false;
         boolean res = false;
-        int[][] direction = GameController.getDirection(unitY);
+        int[][] direction = GameController.getDirection(attackerY);
         for (int[] ints : direction) {
-            if (unitX + ints[0] == x && unitY + ints[1] == y) {
+            if (attackerX + ints[0] == x && attackerY + ints[1] == y) {
                 return true;
             }
-            res = isInPossibleCombatRange(x, y, seenRange + 1, unitX + ints[0], unitY + ints[1]);
+            res = isInPossibleCombatRange(x, y, seenRange + 1, attackerX + ints[0], attackerY + ints[1]);
             if(res) break;
         }
         return res;
@@ -265,4 +265,7 @@ public class Unit implements Combatable , Construction
         return null;
     }
 
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }

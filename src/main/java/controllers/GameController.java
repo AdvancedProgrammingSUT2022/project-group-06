@@ -35,7 +35,7 @@ public class GameController {
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
-    private static ArrayList<Combatable> hurtElements;
+    private static ArrayList<Combatable> hurtElements = new ArrayList<>();
 
     public static int getTurn()
     {
@@ -391,10 +391,10 @@ public class GameController {
     }
 
     private static void heal() {
-        //todo: add harm elements to aray list and add heal units
+/*
         for (Combatable combatable : hurtElements) {
-            combatable.healPerTurn();
-        }
+            if(combatable.)combatable.healPerTurn();*/
+        //}
     }
 
     public static String changeTurn() {
@@ -419,7 +419,7 @@ public class GameController {
         //todo: complete followings
         //feedUnits and citizens(bikar ye mahsol baghie 2 food)
         //healUnits and cities(1hit point)//handel tarmim asib
-        //heal();
+        heal();
         //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         UnitController.changeTurn();

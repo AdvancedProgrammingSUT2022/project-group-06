@@ -12,7 +12,7 @@ public interface Combatable {
 
     void healPerTurn();
 
-    boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int unitY );
+    boolean isInPossibleCombatRange(int x, int y, int seenRange ,int attackerX ,int attackerY );
 
     int getX();
 
