@@ -122,7 +122,7 @@ public class City implements Combatable {
     }
 
     @Override
-    public boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int unitY ){
+    public boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int attackerY){
         return false;
     }
 

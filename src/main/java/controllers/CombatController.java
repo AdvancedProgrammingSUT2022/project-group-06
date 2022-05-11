@@ -11,6 +11,7 @@ import views.GameMenu;
 
 public class CombatController {
     private static Unit selectedUnit = UnitController.getSelectedUnit();
+    private static City selectedCity = GameController.getSelectedCity();
     private static Hex[][] hex = GameController.getWorld().getHex();
     private static Combatable attacker;
     private static Combatable defender;
@@ -18,7 +19,24 @@ public class CombatController {
     public static Hex[][] getHex() {
         return hex;
     }
-
+    public static String attackCity(int x, int y) {
+        if(selectedCity == null) return "first select a city";
+        if (hex[x][y].getMilitaryUnit() == null){
+            System.out.println("there is mot a military unit");
+        }
+        if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
+            System.out.println("am i joke to you? attack our self?");
+        }
+        if(!selectedCity.isInPossibleCombatRange(x, y, 0,selectedCity.getX(),selectedCity.getY())) {
+            return "out of range";
+        }
+        hex[x][y].getMilitaryUnit().setHealth(hex[x][y].getMilitaryUnit().getHealth()-selectedCity.getHitPoint());
+        if(hex[x][y].getMilitaryUnit().getHealth()<=0){
+            UnitController.deleteUnit(hex[x][y].getMilitaryUnit());
+            return "city win";
+        }
+        return "attacked successfully";
+    }
     public static String attackUnit(int x, int y) {
         City defenderCity = hex[x][y].getCapital();
         attacker = selectedUnit;

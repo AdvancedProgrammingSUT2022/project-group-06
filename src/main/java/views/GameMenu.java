@@ -58,6 +58,8 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.selectHex(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("city select (--cityname|-cn) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
                 System.out.println(CityController.selectCity(matcher.group("cityname")));
+            } else if ((matcher = getMatcher("city attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+                System.out.println(CombatController.attackCity(Integer.parseInt(matcher.group("x")),Integer.parseInt(matcher.group("y"))));
             } else if (command.equals("next turn")) {
                 System.out.println(GameController.changeTurn());
                 GameController.checkTimeVariantProcesses();
@@ -65,9 +67,7 @@ public class GameMenu extends Menu {
                 System.out.println(buyTile(matcher));
             } else if ((matcher = getMatcher("unit make (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
                 System.out.println(CityController.startMakingUnit(matcher.group("unitname")));
-            } else if(mapCommands(command)){
-                continue;
-            }else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+            } if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectMilitary(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
                 orderToSelectedUnit(scanner);
             } else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -81,7 +81,7 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.showUnEmployedCitizen());
             }else if (command.equals("exit menu"))
                 break;
-            else
+            else if(!mapCommands(command))
                 System.out.println("invalid command!");
             command = scanner.nextLine();
         }
@@ -318,7 +318,6 @@ public class GameMenu extends Menu {
 
 
     private void attackUnitView(int x, int y) {
-        //todo : mp
         if (UnitController.getSelectedUnit() == null) {
             System.out.println("You should choose a unit first");
             return;
@@ -326,6 +325,9 @@ public class GameMenu extends Menu {
         if (UnitController.getSelectedUnit() instanceof Civilian) {
             System.out.println("you can not attack with a civilian unit");
             return;
+        }
+        if (UnitController.getSelectedUnit().getMP() == 0){
+            System.out.println("you do not have move point");
         }
         String combatResult = CombatController.attackUnit(x, y);
         System.out.println(combatResult);
