@@ -28,8 +28,7 @@ public class InitializeGameInfo {
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
     private static HashMap<String, Color> playerColor = new HashMap<String, Color>();
     private static ArrayList<Player> players = new ArrayList<Player>();
-
-    private static int numberOFPlayers = 3;
+    private static int numberOFPlayers;
 
     private static final Random random = new Random();
     private static World world;
@@ -241,17 +240,16 @@ public class InitializeGameInfo {
         terrainColors.put("Snow", Color.ANSI_WHITE_BACKGROUND);
         terrainColors.put("Tundra", Color.ANSI_BLACK_BACKGROUND);
 
-        playerColor.put("A", Color.RED);
-        playerColor.put("B", Color.BLUE);
-        playerColor.put("C", Color.GREEN);
-        playerColor.put("D", Color.YELLOW);
-        playerColor.put("E", Color.BLACK);
+        ArrayList<Color> playerColors = new ArrayList<Color>(Arrays.asList(Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.BLACK));
+        for (int i = 0; i < players.size(); i++) {
+            playerColor.put(players.get(i).getName(), playerColors.get(i));
+        }
     }
 
     public static void run() {
-        new Player("A");
+/*        new Player("A");
         new Player("B");
-        new Player("C");
+        new Player("C");*/
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();

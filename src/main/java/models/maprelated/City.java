@@ -125,13 +125,13 @@ public class City implements Combatable {
         int[][] oddDirections = GameController.getDirection(y);
         int[][] evenDirections = GameController.getDirection(y);
         int[][] direction = y%2==0 ?evenDirections :oddDirections;
-        for (int i = 0; i < direction.length; i++) {
+/*        for (int i = 0; i < direction.length; i++) {
             x = x + direction[x][0];
             y = y + direction[y][1];
             for (int j = 0; j < ; j++) {
                 
             }
-        }
+        }*/
         return false;
     }
 

@@ -367,5 +367,6 @@ public class UnitController {
     public static void changeTurn() {
         for (Movement unfinishedMovement : unfinishedMovements)
             moveUnit(unfinishedMovement);
+
     }
 }

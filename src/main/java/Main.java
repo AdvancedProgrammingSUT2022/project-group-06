@@ -9,11 +9,9 @@ public class Main
     public static void main(String[] args)
     {
         Scanner scanner=new Scanner(System.in);
-/*        LoginMenu loginMenu=new LoginMenu();
+        LoginMenu loginMenu=new LoginMenu();
         UserController.importSavedUsers();
-        loginMenu.run(scanner);*/
-        GameMenu gameMenu =new GameMenu();
-        gameMenu.run(scanner);
+        loginMenu.run(scanner);
     }
     
        

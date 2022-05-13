@@ -12,7 +12,7 @@ public class Worker extends Civilian
     public Worker(String name,Hex currentHex, Player owner)
     {
       super(name, currentHex, owner);
-    
+        currentHex.setCivilianUnit(this);
     } 
     private int turn;
     private Building building;

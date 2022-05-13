@@ -81,6 +81,9 @@ public class GameController {
         removeOwnerOfHexes();
         hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
+        hex[0][0].setState(HexState.Visible,currentPlayer);
+/*        hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
+        hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
 
         City city1 = makeCityForTesting(0, 0,"asy");
         city1.addHex(world.getHex()[0][1]);
@@ -89,7 +92,7 @@ public class GameController {
         world.getHex()[0][1].setState(HexState.Visible, currentPlayer);
         Melee melee = new Melee("Warrior", world.getHex()[1][0], players.get(0));
         world.getHex()[1][0].setMilitaryUnit(melee);
-        world.getHex()[1][0].setState(HexState.Visible, currentPlayer);
+        world.getHex()[1][0].setState(HexState.Visible, currentPlayer);*/
     }
 
     private static City makeCityForTesting(int x, int y,String name) {
@@ -381,11 +384,12 @@ public class GameController {
     public static Civilian getCiviliansByLocation(int x, int y) {
         return world.getHex()[x][y].getCivilianUnit();
         //todo : ask why?
-/*        List<Civilian> civilians = allCivilians;
-        for (Civilian civilian : civilians) {
-            if (civilian.getCurrentHex().getX() == x && civilian.getCurrentHex().getY() == y)
-                return civilian;
-        }*/
+//        List<Civilian> civilians = allCivilians;
+//        for (Civilian civilian : civilians) {
+//            if (civilian.getCurrentHex().getX() == x && civilian.getCurrentHex().getY() == y)
+//                return civilian;
+//        }
+//        return null;
     }
 
     private static void heal() {

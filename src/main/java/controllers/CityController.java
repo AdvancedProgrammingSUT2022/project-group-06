@@ -3,7 +3,7 @@ package controllers;
 import java.util.ArrayList;
 
 
-
+import enums.HexState;
 import models.Player;
 import models.maprelated.City;
 import models.maprelated.Hex;
@@ -68,12 +68,13 @@ public class CityController {
 
 
     public static String selectHex(int x, int y) {
-        if (x < 0 || y < 0 || x > 9 || y > 9) {
+        if (GameController.isOutOfBounds(x, y)) {
             return "invalid x or y";
         }
-
+        if (GameController.getWorld().getHex()[x][y].getState(currentPlayer)== HexState.FogOfWar) {
+            return "he zerangi inja fog of ware";
+        }
         GameController.setSelectedHex(GameController.getWorld().getHex()[x][y]);
-
         return "tile selected";
     }
 
@@ -94,28 +95,20 @@ public class CityController {
         if (GameController.getSelectedHex() == null) {
             return "select a tile first";
         }
-        City theCity = null;
-        for (City temp : City.getCities()) {
-            if (temp.getHexs().contains(GameController.getSelectedHex())) {
-                theCity = temp;
-                break;
-            }
+        if(GameController.getSelectedHex().getOwner() != currentPlayer) {
+             return "this tile does not belong to you";
+         }
+         if(GameController.getSelectedHex().getCapital() == null){
+             return "this is not capital";
+         }
+        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        if(type.equals("Settler||Worker")&&GameController.getSelectedCity().getCivilianUnit()!=null)
+        {
+            return "you can't have two Civilian units in a city";
+        }else if((!type.equals("Settler||Worker"))&&(GameController.getSelectedCity().getMilitaryUnit()!=null)) {
+            return "you can't have two Military units in a city";
         }
-        // if(theCity==null||!(theCity.getOwner().equals(currentPlayer)))
-        // {
-        //     return "this tile does not belong to you";
-        // }
-//        GameController.setSelectedCity(theCity);
-//        if(type.equals("Military")&&GameController.getSelectedCity().getMilitaryUnit()!=null)
-//        {
-//            return "you can't have two military units in a city";
-//        }
-//        if(type.equals("Civilian")&&GameController.getSelectedCity().getCivilianUnit()!=null)
-//        {
-//            return "you can't have two civilian units in a city";
-//        }
-
-        if (name.equals("Settler") && currentPlayer.getHappiness() < 0)
+            if (name.equals("Settler") && currentPlayer.getHappiness() < 0)
             return "your civilization is unhappy";
 
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
@@ -131,26 +124,24 @@ public class CityController {
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
         }
-        
-        Unit unit=new Unit(name, GameController.getSelectedHex(), currentPlayer);
-        
-        
+
+        Unit unit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
+
+
         if (newUnit.getCost() < goldPerTurn) {
-            unit.setLeftTurns(1);;
+            unit.setLeftTurns(1);
+            ;
         } else if (goldPerTurn == 0) {
             return "you have no income so it's impossible to start making a unit right now";
         } else {
             unit.setLeftTurns((newUnit.getCost() / goldPerTurn) + 1);
         }
 
-       
+
         currentPlayer.addUnfinishedProject(unit);
-        
+
         return "pricess for builing an unit started successfully";
     }
-
-
-    
 
 
     public static ArrayList<Hex> getToBuyTiles() {
@@ -163,8 +154,7 @@ public class CityController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
         }
-        if(UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Ocean||Mountain"))
-        {
+        if (UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Ocean||Mountain")) {
             return "you can not build a city on this tile";
         }
         for (City temp : City.getCities()) {
@@ -182,7 +172,6 @@ public class CityController {
         if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
-        UnitController.getSelectedUnit().getCurrentHex().setOwner(currentPlayer);
         currentPlayer.addCity(newCity);
         UnitController.setSelectedUnit(null);
         return "new city created successfully";

@@ -1,12 +1,14 @@
 package controllers;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 import models.User;
 
@@ -40,8 +42,12 @@ public class UserController {
         loggedInUser = users.get(username);
     }
 
-    public void logout() {
+    public static String logout() {
+        if(loggedInUser == null){
+            return "you have not logged in yet";
+        }
         loggedInUser = null;
+        return "logout successfully";
     }
 
     public static void saveUsers() {
@@ -66,7 +72,10 @@ public class UserController {
 
     public static void importSavedUsers() {
         try {
-            String user = new String(Files.readAllBytes(Paths.get("files/UserInfo.txt")));
+            String resourceName = "files/UserInfo.txt";
+            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            String user = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             if (user.equals("")) {
                 return;
             }

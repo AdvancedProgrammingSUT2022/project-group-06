@@ -44,8 +44,6 @@ public class MainController
             {
                 String getUsername=input.substring(user2+4);
                 String username=getUsername.split("[ \\t]+")[0];
-                System.out.println("K"+username);
-                System.out.println("NN"+playerNum2.toString());
                 usernames.add(username);
 
             }
@@ -70,10 +68,9 @@ public class MainController
             {
                 return 1;
             }
-            Player newPlayer=new Player(temp);
+            new Player(temp);
         }
-
-
+        InitializeGameInfo.setNumberOFPlayers(InitializeGameInfo.getPlayers().size());
         return 2;
 
 

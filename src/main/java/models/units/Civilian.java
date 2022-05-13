@@ -23,12 +23,13 @@ public class Civilian extends Unit
       
     }
     
-    public Civilian(String name,Hex currentHex, Player owner)
+    public Civilian(String name,Hex hex, Player owner)
     {
-      super(name, currentHex, owner);
+      super(name, hex, owner);
       this.isWorking=false;
-      
-      civilians.add(this);
+        hex.setCivilianUnit(this);
+        civilians.add(this);
+        GameController.getCurrentPlayer().addCivilians(this);
     } 
 
     public static ArrayList<Civilian> geiCivilians()

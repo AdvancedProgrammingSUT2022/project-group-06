@@ -28,6 +28,9 @@ public class LoginMenu extends Menu
         }else if((matcher=Commands.getMatcher(command, Commands.EXIT))!=null) {
             UserController.saveUsers();
             return true;
+        }else if((matcher=Commands.getMatcher(command, Commands.LOGOUT))!=null) {
+            System.out.println(UserController.logout());
+            return false;
         }else if((matcher=Commands.getMatcher(command, Commands.CHANGEMENU))!=null) {
             if(UserController.loggedInUser==null) {
                 System.out.println("please login first");

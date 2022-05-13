@@ -261,7 +261,7 @@ public class Player {//-currentProject
         this.civilians.add(civilian);
     }
 
-    public void setCivilians(ArrayList<Civilian> civilians) {
-        this.civilians = civilians;
+    public void addCivilians(Civilian civilians) {
+        this.civilians.add(civilians);
     }
 }

@@ -23,7 +23,7 @@ public class GameMenu extends Menu {
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
         String command= "";
-        //if(startGame(scanner , command)) {return;}
+        if(startGame(scanner , command)) {return;}
         command= scanner.nextLine();
         Matcher matcher;
 
@@ -87,7 +87,7 @@ public class GameMenu extends Menu {
         }
     }
 
-    private boolean mapCommands(String command) {
+    private static boolean mapCommands(String command) {
         Matcher matcher;
         if (command.equals("show all map")) {
             System.out.println(GameController.printAllWorld());
@@ -126,19 +126,22 @@ public class GameMenu extends Menu {
             {
                 return true;
             } else if ((matcher = getMatcher("tile select (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
-                System.out.println(CityController.selectHex(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
-                break;
-            }
-
-            System.out.println("invalid command");
+                String result;
+                System.out.println(result = CityController.selectHex(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+                if(result.equals("tile selected")){
+                    if(!GameController.getSelectedHex().getTerrain().getName().matches("Mountain|Ocean")) break;
+                    else System.out.println("but this hex is mounted or ocean");
+                }
+            }if(!mapCommands(command))
+                System.out.println("invalid command");
         }
 
         System.out.println("enter your city's name");
         command=scanner.nextLine();
-
-        CityController.startMakingUnit("Settler");
-        selectCivilian(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY());
-        CityController.buildCity(command);
+        GameController.getSelectedHex().setOwner(GameController.getCurrentPlayer());
+        UnitController.makeUnit("Settler", GameController.getSelectedHex());
+        UnitController.setSelectedUnit(GameController.getCiviliansByLocation(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY()));
+        System.out.println(CityController.buildCity(command));
         return false;
     }
     private void orderToSelectedUnit(Scanner scanner) {
@@ -303,7 +306,7 @@ public class GameMenu extends Menu {
             System.out.println("Entered position is not valid");
         else if (!UnitController.hasCivilian(x, y))
             System.out.println("There is no civilian unit in this hex");
-        else if (GameController.getPlayerCiviliansByLocation(UnitController.getSelectedUnit().getCurrentHex().getX(), UnitController.getSelectedUnit().getCurrentHex().getY()) == null)
+        else if (GameController.getWorld().getHex()[x][y].getCivilianUnit().getOwner() != GameController.getCurrentPlayer())
             System.out.println("You don't own this unit");
         else {
             UnitController.setSelectedUnit(GameController.getCiviliansByLocation(x, y));

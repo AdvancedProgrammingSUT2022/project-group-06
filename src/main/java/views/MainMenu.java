@@ -12,7 +12,6 @@ public class MainMenu extends Menu
 {
     MainController mainController= new MainController();
     ProfileMenu profileMenu= new ProfileMenu();
-    InitializeGameInfo game=new InitializeGameInfo();
 
     public boolean checkCommand(String command,Scanner scanner)
     {
@@ -34,7 +33,8 @@ public class MainMenu extends Menu
             }
             if(matcher.group("menuname").equals("Play Game"))
             {
-                game.run();
+                GameMenu gameMenu =new GameMenu();
+                gameMenu.run(scanner);
             }
             
             //System.out.println("you can't move to "+matcher.group("menuname")+" from Login Menu");

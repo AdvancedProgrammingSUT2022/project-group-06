@@ -12,6 +12,7 @@ public class Settler extends Civilian
     public Settler(String name,Hex currentHex, Player owner)
     {
       super(name, currentHex, owner);
+        currentHex.setCivilianUnit(this);
     } 
 
     public void explore()

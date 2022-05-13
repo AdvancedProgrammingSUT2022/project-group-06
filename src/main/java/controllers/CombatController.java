@@ -21,9 +21,9 @@ public class CombatController {
         if (hex[x][y].getMilitaryUnit() == null){
             return ("there is mot a military unit");
         }
-/*        if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
+        if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
             return ("am i joke to you? attack our self?");
-        }*/
+        }
         if(!selectedCity.isInPossibleCombatRange(x, y, 0,selectedCity.getX(),selectedCity.getY())) {
             return "out of range";
         }
