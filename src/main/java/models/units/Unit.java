@@ -31,6 +31,14 @@ public class Unit implements Combatable , Construction
     protected Player owner;
     //todo: set combat type
 
+    public String getNeededResource()
+    {
+        return neededResource;
+    }
+    public String getNeededTech()
+    {
+        return neededTech;
+    }
     protected String combatType;
 
     protected boolean isFirstFortify = true;
