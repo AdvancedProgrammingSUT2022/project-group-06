@@ -1,5 +1,6 @@
 package models.gainable;
 
+import controllers.GameController;
 import models.maprelated.Hex;
 import models.units.Unit;
 import models.units.Worker;
@@ -38,6 +39,7 @@ public class Improvement implements Construction {
     @Override
     public void build() {
         zeroMpWorker();
+        GameController.getCurrentPlayer().addNotifications("the process of "+name+" started successfully");
         switch(name)
         {   case "remove jungle":
             case "remove forest":
@@ -84,7 +86,7 @@ public class Improvement implements Construction {
 
     public static void reverseCamp(Hex hex)
     {
-        if(hex.getResource()!=null&&hex.getResource().getName().equals("Furs||Ivory"))
+        if(hex.getResource()!=null&&hex.getResource().getName().matches("Furs||Ivory"))
         {
             hex.getCity().decreaseGold(hex.getResource().getGold());
         }
@@ -96,7 +98,7 @@ public class Improvement implements Construction {
     private void makeCamp()
     {
         hex.addImprovement(this);
-        if(hex.getResource()!=null&&hex.getResource().getName().equals("Furs||Ivory"))
+        if(hex.getResource()!=null&&hex.getResource().getName().matches("Furs||Ivory"))
         {
             hex.getCity().increaseGold(hex.getResource().getGold());
         }
@@ -140,7 +142,7 @@ public class Improvement implements Construction {
     {
         hex.getCity().increaseFood(1);
         hex.addImprovement(this);
-        if(hex.getFeature().getName().equals("Marsh||Jungle||Forest"))
+        if(hex.getFeature().getName().matches("Marsh||Jungle||Forest"))
         {
             hex.setFeature(null);
         }
@@ -158,11 +160,11 @@ public class Improvement implements Construction {
         
         if(hex.getResource()!=null)
         {
-            if(hex.getResource().getName().equals("Gems||Gold||Silver"))
+            if(hex.getResource().getName().matches("Gems||Gold||Silver"))
             {
                 hex.getCity().decreaseGold(hex.getResource().getGold());
             }
-            if(hex.getResource().getName().equals("Iron||Coal"))
+            if(hex.getResource().getName().matches("Iron||Coal"))
             {
                 hex.getCity().decreaseProduction(hex.getResource().getProduction());
             }
@@ -172,18 +174,18 @@ public class Improvement implements Construction {
     {
         hex.getCity().increaseProduction(1);
         hex.addImprovement(this);
-        if(hex.getFeature().getName().equals("Marsh||Jungle||Forest"))
+        if(hex.getFeature().getName().matches("Marsh||Jungle||Forest"))
         {
             hex.setFeature(null);
         }
 
         if(hex.getResource()!=null)
         {
-            if(hex.getResource().getName().equals("Gems||Gold||Silver"))
+            if(hex.getResource().getName().matches("Gems||Gold||Silver"))
             {
                 hex.getCity().increaseGold(hex.getResource().getGold());
             }
-            if(hex.getResource().getName().equals("Iron||Coal"))
+            if(hex.getResource().getName().matches("Iron||Coal"))
             {
                 hex.getCity().increaseProduction(hex.getResource().getProduction());
             }
@@ -239,7 +241,7 @@ public class Improvement implements Construction {
             {
                 hex.getCity().decreaseFood(hex.getResource().getFood());
             }
-            if(resource.equals("Silk||Sugar||Cotton||Incense||Dyes"))
+            if(resource.matches("Silk||Sugar||Cotton||Incense||Dyes"))
             {
                 hex.getCity().decreaseGold(hex.getResource().getGold());
             }
@@ -256,7 +258,7 @@ public class Improvement implements Construction {
             {
                 hex.getCity().increaseFood(hex.getResource().getFood());
             }
-            if(resource.equals("Silk||Sugar||Cotton||Incense||Dyes"))
+            if(resource.matches("Silk||Sugar||Cotton||Incense||Dyes"))
             {
                 hex.getCity().increaseGold(hex.getResource().getGold());
             }

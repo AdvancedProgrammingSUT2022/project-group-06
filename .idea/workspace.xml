@@ -6,9 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="add happiness">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Player.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Improvement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Improvement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/views/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/MainMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,6 +65,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="ToolWindowRun.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -109,6 +115,7 @@
       <workItem from="1652092248863" duration="2605000" />
       <workItem from="1652121582179" duration="596000" />
       <workItem from="1652163540053" duration="1450000" />
+      <workItem from="1652445289368" duration="3176000" />
     </task>
     <task id="LOCAL-00001" summary="add happiness">
       <created>1651564842058</created>

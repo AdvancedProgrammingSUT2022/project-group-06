@@ -47,8 +47,26 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.showResearchMenu());
             } else if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
                 System.out.println(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
-            } else if ((matcher = getMatcher("increase (--turn|-t) (?<amount>\\d+)", command)) != null) {
-                System.out.println(GameController.cheatTurn((Integer.parseInt(matcher.group("amount")))));
+            } else if ((matcher = getMatcher("increase (--movepoint|-mp) (?<amount>\\d+) (?<x>\\d+) (?<y>\\d+) (?<type>[a-zA-Z]+)", command)) != null) {
+                System.out.println(GameController.cheatMP((Integer.parseInt(matcher.group("amount"))),Integer.parseInt(matcher.group("x")),Integer.parseInt(matcher.group("y")),matcher.group("type")));
+            } else if((matcher = getMatcher("increase (--happiness|-h) (?<amount>\\d+)", command)) != null){ 
+                System.out.println(GameController.cheatHappiness((Integer.parseInt(matcher.group("amount")))));
+            } else if((matcher = getMatcher("increase (--population|-p) (?<amount>\\d+)", command)) != null){ 
+                System.out.println(GameController.cheatPopulation((Integer.parseInt(matcher.group("amount")))));
+            } else if((matcher = getMatcher("increase (--score|-s) (?<amount>\\d+)", command)) != null){ 
+                System.out.println(GameController.cheatScore((Integer.parseInt(matcher.group("amount")))));
+            } else if((matcher = getMatcher("increase (--production|-p) (?<amount>\\d+)", command)) != null){ 
+                System.out.println(GameController.cheatProduction((Integer.parseInt(matcher.group("amount")))));
+            } else if((matcher = getMatcher("increase (--cityMeleeCombatStrength|-cmcs) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
+                System.out.println(GameController.cheatMeleeCombatStrength(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+            } else if((matcher = getMatcher("increase (--cityRangedCombatStrength|-crcs) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
+                System.out.println(GameController.cheatRangedCombatStrength(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+            } else if((matcher = getMatcher("increase (--cityhitpoint|-chp) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
+                System.out.println(GameController.cheatCityHitPoint(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+            } else if((matcher = getMatcher("increase (--cityfood|-cf) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
+                System.out.println(GameController.cheatCityFood(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+            } else if((matcher = getMatcher("increase (--trophy|-t) (?<amount>\\d+)", command)) != null){
+                System.out.println(GameController.cheatTrophy(Integer.parseInt(matcher.group("amount"))));
             } else if (command.equals("city show trophies")) {
                 System.out.println(CityController.showTrophies());
             } else if (command.equals("city show resources")) {

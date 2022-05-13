@@ -35,6 +35,7 @@ public class City implements Combatable {
     private int trophy=0;
 
 
+
     public int getTrophy()
     {
         return trophy;

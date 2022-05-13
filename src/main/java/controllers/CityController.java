@@ -102,10 +102,10 @@ public class CityController {
              return "this is not capital";
          }
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
-        if(type.equals("Settler||Worker")&&GameController.getSelectedCity().getCivilianUnit()!=null)
+        if(type.matches("Settler||Worker")&&GameController.getSelectedCity().getCivilianUnit()!=null)
         {
             return "you can't have two Civilian units in a city";
-        }else if((!type.equals("Settler||Worker"))&&(GameController.getSelectedCity().getMilitaryUnit()!=null)) {
+        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedCity().getMilitaryUnit()!=null)) {
             return "you can't have two Military units in a city";
         }
             if (name.equals("Settler") && currentPlayer.getHappiness() < 0)
@@ -154,7 +154,7 @@ public class CityController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
         }
-        if (UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Ocean||Mountain")) {
+        if (UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Ocean||Mountain")) {
             return "you can not build a city on this tile";
         }
         for (City temp : City.getCities()) {

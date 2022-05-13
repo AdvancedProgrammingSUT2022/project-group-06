@@ -509,11 +509,126 @@ public class GameController {
         return "gold increased successfully";
     }
 
-    public static String cheatTurn(int amount) {
-        turn += amount;
-        return "turn increased successfully";
+    public static String cheatHappiness(int amount)
+    {
+        currentPlayer.increaseHappiness(amount);
+        return "happinesss increased successfully";
+    }
+    public static String cheatPopulation(int amount)
+    {
+        currentPlayer.increasePopulation(amount);
+        return "population increased successfully";
+    }
+    public static String cheatProduction(int amount)
+    {
+        currentPlayer.increaseProduction(amount);
+        return "production increased successfully";
+    } 
+
+    public static String cheatScore(int amount)
+    {
+        currentPlayer.increaseScore(amount);
+        return "score increased successfully";
     }
 
+    // public static String cheatTurn(int amount) {
+    //     turn += amount-1;
+    //     changeTurn();
+    //     return "turn increased successfully";
+    // }
+    public static String cheatMP(int amount,int x, int y,String type)
+    {
+        if(isOutOfBounds(x, y))
+        {
+            return "invalid x and y";
+        }
+
+        if(!type.matches("Civilian||Military"))
+        {
+            return "invalid unit type";
+        }
+
+        if(type.equals("Military"))
+        {
+            if(GameController.getWorld().getHex()[x][y].getMilitaryUnit()!=null) 
+            {
+                GameController.getWorld().getHex()[x][y].getMilitaryUnit().increaseMP(amount);
+                return "move point increased successfully";
+            }
+            return "no military unit exists in this tile";
+        }
+        if(type.equals("Civilian"))
+        {
+            if(GameController.getWorld().getHex()[x][y].getCivilianUnit()!=null) 
+            {
+                GameController.getWorld().getHex()[x][y].getCivilianUnit().increaseMP(amount);
+                return "move point increased successfully";
+            }
+            return "no civilian unit exists in this tile";
+        }
+
+        return "";
+
+    }
+
+    public static String cheatMeleeCombatStrength(int amount,String cityName)
+    {
+        for(City city: currentPlayer.getCities())
+        {
+            if(city.getName().equals(cityName))
+            {
+                city.increaseMeleeDefensivePower(amount);
+                return "Melee combat strength increased successfully";
+            }
+        }
+
+        return "no city with this name exists";
+    }
+
+    public static String cheatRangedCombatStrength(int amount,String cityName)
+    {
+        for(City city: currentPlayer.getCities())
+        {
+            if(city.getName().equals(cityName))
+            {
+                city.increaseRangedDefencePower(amount);
+                return "Ranged combat strength increased successfully";
+            }
+        }
+
+        return "no city with this name exists";
+    }
+    public static String cheatCityFood(int amount,String cityName)
+    {
+        for(City city: currentPlayer.getCities())
+        {
+            if(city.getName().equals(cityName))
+            {
+                city.increaseFood(amount);
+                return "food increased successfully";
+            }
+        }
+
+        return "no city with this name exists";
+    }
+    public static String cheatCityHitPoint(int amount,String cityName)
+    {
+        for(City city: currentPlayer.getCities())
+        {
+            if(city.getName().equals(cityName))
+            {
+                city.increaseHitPoint(amount);
+                return "hit point increased successfully";
+            }
+        }
+
+        return "no city with this name exists";
+    }
+    public static String cheatTrophy(int amount)
+    {
+        currentPlayer.increaseTrophies(amount);
+        return "trophy increased successfuly";
+    }
     public static String showResearchMenu() {
         StringBuilder research = new StringBuilder("");
 
@@ -763,7 +878,7 @@ public class GameController {
         {
             return "you can not have two Improvements in one tile";
         }
-        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Plain||Desert||Grassland|||Tundra"))
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Plain||Desert||Grassland|||Tundra"))
         {
             return "you can not build a TradingPost on this tile";
         }
@@ -812,7 +927,7 @@ public class GameController {
         {
             return "you can not have two Improvements in one tile";
         }
-        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Desert||Plain||Grassland||Tundra||Hills"))
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Desert||Plain||Grassland||Tundra||Hills"))
         {
             return "you can not build a Pasture on this tile";
         }
@@ -836,7 +951,7 @@ public class GameController {
         {
             return "you can not have two Improvements in one tile";
         }
-        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle||Tundra||Hills||Plain"))
+        if(!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Jungle||Tundra||Hills||Plain"))
         {
             return "you can not build a Camp on this tile";
         }
@@ -916,10 +1031,14 @@ public class GameController {
                     continue;
                 }
                 process.build();
+                String temp="the process of "+process.getName()+"on the hex: x="+process.getHex().getX()+" y="+process.getHex().getY()+" finished successfullly";
+                currentPlayer.addNotifications(temp);
                 currentPlayer.getUnfinishedProjects().remove(process);
             }else{
                 process.decreaseLeftTurns();
             }
+
+            
         }
 
     }
@@ -978,7 +1097,7 @@ public class GameController {
     {
         for(Construction temp :UnitController.getSelectedUnit().getCurrentHex().getImprovement())
         {
-            if(!temp.getName().equals("Road||Railroad"))
+            if(!temp.getName().matches("Road||Railroad"))
             {
                 return false;
             }

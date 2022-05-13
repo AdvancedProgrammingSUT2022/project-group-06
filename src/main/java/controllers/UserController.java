@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import models.User;
+import views.LoginMenu;
 
 public class UserController {
     public static User loggedInUser = null;
@@ -52,17 +53,23 @@ public class UserController {
 
     public static void saveUsers() {
         try {
-            PrintWriter user = new PrintWriter("files/UserInfo.txt");
 
-            //fw.write("Welcome to javaTpoint.");    
+            String resourceName = "files/UserInfo.txt";
+            ClassLoader classLoader = LoginMenu.class.getClassLoader();
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            
 
+            
+            PrintWriter user = new PrintWriter(file);
+
+    
             users.forEach((key, value) -> {
 
                 user.write(key + " " + value.getPassword() + " " + value.getNickName() + "\n");
 
-
             });
 
+    
             user.close();
         } catch (Exception e) {
             System.out.println(e);

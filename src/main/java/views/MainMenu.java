@@ -60,13 +60,14 @@ public class MainMenu extends Menu
             }
             if(check==0)
             {
+
                 System.out.println("invalid command!");
                 return false;
             }
         }
 
 
-
+        
         System.out.println("invalid command!");
         return false;
     }
