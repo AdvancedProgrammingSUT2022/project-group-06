@@ -4,13 +4,9 @@ import enums.Color;
 import enums.HexState;
 import enums.UnitState;
 import models.Player;
-import models.gainable.Building;
 import models.gainable.Construction;
 import models.gainable.Improvement;
-import models.gainable.Technology;
-import models.maprelated.City;
-import models.maprelated.Hex;
-import models.maprelated.World;
+import models.maprelated.*;
 import models.units.Civilian;
 import models.units.Combatable;
 import models.units.Military;
@@ -18,8 +14,6 @@ import models.units.Unit;
 import models.units.Worker;
 import models.units.*;
 
-import java.net.URI;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.util.*;
 
 public class GameController {
@@ -85,13 +79,16 @@ public class GameController {
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
+        hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
+
         City city1 = makeCityForTesting(0, 0,"asy");
         city1.addHex(world.getHex()[0][1]);
         City city2 =makeCityForTesting(5, 7,"aseman");
         City city3 =makeCityForTesting(1, 2,"asemane");
         world.getHex()[0][1].setState(HexState.Visible, currentPlayer);
-        Ranged Archer = new Ranged("Archer", world.getHex()[1][0], players.get(0));
-        world.getHex()[1][0].setMilitaryUnit(Archer);
+        Melee melee = new Melee("Warrior", world.getHex()[1][0], players.get(0));
+        world.getHex()[1][0].setMilitaryUnit(melee);
         world.getHex()[1][0].setState(HexState.Visible, currentPlayer);
     }
 
@@ -100,6 +97,7 @@ public class GameController {
         world.getHex()[x][y].setCity(city);
         world.getHex()[x][y].setState(HexState.Visible, currentPlayer);
         currentPlayer.addCity(city);
+        City.addCities(city);
         return city;
     }
 
@@ -391,10 +389,16 @@ public class GameController {
     }
 
     private static void heal() {
-/*
-        for (Combatable combatable : hurtElements) {
-            if(combatable.)combatable.healPerTurn();*/
-        //}
+        for (Military military:currentPlayer.getMilitaries()) {
+            if(military.getHealth() < military.getMaxHealth()){
+                military.increaseHealth(1);
+            }
+        }
+        for (City city:currentPlayer.getCities()) {
+            if(city.getHitPoint() < city.getMaxHitPoint()){
+                city.increaseHitPoint(1);
+            }
+        }
     }
 
     public static String changeTurn() {
@@ -565,8 +569,8 @@ public class GameController {
         {
             economicInfo.append(count+") cityname: "+temp.getName()+"\n");
             economicInfo.append("\\t\\tpoplulation: "+temp.getPopulation()+"\n");
-            economicInfo.append("\\t\\tmelee defensive power: "+temp.getMeleeDefensivePower()+"\n");
-            economicInfo.append("\\t\\tranged defensive power: "+temp.getRangedDefencePower()+"\n");
+            economicInfo.append("\\t\\tmelee defensive power: "+temp.getMeleeCombatStrength()+"\n");
+            economicInfo.append("\\t\\tranged defensive power: "+temp.getRangedCombatStrength()+"\n");
             economicInfo.append("\\t\\tfood: "+temp.getFood()+"\n");
             economicInfo.append("\\t\\tgold "+temp.getGold()+"\n");
             economicInfo.append("\\t\\ttrophy: "+temp.getTrophy()+"\n");

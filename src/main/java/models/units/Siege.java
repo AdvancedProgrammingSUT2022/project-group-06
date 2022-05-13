@@ -1,5 +1,6 @@
 package models.units;
 
+import enums.UnitState;
 import models.Player;
 import models.maprelated.City;
 import models.maprelated.Hex;
@@ -16,15 +17,13 @@ public class Siege extends Ranged implements Combatable{
         isReadyToAttack = readyToAttack;
     }
     public int calculateCombatModifier(Combatable defender) {
-        int changes = 0;
         if(defender instanceof City){
-            changes += 10;
-        }
-        changes += this.getCurrentHex().getTerrain().getCombatModifiersPercentage();
-        this.isReadyToAttack = false;
-        changes += (this.isFirstFortify()) ? 25  : 50;
-        changes += (1 - (this.health/this.maxHealth))*100;
-        return this.getCombatStrength() * (100 + changes)/100;
+            combatStrength *= 110.0 /100;
+        }this.isReadyToAttack = false;
+        combatStrength = combatStrength* (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) /100;
+        if(this.state == UnitState.Fortified) combatStrength *= (double) (100 + ((this.isFirstFortify()) ? 25 : 50)) / 100;
+        combatStrength =combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
+        return this.combatStrength;
     }
 
 }

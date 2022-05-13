@@ -3,10 +3,7 @@ package controllers;
 import models.Player;
 import models.maprelated.City;
 import models.maprelated.Hex;
-import models.units.Combatable;
-import models.units.Ranged;
-import models.units.Siege;
-import models.units.Unit;
+import models.units.*;
 import views.GameMenu;
 
 public class CombatController {
@@ -22,15 +19,15 @@ public class CombatController {
     public static String attackCity(int x, int y) {
         if(selectedCity == null) return "first select a city";
         if (hex[x][y].getMilitaryUnit() == null){
-            System.out.println("there is mot a military unit");
+            return ("there is mot a military unit");
         }
-        if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
-            System.out.println("am i joke to you? attack our self?");
-        }
+/*        if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
+            return ("am i joke to you? attack our self?");
+        }*/
         if(!selectedCity.isInPossibleCombatRange(x, y, 0,selectedCity.getX(),selectedCity.getY())) {
             return "out of range";
         }
-        hex[x][y].getMilitaryUnit().setHealth(hex[x][y].getMilitaryUnit().getHealth()-selectedCity.getHitPoint());
+        hex[x][y].getMilitaryUnit().decreaseHealth(selectedCity.getRangedCombatStrength());
         if(hex[x][y].getMilitaryUnit().getHealth()<=0){
             UnitController.deleteUnit(hex[x][y].getMilitaryUnit());
             return "city win";
@@ -91,23 +88,27 @@ public class CombatController {
     }
 
     private static String meleeCityCombat(City city) {
-//        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
+        Military temp = new Military("Scout",hex[0][0],GameController.getCurrentPlayer());
+        hex[0][0].setMilitaryUnit(temp);
+        System.out.println("meleCombat"+selectedUnit.getHealth()+" "+city.getHitPoint() );
         //handel tile train and feature
         int unitStrength = selectedUnit.calculateCombatModifier(city);
-        int cityStrength = city.getHitPoint();
+        int cityStrength = city.getMeleeCombatStrength();
         //todo : saze defaie divar
         if(city.getCapital().getMilitaryUnit() != null){
-            cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
+            //System.out.println("ll"+city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker));
+            //cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
         }
-//        System.out.println(unitStrength);
+        System.out.println(cityStrength+ " "+unitStrength);
         city.decreaseHitPoint(unitStrength);
-        selectedUnit.decreaseHealth(city.getMeleeDefensivePower());
-//        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
+        selectedUnit.decreaseHealth(cityStrength);
+        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         if (selectedUnit.getHealth() <= 0) {
             UnitController.deleteUnit(selectedUnit);
             return "you lose the battle unit is death";
         }
-        if (cityStrength <= 0) {
+        if (city.getHitPoint() <= 0) {
+            //todo : move unit to city coordinates
             GameMenu.cityCombatMenu(city, selectedUnit.getOwner());
             return "done";
         }
@@ -116,17 +117,17 @@ public class CombatController {
     }
 
     private static String rangedCityCombat(City city) {
-/*        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );*/
+        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
         // handel tile train and feature
         int unitStrength = selectedUnit.calculateCombatModifier(city);
-        /*        System.out.println(unitStrength);*/
+         System.out.println(unitStrength);
         //todo :saze defaie divar
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
             city.setHitPoint(1);
         }
-/*        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );*/
+        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
         selectedUnit.setMP(0);
         return "attack is done";
     }

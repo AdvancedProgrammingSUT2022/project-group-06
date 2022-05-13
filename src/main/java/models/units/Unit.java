@@ -131,11 +131,13 @@ public class Unit implements Combatable , Construction
     }
 
     public int calculateCombatModifier(Combatable defender) {
-        int changes = 0;
-        changes += 100 + this.currentHex.getTerrain().getCombatModifiersPercentage();
-        changes += (this.isFirstFortify()) ? 25  : 50;
-        changes += (1 - (this.health/this.maxHealth))*100;
-        return this.combatStrength * (100+changes)/100;
+/*        System.out.println("terrain: " + this.currentHex.getTerrain().getCombatModifiersPercentage());
+        if(this.state == UnitState.Fortified) System.out.println((this.isFirstFortify()) ? 25 : 50);
+        System.out.println("asib: :"+ (1 - (this.health / this.maxHealth)) * 100);*/
+        combatStrength = combatStrength* (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) /100;
+        if(this.state == UnitState.Fortified) combatStrength *= (double) (100 + ((this.isFirstFortify()) ? 25 : 50)) / 100;
+        combatStrength =combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
+        return this.combatStrength;
     }
 
     public int getCombatStrength() {
@@ -268,4 +270,9 @@ public class Unit implements Combatable , Construction
     public void setHealth(int health) {
         this.health = health;
     }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
 }
