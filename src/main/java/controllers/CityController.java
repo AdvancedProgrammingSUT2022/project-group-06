@@ -173,7 +173,7 @@ public class CityController {
         City.addCities(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
         currentPlayer.addCity(newCity);
-        UnitController.setSelectedUnit(null);
+        UnitController.getSelectedUnit().setMP(0);
         return "new city created successfully";
     }
 

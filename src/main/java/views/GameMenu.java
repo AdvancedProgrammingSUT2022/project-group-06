@@ -22,9 +22,8 @@ public class GameMenu extends Menu {
         InitializeGameInfo.run();
         GameController.initializeGameController();
         System.out.println(GameController.printWorld());
-        String command= "";
-        if(startGame(scanner , command)) {return;}
-        command= scanner.nextLine();
+        if(startGame()) {return;}
+        String command= scanner.nextLine();
         Matcher matcher;
 
         while (true) {
@@ -108,7 +107,8 @@ public class GameMenu extends Menu {
         return false;
     }
 
-    private static boolean startGame(Scanner scanner,String command) {
+    public static boolean startGame() {
+        String command;
         System.out.println("hi "+GameController.getCurrentPlayer().getName()+" ,welcome to civilization");
         System.out.println("one of the most pointless games ever made that has\nbeen created by a company that most probably prides itself");
         System.out.println("on its ability to create a game with just enough \nmeaningless tasks and ridiculous functions to ensure that in a");
@@ -136,7 +136,7 @@ public class GameMenu extends Menu {
                 System.out.println("invalid command");
         }
 
-        System.out.println("enter your city's name");
+        System.out.println("enter your city's name in camelCase");
         command=scanner.nextLine();
         GameController.getSelectedHex().setOwner(GameController.getCurrentPlayer());
         UnitController.makeUnit("Settler", GameController.getSelectedHex());

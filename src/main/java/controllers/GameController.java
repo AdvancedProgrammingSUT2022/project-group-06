@@ -13,6 +13,7 @@ import models.units.Military;
 import models.units.Unit;
 import models.units.Worker;
 import models.units.*;
+import views.GameMenu;
 
 import java.util.*;
 
@@ -408,19 +409,8 @@ public class GameController {
     public static String changeTurn() {
         String unitOrders = unitActions();
         if(unitOrders != null)return unitOrders;
-        if(playerCount==GameController.getPlayers().size()-1)
-        {
-            playerCount=0;
-            turn ++;
-        }else{
-            playerCount++;
-        }
-
-        currentPlayer = GameController.getPlayers().get(playerCount);
-        UnitController.setCurrentPlayer(currentPlayer);
         int goldPerTurn=0;
-        for(City temp:GameController.getCurrentPlayer().getCities())
-        {
+        for(City temp:GameController.getCurrentPlayer().getCities()) {
             goldPerTurn+=temp.getGold();
         }
         currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
@@ -440,6 +430,16 @@ public class GameController {
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
         //reset unit MP
+
+        if(playerCount==GameController.getPlayers().size()-1) {
+            playerCount=0;
+            turn ++;
+        }else{
+            playerCount++;
+        }
+        currentPlayer = GameController.getPlayers().get(playerCount);
+        UnitController.setCurrentPlayer(currentPlayer);
+        if(turn == 1) GameMenu.startGame();
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
