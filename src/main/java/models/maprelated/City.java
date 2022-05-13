@@ -121,20 +121,29 @@ public class City implements Combatable {
     }
 
     @Override
-    public boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int attackerY){
-        int[][] oddDirections = GameController.getDirection(y);
-        int[][] evenDirections = GameController.getDirection(y);
-        int[][] direction = y%2==0 ?evenDirections :oddDirections;
-/*        for (int i = 0; i < direction.length; i++) {
-            x = x + direction[x][0];
-            y = y + direction[y][1];
-            for (int j = 0; j < ; j++) {
-                
+    public  boolean isInPossibleCombatRange(int x, int y, int seenRange ,int attackerX ,int attackerY) {
+        int range = 2;
+        if (seenRange == range) return false;
+        boolean res = false;
+        int[][] direction = GameController.getDirection(attackerY);
+        for (int[] ints : direction) {
+            if (attackerX + ints[0] == x && attackerY + ints[1] == y) {
+                return true;
             }
-        }*/
-        return false;
+            res = isInPossibleCombatRange(x, y, seenRange + 1, attackerX + ints[0], attackerY + ints[1]);
+            if(res) break;
+        }
+        return res;
     }
-
+    /*        int[][] direction = GameController.getDirection(y);
+            for (int i = 0; i < direction.length; i++) {
+                x = x + direction[x][0];
+                y = y + direction[y][1];
+                int[][]  secondDirection = GameController.getDirection(y);
+                for (int j = 0; j < direction.length; j++) {
+                    if()
+                }
+            }*/
     @Override
     public int getX() {
         return capital.getX();

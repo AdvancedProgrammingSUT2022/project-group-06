@@ -80,10 +80,9 @@ public class GameController {
         hex = world.getHex();
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+
+/*        hex[0][0].setState(HexState.Visible,currentPlayer);
         hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
-        hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
-        hex[0][0].setState(HexState.Visible,currentPlayer);
-/*        hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
 
         City city1 = makeCityForTesting(0, 0,"asy");
@@ -91,13 +90,13 @@ public class GameController {
         City city2 =makeCityForTesting(5, 7,"aseman");
         City city3 =makeCityForTesting(1, 2,"asemane");
         world.getHex()[0][1].setState(HexState.Visible, currentPlayer);
-        Melee melee = new Melee("Warrior", world.getHex()[1][0], players.get(0));
+        Melee melee = new Melee("Warrior", world.getHex()[1][0], players.get(1));
         world.getHex()[1][0].setMilitaryUnit(melee);
         world.getHex()[1][0].setState(HexState.Visible, currentPlayer);*/
     }
 
     private static City makeCityForTesting(int x, int y,String name) {
-        City city = new City(players.get(1), name, world.getHex()[x][y]);
+        City city = new City(players.get(0), name, world.getHex()[x][y]);
         world.getHex()[x][y].setCity(city);
         world.getHex()[x][y].setState(HexState.Visible, currentPlayer);
         currentPlayer.addCity(city);

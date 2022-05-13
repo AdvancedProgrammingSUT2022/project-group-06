@@ -132,7 +132,7 @@ public class GameMenu extends Menu {
                     if(!GameController.getSelectedHex().getTerrain().getName().matches("Mountain|Ocean")) break;
                     else System.out.println("but this hex is mounted or ocean");
                 }
-            }if(!mapCommands(command))
+            }else if(!mapCommands(command))
                 System.out.println("invalid command");
         }
 
