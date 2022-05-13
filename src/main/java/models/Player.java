@@ -7,6 +7,7 @@ import models.gainable.Construction;
 import controllers.GameController;
 import controllers.InitializeGameInfo;
 import enums.HexState;
+import models.gainable.Technology;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.twopartyactions.Combat;
@@ -35,10 +36,12 @@ public class Player {//-currentProject
     private ArrayList<Military> militaries = new ArrayList<Military>();
     private ArrayList<Civilian> civilians = new ArrayList<Civilian>();
     private String name;
-    private static ArrayList<Construction> unfinishedProjects=new ArrayList<Construction>();
+    private ArrayList<Construction> unfinishedProjects=new ArrayList<Construction>();
+    private ArrayList<Technology> archivedTechnologies = new ArrayList<>();
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
+    private Technology currentResearch;
 
     public void increaseTrophies(int amount)
     {
@@ -53,7 +56,14 @@ public class Player {//-currentProject
     {
         unfinishedProjects.add(construction);
     }
-  
+
+    public ArrayList<Technology> getArchivedTechnologies() {
+        return this.archivedTechnologies;
+    }
+
+    public void addArchivedTechnology(Technology technology) {
+        this.archivedTechnologies.add(technology);
+    }
 
     public HashMap<String, Boolean> getAchievedTechnologies() {
         return achievedTechnologies;
@@ -267,5 +277,13 @@ public class Player {//-currentProject
 
     public void addCivilians(Civilian civilians) {
         this.civilians.add(civilians);
+    }
+
+    public Technology getCurrentResearch() {
+        return currentResearch;
+    }
+
+    public void setCurrentResearch(Technology currentResearch) {
+        this.currentResearch = currentResearch;
     }
 }

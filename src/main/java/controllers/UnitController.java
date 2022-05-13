@@ -301,7 +301,8 @@ public class UnitController {
     public static void moveUnit(Movement movement) {
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement.getDestination().getX(), movement.getDestination().getY());
-        if (nextHex == null || nextHex.getOwner() != currentPlayer) {
+
+        if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != currentPlayer)) {
             forceEndMovement(movement);
             return;
         }
@@ -322,11 +323,13 @@ public class UnitController {
         if (unit instanceof Civilian) {
             unit.getCurrentHex().setCivilianUnit(null);
             hex[x][y].setCivilianUnit((Civilian) unit);
+            nextHex.setCivilianUnit((Civilian) unit);
         } else {
             unit.getCurrentHex().setMilitaryUnit(null);
             hex[x][y].setMilitaryUnit((Military) unit);
         }
         unit.changeCurrentHex(hex[x][y]);
+
         if (nextHex.getX() == movement.getDestination().getX() && nextHex.getY() == movement.getDestination().getY())
             unfinishedMovements.remove(movement);
     }
@@ -367,6 +370,5 @@ public class UnitController {
     public static void changeTurn() {
         for (Movement unfinishedMovement : unfinishedMovements)
             moveUnit(unfinishedMovement);
-
     }
 }

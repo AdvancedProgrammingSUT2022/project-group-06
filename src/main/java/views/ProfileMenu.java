@@ -19,7 +19,7 @@ public class ProfileMenu extends Menu {
                 this.changePasswordView(matcher);
             else if ((matcher = getMatcher("profile change (--password|-p) (--new|-n) (?<newPassword>\\S+) (--current|-c) (?<currentPassword>\\S+)", command)) != null)
                 this.changePasswordView(matcher);
-            else if (command.equals("show menu-current"))
+            else if (command.equals("show current menu"))
                 System.out.println("Profile Menu");
             else if (command.equals("exit menu"))
                 break;

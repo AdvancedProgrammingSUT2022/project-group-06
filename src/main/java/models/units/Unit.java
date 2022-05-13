@@ -89,6 +89,7 @@ public class Unit implements Combatable , Construction
         this.owner = owner;
         this.name=name;
         this.currentHex=hex;
+        this.state = UnitState.Active;
         String[] info=InitializeGameInfo.unitInfo.get(name).split(" ");
         this.cost=Integer.parseInt(info[0]);
         combatStrength=Integer.parseInt(info[1]);
