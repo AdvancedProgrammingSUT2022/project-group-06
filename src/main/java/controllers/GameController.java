@@ -372,24 +372,10 @@ public class GameController {
 
     public static Military getMilitaryByLocation(int x, int y) {
         return GameController.getWorld().getHex()[x][y].getMilitaryUnit();
-        // TODO: 5/8/2022 ask traneh why
-/*        List<Military> militaries = allMilitaries;
-        for (Military military : militaries) {
-            if (military.getCurrentHex().getX() == x && military.getCurrentHex().getY() == y)
-                return military;
-        }
-        return null;*/
     }
 
     public static Civilian getCiviliansByLocation(int x, int y) {
         return world.getHex()[x][y].getCivilianUnit();
-        //todo : ask why?
-//        List<Civilian> civilians = allCivilians;
-//        for (Civilian civilian : civilians) {
-//            if (civilian.getCurrentHex().getX() == x && civilian.getCurrentHex().getY() == y)
-//                return civilian;
-//        }
-//        return null;
     }
 
     private static void heal() {
@@ -1050,7 +1036,7 @@ public class GameController {
         }
 
         UnitController.getSelectedUnit().changeUnitState(UnitState.Active);
-        return "unit activated successu=fully";
+        return "unit activated successfully";
     }
 
     public static String demographicScreen()
@@ -1112,6 +1098,16 @@ public class GameController {
 
 
         return true;
+    }
+
+
+
+//TODO: below method is just for checking FOW, should be deleted later
+    public static void showHexState() {
+        for (int i = 0; i < getWorld().getHexInWidth(); i++) {
+            for (int j = 0; j < getWorld().getHexInHeight(); j++)
+                System.out.println("c: " + i + "  " + j + " : " + "state: " + hex[i][j].getState(currentPlayer));
+        }
     }
 
 }

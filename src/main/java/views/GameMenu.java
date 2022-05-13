@@ -101,6 +101,8 @@ public class GameMenu extends Menu {
             else if(!mapCommands(command))
                 System.out.println("invalid command!");
             command = scanner.nextLine();
+            //TODO:
+            GameController.showHexState();
         }
     }
 

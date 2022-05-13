@@ -19,29 +19,33 @@ public class ProfileMenu extends Menu {
                 this.changePasswordView(matcher);
             else if ((matcher = getMatcher("profile change (--password|-p) (--new|-n) (?<newPassword>\\S+) (--current|-c) (?<currentPassword>\\S+)", command)) != null)
                 this.changePasswordView(matcher);
+            else if (command.equals("show menu-current"))
+                System.out.println("Profile Menu");
             else if (command.equals("exit menu"))
                 break;
+            else
+                System.out.println("invalid command!");
             command = scanner.nextLine();
         }
     }
 
     private void changeNicknameView(String nickname) {
         if (UserController.isNicknameUsed(nickname))
-            System.out.print("user with nickname" + nickname + "already exists");
+            System.out.println("user with nickname" + nickname + "already exists");
         else {
             UserController.loggedInUser.setNickName(nickname);
-            System.out.print("nickname changed successfully!");
+            System.out.println("nickname changed successfully!");
         }
     }
 
     private void changePasswordView(Matcher matcher) {
         if (!UserController.isPasswordValid(matcher.group("currentPassword")))
-            System.out.print("current password is invalid");
+            System.out.println("current password is invalid");
         else if (matcher.group("currentPassword").equals(matcher.group("newPassword")))
-            System.out.print("please enter a new password");
+            System.out.println("please enter a new password");
         else {
             UserController.loggedInUser.setPassword(matcher.group("newPassword"));
-            System.out.print("password changed successfully!");
+            System.out.println("password changed successfully!");
         }
     }
 }
