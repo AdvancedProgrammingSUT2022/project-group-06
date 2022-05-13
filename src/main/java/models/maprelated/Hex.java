@@ -123,7 +123,7 @@ public class Hex {
     }
 
     public void setCivilianUnit(Civilian civilianUnit) {
-        System.out.println(civilianUnit.getX()+" "+civilianUnit.getY());
+       // System.out.println(civilianUnit.getX()+" "+civilianUnit.getY());
         this.civilianUnit = civilianUnit;
     }
 

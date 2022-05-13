@@ -19,7 +19,7 @@ public class CombatController {
     public static String attackCity(int x, int y) {
         if(selectedCity == null) return "first select a city";
         if (hex[x][y].getMilitaryUnit() == null){
-            return ("there is mot a military unit");
+            return ("there is not a military unit");
         }
         if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
             return ("am i joke to you? attack our self?");
@@ -27,7 +27,10 @@ public class CombatController {
         if(!selectedCity.isInPossibleCombatRange(x, y, 0,selectedCity.getX(),selectedCity.getY())) {
             return "out of range";
         }
+        //System.out.println(selectedCity.getHitPoint()+" "+ selectedCity.getRangedCombatStrength());
+        //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
         hex[x][y].getMilitaryUnit().decreaseHealth(selectedCity.getRangedCombatStrength());
+        //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
         if(hex[x][y].getMilitaryUnit().getHealth()<=0){
             UnitController.deleteUnit(hex[x][y].getMilitaryUnit());
             return "city win";
