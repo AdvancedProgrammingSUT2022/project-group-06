@@ -1,5 +1,7 @@
 package controllers;
 
+import static org.mockito.ArgumentMatchers.nullable;
+
 import java.util.ArrayList;
 
 
@@ -101,7 +103,9 @@ public class CityController {
          if(GameController.getSelectedHex().getCapital() == null){
              return "this is not capital";
          }
-        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
+
         if(type.matches("Settler||Worker")&&GameController.getSelectedCity().getCivilianUnit()!=null)
         {
             return "you can't have two Civilian units in a city";
@@ -114,7 +118,30 @@ public class CityController {
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
+
+        
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
+
+
+        if(newUnit.getNeededTech()!=null&&currentPlayer.getAchievedTechnologies().get(newUnit.getNeededTech()))
+        {
+            return "you have not achieved the needed technology to make this unit";
+        }
+
+        boolean check=false;
+        for(Hex hex: GameController.getSelectedHex().getCity().getHexs())
+        {
+            if(newUnit.getNeededResource()!=null&&hex.getResource().getName().equals(newUnit.getNeededResource()))
+            {
+                check=true;
+            }
+        }
+    
+        if(!check&&newUnit.getNeededResource()!=null)
+        {
+            return "you don't have the needed resource to make this unit";
+        }
+
         if (currentPlayer.getGold() >= newUnit.getCost()) {
             UnitController.makeUnit(name, GameController.getSelectedHex());
             return "Unit created successfully";
@@ -140,7 +167,7 @@ public class CityController {
 
         currentPlayer.addUnfinishedProject(unit);
 
-        return "pricess for builing an unit started successfully";
+        return "process for builing an unit started successfully";
     }
 
 
@@ -195,20 +222,20 @@ public class CityController {
             ArrayList<Hex> sixNeighborHexs = new ArrayList<Hex>();
 
             if (y % 2 != 0) {
-                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null) {
+                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&& (!hex[x+1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x + 1][y]);
                 }
 
-                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null) {
+                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null&& (!hex[x-1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x - 1][y]);
                 }
-                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null) {
+                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&& (!hex[x][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y - 1]);
-                    if (x + 1 < 10 && hex[x + 1][y - 1].getOwner() == null) {
+                    if (x + 1 < 10 && hex[x + 1][y - 1].getOwner() == null&& (!hex[x+1][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
                         sixNeighborHexs.add(hex[x + 1][y - 1]);
                     }
                 }
-                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null) {
+                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null && (!hex[x][y+1].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y + 1]);
                     if (x + 1 < 10 && hex[x][y + 1].getOwner() == null) {
                         sixNeighborHexs.add(hex[x + 1][y + 1]);
@@ -216,20 +243,20 @@ public class CityController {
                 }
             }
             if (y % 2 == 0) {
-                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null) {
+                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&&(!hex[x+1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x + 1][y]);
                 }
 
-                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null) {
+                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null&&(!hex[x-1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x - 1][y]);
                 }
-                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null) {
+                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&&(!hex[x][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y - 1]);
-                    if (x - 1 >= 0 && hex[x - 1][y - 1].getOwner() == null) {
+                    if (x - 1 >= 0 && hex[x - 1][y - 1].getOwner() == null&& (!hex[x-1][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
                         sixNeighborHexs.add(hex[x - 1][y - 1]);
                     }
                 }
-                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null) {
+                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null&&(!hex[x][y+1].getState(currentPlayer).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y + 1]);
                     if (x - 1 >= 0 && hex[x - 1][y + 1].getOwner() == null) {
                         sixNeighborHexs.add(hex[x - 1][y + 1]);
