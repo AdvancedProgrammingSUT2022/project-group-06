@@ -105,6 +105,7 @@ public class UnitController {
         for (int j = 0; j < 7; j++) {
             x = x + direction[j][0];
             y = y + direction[j][1];
+            //todo : inja bayad direction ro avaz kone
             for (int i = 0; i < 7; i++) {
                 if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
                     hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
@@ -211,10 +212,12 @@ public class UnitController {
         if(Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
         if(Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
         selectedUnit.setState(UnitState.Fortified);
+        selectedUnit.setFirstFortify(false);
         return "fortified successfully";
     }
 
     public static String garrison(){
+        //todo: move unit to capital city and move errors
         if(selectedUnit == null || selectedUnit instanceof Civilian) {
             return "you did not select a military unit";
         }if(selectedUnit.getCurrentHex().getCapital() == null){

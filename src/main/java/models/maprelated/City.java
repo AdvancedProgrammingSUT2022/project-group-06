@@ -5,24 +5,21 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import controllers.CityController;
-import controllers.CombatController;
 import controllers.GameController;
-import controllers.InitializeGameInfo;
+import enums.HexState;
 import models.Player;
 import models.gainable.Building;
-import models.gainable.Construction;
 import models.units.Civilian;
 import models.units.Combatable;
 import models.units.Military;
-import models.units.Unit;
 
 public class City implements Combatable {
     private static ArrayList<City> cities = new ArrayList<City>();
 
     private String name;
     private int population;
-    private int rangedDefensivePower = 8;
-    private int meleeDefensivePower = 8;
+    private int rangedCombatStrength = 8;
+    private int meleeCombatStrength = 8;
     private int food;
     private int since;
     private int gold;
@@ -33,6 +30,7 @@ public class City implements Combatable {
     private ArrayList<Hex> hexs = new ArrayList<Hex>();
     private Player owner = null;
     private int hitPoint = 20;
+    final private int maxHitPoint = 20;
     private  Hex capital;
     private int trophy=0;
 
@@ -61,7 +59,8 @@ public class City implements Combatable {
         health = 20;
         this.numberOfUnemployedCitizen = 0;
         if(Objects.equals(this.capital.getTerrain().getName(), "Hills")){
-            hitPoint += 3;
+            meleeCombatStrength += 3;
+            rangedCombatStrength += 3;
         }
     }
 
@@ -96,8 +95,8 @@ public class City implements Combatable {
     private int numberOfUnemployedCitizen;
     private int health;
 
-    public int getMeleeDefensivePower() {
-        return this.meleeDefensivePower;
+    public int getMeleeCombatStrength() {
+        return this.meleeCombatStrength;
     }
 
 
@@ -123,6 +122,16 @@ public class City implements Combatable {
 
     @Override
     public boolean isInPossibleCombatRange(int x, int y, int seenRange ,int unitX ,int attackerY){
+        int[][] oddDirections = GameController.getDirection(y);
+        int[][] evenDirections = GameController.getDirection(y);
+        int[][] direction = y%2==0 ?evenDirections :oddDirections;
+        for (int i = 0; i < direction.length; i++) {
+            x = x + direction[x][0];
+            y = y + direction[y][1];
+            for (int j = 0; j < ; j++) {
+                
+            }
+        }
         return false;
     }
 
@@ -206,23 +215,23 @@ public class City implements Combatable {
     }
 
     public void increaseMeleeDefensivePower(int amount) {
-        meleeDefensivePower += amount;
+        meleeCombatStrength += amount;
     }
 
     public void decreaseMeleeDefensivePower(int amount) {
-        meleeDefensivePower -= amount;
+        meleeCombatStrength -= amount;
     }
 
-    public int getRangedDefencePower() {
-        return this.rangedDefensivePower;
+    public int getRangedCombatStrength() {
+        return this.rangedCombatStrength;
     }
 
     public void increaseRangedDefencePower(int amount) {
-        rangedDefensivePower += amount;
+        rangedCombatStrength += amount;
     }
 
     public void decreaseRangedDefencePower(int amount) {
-        rangedDefensivePower -= amount;
+        rangedCombatStrength -= amount;
     }
 
     public int getFood() {
@@ -289,10 +298,10 @@ public class City implements Combatable {
         constructingBuldings.remove(building);
     }
 
-
- 
-        
-    
-
-
+    public int getMaxHitPoint() {
+        return maxHitPoint;
+    }
+    public void increaseHitPoint(int amount){
+        this.hitPoint += amount;
+    }
 }
