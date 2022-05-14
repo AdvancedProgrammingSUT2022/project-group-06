@@ -175,6 +175,9 @@ public class CityController {
 
         GameController.getCurrentPlayer().addUnfinishedProject(unit);
 
+        String temp = "the process of " + "making a "+name+" unit" + " on the hex: x=" + GameController.getSelectedHex().getX() + " y=" + GameController.getSelectedHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for builing an unit started successfully";
     }
 

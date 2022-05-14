@@ -19,7 +19,7 @@ public class Civilian extends Unit
       currentHex.setCivilianUnit(this);
       GameController.getCurrentPlayer().addToCivilians(this);
       GameController.getCurrentPlayer().addUnit(this);
-      GameController.addALlCivilians(this);
+      
       
     }
     
@@ -29,7 +29,7 @@ public class Civilian extends Unit
       this.isWorking=false;
       hex.setCivilianUnit(this);
       civilians.add(this);
-      GameController.getCurrentPlayer().addCivilians(this);
+      
     } 
 
     public static ArrayList<Civilian> geiCivilians()

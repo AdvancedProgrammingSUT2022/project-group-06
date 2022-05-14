@@ -169,34 +169,19 @@ public class UnitController {
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         if(type.equals("Settler")){
             Settler newSettler=new Settler(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Settler unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
             newSettler.build();
             hex.setCivilianUnit(newSettler);
         } else if(type.equals("Worker")){
             Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Worker unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
             newWorker.build();
         } else if(type.equals("Ranged")){
             Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Ranged unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
             newRanged.build();
         } else if(type.equals("Siege")){
             Siege newSiege=new Siege(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Siege unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
             newSiege.build();
         }else if(type.equals("Melee")){
             Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Melee unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
             newMelee.build();
         }
 
