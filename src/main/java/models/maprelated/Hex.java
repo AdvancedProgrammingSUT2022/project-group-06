@@ -32,12 +32,10 @@ public class Hex {
     private boolean isPillaged = false;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
     private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
+
     public void setFeature(Terrain newFeature)
     {
         terrain=newFeature;
-    }
-    public boolean isHasCitizen() {
-        return hasCitizen;
     }
 
     public void setHasCitizen(boolean hasCitizen) {

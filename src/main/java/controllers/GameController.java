@@ -420,7 +420,7 @@ public class GameController {
         //feedUnits and citizens(bikar ye mahsol baghie 2 food)
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
-        //increase gold food and since(3 capital 1 citizen)...//citizen productions
+        addFoodFromTiles();
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         UnitController.changeTurn();
         //handle siege units
@@ -428,6 +428,15 @@ public class GameController {
         //roshd shar ezafe shodan sharvanda
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
+        for (int i = 0; i < currentPlayer.getCities().size(); i++) {
+            for (int j = 0; j < currentPlayer.getCities().get(j).getHexs().size(); j++) {
+                if (currentPlayer.getCities().get(j).getHexs().get(j).hasRoad())
+                    currentPlayer.decreaseGold(2);//gold to maintain roads
+                if (currentPlayer.getCities().get(j).getHexs().get(j).hasRailRoad())
+                    currentPlayer.decreaseGold(3);//gold to maintain railroads
+            }
+        }
+
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
@@ -444,6 +453,28 @@ public class GameController {
 /*        System.out.println(currentPlayer);
         System.out.println(CityController.getCurrentPlayer());*/
         return "Turn changed successfully \n player:" + currentPlayer.getName();
+    }
+
+    public static void addFoodFromTiles() {
+        for (int i = 0; i < currentPlayer.getCities().size(); i++) {
+            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
+                currentPlayer.increaseFood(currentPlayer.getCities().get(i).getHexs().get(j).getTerrain().getFood());
+            }
+        }
+    }
+
+    public static void saveExtraFood() {
+        for (int i = 0; i < getWorld().getHexInWidth(); i++) {
+            for (int j = 0; j < getWorld().getHexInHeight(); j++) {
+               // if (hex[i][j].getOwner() == currentPlayer && hex[i][j].getHasCitizen())
+                    //hex[i][j].getCity().increaseFood(hex[i][j].getOwner());
+            }
+        }
+        //TODO: city growth and food
+        //should be called each turn
+        //TODO: if added citizens are more than 20 do the line below
+        currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
+
     }
 
     private static String unitActions() {
@@ -522,7 +553,7 @@ public class GameController {
 
     public static String cheatHappiness(int amount) {
         currentPlayer.increaseHappiness(amount);
-        return "happinesss increased successfully";
+        return "happiness increased successfully";
     }
 
     public static String cheatPopulation(int amount) {

@@ -1,5 +1,6 @@
 package controllers;
 
+import enums.FeatureNames;
 import enums.HexState;
 import enums.TerrainNames;
 import enums.UnitState;
@@ -33,11 +34,7 @@ public class UnitController {
     }
 
     public static boolean hasMilitary(int x, int y) {
-        // TODO: ask traneh why??
         return GameController.getWorld().getHex()[x][y].getMilitaryUnit() != null;
-/*
-        return GameController.getMilitaryByLocation(x, y) != null;
-*/
     }
 
     public static boolean hasCivilian(int x, int y) {
@@ -100,29 +97,6 @@ public class UnitController {
             }
         }
     }
-/*
-    private static void changeView(int x, int y) {
-        int[][] oddDirection = new int[][]{{0, 0}, {-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
-        int[][] evenDirection = new int[][]{{0, 0}, {-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
-        int[][] direction;
-
-        if (y % 2 == 0) direction = evenDirection;
-        else direction = oddDirection;
-
-        for (int j = 0; j < 7; j++) {
-            int tempX = x + direction[j][0];
-            int tempY = y + direction[j][1];
-            int[][] tempDirection =  (y % 2 == 0) ? evenDirection : oddDirection ;
-            //todo : inja bayad direction ro avaz kone
-            for (int i = 0; i < 7; i++) {
-                if (!GameController.isOutOfBounds(tempX + tempDirection[i][0], tempY + tempDirection[i][1])) {
-                    hex[tempX + tempDirection[i][0]][tempY + tempDirection[i][1]].setState(HexState.Visible, GameController.getCurrentPlayer());
-                    // TODO: 5/14/2022 :
-                    System.out.println((tempX + tempDirection[i][0])+" "+(tempY + tempDirection[i][1]) );
-                }
-            }
-        }
-    }*/
 
     private static void setRevealedTiles() {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
@@ -153,9 +127,10 @@ public class UnitController {
             return "this hex already has road";
         if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain))
             return "you can't construct road on mountain";
-        if (hex[x][y].getTerrain().equals(TerrainNames.Ocean))
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean))
             return "you can't construct road on ocean";
-        //Todo: can't build roads on ice
+        if (hex[x][y].getFeature().getName().equals(FeatureNames.Ice))
+            return "you can't build road on ice";
         Improvement road = new Improvement("Road", selectedUnit, hex[x][y]);
         road.setLeftTurns(3);
         GameController.getCurrentPlayer().addUnfinishedProject(road);
@@ -173,10 +148,14 @@ public class UnitController {
             return "this hex already has railroad";
         if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain))
             return "you can't construct railroad on mountain";
-        if (hex[x][y].getTerrain().equals(TerrainNames.Ocean))
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean))
             return "you can't construct railroad on ocean";
-        //Todo: can't build roads on ice
-        //todo: construct road in 3 turns
+        if (hex[x][y].getFeature().getName().equals(FeatureNames.Ice))
+            return "you can't build railroad on ice";
+
+        Improvement railroad = new Improvement("RailRoad", selectedUnit, hex[x][y]);
+        railroad.setLeftTurns(3);
+        GameController.getCurrentPlayer().addUnfinishedProject(railroad);
         return "the railroad will be constructed in 3 turns";
     }
 
@@ -301,29 +280,32 @@ public class UnitController {
         unfinishedMovements.remove(movement);
     }
 
-    public static void moveUnit(Movement movement) {
+    public static String moveUnit(Movement movement) {
 
         Unit unit = movement.getUnit();
-        Hex nextHex = getNextHex(movement.getDestination().getX(), movement.getDestination().getY());
-        //todo:
-        System.out.println(hex[0][0].getOwner().getName());
+        Hex nextHex = getNextHex(movement);
         if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != GameController.getCurrentPlayer())) {
             forceEndMovement(movement);
-            return;
+            return "the unit can't go further";
         }
         int x = nextHex.getX();
         int y = nextHex.getY();
 
+        if ((unit.getCurrentHex().hasRoad() || unit.getCurrentHex().hasRailRoad())
+                && (hex[x][y].hasRoad() || hex[x][y].hasRailRoad())
+                && (int) (hex[x][y].getTerrain().getMovePoint() * 0.2) >= 0)
+            unit.decreaseMP((int) (hex[x][y].getTerrain().getMovePoint() * 0.2));
+        else if (hex[x][y].getTerrain().getMovePoint() >= 0)
+            unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
+        else {
+            unfinishedMovements.remove(movement);
+            return "the unit doesn't have enough move points";
+        }
+        //TODO: tartibe revealed ina ro ok kon
         setRevealedTiles();
         changeView(GameController.getDirection(y),x, y);
         if (unit.getState().equals(UnitState.Fortified))
             unit.setState(UnitState.Active);
-
-        if ((unit.getCurrentHex().hasRoad() || unit.getCurrentHex().hasRailRoad())
-                && (hex[x][y].hasRoad() || hex[x][y].hasRailRoad()))
-            unit.decreaseMP((int) (hex[x][y].getTerrain().getMovePoint() * 0.2));
-        else
-            unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
 
         if (unit instanceof Civilian) {
             unit.getCurrentHex().setCivilianUnit(null);
@@ -336,7 +318,8 @@ public class UnitController {
 
         if (nextHex.getX() == movement.getDestination().getX() && nextHex.getY() == movement.getDestination().getY())
             unfinishedMovements.remove(movement);
-        System.out.println(hex[0][0].getOwner().getName());
+
+        return "unit is on its way";
     }
 
     public static String startMovement(int x, int y) {
@@ -346,24 +329,23 @@ public class UnitController {
             return "Destination hex already has a unit of this type";
         else if (!canMoveThrough(x, y))
             return "The unit can't go through chosen destination hex";
+        else if (selectedUnit instanceof Civilian && hex[x][y].getMilitaryUnit() != null && hex[x][y].getOwner() != getCurrentPlayer())
+            return "a noncombat unit can't move to a tile with enemy military unit";
 
         Movement movement = new Movement(selectedUnit, selectedUnit.getCurrentHex(), hex[x][y]);
         unfinishedMovements.add(movement);
 
-        moveUnit(movement);
-        System.out.println(hex[0][0].getOwner().getName());
-        return "unit is on its way";
+        return moveUnit(movement);
     }
 
 
-    public static Hex getNextHex(int finalX, int finalY) {
-        //todo : unit
-        Unit unit = selectedUnit;
+    public static Hex getNextHex(Movement movement) {
+        Unit unit = movement.getUnit();
         int[] direction;
         int[][] oddDirection = new int[][]{{-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
         int[][] evenDirection = new int[][]{{-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
-        int deltaX = finalX - unit.getCurrentHex().getX();
-        int deltaY = finalY - unit.getCurrentHex().getY();
+        int deltaX = movement.getDestination().getX() - unit.getCurrentHex().getX();
+        int deltaY = movement.getDestination().getY() - unit.getCurrentHex().getY();
 
         if (unit.getCurrentHex().getY() % 2 == 0) {
             direction = getDirectionIndex(evenDirection, deltaX, deltaY, unit);
