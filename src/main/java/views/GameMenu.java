@@ -3,6 +3,7 @@ package views;
 import controllers.*;
 import enums.UnitState;
 import models.Player;
+import models.gainable.Construction;
 import models.maprelated.City;
 import models.units.Civilian;
 import models.units.Military;
@@ -32,9 +33,11 @@ public class GameMenu extends Menu {
             boolean validCommand = true;
             if(command.equals("construction delete")){
                 System.out.println(GameController.deleteConstruction());
+            } else if((matcher = getMatcher("unit buy (-un||--unitname) (?<name>[a-zA-Z]+)", command)) != null){
+                System.out.println(GameController.buyUnit(matcher.group("name")));;
             }else if(command.equals("demographic screen")){
                 System.out.println(GameController.demographicScreen());
-            }else if(command.equals("unit activate")){
+            } else if(command.equals("unit activate")){
                 System.out.println(GameController.activateUnit());
             } else if (command.equals("military panel")) {
                 System.out.println(GameController.militaryPanel());
@@ -175,7 +178,7 @@ public class GameMenu extends Menu {
         System.out.println("enter your city's name in camelCase");
         command=scanner.nextLine();
         GameController.getSelectedHex().setOwner(GameController.getCurrentPlayer());
-        UnitController.makeUnit("Settler", GameController.getSelectedHex());
+        UnitController.makeUnit("Settler", GameController.getSelectedHex(),"gold");
         UnitController.setSelectedUnit(GameController.getCiviliansByLocation(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY()));
         System.out.println(CityController.buildCity(command));
         GameController.getCurrentPlayer().setMainCity(City.getCityByName(command));
@@ -275,7 +278,9 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
-            }else if(command.equals("quarry build")){
+            } else if((matcher = getMatcher("change construction to (?<name>[a-zA-Z]+)", command)) != null){
+                System.out.println(changeConstruction(matcher.group("name")));
+            } else if(command.equals("quarry build")){
                 System.out.println(GameController.makeQuarry());
             } else if(command.equals("plantation build")){
                 System.out.println(GameController.makePlantation());
@@ -303,6 +308,70 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.repair());
             } else isSelect = orderToAllUnits(isSelect, command, wasSleep);
         }
+    }
+
+    private static String changeConstruction(String name)
+    {
+        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
+            return "select a worker first";
+        }
+        boolean check=false;
+        Construction oldConstruction=null;
+        for(Construction temp:GameController.getCurrentPlayer().getUnfinishedProjects())
+        {
+            if(temp.getHex().equals(UnitController.getSelectedUnit().getHex()))
+            {
+                check=true;
+                oldConstruction=temp;
+            }
+        }
+        
+        if(!check)
+        {
+            return "there is no ongoing construction in this tile";
+        }
+        String result= new String();
+        switch (name)
+        {
+            case "Mine":
+                result=GameController.startBuildMine();
+                break;
+            case "Farm":
+                result=GameController.startBuildFarm();
+                break;
+            case "Post":
+                result=GameController.startMakeingTradingPost();
+                break;
+            case "Pasture":
+                result=GameController.makingPasture();
+                break;
+            case "Lumber":
+                result=GameController.makingLumberMill();
+                break;
+            case "Camp":
+                result=GameController.makingCamp();
+                break;
+            case "Plantation":
+                result=GameController.makePlantation();
+                break;
+            case "Quarry":
+                result=GameController.makeQuarry();
+                break;
+            case "Factory":
+                result=GameController.makeFactory();
+                break;
+            default:
+                return "invalid Construction name";
+                       
+        }
+        if(result.contains("process"))
+        {
+            GameController.getCurrentPlayer().getUnfinishedProjects().remove(oldConstruction);
+            return "construction change successfully";
+        }
+
+        return result;
+
     }
     private static String buyTile(Matcher matcher) {
         String result = CityController.presaleTiles();

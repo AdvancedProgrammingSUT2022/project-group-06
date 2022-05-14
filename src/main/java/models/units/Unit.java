@@ -29,8 +29,14 @@ public class Unit implements Combatable , Construction
     protected String neededTech;
     protected String neededResource;
     protected Player owner;
+    protected int neededProduction=10;
+
     //todo: set combat type
 
+    public int getNeededProduction()
+    {
+        return neededProduction;
+    }
     public String getNeededResource()
     {
         return neededResource;
@@ -71,7 +77,7 @@ public class Unit implements Combatable , Construction
     }
 
     @Override
-    public void build() {
+    public void build(String type) {
 
 
     }

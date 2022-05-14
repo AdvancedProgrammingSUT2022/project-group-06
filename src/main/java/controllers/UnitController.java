@@ -165,24 +165,24 @@ public class UnitController {
         return "the railroad will be constructed in 3 turns";
     }
 
-    public static void makeUnit(String name, Hex hex) {
-        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
-        if(type.equals("Settler")){
+    public static void makeUnit(String name, Hex hex,String type) {
+        String theType=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        if(theType.equals("Settler")){
             Settler newSettler=new Settler(name, hex, GameController.getCurrentPlayer());
-            newSettler.build();
+            newSettler.build(type);
             hex.setCivilianUnit(newSettler);
-        } else if(type.equals("Worker")){
+        } else if(theType.equals("Worker")){
             Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
-            newWorker.build();
-        } else if(type.equals("Ranged")){
+            newWorker.build(type);
+        } else if(theType.equals("Ranged")){
             Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
-            newRanged.build();
-        } else if(type.equals("Siege")){
+            newRanged.build(type);
+        } else if(theType.equals("Siege")){
             Siege newSiege=new Siege(name, hex, GameController.getCurrentPlayer());
-            newSiege.build();
-        }else if(type.equals("Melee")){
+            newSiege.build(type);
+        }else if(theType.equals("Melee")){
             Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
-            newMelee.build();
+            newMelee.build(type);
         }
 
     }

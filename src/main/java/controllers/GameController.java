@@ -13,6 +13,7 @@ import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 import models.units.Worker;
+import net.bytebuddy.matcher.StringMatcher;
 import models.units.*;
 import views.GameMenu;
 
@@ -80,7 +81,7 @@ public class GameController {
         hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
         hex[0][0].setState(HexState.Visible,currentPlayer);
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
-        UnitController.makeUnit("Archer",hex[0][0]);
+        UnitController.makeUnit("Archer",hex[0][0],"gold");
         hex[1][1].setState(HexState.Visible,currentPlayer);
         Worker worker = new Worker("Worker", hex[1][1] ,GameController.currentPlayer);
 /*        Improvement improvement = new Improvement("Mine",worker,hex[1][1]);
@@ -443,7 +444,7 @@ public class GameController {
 /*        System.out.println(currentPlayer);
         System.out.println(CityController.getCurrentPlayer());*/
         hex[1][0].setState(HexState.Visible,currentPlayer);
-        UnitController.makeUnit("Warrior",hex[1][0]);
+        UnitController.makeUnit("Warrior",hex[1][0],"gold");
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
@@ -1022,7 +1023,7 @@ public class GameController {
 
 
                 if (process instanceof Unit) {
-                    UnitController.makeUnit(process.getName(), process.getHex());
+                    UnitController.makeUnit(process.getName(), process.getHex(),"production");
                     deleteConstruction.add(process);
                     String temp = "the process of " + process.getName() + " on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
                     currentPlayer.addNotifications(temp);
@@ -1033,7 +1034,7 @@ public class GameController {
                 process.getWorker().setMP(process.getWorker().getBackUpMp());
 
 
-                process.build();
+                process.build(null);
                 String temp = "the process of " + process.getName() + "on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
                 currentPlayer.addNotifications(temp);
                 currentPlayer.setNotificationsTurns(turn);
@@ -1156,6 +1157,71 @@ public class GameController {
         } */
         for (int i = 0; i < currentPlayer.getUnits().size(); i++)
             System.out.println("c: " + currentPlayer.getUnits().get(i).getX() + " " + currentPlayer.getUnits().get(i).getY());
+    }
+    
+    public static String buyUnit(String name)
+    {
+        if (GameController.getSelectedHex() == null) {
+            return "select a tile first";
+        }
+        if(GameController.getSelectedHex().getOwner() != GameController.getCurrentPlayer()) {
+             return "this tile does not belong to you";
+         }
+         if(GameController.getSelectedHex().getCapital() == null){
+             return "this is not capital";
+         }
+
+            if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
+            return "your civilization is unhappy";
+
+        if (!InitializeGameInfo.unitInfo.containsKey(name)) {
+            return "invalid unit name";
+        }
+
+        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        GameController.setSelectedCity(GameController.getSelectedHex().getCity());
+
+
+        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCivilianUnit()!=null)
+        {
+            return "you can't have two Civilian units in a city";
+        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedHex().getMilitaryUnit()!=null)) {
+            return "you can't have two Military units in a city";
+        }
+            if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
+            return "your civilization is unhappy";
+
+        if (!InitializeGameInfo.unitInfo.containsKey(name)) {
+            return "invalid unit name";
+        }
+        Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
+        if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
+        {
+            return "you have not achieved the needed technology to make this unit";
+        }
+
+        boolean check=false;
+        for(Hex hex: GameController.getSelectedHex().getCity().getHexs())
+        {
+            if(newUnit.getNeededResource()!=null&&hex.getResource().getName().equals(newUnit.getNeededResource()))
+            {
+                check=true;
+            }
+        }
+
+        if(!check&&newUnit.getNeededResource()!=null)
+        {
+            return "you don't have the needed resource to make this unit";
+        }
+
+        if(newUnit.getCost()>currentPlayer.getGold())
+        {
+            return "you don't have enough money";
+        }
+
+        UnitController.makeUnit(name, GameController.getSelectedHex(),"gold");
+        return "Unit created successfully";
+
     }
 
 }

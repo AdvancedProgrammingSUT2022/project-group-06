@@ -12,7 +12,7 @@ public interface Construction {
 
     int getLeftTurns();
 
-    void build(); //new the object and remove it from list
+    void build(String type); //new the object and remove it from list
 
     String getName();
 

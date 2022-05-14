@@ -37,7 +37,7 @@ public class Improvement implements Construction {
     }
 
     @Override
-    public void build() {
+    public void build(String type) {
         zeroMpWorker();
         String temp = "the process of " + "making a "+name+" improvement" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " finished successfullly";
         GameController.getCurrentPlayer().addNotifications(temp);
