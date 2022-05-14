@@ -69,9 +69,13 @@ public class Player {//-currentProject
         return achievedTechnologies;
     }
 
-
+    public void setTechnologyForPlayers(){
+        for (String temp : technologies) {
+            achievedTechnologies.put(temp, false);
+        }
+    }
     public static void setTechnologies(ArrayList<String> set) {
-        technologies = set;
+        technologies= new ArrayList<>(set);
     }
 
     public void addToRevealedHexes(Hex hex) {
@@ -93,9 +97,6 @@ public class Player {//-currentProject
         //todo: later should be calculated based on game difficulty
         this.happiness = 10;
         InitializeGameInfo.getPlayers().add(this);
-        for (String temp : technologies) {
-            achievedTechnologies.put(temp, false);
-        }
     }
 
     public void setTrophies(int trophies) {

@@ -122,7 +122,6 @@ public class CityController {
             return "invalid unit name";
         }
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
-
         if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
         {
             return "you have not achieved the needed technology to make this unit";

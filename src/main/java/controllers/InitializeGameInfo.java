@@ -174,7 +174,9 @@ public class InitializeGameInfo {
 
             }
             Player.setTechnologies(setArray);
-
+            for (Player player: players) {
+                player.setTechnologyForPlayers();
+            }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
