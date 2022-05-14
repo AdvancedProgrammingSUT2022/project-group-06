@@ -38,6 +38,8 @@ public class Player {//-currentProject
     private String name;
     private ArrayList<Construction> unfinishedProjects=new ArrayList<Construction>();
     private ArrayList<Technology> archivedTechnologies = new ArrayList<>();
+    private City mainCity;
+
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
@@ -78,13 +80,21 @@ public class Player {//-currentProject
     {
         technologies.add(technology);
     }
+    public City getMainCity() {
+        return mainCity;
+    }
+
+    public void setMainCity(City mainCity) {
+        this.mainCity = mainCity;
+    }
+
     public void setTechnologyForPlayers(){
         for (String temp : technologies) {
             achievedTechnologies.put(temp, false);
         }
     }
     public static void setTechnologies(ArrayList<String> set) {
-        
+
         technologies= new ArrayList<>(set);
     }
 

@@ -116,11 +116,10 @@ public class CityController {
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
 
-        System.out.println(type+"fgdfg"+GameController.getSelectedHex().getCity().getCivilianUnit().getName());
-        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCity().getCivilianUnit()!=null)
+        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCivilianUnit()!=null)
         {
             return "you can't have two Civilian units in a city";
-        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedCity().getMilitaryUnit()!=null)) {
+        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedHex().getMilitaryUnit()!=null)) {
             return "you can't have two Military units in a city";
         }
             if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
@@ -198,7 +197,6 @@ public class CityController {
                 return "a city with this name already exists";
             }
         }
-
 
         City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
         GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase

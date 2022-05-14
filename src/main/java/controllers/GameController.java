@@ -80,6 +80,13 @@ public class GameController {
         hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
         hex[0][0].setState(HexState.Visible,currentPlayer);
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
+        UnitController.makeUnit("Archer",hex[0][0]);
+        hex[1][1].setState(HexState.Visible,currentPlayer);
+        Worker worker = new Worker("Worker", hex[1][1] ,GameController.currentPlayer);
+/*        Improvement improvement = new Improvement("Mine",worker,hex[1][1]);
+        City city2 =makeCityForTesting(5, 7,"aseman");
+        hex[1][1].setCity(city2);
+        improvement.build();*/
 /*
         City city1 = makeCityForTesting(0, 0,"asy");
         city1.addHex(world.getHex()[0][1]);
@@ -435,6 +442,8 @@ public class GameController {
         UnitController.setCurrentPlayer(currentPlayer);
 /*        System.out.println(currentPlayer);
         System.out.println(CityController.getCurrentPlayer());*/
+        hex[1][0].setState(HexState.Visible,currentPlayer);
+        UnitController.makeUnit("Warrior",hex[1][0]);
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
@@ -442,8 +451,11 @@ public class GameController {
         for (Military military : currentPlayer.getMilitaries()) {
             if (!(military.getState() == UnitState.Sleep) && military.getMP() != 0) {
                 if (military.getState() == UnitState.Alert) {
-                    if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY()))
+                    System.out.println("kharrrrrrrrrrrrrrr");
+                    if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
+                        System.out.println("gohhhhhhhhhhhhhh");
                         return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
+                    }
                 } else
                     return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
             }
@@ -458,14 +470,21 @@ public class GameController {
 
     private static boolean enemyIsNear(int[][] direction, int x, int y) {
         for (int j = 0; j < direction.length; j++) {
-            x = x + direction[j][0];
-            y = y + direction[j][1];
-            for (int i = 0; i < direction.length; i++) {
-                if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
-                    if(hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit()!=null&&
-                       hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit().getOwner()!= currentPlayer);
-                    return true;
-                }
+            if (checkExistOfEnemy(x, y, direction, j)) return true;
+            int[][] tempDirection = getDirection(y + direction[j][1]);
+            for (int i = 0; i < tempDirection.length; i++) {
+                if (checkExistOfEnemy(x + direction[j][0], y + direction[j][1], tempDirection, i)) return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean checkExistOfEnemy(int x, int y, int[][] tempDirection, int i) {
+        System.out.println((x + tempDirection[i][0]) +" "+(y + tempDirection[i][1]));
+        if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
+            if(hex[x + tempDirection[i][0]][y + tempDirection[i][1]].getMilitaryUnit()!=null&&
+               hex[x + tempDirection[i][0]][y + tempDirection[i][1]].getMilitaryUnit().getOwner()!= currentPlayer){
+                return true;
             }
         }
         return false;

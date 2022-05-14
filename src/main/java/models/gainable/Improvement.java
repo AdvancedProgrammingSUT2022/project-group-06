@@ -307,9 +307,7 @@ public class Improvement implements Construction {
     }
     @Override
     public void zeroMpWorker() {
-        worker.setBackUpMp(worker.getMP());
         worker.setMP(0);
-
     }
 
 
