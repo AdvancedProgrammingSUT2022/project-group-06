@@ -78,11 +78,7 @@ public class Player {//-currentProject
     {
         technologies.add(technology);
     }
-    public void setTechnologyForPlayers(){
-        for (String temp : technologies) {
-            achievedTechnologies.put(temp, false);
-        }
-    }
+   
     public static void setTechnologies(ArrayList<String> set) {
         
         technologies= new ArrayList<>(set);

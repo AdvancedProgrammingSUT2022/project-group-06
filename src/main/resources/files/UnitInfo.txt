@@ -1,4 +1,4 @@
-Archer#70 4 6 2 2 NA Ranged 
+Archer#70 4 6 2 2 NA Archery Ranged 
 ChariotArcher#60 3 6 2 4 Horses TheWheel Ranged  
 Scout#25 4 0 0 2 NA NA Melee 
 Settler#89 0 0 0 2 NA NA Settler 

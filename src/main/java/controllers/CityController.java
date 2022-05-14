@@ -116,11 +116,11 @@ public class CityController {
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
 
-        System.out.println(type+"fgdfg"+GameController.getSelectedHex().getCity().getCivilianUnit().getName());
-        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCity().getCivilianUnit()!=null)
+        
+        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCivilianUnit()!=null)
         {
             return "you can't have two Civilian units in a city";
-        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedCity().getMilitaryUnit()!=null)) {
+        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedHex().getMilitaryUnit()!=null)) {
             return "you can't have two Military units in a city";
         }
             if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
@@ -130,6 +130,8 @@ public class CityController {
             return "invalid unit name";
         }
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
+
+
         if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
         {
             return "you have not achieved the needed technology to make this unit";

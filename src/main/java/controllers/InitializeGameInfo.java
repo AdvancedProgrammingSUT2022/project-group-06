@@ -171,14 +171,13 @@ public class InitializeGameInfo {
 
                 technologyInfo.put(name, info);
                 setArray.add(name);
-
+                for (Player player: players) {
+                player.getAchievedTechnologies().put(name, false);
+            }
             }
             
             
-            Player.setTechnologies(setArray);
-            for (Player player: players) {
-                player.setTechnologyForPlayers();
-            }
+            
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
