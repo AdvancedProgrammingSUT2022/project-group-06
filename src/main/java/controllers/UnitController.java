@@ -173,7 +173,7 @@ public class UnitController {
         } else if(type.equals("Worker")){
             Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
             newWorker.build();
-        } else if(type.equals("Archery")){
+        } else if(type.equals("Ranged")){
             Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
             newRanged.build();
         } else if(type.equals("Siege")){
@@ -182,16 +182,6 @@ public class UnitController {
         }else if(type.equals("Melee")){
             Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
             newMelee.build();
-        }else{
-            int temp=Integer.parseInt(InitializeGameInfo.unitInfo.get(name));
-            if(temp==0)
-            {
-                Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
-                newMelee.build();
-            }else{
-                Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
-                newRanged.build();
-            }
         }
 
     }

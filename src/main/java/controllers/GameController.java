@@ -344,7 +344,11 @@ public class GameController {
         if(hex.getCity() != null) detail.append("tile of").append(hex.getCity().getName());
         detail.append("\n");
         detail.append(hex.getState(currentPlayer));
+        
         if(hex.getHasCitizen())detail.append("has a working citizen");
+        if(hex.getOwner()!=null){
+            detail.append(" Owner: "+ hex.getOwner().getName());
+        }
         detail.append(" x,y:").append(x).append(" ").append(y);
         return detail.toString();
     }
@@ -619,6 +623,18 @@ public class GameController {
 
         return research.toString();
     }
+    public static String militaryPanel()
+    {
+        StringBuilder militaryList=new StringBuilder();
+        int count=1;
+        for(Military military:currentPlayer.getMilitaries())
+        {
+            militaryList.append(count+") "+military.getName()+" hex: x="+military.getCurrentHex().getX()+" y="+military.getHex().getY()+"\n");
+            count++;
+        }
+        return militaryList.toString();
+
+    }
 
     public static String citiesPanel() {
         StringBuilder citiesList = new StringBuilder();
@@ -642,6 +658,7 @@ public class GameController {
 
     public static String notificationHistory() {
         StringBuilder notificationsList = new StringBuilder();
+        
         int count = 0;
         for (int temp : currentPlayer.getNotificationsTurns()) {
             notificationsList.append("turn: " + temp + " notification: " + currentPlayer.getNotifications().get(count) + "\n");
@@ -655,13 +672,13 @@ public class GameController {
         int count = 1;
         for (City temp : currentPlayer.getCities()) {
             economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
-            economicInfo.append("\\t\\tpoplulation: " + temp.getPopulation() + "\n");
-            economicInfo.append("\\t\\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
-            economicInfo.append("\\t\\tranged defensive power: " + temp.getRangedCombatStrength() + "\n");
-            economicInfo.append("\\t\\tfood: " + temp.getFood() + "\n");
-            economicInfo.append("\\t\\tgold " + temp.getGold() + "\n");
-            economicInfo.append("\\t\\ttrophy: " + temp.getTrophy() + "\n");
-            economicInfo.append("\\t\\tproduction: " + temp.getProduction() + "\n");
+            economicInfo.append("\t\tpoplulation: " + temp.getPopulation() + "\n");
+            economicInfo.append("\t\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
+            economicInfo.append("\t\tranged defensive power: " + temp.getRangedCombatStrength() + "\n");
+            economicInfo.append("\t\tfood: " + temp.getFood() + "\n");
+            economicInfo.append("\t\tgold " + temp.getGold() + "\n");
+            economicInfo.append("\t\ttrophy: " + temp.getTrophy() + "\n");
+            economicInfo.append("\t\tproduction: " + temp.getProduction() + "\n");
 
             for (Construction construction : currentPlayer.getUnfinishedProjects()) {
                 if (construction.getHex().getCity().getName().equals(temp.getName())) {
@@ -950,10 +967,8 @@ public class GameController {
 
         for (Construction process : currentPlayer.getUnfinishedProjects()) {
 
-            if (process instanceof Unit) {
-                Unit previewUnit = new Unit(process.getName(), process.getHex(), currentPlayer);
-                currentPlayer.decreaseGold(previewUnit.getCost() / process.getLeftTurns());
-            }
+
+            
             if (process.getLeftTurns() == 0) {
                 process.getWorker().setMP(process.getWorker().getBackUpMp());
 
@@ -966,7 +981,10 @@ public class GameController {
                 String temp = "the process of " + process.getName() + "on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
                 currentPlayer.addNotifications(temp);
                 currentPlayer.getUnfinishedProjects().remove(process);
-            } else {
+            } else if (process instanceof Unit) {
+                Unit previewUnit = new Unit(process.getName(), process.getHex(), currentPlayer);
+                currentPlayer.decreaseGold(previewUnit.getCost() / process.getLeftTurns());
+            }else {
                 process.decreaseLeftTurns();
             }
 

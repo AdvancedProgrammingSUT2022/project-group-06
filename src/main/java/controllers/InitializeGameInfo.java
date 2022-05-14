@@ -173,6 +173,8 @@ public class InitializeGameInfo {
                 setArray.add(name);
 
             }
+            
+            
             Player.setTechnologies(setArray);
             for (Player player: players) {
                 player.setTechnologyForPlayers();
@@ -256,8 +258,10 @@ public class InitializeGameInfo {
         initializeHashMap();
         initializeUnitInfo();
         initializeGameWorld();
+        
 
     }
+
 
     public static void initializeGameWorld() {
 

@@ -164,7 +164,7 @@ public class City implements Combatable {
     }
 
     public static City getCityByName(String name) {
-        for (City temp : cities) {
+        for (City temp : GameController.getCurrentPlayer().getCities()) {
             if (temp.name.equals(name)) {
                 return temp;
             }

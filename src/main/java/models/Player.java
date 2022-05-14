@@ -20,7 +20,7 @@ public class Player {//-currentProject
     private static ArrayList<String> technologies = new ArrayList<String>();
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
 
-    private int gold = 89;
+    private int gold =129;
     private int happiness;
     private int production;
     private int food;
@@ -43,6 +43,10 @@ public class Player {//-currentProject
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
     private Technology currentResearch;
 
+    public ArrayList<String> getTechnologies()
+    {
+        return technologies;
+    }
     public void increaseTrophies(int amount)
     {
         trophies+=amount;
@@ -69,12 +73,18 @@ public class Player {//-currentProject
         return achievedTechnologies;
     }
 
+
+    public static void addTechnology(String technology)
+    {
+        technologies.add(technology);
+    }
     public void setTechnologyForPlayers(){
         for (String temp : technologies) {
             achievedTechnologies.put(temp, false);
         }
     }
     public static void setTechnologies(ArrayList<String> set) {
+        
         technologies= new ArrayList<>(set);
     }
 

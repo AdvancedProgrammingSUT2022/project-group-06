@@ -26,6 +26,7 @@ public class GameMenu extends Menu {
         String command= scanner.nextLine();
         Matcher matcher;
 
+
         while (true) {
             boolean validCommand = true;
             if(command.equals("construction delete")){
@@ -34,6 +35,8 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.demographicScreen());
             }else if(command.equals("unit activate")){
                 System.out.println(GameController.activateUnit());
+            } else if (command.equals("military panel")) {
+                System.out.println(GameController.militaryPanel());
             } else if (command.equals("economic overview")) {
                 System.out.println(GameController.economicOverview());
             } else if (command.equals("notification history")) {
@@ -300,7 +303,7 @@ public class GameMenu extends Menu {
                         System.out.println("invalid number");
                     }
 
-                    GameController.setSelectedCity(null);
+                   
                     return CityController.buyHex(number);
 
                 }
