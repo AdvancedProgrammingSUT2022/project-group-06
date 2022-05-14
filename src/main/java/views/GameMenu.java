@@ -85,7 +85,7 @@ public class GameMenu extends Menu {
             } else if (command.equals("next turn")) {
                 String outPut;
                 System.out.println(outPut = GameController.changeTurn());
-                if(outPut.startsWith("urn changed successfully")){
+                if(outPut.startsWith("Turn changed successfully")){
                     GameController.checkTimeVariantProcesses();
                     if(GameController.getTurn() == 1) GameMenu.startGame();
                 }
@@ -95,10 +95,10 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.startMakingUnit(matcher.group("unitname")));
             } else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectMilitary(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-                orderToSelectedUnit(scanner);
+                if(UnitController.getSelectedUnit()!= null) orderToSelectedUnit(scanner);
             } else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectCivilian(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-                orderToSelectedUnit(scanner);
+                if(UnitController.getSelectedUnit()!= null) orderToSelectedUnit(scanner);
             }else if ((matcher = getMatcher("Remove citizen at (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+) from work", command)) != null) {
                 System.out.println(CityController.removeCitizenFromWork(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("lock an citizen to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -230,6 +230,7 @@ public class GameMenu extends Menu {
             if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             System.out.println("invalid command");
         }
+        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
         return isSelect;
     }
 
@@ -264,6 +265,7 @@ public class GameMenu extends Menu {
         Matcher matcher;
         boolean wasSleep = wake();
         while(isSelect) {
+            if(!GameController.getWorld().getHex()[1][1].isPillaged()) System.out.println("khar");
             command = scanner.nextLine();
             if (command.equals("sleep")) {
                 System.out.println(UnitController.sleepUnit());
@@ -365,6 +367,8 @@ public class GameMenu extends Menu {
 
     private static void moveUnitView(int x, int y) {
         System.out.println(UnitController.startMovement(x, y));
+        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
+
     }
 
 

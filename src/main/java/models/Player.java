@@ -100,11 +100,27 @@ public class Player {//-currentProject
 
     public void addToRevealedHexes(Hex hex) {
         hex.setState(HexState.Revealed, this);
-        //todo: rest of hex fields
+        //todo: check of hex fields
         Hex hexCopy = new Hex(hex.getX(), hex.getY(), hex.getTerrain(), hex.getFeature());
+        hexCopy.setOwner(hex.getOwner());
+        hexCopy.setResource(hex.getResource());
+        //hexCopy.setMilitaryUnit(hex.getMilitaryUnit());
+        //hexCopy.setCivilianUnit(hex.getCivilianUnit());
+        hexCopy.setHasRiver(hex.getHasRiver());
+        hexCopy.setHasCitizen(hex.isHasCitizen());
+        hexCopy.setCapital(hex.getCapital());
+        hexCopy.setCity(hex.getCity());
+        hexCopy.setHasRoad(hex.hasRoad());
+        hexCopy.setHasRailRoad(hex.hasRailRoad());
+        hexCopy.setPillaged(hex.isPillaged());
+        hexCopy.setStateOfHexForEachPlayer(hex.getStateOfHexForEachPlayer());
+        //hexCopy.setImprovements(hex.getImprovement());
         reveledHexes.put(hex, hexCopy);
     }
 
+    public void removeFromReveledTiles(Hex hex){
+        reveledHexes.remove(hex);
+    }
     public HashMap<Hex, Hex> getReveledHexes() {
         return reveledHexes;
     }

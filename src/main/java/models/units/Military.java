@@ -22,7 +22,6 @@ public class Military extends Unit
     public Military(String name, Hex hex, Player owner) {
         super(name, hex, owner);
         hex.setMilitaryUnit(this);
-        GameController.getCurrentPlayer().addToMilitaries(this);
     }
     @Override
     public String attack(Combatable defender) {

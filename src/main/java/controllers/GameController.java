@@ -80,21 +80,21 @@ public class GameController {
         hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
         hex[0][0].setState(HexState.Visible,currentPlayer);
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
-        UnitController.makeUnit("Archer",hex[0][0]);
-        hex[1][1].setState(HexState.Visible,currentPlayer);
-        Worker worker = new Worker("Worker", hex[1][1] ,GameController.currentPlayer);
+        //UnitController.makeUnit("Archer",hex[0][0]);
+        //hex[1][1].setState(HexState.Visible,currentPlayer);
+        //Worker worker = new Worker("Worker", hex[1][1] ,GameController.currentPlayer);
+        //hex[1][1].setPillaged(true);
 /*        Improvement improvement = new Improvement("Mine",worker,hex[1][1]);
         City city2 =makeCityForTesting(5, 7,"aseman");
         hex[1][1].setCity(city2);
         improvement.build();*/
-/*
-        City city1 = makeCityForTesting(0, 0,"asy");
-        city1.addHex(world.getHex()[0][1]);
+        //City city1 = makeCityForTesting(0, 0,"asy");
+/*        city1.addHex(world.getHex()[0][1]);
         City city2 =makeCityForTesting(5, 7,"aseman");
         City city3 =makeCityForTesting(1, 2,"asemane");
-        world.getHex()[0][1].setState(HexState.Visible, currentPlayer);
-        Melee melee = new Melee("Warrior", world.getHex()[1][0], players.get(1));
-        world.getHex()[1][0].setMilitaryUnit(melee);
+        world.getHex()[0][1].setState(HexState.Visible, currentPlayer);*/
+/*        Siege siege = new Siege("Catapult", world.getHex()[1][0], players.get(1));
+        world.getHex()[1][0].setMilitaryUnit(siege);
         world.getHex()[1][0].setState(HexState.Visible, currentPlayer);*/
     }
 
@@ -140,7 +140,10 @@ public class GameController {
     }
 
     public static String printAllWorld() {
+        //todo:
+        System.out.println(hex[0][0].getOwner().getName());
         StringBuilder stringWorld = new StringBuilder();
+        System.out.println("injaaaaa");
         initializeString(new int[]{0, 10, 0, 10}, world.getString());
         for (int i = 0; i < world.getWorldHeight(); i++) {
             for (int j = 0; j < world.getWorldWidth(); j++) {
@@ -231,7 +234,9 @@ public class GameController {
         if (hex.getOwner() != null) {
             Color playerColor = InitializeGameInfo.getPlayerColor().get(hex.getOwner().getName());
             char cityName;
+            if(hex.getX() == 0 && hex.getY() == 0) System.out.println("khili h");
             if (hex.getCapital() != null) {
+                if(hex.getX() == 0 && hex.getY() == 0) System.out.println("khili ");
                 cityName = hex.getCapital().getName().toUpperCase().charAt(0);
             } else {
                 cityName = hex.getCity().getName().toLowerCase().charAt(0);
@@ -442,8 +447,6 @@ public class GameController {
         UnitController.setCurrentPlayer(currentPlayer);
 /*        System.out.println(currentPlayer);
         System.out.println(CityController.getCurrentPlayer());*/
-        hex[1][0].setState(HexState.Visible,currentPlayer);
-        UnitController.makeUnit("Warrior",hex[1][0]);
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
@@ -451,9 +454,7 @@ public class GameController {
         for (Military military : currentPlayer.getMilitaries()) {
             if (!(military.getState() == UnitState.Sleep) && military.getMP() != 0) {
                 if (military.getState() == UnitState.Alert) {
-                    System.out.println("kharrrrrrrrrrrrrrr");
                     if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
-                        System.out.println("gohhhhhhhhhhhhhh");
                         return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
                     }
                 } else
@@ -480,7 +481,6 @@ public class GameController {
     }
 
     private static boolean checkExistOfEnemy(int x, int y, int[][] tempDirection, int i) {
-        System.out.println((x + tempDirection[i][0]) +" "+(y + tempDirection[i][1]));
         if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
             if(hex[x + tempDirection[i][0]][y + tempDirection[i][1]].getMilitaryUnit()!=null&&
                hex[x + tempDirection[i][0]][y + tempDirection[i][1]].getMilitaryUnit().getOwner()!= currentPlayer){
@@ -861,6 +861,7 @@ public class GameController {
         Improvement repair = new Improvement("repair", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         repair.setLeftTurns(3);
         currentPlayer.addUnfinishedProject(repair);
+        UnitController.getSelectedUnit().setMP(0);
         return "process repairing started";
     }
 

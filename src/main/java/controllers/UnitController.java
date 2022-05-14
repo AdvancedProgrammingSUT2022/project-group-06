@@ -86,8 +86,21 @@ public class UnitController {
     public static void setSelectedUnit(Unit selectedUnit) {
         UnitController.selectedUnit = selectedUnit;
     }
-
-
+    private static void makeVisible(int x, int y, int[][] tempDirection, int i) {
+        if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
+            hex[x + tempDirection[i][0]][y + tempDirection[i][1]].setState(HexState.Visible,GameController.getCurrentPlayer());
+        }
+    }
+    private static void changeView(int[][] direction, int x, int y){
+        for (int j = 0; j < direction.length; j++) {
+            makeVisible(x, y, direction, j);
+            int[][] tempDirection = getDirection(y + direction[j][1]);
+            for (int i = 0; i < tempDirection.length; i++) {
+              makeVisible(x + direction[j][0], y + direction[j][1], tempDirection, i);
+            }
+        }
+    }
+/*
     private static void changeView(int x, int y) {
         int[][] oddDirection = new int[][]{{0, 0}, {-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};
         int[][] evenDirection = new int[][]{{0, 0}, {-1, 0}, {-1, -1}, {0, -1}, {1, 0}, {-1, 1}, {0, 1}};
@@ -97,17 +110,19 @@ public class UnitController {
         else direction = oddDirection;
 
         for (int j = 0; j < 7; j++) {
-            x = x + direction[j][0];
-            y = y + direction[j][1];
+            int tempX = x + direction[j][0];
+            int tempY = y + direction[j][1];
+            int[][] tempDirection =  (y % 2 == 0) ? evenDirection : oddDirection ;
             //todo : inja bayad direction ro avaz kone
             for (int i = 0; i < 7; i++) {
-                if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
-                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, GameController.getCurrentPlayer());
-                    GameController.getCurrentPlayer().addToRevealedHexes(hex[x + direction[i][0]][y + direction[i][1]]);
+                if (!GameController.isOutOfBounds(tempX + tempDirection[i][0], tempY + tempDirection[i][1])) {
+                    hex[tempX + tempDirection[i][0]][tempY + tempDirection[i][1]].setState(HexState.Visible, GameController.getCurrentPlayer());
+                    // TODO: 5/14/2022 :
+                    System.out.println((tempX + tempDirection[i][0])+" "+(tempY + tempDirection[i][1]) );
                 }
             }
         }
-    }
+    }*/
 
     private static void setRevealedTiles() {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
@@ -264,6 +279,7 @@ public class UnitController {
         if(selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
         selectedUnit.getCurrentHex().setPillaged(true);
         if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
+        selectedUnit.setMP(0);
         return "pillaged successfully";
     }
 
@@ -301,9 +317,11 @@ public class UnitController {
     }
 
     public static void moveUnit(Movement movement) {
+
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement.getDestination().getX(), movement.getDestination().getY());
-
+        //todo:
+        System.out.println(hex[0][0].getOwner().getName());
         if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != GameController.getCurrentPlayer())) {
             forceEndMovement(movement);
             return;
@@ -312,7 +330,7 @@ public class UnitController {
         int y = nextHex.getY();
 
         setRevealedTiles();
-        changeView(x, y);
+        changeView(GameController.getDirection(y),x, y);
         if (unit.getState().equals(UnitState.Fortified))
             unit.setState(UnitState.Active);
 
@@ -325,7 +343,6 @@ public class UnitController {
         if (unit instanceof Civilian) {
             unit.getCurrentHex().setCivilianUnit(null);
             hex[x][y].setCivilianUnit((Civilian) unit);
-            nextHex.setCivilianUnit((Civilian) unit);
         } else {
             unit.getCurrentHex().setMilitaryUnit(null);
             hex[x][y].setMilitaryUnit((Military) unit);
@@ -334,6 +351,7 @@ public class UnitController {
 
         if (nextHex.getX() == movement.getDestination().getX() && nextHex.getY() == movement.getDestination().getY())
             unfinishedMovements.remove(movement);
+        System.out.println(hex[0][0].getOwner().getName());
     }
 
     public static String startMovement(int x, int y) {
@@ -348,11 +366,13 @@ public class UnitController {
         unfinishedMovements.add(movement);
 
         moveUnit(movement);
+        System.out.println(hex[0][0].getOwner().getName());
         return "unit is on its way";
     }
 
 
     public static Hex getNextHex(int finalX, int finalY) {
+        //todo : unit
         Unit unit = selectedUnit;
         int[] direction;
         int[][] oddDirection = new int[][]{{-1, 0}, {0, -1}, {1, -1}, {1, 0}, {0, 1}, {1, 1}};

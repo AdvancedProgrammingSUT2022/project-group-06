@@ -32,7 +32,6 @@ public class Hex {
     private boolean isPillaged = false;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
     private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
-
     public void setFeature(Terrain newFeature)
     {
         terrain=newFeature;
@@ -46,7 +45,6 @@ public class Hex {
     }
 
     public Hex(int x, int y, Terrain terrain, Feature feature) {
-        
         this.x = x;
         this.y = y;
         hasRoad = false;
@@ -56,6 +54,23 @@ public class Hex {
         for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers(); i++) {
             this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i), HexState.FogOfWar);
         }
+    }
+
+
+    public void setImprovements(ArrayList<Improvement> improvements) {
+        this.improvements = improvements;
+    }
+
+    public void setHasRiver(boolean[] hasRiver) {
+        this.hasRiver = hasRiver;
+    }
+
+    public HashMap<Player, HexState> getStateOfHexForEachPlayer() {
+        return StateOfHexForEachPlayer;
+    }
+
+    public void setStateOfHexForEachPlayer(HashMap<Player, HexState> stateOfHexForEachPlayer) {
+        StateOfHexForEachPlayer = stateOfHexForEachPlayer;
     }
 
     public City getCity() {
