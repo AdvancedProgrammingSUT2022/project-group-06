@@ -149,30 +149,33 @@ public class CityController {
             return "you don't have the needed resource to make this unit";
         }
 
-        if (GameController.getCurrentPlayer().getGold() >= newUnit.getCost()) {
-            UnitController.makeUnit(name, GameController.getSelectedHex());
+        if (GameController.getCurrentPlayer().getProduction() >= newUnit.getNeededProduction()) {
+            UnitController.makeUnit(name, GameController.getSelectedHex(),"production");
             return "Unit created successfully";
         }
 
-        int goldPerTurn = 0;
+        int productionPerTurn = 0;
         for (City temp : GameController.getCurrentPlayer().getCities()) {
-            goldPerTurn += temp.getGold();
+            productionPerTurn += temp.getProduction();
         }
 
         Unit unit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
 
-        if (newUnit.getCost() < goldPerTurn) {
+        if (newUnit.getNeededProduction() < productionPerTurn) {
             unit.setLeftTurns(1);
-            ;
-        } else if (goldPerTurn == 0) {
-            return "you have no income so it's impossible to start making a unit right now";
+            
+        } else if (productionPerTurn == 0) {
+            return "you have no production per turn so it's impossible to start making a unit right now";
         } else {
-            unit.setLeftTurns((newUnit.getCost() / goldPerTurn) + 1);
+            unit.setLeftTurns((newUnit.getCost() / productionPerTurn) + 1);
         }
 
 
         GameController.getCurrentPlayer().addUnfinishedProject(unit);
 
+        String temp = "the process of " + "making a "+name+" unit" + " on the hex: x=" + GameController.getSelectedHex().getX() + " y=" + GameController.getSelectedHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for builing an unit started successfully";
     }
 

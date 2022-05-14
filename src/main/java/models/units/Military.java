@@ -10,18 +10,25 @@ public class Military extends Unit
 
 
     @Override
-    public void build()
+    public void build(String type)
     {
-      GameController.getCurrentPlayer().decreaseGold(cost);
+        if(type.equals("production"))
+        {
+          GameController.getCurrentPlayer().decreaseProduction(neededProduction);
+        }else{
+          GameController.getCurrentPlayer().decreaseGold(cost);
+        }
+
       currentHex.setMilitaryUnit(this);
       GameController.getCurrentPlayer().addToMilitaries(this);
       GameController.getCurrentPlayer().addUnit(this);
-      GameController.addAllMilitary(this);
+
     }
     
     public Military(String name, Hex hex, Player owner) {
         super(name, hex, owner);
         hex.setMilitaryUnit(this);
+
     }
     @Override
     public String attack(Combatable defender) {

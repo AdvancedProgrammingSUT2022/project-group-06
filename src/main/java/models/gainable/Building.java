@@ -41,7 +41,7 @@ public class Building implements Construction
     }
 
     @Override
-    public void build() {
+    public void build(String type) {
 
     }
 

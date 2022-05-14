@@ -13,6 +13,7 @@ import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 import models.units.Worker;
+import net.bytebuddy.matcher.StringMatcher;
 import models.units.*;
 import views.GameMenu;
 
@@ -140,10 +141,7 @@ public class GameController {
     }
 
     public static String printAllWorld() {
-        //todo:
-        System.out.println(hex[0][0].getOwner().getName());
         StringBuilder stringWorld = new StringBuilder();
-        System.out.println("injaaaaa");
         initializeString(new int[]{0, 10, 0, 10}, world.getString());
         for (int i = 0; i < world.getWorldHeight(); i++) {
             for (int j = 0; j < world.getWorldWidth(); j++) {
@@ -234,9 +232,7 @@ public class GameController {
         if (hex.getOwner() != null) {
             Color playerColor = InitializeGameInfo.getPlayerColor().get(hex.getOwner().getName());
             char cityName;
-            if(hex.getX() == 0 && hex.getY() == 0) System.out.println("khili h");
             if (hex.getCapital() != null) {
-                if(hex.getX() == 0 && hex.getY() == 0) System.out.println("khili ");
                 cityName = hex.getCapital().getName().toUpperCase().charAt(0);
             } else {
                 cityName = hex.getCity().getName().toLowerCase().charAt(0);
@@ -748,6 +744,9 @@ public class GameController {
         }
 
         currentPlayer.addUnfinishedProject(Mine);
+        String temp = "the process of " + "making a "+"Mine"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a Mine successfully started";
     }
 
@@ -792,6 +791,9 @@ public class GameController {
 
 
         currentPlayer.addUnfinishedProject(Farm);
+        String temp = "the process of " + "making a "+"Farm"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a farm successfully started";
 
     }
@@ -861,7 +863,6 @@ public class GameController {
         Improvement repair = new Improvement("repair", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         repair.setLeftTurns(3);
         currentPlayer.addUnfinishedProject(repair);
-        UnitController.getSelectedUnit().setMP(0);
         return "process repairing started";
     }
 
@@ -879,6 +880,9 @@ public class GameController {
         Improvement post = new Improvement("post", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         post.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(post);
+        String temp = "the process of " + "making a "+"TradingPost"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a TradingPost started";
     }
 
@@ -899,6 +903,9 @@ public class GameController {
         Improvement lumber = new Improvement("lumber", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         lumber.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(lumber);
+        String temp = "the process of " + "making a "+"LumberMill"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a Lumber Mill started";
     }
 
@@ -919,6 +926,9 @@ public class GameController {
         Improvement Pasture = new Improvement("Pasture", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         Pasture.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(Pasture);
+        String temp = "the process of " + "making a "+"Pasture"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a Pasture started";
     }
 
@@ -939,6 +949,9 @@ public class GameController {
         Improvement camp = new Improvement("camp", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         camp.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(camp);
+        String temp = "the process of " + "making a "+"Camp"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a camp started";
     }
 
@@ -954,6 +967,9 @@ public class GameController {
         Improvement plantation = new Improvement("Plantation", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         plantation.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(plantation);
+        String temp = "the process of " + "making a "+"Plantation"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a plantation started";
     }
 
@@ -967,6 +983,9 @@ public class GameController {
         Improvement quarry = new Improvement("Quarry", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         quarry.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(quarry);
+        String temp = "the process of " + "making a "+"Quarry"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a quarry started";
     }
 
@@ -980,6 +999,9 @@ public class GameController {
         Improvement factory = new Improvement("Factory", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         factory.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(factory);
+        String temp = "the process of " + "making a "+"Factory"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a Factory started";
     }
 
@@ -996,7 +1018,7 @@ public class GameController {
 
 
                 if (process instanceof Unit) {
-                    UnitController.makeUnit(process.getName(), process.getHex());
+                    UnitController.makeUnit(process.getName(), process.getHex(),"production");
                     deleteConstruction.add(process);
                     String temp = "the process of " + process.getName() + " on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
                     currentPlayer.addNotifications(temp);
@@ -1007,7 +1029,7 @@ public class GameController {
                 process.getWorker().setMP(process.getWorker().getBackUpMp());
 
 
-                process.build();
+                process.build(null);
                 String temp = "the process of " + process.getName() + "on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
                 currentPlayer.addNotifications(temp);
                 currentPlayer.setNotificationsTurns(turn);
@@ -1130,6 +1152,71 @@ public class GameController {
         } */
         for (int i = 0; i < currentPlayer.getUnits().size(); i++)
             System.out.println("c: " + currentPlayer.getUnits().get(i).getX() + " " + currentPlayer.getUnits().get(i).getY());
+    }
+
+    public static String buyUnit(String name)
+    {
+        if (GameController.getSelectedHex() == null) {
+            return "select a tile first";
+        }
+        if(GameController.getSelectedHex().getOwner() != GameController.getCurrentPlayer()) {
+             return "this tile does not belong to you";
+         }
+         if(GameController.getSelectedHex().getCapital() == null){
+             return "this is not capital";
+         }
+
+            if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
+            return "your civilization is unhappy";
+
+        if (!InitializeGameInfo.unitInfo.containsKey(name)) {
+            return "invalid unit name";
+        }
+
+        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        GameController.setSelectedCity(GameController.getSelectedHex().getCity());
+
+
+        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCivilianUnit()!=null)
+        {
+            return "you can't have two Civilian units in a city";
+        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedHex().getMilitaryUnit()!=null)) {
+            return "you can't have two Military units in a city";
+        }
+            if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
+            return "your civilization is unhappy";
+
+        if (!InitializeGameInfo.unitInfo.containsKey(name)) {
+            return "invalid unit name";
+        }
+        Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
+        if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
+        {
+            return "you have not achieved the needed technology to make this unit";
+        }
+
+        boolean check=false;
+        for(Hex hex: GameController.getSelectedHex().getCity().getHexs())
+        {
+            if(newUnit.getNeededResource()!=null&&hex.getResource().getName().equals(newUnit.getNeededResource()))
+            {
+                check=true;
+            }
+        }
+
+        if(!check&&newUnit.getNeededResource()!=null)
+        {
+            return "you don't have the needed resource to make this unit";
+        }
+
+        if(newUnit.getCost()>currentPlayer.getGold())
+        {
+            return "you don't have enough money";
+        }
+
+        UnitController.makeUnit(name, GameController.getSelectedHex(),"gold");
+        return "Unit created successfully";
+
     }
 
 }

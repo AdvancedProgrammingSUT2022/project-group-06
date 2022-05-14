@@ -13,14 +13,20 @@ public class Civilian extends Unit
     private boolean isWorking;
 
     @Override
-    public void build()
+    public void build(String type)
     {
-      GameController.getCurrentPlayer().decreaseGold(cost);
+      if(type.equals("production"))
+      {
+        GameController.getCurrentPlayer().decreaseProduction(neededProduction);
+      }else{
+        GameController.getCurrentPlayer().decreaseGold(cost);
+      } 
+
+      
       currentHex.setCivilianUnit(this);
       GameController.getCurrentPlayer().addToCivilians(this);
       GameController.getCurrentPlayer().addUnit(this);
-      GameController.addALlCivilians(this);
-      
+        
     }
     
     public Civilian(String name,Hex hex, Player owner)
@@ -29,7 +35,7 @@ public class Civilian extends Unit
       this.isWorking=false;
       hex.setCivilianUnit(this);
       civilians.add(this);
-      GameController.getCurrentPlayer().addCivilians(this);
+      
     } 
 
     public static ArrayList<Civilian> geiCivilians()

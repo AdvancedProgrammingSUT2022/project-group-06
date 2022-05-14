@@ -37,9 +37,11 @@ public class Improvement implements Construction {
     }
 
     @Override
-    public void build() {
+    public void build(String type) {
         zeroMpWorker();
-        GameController.getCurrentPlayer().addNotifications("the process of "+name+" started successfully");
+        String temp = "the process of " + "making a "+name+" improvement" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " finished successfullly";
+        GameController.getCurrentPlayer().addNotifications(temp);
+        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         switch(name)
         {   case "remove jungle":
             case "remove forest":

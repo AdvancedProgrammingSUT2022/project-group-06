@@ -180,39 +180,24 @@ public class UnitController {
         return "the railroad will be constructed in 3 turns";
     }
 
-    public static void makeUnit(String name, Hex hex) {
-        String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
-        if(type.equals("Settler")){
+    public static void makeUnit(String name, Hex hex,String type) {
+        String theType=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        if(theType.equals("Settler")){
             Settler newSettler=new Settler(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Settler unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
-            newSettler.build();
+            newSettler.build(type);
             hex.setCivilianUnit(newSettler);
-        } else if(type.equals("Worker")){
+        } else if(theType.equals("Worker")){
             Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Worker unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
-            newWorker.build();
-        } else if(type.equals("Ranged")){
+            newWorker.build(type);
+        } else if(theType.equals("Ranged")){
             Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Ranged unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
-            newRanged.build();
-        } else if(type.equals("Siege")){
+            newRanged.build(type);
+        } else if(theType.equals("Siege")){
             Siege newSiege=new Siege(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Siege unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
-            newSiege.build();
-        }else if(type.equals("Melee")){
+            newSiege.build(type);
+        }else if(theType.equals("Melee")){
             Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
-            String temp = "the process of " + "making a Melee unit" + " on the hex: x=" + hex.getX() + " y=" + hex.getY() + " started successfullly";
-            GameController.getCurrentPlayer().addNotifications(temp);
-            GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
-            newMelee.build();
+            newMelee.build(type);
         }
 
     }
