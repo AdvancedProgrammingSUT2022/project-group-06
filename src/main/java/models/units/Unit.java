@@ -144,7 +144,6 @@ public class Unit implements Combatable , Construction
         if(this.state == UnitState.Fortified) System.out.println((this.isFirstFortify()) ? 25 : 50);
         System.out.println("asib: :"+ (1 - (this.health / this.maxHealth)) * 100);*/
         combatStrength = combatStrength* (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) /100;
-        if(this.state == UnitState.Fortified) combatStrength *= (double) (100 + ((this.isFirstFortify()) ? 25 : 50)) / 100;
         combatStrength =combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
         return this.combatStrength;
     }

@@ -7,9 +7,7 @@ import models.units.*;
 import views.GameMenu;
 
 public class CombatController {
-    private static Unit selectedUnit = UnitController.getSelectedUnit();
-    private static City selectedCity = GameController.getSelectedCity();
-    private static Hex[][] hex = GameController.getWorld().getHex();
+    private static final Hex[][] hex = GameController.getWorld().getHex();
     private static Combatable attacker;
     private static Combatable defender;
 
@@ -17,19 +15,19 @@ public class CombatController {
         return hex;
     }
     public static String attackCity(int x, int y) {
-        if(selectedCity == null) return "first select a city";
+        if( GameController.getSelectedCity() == null) return "first select a city";
         if (hex[x][y].getMilitaryUnit() == null){
             return ("there is not a military unit");
         }
         if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
             return ("am i joke to you? attack our self?");
         }
-        if(!selectedCity.isInPossibleCombatRange(x, y, 0,selectedCity.getX(),selectedCity.getY())) {
+        if(! GameController.getSelectedCity().isInPossibleCombatRange(x, y, 0, GameController.getSelectedCity().getX(), GameController.getSelectedCity().getY())) {
             return "out of range";
         }
-        //System.out.println(selectedCity.getHitPoint()+" "+ selectedCity.getRangedCombatStrength());
+        //System.out.println( GameController.getSelectedCity().getHitPoint()+" "+  GameController.getSelectedCity().getRangedCombatStrength());
         //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
-        hex[x][y].getMilitaryUnit().decreaseHealth(selectedCity.getRangedCombatStrength());
+        hex[x][y].getMilitaryUnit().decreaseHealth( GameController.getSelectedCity().getRangedCombatStrength());
         //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
         if(hex[x][y].getMilitaryUnit().getHealth()<=0){
             UnitController.deleteUnit(hex[x][y].getMilitaryUnit());
@@ -39,7 +37,7 @@ public class CombatController {
     }
     public static String attackUnit(int x, int y) {
         City defenderCity = hex[x][y].getCapital();
-        attacker = selectedUnit;
+        attacker = UnitController.getSelectedUnit();
         if (defenderCity != null) {
             defender = defenderCity;
         } else if (hex[x][y].getMilitaryUnit() != null) {
@@ -59,9 +57,9 @@ public class CombatController {
     }
 
     private static String handelCombatType(City defenderCity, int x, int y){
-        if (selectedUnit instanceof Ranged) {
-            if(selectedUnit instanceof Siege){
-                if(!((Siege) selectedUnit).isReadyToAttack()) return "siege unit is not ready";
+        if (UnitController.getSelectedUnit() instanceof Ranged) {
+            if(UnitController.getSelectedUnit() instanceof Siege){
+                if(!((Siege) UnitController.getSelectedUnit()).isReadyToAttack()) return "siege unit is not ready";
             }
             if (defenderCity != null) {
                 return rangedCityCombat(defenderCity);
@@ -93,9 +91,9 @@ public class CombatController {
     private static String meleeCityCombat(City city) {
         Military temp = new Military("Scout",hex[0][0],GameController.getCurrentPlayer());
         hex[0][0].setMilitaryUnit(temp);
-        System.out.println("meleCombat"+selectedUnit.getHealth()+" "+city.getHitPoint() );
+        System.out.println("meleCombat"+UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         //handel tile train and feature
-        int unitStrength = selectedUnit.calculateCombatModifier(city);
+        int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
         int cityStrength = city.getMeleeCombatStrength();
         //todo : saze defaie divar
         if(city.getCapital().getMilitaryUnit() != null){
@@ -104,34 +102,34 @@ public class CombatController {
         }
         System.out.println(cityStrength+ " "+unitStrength);
         city.decreaseHitPoint(unitStrength);
-        selectedUnit.decreaseHealth(cityStrength);
-        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
-        if (selectedUnit.getHealth() <= 0) {
-            UnitController.deleteUnit(selectedUnit);
+        UnitController.getSelectedUnit().decreaseHealth(cityStrength);
+        System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
+        if (UnitController.getSelectedUnit().getHealth() <= 0) {
+            UnitController.deleteUnit(UnitController.getSelectedUnit());
             return "you lose the battle unit is death";
         }
         if (city.getHitPoint() <= 0) {
             //todo : move unit to city coordinates
-            GameMenu.cityCombatMenu(city, selectedUnit.getOwner());
+            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
             return "done";
         }
-        selectedUnit.setMP(0);
+        UnitController.getSelectedUnit().setMP(0);
         return "attack is done";
     }
 
     private static String rangedCityCombat(City city) {
-        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
+        System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
         // handel tile train and feature
-        int unitStrength = selectedUnit.calculateCombatModifier(city);
+        int unitStrength = ((Ranged)UnitController.getSelectedUnit()).calculateRangedAttackStrength();
          System.out.println(unitStrength);
         //todo :saze defaie divar
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
             city.setHitPoint(1);
         }
-        System.out.println(selectedUnit.getHealth()+" "+city.getHitPoint() );
-        selectedUnit.setMP(0);
+        System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
+        UnitController.getSelectedUnit().setMP(0);
         return "attack is done";
     }
 

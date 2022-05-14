@@ -27,6 +27,7 @@ public class GameMenu extends Menu {
         Matcher matcher;
 
         while (true) {
+            boolean validCommand = true;
             if(command.equals("construction delete")){
                 System.out.println(GameController.deleteConstruction());
             }else if(command.equals("demographic screen")){
@@ -80,6 +81,7 @@ public class GameMenu extends Menu {
             } else if (command.equals("next turn")) {
                 System.out.println(GameController.changeTurn());
                 GameController.checkTimeVariantProcesses();
+                if(GameController.getTurn() == 1) GameMenu.startGame();
             } else if ((matcher = getMatcher("buy tile", command)) != null) {
                 System.out.println(buyTile(matcher));
             } else if ((matcher = getMatcher("unit make (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
@@ -98,8 +100,11 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.showUnEmployedCitizen());
             }else if (command.equals("exit menu"))
                 break;
-            else if(!mapCommands(command))
+            else if(!mapCommands(command)){
                 System.out.println("invalid command!");
+                validCommand = false;
+            }
+            if(validCommand) System.out.println(GameController.printWorld());
             command = scanner.nextLine();
             //TODO:
             GameController.showHexState();

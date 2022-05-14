@@ -25,17 +25,11 @@ import static controllers.GameController.*;
 public class UnitController {
 
     private static Unit selectedUnit;
-    private static Hex[][] hex = getWorld().getHex();
-    private static Player currentPlayer = GameController.getCurrentPlayer();
-    private static ArrayList<Movement> unfinishedMovements = new ArrayList<Movement>();
-
-
-    public static Player getCurrentPlayer() {
-        return currentPlayer;
-    }
+    private static final Hex[][] hex = getWorld().getHex();
+    private static final ArrayList<Movement> unfinishedMovements = new ArrayList<Movement>();
 
     public static void setCurrentPlayer(Player player) {
-        currentPlayer = player;
+        GameController.setCurrentPlayer(player);
     }
 
     public static boolean hasMilitary(int x, int y) {
@@ -108,8 +102,8 @@ public class UnitController {
             //todo : inja bayad direction ro avaz kone
             for (int i = 0; i < 7; i++) {
                 if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
-                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, currentPlayer);
-                    currentPlayer.addToRevealedHexes(hex[x + direction[i][0]][y + direction[i][1]]);
+                    hex[x + direction[i][0]][y + direction[i][1]].setState(HexState.Visible, GameController.getCurrentPlayer());
+                    GameController.getCurrentPlayer().addToRevealedHexes(hex[x + direction[i][0]][y + direction[i][1]]);
                 }
             }
         }
@@ -119,13 +113,13 @@ public class UnitController {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
             for (int j = 0; j < getWorld().getHexInHeight(); j++) {
                // System.out.println(i + " " + j);
-                if (currentPlayer == null)
+                if (GameController.getCurrentPlayer() == null)
                     System.out.println("cp is null");
-                if (hex[i][j].getState(currentPlayer) == null)
+                if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
                     System.out.println("is null");
-                if (hex[i][j].getState(currentPlayer).equals(HexState.Visible)) {
-                    hex[i][j].setState(HexState.Revealed, currentPlayer);
-                    currentPlayer.addToRevealedHexes(hex[i][j]);
+                if (hex[i][j].getState(GameController.getCurrentPlayer()).equals(HexState.Visible)) {
+                    hex[i][j].setState(HexState.Revealed, GameController.getCurrentPlayer());
+                    GameController.getCurrentPlayer().addToRevealedHexes(hex[i][j]);
                 }
             }
         }
@@ -138,7 +132,7 @@ public class UnitController {
             return "you should choose a unit first";
         if (!selectedUnit.getName().equals("Worker"))
             return "you should choose a worker unit";
-        if (!currentPlayer.getAchievedTechnologies().get("TheWheel"))
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("TheWheel"))
             return "you don't have required technology for building roads";
         if (hex[x][y].hasRoad())
             return "this hex already has road";
@@ -149,7 +143,7 @@ public class UnitController {
         //Todo: can't build roads on ice
         Improvement road = new Improvement("Road", selectedUnit, hex[x][y]);
         road.setLeftTurns(3);
-        currentPlayer.addUnfinishedProject(road);
+        GameController.getCurrentPlayer().addUnfinishedProject(road);
         return "the road will be constructed in 3 turns";
     }
 
@@ -158,7 +152,7 @@ public class UnitController {
             return "chosen position is not valid";
         if (!selectedUnit.getName().equals("Worker"))
             return "you should choose a worker unit";
-        if (!currentPlayer.getAchievedTechnologies().get("Road"))
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("Road"))
             return "you don't have required technology for building roads";
         if (hex[x][y].hasRailRoad())
             return "this hex already has railroad";
@@ -174,28 +168,28 @@ public class UnitController {
     public static void makeUnit(String name, Hex hex) {
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         if(type.equals("Settler")){
-            Settler newSettler=new Settler(name, hex, currentPlayer);
+            Settler newSettler=new Settler(name, hex, GameController.getCurrentPlayer());
             newSettler.build();
         } else if(type.equals("Worker")){
-            Worker newWorker=new Worker(name, hex,currentPlayer);
+            Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
             newWorker.build();
         } else if(type.equals("Archery")){
-            Ranged newRanged=new Ranged(name, hex, currentPlayer);
+            Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
             newRanged.build();
         } else if(type.equals("Siege")){
-            Siege newSiege=new Siege(name, hex, currentPlayer);
+            Siege newSiege=new Siege(name, hex, GameController.getCurrentPlayer());
             newSiege.build();
         }else if(type.equals("Melee")){
-            Melee newMelee=new Melee(name, hex, currentPlayer);
+            Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
             newMelee.build();
         }else{
             int temp=Integer.parseInt(InitializeGameInfo.unitInfo.get(name));
             if(temp==0)
             {
-                Melee newMelee=new Melee(name, hex, currentPlayer);
+                Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
                 newMelee.build();
             }else{
-                Ranged newRanged=new Ranged(name, hex, currentPlayer);
+                Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
                 newRanged.build();
             }
         }
@@ -222,7 +216,7 @@ public class UnitController {
             return "you did not select a military unit";
         }if(selectedUnit.getCurrentHex().getCapital() == null){
             return "there is no capital";
-        }if(selectedUnit.getCurrentHex().getOwner() != currentPlayer){
+        }if(selectedUnit.getCurrentHex().getOwner() != GameController.getCurrentPlayer()){
             return ("this is not your city");
         }
         return "garrisoned successfully";
@@ -302,7 +296,7 @@ public class UnitController {
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement.getDestination().getX(), movement.getDestination().getY());
 
-        if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != currentPlayer)) {
+        if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != GameController.getCurrentPlayer())) {
             forceEndMovement(movement);
             return;
         }

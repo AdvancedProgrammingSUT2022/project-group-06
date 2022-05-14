@@ -15,10 +15,10 @@ import models.maprelated.*;
 public class InitializeGameInfo {
     public static HashMap<String, String> unitNeededResource = new HashMap<String, String>();
     public static HashMap<String, String> unitNeededTech = new HashMap<String, String>();
-    private static HashMap<String, String> terrainInfo = new HashMap<>();
-    private static HashMap<String, String> featureInfo = new HashMap<>();
-    private static HashMap<String, String> resourceInfo = new HashMap<>();
-    private static HashMap<String, String> technologyInfo = new HashMap<>();
+    private static final HashMap<String, String> terrainInfo = new HashMap<>();
+    private static final HashMap<String, String> featureInfo = new HashMap<>();
+    private static final HashMap<String, String> resourceInfo = new HashMap<>();
+    private static final HashMap<String, String> technologyInfo = new HashMap<>();
     public static HashMap<String, String> unitInfo = new HashMap<>();
     private static final ArrayList<String> terrainNames = new ArrayList<String>();
     private static final ArrayList<String> resourceNames = new ArrayList<String>();
@@ -26,12 +26,12 @@ public class InitializeGameInfo {
     private static final HashMap<String, ArrayList<String>> appropriateFeature = new HashMap<String, ArrayList<String>>();
     private static final HashMap<String, String[]> terrainPossibleFeature = new HashMap<String, String[]>();
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
-    private static HashMap<String, Color> playerColor = new HashMap<String, Color>();
-    private static ArrayList<Player> players = new ArrayList<Player>();
+    private static final HashMap<String, Color> playerColor = new HashMap<String, Color>();
+    private static final ArrayList<Player>  players = new ArrayList<Player>();
     private static int numberOFPlayers;
 
     private static final Random random = new Random();
-    private static World world;
+    private static final World world = new World();;
 
 
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
@@ -44,9 +44,6 @@ public class InitializeGameInfo {
         return players;
     }
 
-    public static void setPlayers(ArrayList<Player> players) {
-        InitializeGameInfo.players = players;
-    }
 
     public static int getNumberOFPlayers() {
         return numberOFPlayers;
@@ -261,7 +258,7 @@ public class InitializeGameInfo {
     }
 
     public static void initializeGameWorld() {
-        world = new World();
+
         initializeHex(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeRiver(world.getHexInHeight(), world.getHexInWidth(), world.getHex());

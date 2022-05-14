@@ -9,16 +9,18 @@ import enums.HexState;
 import models.Player;
 import models.maprelated.City;
 import models.maprelated.Hex;
-import models.units.Ranged;
 import models.units.Settler;
 import models.units.Unit;
-import models.units.Worker;
 
 
 public class CityController {
-    private static ArrayList<Hex> toBuyTiles = new ArrayList<Hex>();
+    private static final ArrayList<Hex> toBuyTiles = new ArrayList<Hex>();
     private static final Hex[][] hex = GameController.getWorld().getHex();
-    private static final Player currentPlayer = GameController.getCurrentPlayer();
+
+
+    public static Player getCurrentPlayer() {
+        return GameController.getCurrentPlayer();
+    }
 
     public static void finalizeTrophy(City theCity) {
         int count = 0;
@@ -73,7 +75,8 @@ public class CityController {
         if (GameController.isOutOfBounds(x, y)) {
             return "invalid x or y";
         }
-        if (GameController.getWorld().getHex()[x][y].getState(currentPlayer)== HexState.FogOfWar) {
+        System.out.println(GameController.getCurrentPlayer().getName());
+        if (GameController.getWorld().getHex()[x][y].getState(GameController.getCurrentPlayer())== HexState.FogOfWar) {
             return "he zerangi inja fog of ware";
         }
         GameController.setSelectedHex(GameController.getWorld().getHex()[x][y]);
@@ -97,7 +100,7 @@ public class CityController {
         if (GameController.getSelectedHex() == null) {
             return "select a tile first";
         }
-        if(GameController.getSelectedHex().getOwner() != currentPlayer) {
+        if(GameController.getSelectedHex().getOwner() != GameController.getCurrentPlayer()) {
              return "this tile does not belong to you";
          }
          if(GameController.getSelectedHex().getCapital() == null){
@@ -112,18 +115,15 @@ public class CityController {
         }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedCity().getMilitaryUnit()!=null)) {
             return "you can't have two Military units in a city";
         }
-            if (name.equals("Settler") && currentPlayer.getHappiness() < 0)
+            if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
             return "your civilization is unhappy";
 
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
+        Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
 
-        
-        Unit newUnit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
-
-
-        if(newUnit.getNeededTech()!=null&&currentPlayer.getAchievedTechnologies().get(newUnit.getNeededTech()))
+        if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
         {
             return "you have not achieved the needed technology to make this unit";
         }
@@ -136,13 +136,13 @@ public class CityController {
                 check=true;
             }
         }
-    
+
         if(!check&&newUnit.getNeededResource()!=null)
         {
             return "you don't have the needed resource to make this unit";
         }
 
-        if (currentPlayer.getGold() >= newUnit.getCost()) {
+        if (GameController.getCurrentPlayer().getGold() >= newUnit.getCost()) {
             UnitController.makeUnit(name, GameController.getSelectedHex());
             return "Unit created successfully";
         }
@@ -152,8 +152,7 @@ public class CityController {
             goldPerTurn += temp.getGold();
         }
 
-        Unit unit = new Unit(name, GameController.getSelectedHex(), currentPlayer);
-
+        Unit unit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
 
         if (newUnit.getCost() < goldPerTurn) {
             unit.setLeftTurns(1);
@@ -165,7 +164,7 @@ public class CityController {
         }
 
 
-        currentPlayer.addUnfinishedProject(unit);
+        GameController.getCurrentPlayer().addUnfinishedProject(unit);
 
         return "process for builing an unit started successfully";
     }
@@ -194,12 +193,12 @@ public class CityController {
         }
 
 
-        City newCity = new City(currentPlayer, name, UnitController.getSelectedUnit().getCurrentHex());
-        currentPlayer.decreaseHappiness(1); //happiness decrease as num of cities increase
-        if (currentPlayer.getHappiness() < 0) GameController.unhappinessEffects();
+        City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
+        GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
+        if (GameController.getCurrentPlayer().getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
-        currentPlayer.addCity(newCity);
+        GameController.getCurrentPlayer().addCity(newCity);
         UnitController.getSelectedUnit().setMP(0);
         return "new city created successfully";
     }
@@ -222,20 +221,20 @@ public class CityController {
             ArrayList<Hex> sixNeighborHexs = new ArrayList<Hex>();
 
             if (y % 2 != 0) {
-                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&& (!hex[x+1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&& (!hex[x+1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x + 1][y]);
                 }
 
-                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null&& (!hex[x-1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null&& (!hex[x-1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x - 1][y]);
                 }
-                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&& (!hex[x][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&& (!hex[x][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y - 1]);
-                    if (x + 1 < 10 && hex[x + 1][y - 1].getOwner() == null&& (!hex[x+1][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                    if (x + 1 < 10 && hex[x + 1][y - 1].getOwner() == null&& (!hex[x+1][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                         sixNeighborHexs.add(hex[x + 1][y - 1]);
                     }
                 }
-                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null && (!hex[x][y+1].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null && (!hex[x][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y + 1]);
                     if (x + 1 < 10 && hex[x][y + 1].getOwner() == null) {
                         sixNeighborHexs.add(hex[x + 1][y + 1]);
@@ -243,20 +242,20 @@ public class CityController {
                 }
             }
             if (y % 2 == 0) {
-                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&&(!hex[x+1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&&(!hex[x+1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x + 1][y]);
                 }
 
-                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null&&(!hex[x-1][y].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (x - 1 >= 0 && hex[x - 1][y].getOwner() == null&&(!hex[x-1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x - 1][y]);
                 }
-                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&&(!hex[x][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&&(!hex[x][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y - 1]);
-                    if (x - 1 >= 0 && hex[x - 1][y - 1].getOwner() == null&& (!hex[x-1][y-1].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                    if (x - 1 >= 0 && hex[x - 1][y - 1].getOwner() == null&& (!hex[x-1][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                         sixNeighborHexs.add(hex[x - 1][y - 1]);
                     }
                 }
-                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null&&(!hex[x][y+1].getState(currentPlayer).equals(HexState.FogOfWar))) {
+                if (y + 1 < 10 && hex[x][y + 1].getOwner() == null&&(!hex[x][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))) {
                     sixNeighborHexs.add(hex[x][y + 1]);
                     if (x - 1 >= 0 && hex[x - 1][y + 1].getOwner() == null) {
                         sixNeighborHexs.add(hex[x - 1][y + 1]);
@@ -284,7 +283,7 @@ public class CityController {
     }
 
     public static String buyHex(int count) {
-        Player buyer = currentPlayer;
+        Player buyer = GameController.getCurrentPlayer();
         int price = GameController.getSelectedCity().getHexs().size() * 5;
         if (buyer.getGold() < price) {
             return "you don't have enough money";
@@ -308,7 +307,7 @@ public class CityController {
         if (GameController.isOutOfBounds(x, y)) {
             return "out of bounds";
         }
-        if (hex[x][y].getOwner() != currentPlayer) {
+        if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
             return "this tile is not yours";
         }
         if (!hex[x][y].isHasCitizen()) return "there is no citizen";
@@ -322,7 +321,7 @@ public class CityController {
         if (GameController.isOutOfBounds(x, y)) {
             return "out of bounds";
         }
-        if (hex[x][y].getOwner() != currentPlayer) {
+        if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
             return "this tile is not yours";
         }
         if (!hex[x][y].isHasCitizen()) return "there is already a citizen";

@@ -13,29 +13,28 @@ import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 import models.units.Worker;
+import models.units.*;
 import views.GameMenu;
 
 import java.util.*;
 
 public class GameController {
 
-    private static ArrayList<Player> players = InitializeGameInfo.getPlayers();
-    private static int turn;
-    private static World world;
+    private static final ArrayList<Player> players = InitializeGameInfo.getPlayers();
+    private static int turn ;
+    private static final World world = InitializeGameInfo.getWorld();
     private static int[] mapBoundaries;
-    private static Hex[][] hex;
+    private static final Hex[][] hex = world.getHex();
     private static Player currentPlayer;
-    private static ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
-    private static ArrayList<Military> allMilitaries = new ArrayList<Military>();
+    private static final ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
+    private static final ArrayList<Military> allMilitaries = new ArrayList<Military>();
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
-    private static ArrayList<Combatable> hurtElements = new ArrayList<>();
 
     public static int getTurn() {
         return turn;
     }
-
     public static void addALlCivilians(Civilian newCivilian) {
         allCivilians.add(newCivilian);
     }
@@ -75,16 +74,13 @@ public class GameController {
     public static void initializeGameController() {
         playerCount = 0;
         currentPlayer = players.get(playerCount);
-        world = InitializeGameInfo.getWorld();
-        turn = 0;
-        hex = world.getHex();
+        turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
-
-/*        hex[0][0].setState(HexState.Visible,currentPlayer);
         hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
+        hex[0][0].setState(HexState.Visible,currentPlayer);
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
-
+/*
         City city1 = makeCityForTesting(0, 0,"asy");
         city1.addHex(world.getHex()[0][1]);
         City city2 =makeCityForTesting(5, 7,"aseman");
@@ -319,7 +315,7 @@ public class GameController {
     }
 
     public static String showHexDetails(int x, int y) {
-        if (x < 0 || y < 0 || x > world.getWorldHeight() || y > world.getWorldWidth()) {
+        if (isOutOfBounds(x,y)) {
             return "invalid cell";
         }
         Hex hex = world.getHex()[x][y];
@@ -335,11 +331,20 @@ public class GameController {
             detail.append(" improvement: ").append(hex.getImprovement());
         }
         if (hex.getCivilianUnit() != null) {
-            detail.append(" Civilian Unit: " + hex.getCivilianUnit().getName());
+            detail.append(" Civilian Unit: ").append(hex.getCivilianUnit().getName());
         }
         if (hex.getMilitaryUnit() != null) {
-            detail.append(" Military Unit: " + hex.getMilitaryUnit().getName());
+            detail.append(" Military Unit: ").append(hex.getMilitaryUnit().getName());
         }
+        detail.append("\n");
+        if(hex.hasRailRoad())detail.append(" has railroad");
+        if(hex.hasRoad())detail.append(" has road");
+        if(hex.isPillaged())detail.append((" is pillaged"));
+        if(hex.getCapital()!= null) detail.append(" Capital of: ").append(hex.getCapital().getName());
+        if(hex.getCity() != null) detail.append("tile of").append(hex.getCity().getName());
+        detail.append("\n");
+        detail.append(hex.getState(currentPlayer));
+        if(hex.getHasCitizen())detail.append("has a working citizen");
         detail.append(" x,y:").append(x).append(" ").append(y);
         return detail.toString();
     }
@@ -424,7 +429,8 @@ public class GameController {
         }
         currentPlayer = GameController.getPlayers().get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
-        if (turn == 1) GameMenu.startGame();
+/*        System.out.println(currentPlayer);
+        System.out.println(CityController.getCurrentPlayer());*/
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
@@ -452,9 +458,8 @@ public class GameController {
             y = y + direction[j][1];
             for (int i = 0; i < direction.length; i++) {
                 if (!GameController.isOutOfBounds(x + direction[i][0], y + direction[i][1])) {
-                    if (hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit() != null &&
-                            hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit().getOwner() != currentPlayer)
-                        ;
+                    if(hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit()!=null&&
+                       hex[x + direction[i][0]][y + direction[i][1]].getMilitaryUnit().getOwner()!= currentPlayer);
                     return true;
                 }
             }

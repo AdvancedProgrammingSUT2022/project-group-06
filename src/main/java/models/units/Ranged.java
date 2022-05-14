@@ -36,4 +36,15 @@ public class Ranged extends Military implements Combatable{
         combatStrength =combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
         return this.getCombatStrength() ;
     }
+    public int calculateRangedAttackStrength() {
+        if(Objects.equals(this.getName(), "Chariot Archer") &&
+                this.getCurrentHex().getFeature().getName().matches("Jungle|Forest")||
+                this.getCurrentHex().getTerrain().getName().matches("Hills")){
+            //todo: check count of rough terrain
+            rangedStrength *= 80.0 /100;
+        }
+        rangedStrength = rangedStrength* (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) /100;
+        rangedStrength =rangedStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
+        return this.getCombatStrength() ;
+    }
 }
