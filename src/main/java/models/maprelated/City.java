@@ -24,8 +24,7 @@ public class City implements Combatable {
     private int since;
     private int gold;
     private int production;
-    private Military militaryUnit = null;
-    private Civilian civilianUnit = null;
+
     private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
     private ArrayList<Hex> hexs = new ArrayList<Hex>();
     private Player owner = null;
@@ -155,13 +154,8 @@ public class City implements Combatable {
         return capital.getY();
     }
 
-    public Military getMilitaryUnit() {
-        return militaryUnit;
-    }
+  
 
-    public Civilian getCivilianUnit() {
-        return civilianUnit;
-    }
 
     public static City getCityByName(String name) {
         for (City temp : GameController.getCurrentPlayer().getCities()) {

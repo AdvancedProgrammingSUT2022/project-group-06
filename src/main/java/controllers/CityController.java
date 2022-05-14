@@ -116,6 +116,7 @@ public class CityController {
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
 
+
         if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCivilianUnit()!=null)
         {
             return "you can't have two Civilian units in a city";

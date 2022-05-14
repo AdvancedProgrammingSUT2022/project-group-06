@@ -701,7 +701,7 @@ public class GameController {
 
             for (Construction construction : currentPlayer.getUnfinishedProjects()) {
                 if (construction.getHex().getCity().getName().equals(temp.getName())) {
-                    economicInfo.append("\\t\\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
+                    economicInfo.append("\t\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
                 }
 
             }
@@ -984,30 +984,47 @@ public class GameController {
 
     public static void checkTimeVariantProcesses() {
 
+
+        ArrayList<Construction> deleteConstruction=new ArrayList<Construction>();
+
+
         for (Construction process : currentPlayer.getUnfinishedProjects()) {
 
 
-            
             if (process.getLeftTurns() == 0) {
-                process.getWorker().setMP(process.getWorker().getBackUpMp());
+
 
                 if (process instanceof Unit) {
                     UnitController.makeUnit(process.getName(), process.getHex());
-                    currentPlayer.getUnfinishedProjects().remove(process);
+                    deleteConstruction.add(process);
+                    String temp = "the process of " + process.getName() + " on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
+                    currentPlayer.addNotifications(temp);
+                    currentPlayer.setNotificationsTurns(turn);
                     continue;
                 }
+
+                process.getWorker().setMP(process.getWorker().getBackUpMp());
+
+
                 process.build();
                 String temp = "the process of " + process.getName() + "on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
                 currentPlayer.addNotifications(temp);
-                currentPlayer.getUnfinishedProjects().remove(process);
+                currentPlayer.setNotificationsTurns(turn);
+                deleteConstruction.add(process);
             } else if (process instanceof Unit) {
                 Unit previewUnit = new Unit(process.getName(), process.getHex(), currentPlayer);
                 currentPlayer.decreaseGold(previewUnit.getCost() / process.getLeftTurns());
+                process.decreaseLeftTurns();
             }else {
                 process.decreaseLeftTurns();
             }
 
 
+        }
+
+        for(Construction temp:deleteConstruction)
+        {
+            currentPlayer.getUnfinishedProjects().remove(temp);
         }
 
     }

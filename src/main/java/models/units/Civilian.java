@@ -27,9 +27,9 @@ public class Civilian extends Unit
     {
       super(name, hex, owner);
       this.isWorking=false;
-    hex.setCivilianUnit(this);
-    civilians.add(this);
-    GameController.getCurrentPlayer().addCivilians(this);
+      hex.setCivilianUnit(this);
+      civilians.add(this);
+      GameController.getCurrentPlayer().addCivilians(this);
     } 
 
     public static ArrayList<Civilian> geiCivilians()

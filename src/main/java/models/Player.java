@@ -94,7 +94,7 @@ public class Player {//-currentProject
         }
     }
     public static void setTechnologies(ArrayList<String> set) {
-
+        
         technologies= new ArrayList<>(set);
     }
 
