@@ -223,6 +223,13 @@ public class UnitController {
         selectedUnit = null;
         return "unit deleted";
     }
+    public static String deleteUnitAction(Unit unit){
+        unit.getOwner().removeUnit( unit);
+        unit.getCurrentHex().setMilitaryUnit(null);
+        selectedUnit = null;
+        GameController.getCurrentPlayer().increaseGold(unit.getCost()/10);
+        return "unit deleted";
+    }
     public static String sleepUnit(){
         if(selectedUnit.getState() == UnitState.Sleep){
             return "unit is already sleep";
@@ -239,14 +246,9 @@ public class UnitController {
     }
     public static String pillage(){
         if(selectedUnit == null) return "select a military unit first";
-        if(selectedUnit instanceof Civilian)return "selected unit is a civilian";
+        if(selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
         selectedUnit.getCurrentHex().setPillaged(true);
-        
         if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
-        
-
-        
-
         return "pillaged successfully";
     }
 

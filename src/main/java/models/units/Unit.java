@@ -23,7 +23,7 @@ public class Unit implements Combatable , Construction
     protected Hex currentHex;
     protected UnitState state;
     protected int MP;
-    protected int backUpMP;
+    protected  int backUpMP;
     protected String name;
     protected int cost;
     protected String neededTech;
@@ -49,10 +49,7 @@ public class Unit implements Combatable , Construction
     {
         MP=amount;
     }
-    public void setBackUpMp(int amount)
-    {
-        backUpMP=amount;
-    }
+
     public int getBackUpMp()
     {
         return backUpMP;
@@ -96,6 +93,7 @@ public class Unit implements Combatable , Construction
         rangedStrength=Integer.parseInt(info[2]);
         range=Integer.parseInt(info[3]);
         MP=Integer.parseInt(info[4]);
+        backUpMP = MP;
         combatType=info[7];
         health=maxHealth;
 
