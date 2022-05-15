@@ -448,7 +448,7 @@ public class GameController {
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
         for (int i = 0; i < currentPlayer.getCities().size(); i++) {
-            for (int j = 0; j < currentPlayer.getCities().get(j).getHexs().size(); j++) {
+            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
                 if (currentPlayer.getCities().get(j).getHexs().get(j).hasRoad())
                     currentPlayer.decreaseGold(2);//gold to maintain roads
                 if (currentPlayer.getCities().get(j).getHexs().get(j).hasRailRoad())

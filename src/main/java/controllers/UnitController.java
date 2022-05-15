@@ -325,9 +325,12 @@ public class UnitController {
             unfinishedMovements.remove(movement);
             return "the unit doesn't have enough move points";
         }
-        //TODO: tartibe revealed ina ro ok kon
+
         setRevealedTiles();
-        changeView(GameController.getDirection(y),x, y);
+        for (Unit playerUnit : getCurrentPlayer().getUnits()) {
+            changeView(GameController.getDirection(playerUnit.getY()), playerUnit.getX(), playerUnit.getY());
+        }
+
         if (unit.getState().equals(UnitState.Fortified))
             unit.setState(UnitState.Active);
 
