@@ -32,12 +32,10 @@ public class Hex {
     private boolean isPillaged = false;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
     private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
+
     public void setFeature(Terrain newFeature)
     {
         terrain=newFeature;
-    }
-    public boolean isHasCitizen() {
-        return hasCitizen;
     }
 
     public void setHasCitizen(boolean hasCitizen) {
@@ -153,6 +151,14 @@ public class Hex {
 
     public boolean[] getHasRiver() {
         return hasRiver;
+    }
+
+    public boolean isNextToAnyRiver() {
+        for (boolean river : hasRiver) {
+            if (river)
+                return true;
+        }
+        return false;
     }
 
     public int riverDir() {

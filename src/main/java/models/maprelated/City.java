@@ -21,7 +21,7 @@ public class City implements Combatable {
     private int rangedCombatStrength = 8;
     private int meleeCombatStrength = 8;
     private int food;
-    private int since;
+    private int science;
     private int gold;
     private int production;
 
@@ -33,7 +33,8 @@ public class City implements Combatable {
     private  Hex capital;
     private int trophy=0;
 
-
+    private int numberOfUnemployedCitizen;
+    private int health;
 
     public int getTrophy()
     {
@@ -48,7 +49,7 @@ public class City implements Combatable {
         this.name = name;
         population = 1;
         food = 0;
-        since = 0;
+        science = 0;
         gold = 40;
         production = 0;
         hexs.add(beginingHex);
@@ -92,8 +93,7 @@ public class City implements Combatable {
     public void increaseNumberOfUnemployedCitizen(int amount) {
         this.numberOfUnemployedCitizen += amount;
     }
-    private int numberOfUnemployedCitizen;
-    private int health;
+
 
     public int getMeleeCombatStrength() {
         return this.meleeCombatStrength;
@@ -204,7 +204,7 @@ public class City implements Combatable {
     public void increasePopulation(int amount) {
         for (int i = 0; i < amount; i++) {
             for (Hex hex : hexs) {
-                if (!hex.isHasCitizen()) {
+                if (!hex.getHasCitizen()) {
                     CityController.lockCitizenTo(hex.getX(), hex.getY());
                     break;
                 }
@@ -252,15 +252,15 @@ public class City implements Combatable {
 
 
     public int getSince() {
-        return this.since;
+        return this.science;
     }
 
-    public void increaseSince(int amount) {
-        since += amount;
+    public void increaseScience(int amount) {
+        science += amount;
     }
 
-    public void decreaseSince(int amount) {
-        since -= amount;
+    public void decreaseScience(int amount) {
+        science -= amount;
     }
 
 

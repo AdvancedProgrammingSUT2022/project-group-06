@@ -38,7 +38,6 @@ public class CombatController {
         }
         return "attacked successfully";
     }
-
     public static String attackUnit(int x, int y) {
         City defenderCity = hex[x][y].getCapital();
         attacker = UnitController.getSelectedUnit();
@@ -151,5 +150,6 @@ public class CombatController {
         looser.removeCity(city);
         player.addCity(city);
         city.setHitPoint(0);
+        GameController.getCurrentPlayer().decreaseHappiness(3);//happiness decreases due to annexed cities
     }
 }

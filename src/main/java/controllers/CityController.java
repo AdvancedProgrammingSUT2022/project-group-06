@@ -320,7 +320,7 @@ public class CityController {
         if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
             return "this tile is not yours";
         }
-        if (!hex[x][y].isHasCitizen()) return "there is no citizen";
+        if (!hex[x][y].getHasCitizen()) return "there is no citizen";
         //todo: kam kardan ghodrat tolid
         hex[x][y].setHasCitizen(false);
         GameController.getSelectedCity().decreaseNumberOfUnemployedCitizen(1);
@@ -334,7 +334,7 @@ public class CityController {
         if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
             return "this tile is not yours";
         }
-        if (!hex[x][y].isHasCitizen()) return "there is already a citizen";
+        if (!hex[x][y].getHasCitizen()) return "there is already a citizen";
         if (GameController.getSelectedCity().getNumberOfUnemployedCitizen() > 0) {
             GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
             //todo: afzayesh

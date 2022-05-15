@@ -27,6 +27,7 @@ public class Player {//-currentProject
     private int food;
     private int trophies;
     private int population;
+    private int foodForNewCitizen;
     private ArrayList<Unit> units = new ArrayList<Unit>();
     private ArrayList<City> cities = new ArrayList<City>();
     private int score;
@@ -108,7 +109,7 @@ public class Player {//-currentProject
         //hexCopy.setMilitaryUnit(hex.getMilitaryUnit());
         //hexCopy.setCivilianUnit(hex.getCivilianUnit());
         hexCopy.setHasRiver(hex.getHasRiver());
-        hexCopy.setHasCitizen(hex.isHasCitizen());
+        hexCopy.setHasCitizen(hex.getHasCitizen());
         hexCopy.setCapital(hex.getCapital());
         hexCopy.setCity(hex.getCity());
         hexCopy.setHasRoad(hex.hasRoad());
@@ -131,9 +132,9 @@ public class Player {//-currentProject
         civilians = new ArrayList<Civilian>();
         militaries = new ArrayList<Military>();
         //initial happiness
-        //todo: later should be calculated based on game difficulty
         this.happiness = 10;
         InitializeGameInfo.getPlayers().add(this);
+        this.foodForNewCitizen = 2;
     }
 
     public void setTrophies(int trophies) {
@@ -165,9 +166,8 @@ public class Player {//-currentProject
     }
 
     public void decreaseGold(int amount) {
-        gold -= amount;
+        int i = (gold >= amount) ? (gold -= amount) : (trophies -= amount);
     }
-
 
     public int getHappiness() {
         return this.happiness;
@@ -325,5 +325,13 @@ public class Player {//-currentProject
 
     public void setCurrentResearch(Technology currentResearch) {
         this.currentResearch = currentResearch;
+    }
+
+    public int getFoodForNewCitizen() {
+        return foodForNewCitizen;
+    }
+
+    public void setFoodForNewCitizen(int foodForNewCitizen) {
+        this.foodForNewCitizen = foodForNewCitizen;
     }
 }
