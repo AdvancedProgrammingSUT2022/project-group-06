@@ -34,18 +34,6 @@ public class Unit implements Combatable , Construction
     private boolean ordered = false;
     //todo: set combat type
 
-    public int getLeftNeededProduction()
-    {
-        return leftNeededProduction;
-    }
-    public int getDefaultLeftTurn()
-    {
-        return defaultLeftTurn;
-    }
-    public void setDefaultLeftTurn(int amount)
-    {
-        defaultLeftTurn=amount;
-    }
 
     public int getNeededProduction()
     {

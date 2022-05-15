@@ -1147,7 +1147,7 @@ public class GameController {
                 deleteConstruction.add(process);
             } else if (process instanceof Unit) {
                 Unit previewUnit = new Unit(process.getName(), process.getHex(), currentPlayer);
-                currentPlayer.decreaseProduction(previewUnit.getNeededProduction() / process.getDefaultLeftTurn());
+                currentPlayer.decreaseProduction(previewUnit.getNeededProduction() / process.getLeftTurns());
                 process.decreaseLeftTurns();
             }else {
                 process.decreaseLeftTurns();

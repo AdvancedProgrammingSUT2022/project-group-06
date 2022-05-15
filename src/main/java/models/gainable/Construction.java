@@ -22,7 +22,7 @@ public interface Construction {
 
     Unit getWorker();
 
-    int getDefaultLeftTurn();
+    
 
     
   
