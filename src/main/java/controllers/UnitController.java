@@ -389,9 +389,8 @@ public class UnitController {
 
     public static void changeTurn() {
         for (int i = 0; i < unfinishedMovements.size(); i++) {
+            if (unfinishedMovements.get(i).getUnit().getOwner() == getCurrentPlayer())
             moveUnit(unfinishedMovements.get(i));
         }
-/*        for (Movement unfinishedMovement : unfinishedMovements)
-            moveUnit(unfinishedMovement);*/
     }
 }

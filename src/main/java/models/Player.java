@@ -182,6 +182,7 @@ public class Player {//-currentProject
     }
 
     public int getProduction() {
+
         return this.production;
     }
 

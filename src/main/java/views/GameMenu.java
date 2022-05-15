@@ -126,8 +126,6 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.showCity(GameController.getCurrentPlayer().getMainCity().getName()));
             }
             command = scanner.nextLine();
-            //TODO:
-            //GameController.showHexState();
         }
     }
 

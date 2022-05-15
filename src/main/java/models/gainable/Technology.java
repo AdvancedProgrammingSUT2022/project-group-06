@@ -3,6 +3,7 @@ package models.gainable;
 import java.util.ArrayList;
 
 import controllers.InitializeGameInfo;
+import models.Player;
 import models.maprelated.Hex;
 import models.units.Unit;
 import models.units.Worker;
@@ -12,10 +13,11 @@ public class Technology implements Construction {
     private int cost;
     private ArrayList<String> neededPreviousTechnologies = new ArrayList<>();
     private int leftTurns;
-   
+    private Player owner;
 
-    public Technology(String name) {
+    public Technology(String name, Player owner) {
         this.name = name;
+        this.owner = owner;
         String[] info = InitializeGameInfo.getTechnologyInfo().get(name).split(" ");
         this.cost = Integer.parseInt(info[0]);
 
@@ -55,7 +57,8 @@ public class Technology implements Construction {
 
     @Override
     public void build(String type) {
-
+        owner.unlockTechnology(this.name);
+        owner.getUnfinishedProjects().remove(this);
     }
 
     @Override

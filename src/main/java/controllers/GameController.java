@@ -398,6 +398,7 @@ public class GameController {
             civilian.setOrdered(false);
         }
         for (Construction construction: currentPlayer.getUnfinishedProjects()) {
+            if (!(construction instanceof Technology))
             construction.getWorker().setOrdered(true);
         }
         for (Movement movement:UnitController.getUnfinishedMovements()) {
@@ -445,6 +446,15 @@ public class GameController {
             military.setMP(military.getBackUpMp());
     }
 
+    public static void productionFromTerrains() {
+        for (City city : currentPlayer.getCities()) {
+            for (Hex hex : city.getHexs()) {
+                city.increaseProduction(hex.getTerrain().getProduction());
+                currentPlayer.increaseProduction(hex.getTerrain().getProduction());
+            }
+        }
+    }
+
     public static String changeTurn() {
         String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;
@@ -454,6 +464,7 @@ public class GameController {
         }
         currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
         //todo: complete followings
+        productionFromTerrains();
         feedCitizens();
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
@@ -492,13 +503,11 @@ public class GameController {
     }
 
     public static void addFoodFromTiles() {
-        for (Player player : players) {
-            for (City city : player.getCities()) {
+            for (City city : currentPlayer.getCities()) {
                 for (Hex hex : city.getHexs()) {
                     city.increaseFood(hex.getTerrain().getFood());
                 }
             }
-        }
     }
 
     public static void growCity() {
@@ -1149,11 +1158,17 @@ public class GameController {
                     continue;
                 }
 
-                process.getWorker().setOrdered(false);
+                if (!(process instanceof Technology))
+                    process.getWorker().setOrdered(false);
 
-
+                String temp;
                 process.build(null);
-                String temp = "the process of " + process.getName() + "on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfullly";
+                if (process instanceof Technology) {
+                    temp = process.getName() + " technology has been achieved successfully";
+                }
+                else {
+                    temp = "the process of " + process.getName() + "on the hex: x=" + process.getHex().getX() + " y=" + process.getHex().getY() + " finished successfully";
+                }
                 currentPlayer.addNotifications(temp);
                 currentPlayer.setNotificationsTurns(turn);
                 deleteConstruction.add(process);
@@ -1244,7 +1259,7 @@ public class GameController {
         if (!currentPlayer.getAchievedTechnologies().containsKey(name))
             return "there is no such technology";
         HashMap<String, Boolean> achievedTech = currentPlayer.getAchievedTechnologies();
-        Technology technology = new Technology(name);
+        Technology technology = new Technology(name, currentPlayer);
         ArrayList<String> neededTech = technology.getNeededPreviousTechnologies();
 
         if (currentPlayer.getCurrentResearch() != null)
@@ -1255,8 +1270,11 @@ public class GameController {
                 return "you haven't achieved required technologies for this tech";
         }
 
-        //TODO: set left turns eine adam
-        technology.setLeftTurns(5);
+        if (currentPlayer.getProduction() == 0)
+            return "your civilization production is zero at the moment";
+
+        int turns = technology.getCost() / currentPlayer.getProduction();
+        technology.setLeftTurns(turns);
         for (int i = 0; i < currentPlayer.getArchivedTechnologies().size(); i++) {
             if (currentPlayer.getArchivedTechnologies().get(i).getName().equals(name)) {
                 technology.setLeftTurns(currentPlayer.getArchivedTechnologies().get(i).getLeftTurns());
@@ -1265,7 +1283,10 @@ public class GameController {
             }
         }
         currentPlayer.addUnfinishedProject(technology);
-        return "started working on this technology";
+        StringBuilder output = new StringBuilder("started working on this technology");
+        output.append("turns required: ");
+        output.append(turns);
+        return output.toString();
     }
 
     public static String buyUnit(String name)

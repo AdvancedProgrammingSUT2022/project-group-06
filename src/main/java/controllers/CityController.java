@@ -88,7 +88,7 @@ public class CityController {
         for (City temp : City.getCities()) {
             if (temp.getName().equals(name)) {
                 GameController.setSelectedCity(temp);
-                return "city selected successfuly";
+                return "city selected successfully";
             }
         }
 
