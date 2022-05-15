@@ -7,7 +7,6 @@ import models.units.Worker;
 
 public class Improvement implements Construction {
     private int leftTurns;
-    private int defaultLeftTurn;
     private String name;
     private Hex hex;
     private Unit worker;
@@ -17,17 +16,7 @@ public class Improvement implements Construction {
         this.hex=hex;
         this.worker=unit;
     }
-    public int getDefaultLeftTurn()
-    {
-        return defaultLeftTurn;
-    }
-    public void setDefaultLeftTurn(int amount)
-    {
-        defaultLeftTurn=amount;
-
-    }
-
-  
+ 
     public Unit getWorker()
     {
         return worker;
@@ -35,7 +24,6 @@ public class Improvement implements Construction {
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
-        defaultLeftTurn=leftTurns;
     }
 
     @Override
