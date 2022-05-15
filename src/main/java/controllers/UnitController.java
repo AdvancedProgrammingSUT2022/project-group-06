@@ -46,26 +46,6 @@ public class UnitController {
     }
 
 
-    private static int[] getDirectionIndex(int[][] direction, int dx, int dy, Unit unit) {
-        if (dx != 0) dx = dx / Math.abs(dx);
-        if (dy != 0) dy = dy / Math.abs(dy);
-        for (int[] ints : direction) {
-            if (ints[0] == dx && ints[1] == dy
-                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean"))
-                return ints;
-        }
-        for (int[] ints : direction) {
-            if ((ints[0] == dx || ints[1] == dy)
-                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean"))
-                return ints;
-        }
-        return null;
-    }
-
     public static boolean canMoveThrough(int x, int y) {
         return !hex[x][y].getTerrain().getName().equals("Mountain") && !hex[x][y].getTerrain().getName().equals("Ocean");
     }
@@ -83,11 +63,13 @@ public class UnitController {
     public static void setSelectedUnit(Unit selectedUnit) {
         UnitController.selectedUnit = selectedUnit;
     }
+
     private static void makeVisible(int x, int y, int[][] tempDirection, int i) {
         if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
             hex[x + tempDirection[i][0]][y + tempDirection[i][1]].setState(HexState.Visible,GameController.getCurrentPlayer());
         }
     }
+
     private static void changeView(int[][] direction, int x, int y){
         for (int j = 0; j < direction.length; j++) {
             makeVisible(x, y, direction, j);
@@ -101,11 +83,8 @@ public class UnitController {
     private static void setRevealedTiles() {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
             for (int j = 0; j < getWorld().getHexInHeight(); j++) {
-               // System.out.println(i + " " + j);
-                if (GameController.getCurrentPlayer() == null)
-                    System.out.println("cp is null");
-                if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
-                    System.out.println("is null");
+            //    if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
+            //        System.out.println("is null");
                 if (hex[i][j].getState(GameController.getCurrentPlayer()).equals(HexState.Visible)) {
                     hex[i][j].setState(HexState.Revealed, GameController.getCurrentPlayer());
                     GameController.getCurrentPlayer().addToRevealedHexes(hex[i][j]);
@@ -190,7 +169,14 @@ public class UnitController {
         if(Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
         if(Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
         selectedUnit.setState(UnitState.Fortified);
-        selectedUnit.setFirstFortify(false);
+        if (selectedUnit.isFirstFortify()){
+            selectedUnit.increaseBounes((selectedUnit.getCombatStrength()*125/100));
+            selectedUnit.setFirstFortify(false);
+        }
+        else selectedUnit.increaseBounes((selectedUnit.getCombatStrength()*150/100));
+        return "fortified successfully";
+    }
+    public static String fortifyUtilHeal(){
         return "fortified successfully";
     }
 
@@ -242,7 +228,6 @@ public class UnitController {
         if(selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
         selectedUnit.getCurrentHex().setPillaged(true);
         if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
-        selectedUnit.setMP(0);
         return "pillaged successfully";
     }
 
@@ -279,6 +264,43 @@ public class UnitController {
         unfinishedMovements.remove(movement);
     }
 
+    private static int[] getDirectionIndex(int[][] direction, int dx, int dy, Unit unit) {
+        if (dx != 0) dx = dx / Math.abs(dx);
+        if (dy != 0) dy = dy / Math.abs(dy);
+        for (int[] ints : direction) {
+            if (ints[0] == dx && ints[1] == dy
+                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean")
+                    && !isHexOccupied(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
+                return ints;
+        }
+        for (int[] ints : direction) {
+            if ((ints[0] == dx || ints[1] == dy)
+                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean")
+                    && !isHexOccupied(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
+                return ints;
+        }
+        return null;
+    }
+
+    public static boolean checkForRiverOnWay(Movement movement, Hex nextHex) {
+        int dx = nextHex.getX() - movement.getCurrentHex().getX();
+        int dy = nextHex.getY() - movement.getCurrentHex().getY();
+
+        if (dx == -1 && dy == -1 && movement.getCurrentHex().getHasRiver()[0])
+            return true;
+        if (dx == 0 && dy == -1 && movement.getCurrentHex().getHasRiver()[1])
+            return true;
+        if (dx == -1 && dy == 1 && movement.getCurrentHex().getHasRiver()[2])
+            return true;
+        if (dx == 0 && dy == 1 && movement.getCurrentHex().getHasRiver()[3])
+            return true;
+        return false;
+    }
+
     public static String moveUnit(Movement movement) {
 
         Unit unit = movement.getUnit();
@@ -294,15 +316,20 @@ public class UnitController {
                 && (hex[x][y].hasRoad() || hex[x][y].hasRailRoad())
                 && (int) (hex[x][y].getTerrain().getMovePoint() * 0.2) >= 0)
             unit.decreaseMP((int) (hex[x][y].getTerrain().getMovePoint() * 0.2));
+        else if (checkForRiverOnWay(movement, nextHex))
+            unit.setMP(0);
         else if (hex[x][y].getTerrain().getMovePoint() >= 0)
             unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
         else {
             unfinishedMovements.remove(movement);
             return "the unit doesn't have enough move points";
         }
-        //TODO: tartibe revealed ina ro ok kon
+
         setRevealedTiles();
-        changeView(GameController.getDirection(y),x, y);
+        for (Unit playerUnit : getCurrentPlayer().getUnits()) {
+            changeView(GameController.getDirection(playerUnit.getY()), playerUnit.getX(), playerUnit.getY());
+        }
+
         if (unit.getState().equals(UnitState.Fortified))
             unit.setState(UnitState.Active);
 

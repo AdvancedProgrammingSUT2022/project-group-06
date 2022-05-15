@@ -12,9 +12,10 @@ import models.units.Unit;
 import models.units.Worker;
 
 
+import java.awt.*;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-
+import java.util.regex.Pattern;
 
 
 public class GameMenu extends Menu {
@@ -52,8 +53,8 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.cityBanner());
             } else if (command.equals("city list panel")) {
                 System.out.println(GameController.citiesPanel());
-            } else if (command.equals("show research menu")) {
-                System.out.println(GameController.showResearchMenu());
+            } else if (command.equals("research menu")) {
+                System.out.println(technologiesView(scanner));
             } else if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
                 System.out.println(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
             } else if((matcher = getMatcher("increase (--cityproduction|-cp) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
@@ -130,6 +131,23 @@ public class GameMenu extends Menu {
         }
     }
 
+    private static String technologiesView(Scanner scanner) {
+        System.out.println(GameController.showResearchMenu());
+        String command = scanner.nextLine();
+        Matcher startWorkingMatcher = Pattern.compile("start working on technology (?<name>[A-Za-z]+)").matcher(command);
+        Matcher changeMatcher = Pattern.compile("change working technology to (?<name>[A-Za-z]+)").matcher(command);
+
+        if (command.equals("Exit"))
+            return "exited research menu";
+        if (startWorkingMatcher.matches())
+            return GameController.startWorkingOnTechnology(startWorkingMatcher.group("name"));
+        if (changeMatcher.matches()) {
+            GameController.stopWorkingOnTechnology();
+            return GameController.startWorkingOnTechnology(changeMatcher.group("name"));
+        }
+        return "invalid command";
+    }
+
     private static boolean mapCommands(String command) {
         Matcher matcher;
         if (command.equals("show all map")) {
@@ -199,6 +217,7 @@ public class GameMenu extends Menu {
         String command;
         Matcher matcher;
         boolean wasSleep = wake();
+        boolean wasOrdered = order();
         while(isSelect){
             command = scanner.nextLine();
         if(command.equals("sleep")){
@@ -220,25 +239,35 @@ public class GameMenu extends Menu {
         }else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }  else {
-            isSelect = orderToAllUnits(isSelect, command, wasSleep);
+            isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
         }
         }
     }
 
-    private boolean orderToAllUnits(boolean isSelect, String command,boolean wasSleep) {
+    private boolean order() {
+        if(UnitController.getSelectedUnit().isOrdered())return true;
+        UnitController.getSelectedUnit().setOrdered(true);
+        return false;
+    }
+
+    private boolean orderToAllUnits(boolean isSelect, String command,boolean wasSleep,boolean wasOrdered) {
         Matcher matcher;
         if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }else if(command.equals("unselect unit")){
-                UnitController.setSelectedUnit(null);
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
+            if(!wasOrdered) UnitController.getSelectedUnit().setOrdered(false);
+            UnitController.setSelectedUnit(null);
                 isSelect=false;
         } else if(mapCommands(command)){
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             return isSelect;
         } else{
             if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             System.out.println("invalid command");
         }
-//        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
         return isSelect;
     }
 
@@ -247,6 +276,7 @@ public class GameMenu extends Menu {
         Matcher matcher;
         String command;
         boolean wasSleep = wake();
+        boolean wasOrdered = order();
         while(isSelect){
             command = scanner.nextLine();
             if ((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null) {
@@ -257,10 +287,11 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnitAction(UnitController.getSelectedUnit()));
-            } else isSelect = orderToAllUnits(isSelect, command, wasSleep);
+            } else isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
         }
     }
     private boolean wake(){
+        UnitController.getSelectedUnit().setOrdered(true);
         if(UnitController.getSelectedUnit().getState() == UnitState.Sleep || UnitController.getSelectedUnit().getState() == UnitState.Alert){
             UnitController.getSelectedUnit().setState(UnitState.Active);
             return true;
@@ -272,6 +303,7 @@ public class GameMenu extends Menu {
         String command;
         Matcher matcher;
         boolean wasSleep = wake();
+        boolean wasOrdered = order();
         while(isSelect) {
             command = scanner.nextLine();
             if (command.equals("sleep")) {
@@ -312,7 +344,7 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.removeRailRoad());
             }else if(command.equals("repair")){
                 System.out.println(GameController.repair());
-            } else isSelect = orderToAllUnits(isSelect, command, wasSleep);
+            } else isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
         }
     }
 
@@ -322,7 +354,7 @@ public class GameMenu extends Menu {
         {
             return "select a tile first";
         }
-        
+
         boolean check=false;
         Construction oldConstruction=null;
         for(Construction temp:GameController.getCurrentPlayer().getUnfinishedProjects())
@@ -344,7 +376,7 @@ public class GameMenu extends Menu {
             GameController.getCurrentPlayer().getUnfinishedProjects().remove(oldConstruction);
             return "construction changed successfully";
         }
-    
+
         return result;
     }
 
@@ -363,7 +395,7 @@ public class GameMenu extends Menu {
     //             oldConstruction=temp;
     //         }
     //     }
-        
+
     //     if(!check)
     //     {
     //         return "there is no ongoing construction in this tile";
@@ -400,7 +432,7 @@ public class GameMenu extends Menu {
     //             break;
     //         default:
     //             return "invalid Construction name";
-                       
+
     //     }
     //     if(result.contains("process"))
     //     {
@@ -472,8 +504,6 @@ public class GameMenu extends Menu {
 
     private static void moveUnitView(int x, int y) {
         System.out.println(UnitController.startMovement(x, y));
-        //System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
-
     }
 
 

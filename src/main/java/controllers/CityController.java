@@ -212,7 +212,6 @@ public class CityController {
         City.addCities(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
         GameController.getCurrentPlayer().addCity(newCity);
-        UnitController.getSelectedUnit().setMP(0);
         return "new city created successfully";
     }
 

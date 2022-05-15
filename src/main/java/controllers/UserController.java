@@ -9,28 +9,34 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 import models.User;
 import views.LoginMenu;
 
 public class UserController {
     public static User loggedInUser = null;
-    public static HashMap<String, User> users = new HashMap<String, User>();
-    public static ArrayList<String> nicknames = new ArrayList<String>();
+    private static HashMap<String, User> users = new HashMap<String, User>();
+    private static ArrayList<String> nicknames = new ArrayList<String>();
 
+    public static User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public static HashMap<String, User> getUsers() {
+        return users;
+    }
+
+    public  void setUsers(HashMap<String, User> users) {
+        UserController.users = users;
+    }
+
+    public static void setNicknames(ArrayList<String> nicknames) {
+        UserController.nicknames = nicknames;
+    }
 
     public ArrayList<String> getNicknames() {
         return nicknames;
-    }
-
-    public void addUser(User user) {
-        users.put(user.getUsername(), user);
-        nicknames.add(user.getNickName());
-    }
-
-    public void removeUsers(User user) {
-        users.remove(user.getUsername());
-        nicknames.remove(user.getNickName());
     }
 
     public void createUser(String username, String password, String nickname) {
@@ -39,7 +45,7 @@ public class UserController {
         nicknames.add(nickname);
     }
 
-    public void Login(String username, String password) {
+    public void Login   (String username, String password) {
         loggedInUser = users.get(username);
     }
 
@@ -115,6 +121,24 @@ public class UserController {
     public static boolean isPasswordValid(String password) {
         return loggedInUser.getPassword().equals(password);
     }
+    public static String changeNickname(String nickname) {
+        if (isNicknameUsed(nickname))
+            return ("user with nickname" + nickname + "already exists");
+        else {
+            UserController.getLoggedInUser().setNickName(nickname);
+            return ("nickname changed successfully!");
+        }
+    }
 
+    public static String changePassword(String currentPass, String newPass) {
+        if (!UserController.isPasswordValid(currentPass))
+            return ("current password is invalid");
+        else if (currentPass.equals(newPass))
+            return ("current pass is equal to new pass");
+        else {
+            UserController.getLoggedInUser().setPassword(newPass);
+            return ("password changed successfully!");
+        }
+    }
 }
 

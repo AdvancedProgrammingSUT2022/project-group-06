@@ -71,14 +71,8 @@ public class LoginController
 
         String getUsername=input.substring(usernameIndex+1);
         String username=getUsername.split("[ \\t]+")[0];
-
-
-        if(!UserController.users.containsKey(username) || !UserController.users.get(username).getPassword().equals(password))
-        {
-
-            return "Username and password didn't match!";
-        }
-
+        if(!UserController.getUsers().containsKey(username) || !UserController.getUsers().get(username).getPassword().equals(password)) {
+            return "Username and password didn't match!";}
         userController.Login(username, password);
         return "user logged in successfully!";
     }
@@ -146,7 +140,7 @@ public class LoginController
         String getNickname=input.substring(nicknameIndex);
         String nickname=getNickname.split("[ \\t]+")[0];
 
-        if(UserController.users.containsKey(username))
+        if(UserController.getUsers().containsKey(username))
         {
             return "user with username "+username+" already exists";
         }
@@ -159,9 +153,9 @@ public class LoginController
         return "user created successfuly";
     }
 
-    public boolean changeMenu(Matcher matcher)
+    public boolean changeMenu(String menuName)
     {
-        if(matcher.group("menuname").equals("Main Menu"))
+        if(menuName.equals("Main Menu"))
         {
             return true;
         }

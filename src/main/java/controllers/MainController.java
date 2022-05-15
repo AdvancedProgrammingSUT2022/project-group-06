@@ -64,7 +64,7 @@ public class MainController
 
         for(String temp:usernames)
         {
-            if(!UserController.users.containsKey(temp))
+            if(!UserController.getUsers().containsKey(temp))
             {
                 return 1;
             }

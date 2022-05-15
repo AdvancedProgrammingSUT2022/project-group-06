@@ -5,20 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="add happiness">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Building.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Building.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Construction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Construction.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Improvement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Improvement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/gainable/Technology.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/gainable/Technology.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/units/Unit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/files/UnitInfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/files/UnitInfo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

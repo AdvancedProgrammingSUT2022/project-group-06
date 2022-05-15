@@ -182,9 +182,7 @@ public class InitializeGameInfo {
                     
                 }
             }
-            
-            
-            
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

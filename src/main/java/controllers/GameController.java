@@ -1,8 +1,6 @@
 package controllers;
 
-import enums.Color;
-import enums.HexState;
-import enums.UnitState;
+import enums.*;
 import models.Player;
 import models.gainable.Construction;
 import models.gainable.Improvement;
@@ -395,15 +393,36 @@ public class GameController {
         return world.getHex()[x][y].getCivilianUnit();
     }
 
-    private static void heal() {
+    private static void healAndMpAndOrder() {
         for (Military military : currentPlayer.getMilitaries()) {
             if (military.getHealth() < military.getMaxHealth()) {
                 military.increaseHealth(1);
             }
+            military.setMP(military.getBackUpMp());
+        }
+        for (Civilian civilian: currentPlayer.getCivilians()){
+            civilian.setMP(civilian.getBackUpMp());
         }
         for (City city : currentPlayer.getCities()) {
             if (city.getHitPoint() < city.getMaxHitPoint()) {
                 city.increaseHitPoint(1);
+            }
+        }
+    }
+
+    public static void feedCitizens() {
+        for (City city : currentPlayer.getCities()) {
+            currentPlayer.decreaseFood(city.getPopulation());
+            currentPlayer.increaseFood(city.getNumberOfUnemployedCitizen());
+        }
+    }
+
+    public static void addGoldFromWorkersActivities() {
+        //working on tiles with river, beach and oasis increases gold
+        for (City city : currentPlayer.getCities()) {
+            for (Hex hex : city.getHexs()) {
+                if (hex.getHasCitizen() && (hex.isNextToAnyRiver() || hex.getTerrain().getName().equals(TerrainNames.Coast) || hex.getFeature().getName().equals(FeatureNames.Oasis)))
+                    currentPlayer.increaseGold(2);
             }
         }
     }
@@ -417,15 +436,15 @@ public class GameController {
         }
         currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
         //todo: complete followings
-        //feedUnits and citizens(bikar ye mahsol baghie 2 food)
+        feedCitizens();
+        growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
-        heal();
-        addFoodFromTiles();
+        healAndMpAndOrder();
+        //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         UnitController.changeTurn();
         //handle siege units
         //hazine tamir O negahdari buldings
-        //roshd shar ezafe shodan sharvanda
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
         for (int i = 0; i < currentPlayer.getCities().size(); i++) {
@@ -436,7 +455,7 @@ public class GameController {
                     currentPlayer.decreaseGold(3);//gold to maintain railroads
             }
         }
-
+        addGoldFromWorkersActivities();
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
@@ -456,30 +475,40 @@ public class GameController {
     }
 
     public static void addFoodFromTiles() {
-        for (int i = 0; i < currentPlayer.getCities().size(); i++) {
-            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
-                currentPlayer.increaseFood(currentPlayer.getCities().get(i).getHexs().get(j).getTerrain().getFood());
+        for (Player player : players) {
+            for (City city : player.getCities()) {
+                for (Hex hex : city.getHexs()) {
+                    city.increaseFood(hex.getTerrain().getFood());
+                }
             }
         }
     }
 
-    public static void saveExtraFood() {
-        for (int i = 0; i < getWorld().getHexInWidth(); i++) {
-            for (int j = 0; j < getWorld().getHexInHeight(); j++) {
-               // if (hex[i][j].getOwner() == currentPlayer && hex[i][j].getHasCitizen())
-                    //hex[i][j].getCity().increaseFood(hex[i][j].getOwner());
+    public static void growCity() {
+        addFoodFromTiles();
+
+        for (Player player : players) {
+            for (Construction project : player.getUnfinishedProjects()) {
+                if (project instanceof Unit && project.getName().equals("Settler"))
+                    ((Unit) project).getCurrentHex().getCity().decreaseFood(((Unit) project).getCurrentHex().getTerrain().getFood());
+            }
+        }//food production will stop if a settler unit is being implemented
+
+        for (Player player : players) {
+            for (City city : player.getCities()) {
+                if (player.getHappiness() >= 0) { //city growth stops if people are unhappy
+                    if (city.getFood() / player.getFoodForNewCitizen() > 5)
+                        player.setFoodForNewCitizen(player.getFoodForNewCitizen() * 2);
+                    city.increasePopulation(city.getFood() / player.getFoodForNewCitizen());//city growth
+                    city.decreaseFood(city.getFood());
+                }
             }
         }
-        //TODO: city growth and food
-        //should be called each turn
-        //TODO: if added citizens are more than 20 do the line below
-        currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
-
     }
 
     private static String unitActions() {
         for (Military military : currentPlayer.getMilitaries()) {
-            if (!(military.getState() == UnitState.Sleep) && military.getMP() != 0) {
+            if (!(military.getState() == UnitState.Sleep) && !military.isOrdered()) {
                 if (military.getState() == UnitState.Alert) {
                     if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
                         return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
@@ -489,7 +518,7 @@ public class GameController {
             }
         }
         for (Civilian civilian : currentPlayer.getCivilians()) {
-            if (!(civilian.getState() == UnitState.Sleep) && civilian.getMP() != 0) {
+            if (!(civilian.getState() == UnitState.Sleep) &&  !civilian.isOrdered()) {
                 return "unit in " + civilian.getX() + "," + civilian.getY() + "coordinates needs order";
             }
         }
@@ -531,7 +560,8 @@ public class GameController {
         //todo: stop city growth
         for (int i = 0; i < currentPlayer.getMilitaries().size(); i++) {
             currentPlayer.getMilitaries().get(i).setCombatStrength((int) (currentPlayer.getMilitaries().get(i).getCombatStrength() * 0.75));
-        } //combat strength for military units decrease 25%
+        }
+        //combat strength for military units decrease 25%
     }
 
     public static void happinessDueToLuxuries(String name) {
@@ -541,8 +571,7 @@ public class GameController {
                     return;
             }
         }
-
-        currentPlayer.increaseHappiness(1); //new luxuries add to happiness
+        currentPlayer.increaseHappiness(4); //new luxuries add to happiness
     }
 
     public static String cheatCityProduction(int amount,String cityName)
@@ -1104,7 +1133,7 @@ public class GameController {
                     continue;
                 }
 
-                process.getWorker().setMP(process.getWorker().getBackUpMp());
+                process.getWorker().setOrdered(false);
 
 
                 process.build(null);
@@ -1188,14 +1217,16 @@ public class GameController {
         return true;
     }
 
-    public String stopWorkingOnTechnology() {
+    public static String stopWorkingOnTechnology() {
         currentPlayer.addArchivedTechnology(currentPlayer.getCurrentResearch());
         currentPlayer.getUnfinishedProjects().remove(currentPlayer.getCurrentResearch());
         currentPlayer.setCurrentResearch(null);
         return "stopped working on this technology";
     }
 
-    public String startWorkingOnTechnology(String name) {
+    public static String startWorkingOnTechnology(String name) {
+        if (!currentPlayer.getAchievedTechnologies().containsKey(name))
+            return "there is no such technology";
         HashMap<String, Boolean> achievedTech = currentPlayer.getAchievedTechnologies();
         Technology technology = new Technology(name);
         ArrayList<String> neededTech = technology.getNeededPreviousTechnologies();
@@ -1221,17 +1252,6 @@ public class GameController {
         return "started working on this technology";
     }
 
-
-    //TODO: below method is just for checking FOW, should be deleted later
-    public static void showHexState() {
-       /* for (int i = 0; i < getWorld().getHexInWidth(); i++) {
-            for (int j = 0; j < getWorld().getHexInHeight(); j++)
-                System.out.println("c: " + i + "  " + j + " : " + "state: " + hex[i][j].getState(currentPlayer));
-        } */
-        for (int i = 0; i < currentPlayer.getUnits().size(); i++)
-            System.out.println("c: " + currentPlayer.getUnits().get(i).getX() + " " + currentPlayer.getUnits().get(i).getY());
-    }
-
     public static String buyUnit(String name)
     {
         if (GameController.getSelectedHex() == null) {
@@ -1250,7 +1270,6 @@ public class GameController {
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
-
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
         

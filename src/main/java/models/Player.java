@@ -13,6 +13,7 @@ import models.maprelated.Hex;
 import models.twopartyactions.Combat;
 import models.units.Civilian;
 import models.units.Military;
+import models.units.Ranged;
 import models.units.Unit;
 import models.twopartyactions.Trade;
 
@@ -219,6 +220,8 @@ public class Player {//-currentProject
 
     public void removeUnit(Unit unit) {
         units.remove(unit);
+        if(unit instanceof Military) militaries.remove(unit);
+        if (unit instanceof Civilian) civilians.remove(unit);
     }
 
     public ArrayList<City> getCities() {
