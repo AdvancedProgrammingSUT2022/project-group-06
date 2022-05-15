@@ -30,8 +30,22 @@ public class Unit implements Combatable , Construction
     protected String neededResource;
     protected Player owner;
     protected int neededProduction=10;
-
+    protected int defaultLeftTurn;
+    protected int leftNeededProduction;
     //todo: set combat type
+
+    public int getLeftNeededProduction()
+    {
+        return leftNeededProduction;
+    }
+    public int getDefaultLeftTurn()
+    {
+        return defaultLeftTurn;
+    }
+    public void setDefaultLeftTurn(int amount)
+    {
+        defaultLeftTurn=amount;
+    }
 
     public int getNeededProduction()
     {

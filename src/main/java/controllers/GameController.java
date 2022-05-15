@@ -1114,7 +1114,7 @@ public class GameController {
                 deleteConstruction.add(process);
             } else if (process instanceof Unit) {
                 Unit previewUnit = new Unit(process.getName(), process.getHex(), currentPlayer);
-                currentPlayer.decreaseGold(previewUnit.getCost() / process.getLeftTurns());
+                currentPlayer.decreaseProduction(previewUnit.getNeededProduction() / process.getDefaultLeftTurn());
                 process.decreaseLeftTurns();
             }else {
                 process.decreaseLeftTurns();
@@ -1179,7 +1179,7 @@ public class GameController {
         }
 
         for (Construction temp : currentPlayer.getUnfinishedProjects()) {
-            if (UnitController.getSelectedUnit().getCurrentHex().equals(temp.getHex())) {
+            if (UnitController.getSelectedUnit().getCurrentHex().equals(temp.getHex())&&!(temp instanceof Unit)) {
                 return false;
             }
         }
@@ -1253,13 +1253,33 @@ public class GameController {
 
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
+        
 
-
-        if(type.matches("Settler||Worker")&&GameController.getSelectedHex().getCivilianUnit()!=null)
+        if(type.matches("Settler||Worker"))
         {
-            return "you can't have two Civilian units in a city";
-        }else if((!type.matches("Settler||Worker"))&&(GameController.getSelectedHex().getMilitaryUnit()!=null)) {
-            return "you can't have two Military units in a city";
+            for(Construction temp:currentPlayer.getUnfinishedProjects())
+            {
+                if(temp instanceof Unit&&temp.getName().matches("Worker||Settler"))
+                {
+                    return "you have already started the process of another civilian unit on this tile\nyou can not have two civilian units on a tile";
+                }
+            }
+
+            if(GameController.getSelectedHex().getCivilianUnit()!=null)
+                return "you can't have two Civilian units in a city";
+        }else if((!type.matches("Settler||Worker"))) {
+           
+            for(Construction temp:currentPlayer.getUnfinishedProjects())
+            {
+                if(temp instanceof Unit&&!temp.getName().matches("Worker||Settler"))
+                {
+                    return "you have already started the process of another military unit on this tile\nyou can not have two civilian units on a tile";
+                }
+            }
+            if(GameController.getSelectedHex().getMilitaryUnit()!=null)
+            {
+                 return "you can't have two Military units in a city";
+            }
         }
             if (name.equals("Settler") && GameController.getCurrentPlayer().getHappiness() < 0)
             return "your civilization is unhappy";
@@ -1292,6 +1312,7 @@ public class GameController {
             return "you don't have enough money";
         }
 
+        GameController.getCurrentPlayer().decreaseGold(newUnit.getCost());
         UnitController.makeUnit(name, GameController.getSelectedHex(),"gold");
         return "Unit created successfully";
 

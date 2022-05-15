@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import enums.HexState;
 import models.Player;
+import models.gainable.Construction;
 import models.maprelated.City;
 import models.maprelated.Hex;
 import models.units.Settler;
@@ -159,6 +160,7 @@ public class CityController {
         int productionPerTurn = 0;
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             productionPerTurn += temp.getProduction();
+        
         }
 
         Unit unit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
@@ -166,7 +168,7 @@ public class CityController {
         if (newUnit.getNeededProduction() < productionPerTurn) {
             unit.setLeftTurns(1);
             
-        } else if (productionPerTurn == 0) {
+        } else if (productionPerTurn <= 0) {
             return "you have no production per turn so it's impossible to start making a unit right now";
         } else {
             unit.setLeftTurns((newUnit.getNeededProduction() / productionPerTurn) + 1);
