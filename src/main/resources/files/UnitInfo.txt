@@ -1,11 +1,11 @@
-Archer#70 4 6 2 2 NA Archery Ranged
-ChariotArcher#60 3 6 2 4 Horses TheWheel Ranged  
+Archer#70 4 6 2 2 NA Archery Ranged 
+ChariotArcher#60 3 6 2 4 Horses TheWheel Ranged 
 Scout#25 4 0 0 2 NA NA Melee 
 Settler#89 0 0 0 2 NA NA Settler 
 Spearman#50 7 0 0 2 NA BronzeWorking Melee 
 Warrior#40 6 0 0 2 NA NA Melee 
 Worker#70 0 0 0 2 NA NA Worker 
-Catapult#100 4 14 2 2 Iron Methematics Siege 
+Catapult#100 4 14 2 2 Iron Mathematics Siege 
 Horseman#80 12 0 0 4 Horses HorsebackRiding Melee 
 Swordman#80 11 0 0 2 Iron IronWorking Melee 
 Crossbowman#120 6 12 2 2 NA Machinary Ranged 

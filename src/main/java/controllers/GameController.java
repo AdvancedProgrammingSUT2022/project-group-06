@@ -15,7 +15,7 @@ import models.units.Unit;
 import models.units.Worker;
 import net.bytebuddy.matcher.StringMatcher;
 import models.units.*;
-import views.GameMenu;
+
 
 import java.util.*;
 
@@ -429,7 +429,7 @@ public class GameController {
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
         for (int i = 0; i < currentPlayer.getCities().size(); i++) {
-            for (int j = 0; j < currentPlayer.getCities().get(j).getHexs().size(); j++) {
+            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
                 if (currentPlayer.getCities().get(j).getHexs().get(j).hasRoad())
                     currentPlayer.decreaseGold(2);//gold to maintain roads
                 if (currentPlayer.getCities().get(j).getHexs().get(j).hasRailRoad())
@@ -545,6 +545,19 @@ public class GameController {
         currentPlayer.increaseHappiness(1); //new luxuries add to happiness
     }
 
+    public static String cheatCityProduction(int amount,String cityName)
+    {
+        for(City temp:currentPlayer.getCities())
+        {
+            if(temp.getName().equals(cityName))
+            {
+                temp.increaseProduction(amount);
+                return "city's production increased successfully";
+            }   
+        }
+
+        return "no city with this name exists";
+    }
 
     public static String cheatGold(int amount) {
         currentPlayer.increaseGold(amount);
@@ -744,7 +757,10 @@ public class GameController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a Worker first";
         }
-
+        if(!hex.getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
         if (!currentPlayer.getAchievedTechnologies().get("Mining")) {
             return "you have not achieve the Mining technology yet";
         }
@@ -786,8 +802,12 @@ public class GameController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a Worker first";
         }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
 
-        if (isConstructionPossible()) {
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
 
@@ -901,7 +921,11 @@ public class GameController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-        if (isConstructionPossible()) {
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Plain||Desert||Grassland|||Tundra")) {
@@ -921,10 +945,14 @@ public class GameController {
         if (!currentPlayer.getAchievedTechnologies().get("Construction")) {
             return "you have not achieved the required technology to build a Lumber Mill";
         }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-        if (isConstructionPossible()) {
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle")) {
@@ -947,7 +975,11 @@ public class GameController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-        if (isConstructionPossible()) {
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Desert||Plain||Grassland||Tundra||Hills")) {
@@ -970,7 +1002,11 @@ public class GameController {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-        if (isConstructionPossible()) {
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Jungle||Tundra||Hills||Plain")) {
@@ -987,11 +1023,14 @@ public class GameController {
     }
 
     public static String makePlantation() {
-        if (UnitController.getSelectedUnit() == null || (UnitController.getSelectedUnit() instanceof Worker)) {
+        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-
-        if (isConstructionPossible()) {
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
 
@@ -1005,11 +1044,15 @@ public class GameController {
     }
 
     public static String makeQuarry() {
-        if (UnitController.getSelectedUnit() == null || (UnitController.getSelectedUnit() instanceof Worker)) {
+        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-        if (isConstructionPossible()) {
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
+        }
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
         }
         Improvement quarry = new Improvement("Quarry", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         quarry.setLeftTurns(5);
@@ -1021,10 +1064,14 @@ public class GameController {
     }
 
     public static String makeFactory() {
-        if (UnitController.getSelectedUnit() == null || (UnitController.getSelectedUnit() instanceof Worker)) {
+        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
-        if (isConstructionPossible()) {
+        if(!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer))
+        {
+            return "this tile is not yours";
+        }
+        if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
         Improvement factory = new Improvement("Factory", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
@@ -1126,7 +1173,7 @@ public class GameController {
 
     public static Boolean isConstructionPossible() {
         for (Construction temp : UnitController.getSelectedUnit().getCurrentHex().getImprovement()) {
-            if (!temp.getName().matches("Road||Railroad")) {
+            if (temp.getName().matches("Road||Railroad")) {
                 return false;
             }
         }
@@ -1221,7 +1268,7 @@ public class GameController {
             return "invalid unit name";
         }
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
-        if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
+        if(newUnit.getNeededTech()!=null&&!GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
         {
             return "you have not achieved the needed technology to make this unit";
         }

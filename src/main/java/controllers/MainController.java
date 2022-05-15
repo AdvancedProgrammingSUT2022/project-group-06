@@ -69,6 +69,7 @@ public class MainController
                 return 1;
             }
             new Player(temp);
+
         }
         InitializeGameInfo.setNumberOFPlayers(InitializeGameInfo.getPlayers().size());
         return 2;

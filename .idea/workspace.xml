@@ -8,10 +8,12 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/InitializeGameInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/MainController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/files/UnitInfo.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/files/UnitInfo.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +76,7 @@
   <component name="RunManager">
     <configuration name="\" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="Main" />
-      <module name="MavenProject" />
+      <module name="project-group-06" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -118,6 +120,11 @@
       <workItem from="1652510134632" duration="4404000" />
       <workItem from="1652517423006" duration="11802000" />
       <workItem from="1652547618014" duration="690000" />
+      <workItem from="1652550969843" duration="163000" />
+      <workItem from="1652585884000" duration="12232000" />
+      <workItem from="1652620650970" duration="744000" />
+      <workItem from="1652621505266" duration="2234000" />
+      <workItem from="1652627680485" duration="2347000" />
     </task>
     <task id="LOCAL-00001" summary="add happiness">
       <created>1651564842058</created>

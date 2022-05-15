@@ -33,9 +33,9 @@ public class Hex {
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
     private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
 
-    public void setFeature(Terrain newFeature)
+    public void setFeature(Feature newFeature)
     {
-        terrain=newFeature;
+        feature=newFeature;
     }
 
     public void setHasCitizen(boolean hasCitizen) {

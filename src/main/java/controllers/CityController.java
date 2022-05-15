@@ -129,8 +129,10 @@ public class CityController {
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
+
         Unit newUnit = new Unit(name, GameController.getSelectedHex(), GameController.getCurrentPlayer());
-        if(newUnit.getNeededTech()!=null&&GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
+
+        if(newUnit.getNeededTech()!=null&&!GameController.getCurrentPlayer().getAchievedTechnologies().get(newUnit.getNeededTech()))
         {
             return "you have not achieved the needed technology to make this unit";
         }
@@ -138,7 +140,7 @@ public class CityController {
         boolean check=false;
         for(Hex hex: GameController.getSelectedHex().getCity().getHexs())
         {
-            if(newUnit.getNeededResource()!=null&&hex.getResource().getName().equals(newUnit.getNeededResource()))
+            if(newUnit.getNeededResource()!=null&&hex.getResource()!=null&&hex.getResource().getName().equals(newUnit.getNeededResource()))
             {
                 check=true;
             }
@@ -167,7 +169,7 @@ public class CityController {
         } else if (productionPerTurn == 0) {
             return "you have no production per turn so it's impossible to start making a unit right now";
         } else {
-            unit.setLeftTurns((newUnit.getCost() / productionPerTurn) + 1);
+            unit.setLeftTurns((newUnit.getNeededProduction() / productionPerTurn) + 1);
         }
 
 
@@ -224,12 +226,14 @@ public class CityController {
         int counter = 0;
 
         for (Hex temp : GameController.getSelectedCity().getHexs()) {
+            toBuyTiles.clear();
             Hex[][] hex = GameController.getWorld().getHex();
             int x = temp.getX();
             int y = temp.getY();
             ArrayList<Hex> sixNeighborHexs = new ArrayList<Hex>();
 
             if (y % 2 != 0) {
+
                 if (x + 1 < 10 && hex[x + 1][y].getOwner() == null&& (!hex[x+1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x+1][y].getTerrain().getName().matches("Mountain||Ocean"))) {
                     sixNeighborHexs.add(hex[x + 1][y]);
                 }
@@ -239,15 +243,15 @@ public class CityController {
                 }
                 if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&& (!hex[x][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x][y-1].getTerrain().getName().matches("Mountain||Ocean"))) {
                     sixNeighborHexs.add(hex[x][y - 1]);
-                    if (x + 1 < 10 && hex[x + 1][y - 1].getOwner() == null&& (!hex[x+1][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x+1][y-1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                        sixNeighborHexs.add(hex[x + 1][y - 1]);
-                    }
+                }
+                if (x + 1 < 10 && y-1>=0&&hex[x + 1][y - 1].getOwner() == null&& (!hex[x+1][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x+1][y-1].getTerrain().getName().matches("Mountain||Ocean"))) {
+                    sixNeighborHexs.add(hex[x + 1][y - 1]);
                 }
                 if (y + 1 < 10 && hex[x][y + 1].getOwner() == null && (!hex[x][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x][y+1].getTerrain().getName().matches("Mountain||Ocean"))) {
                     sixNeighborHexs.add(hex[x][y + 1]);
-                    if (x + 1 < 10 && hex[x][y + 1].getOwner() == null&& (!hex[x+1][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x+1][y+1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                        sixNeighborHexs.add(hex[x + 1][y + 1]);
-                    }
+                }
+                if (x + 1 < 10 && y+1<10&&hex[x][y + 1].getOwner() == null&& (!hex[x+1][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x+1][y+1].getTerrain().getName().matches("Mountain||Ocean"))) {
+                    sixNeighborHexs.add(hex[x + 1][y + 1]);
                 }
             }
             if (y % 2 == 0) {
@@ -260,15 +264,15 @@ public class CityController {
                 }
                 if (y - 1 >= 0 && hex[x][y - 1].getOwner() == null&&(!hex[x][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x][y-1].getTerrain().getName().matches("Mountain||Ocean"))) {
                     sixNeighborHexs.add(hex[x][y - 1]);
-                    if (x - 1 >= 0 && hex[x - 1][y - 1].getOwner() == null&& (!hex[x-1][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x-1][y-1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                        sixNeighborHexs.add(hex[x - 1][y - 1]);
-                    }
+                }
+                if (x - 1 >= 0 && y-1>=0&&hex[x - 1][y - 1].getOwner() == null&& (!hex[x-1][y-1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x-1][y-1].getTerrain().getName().matches("Mountain||Ocean"))) {
+                    sixNeighborHexs.add(hex[x - 1][y - 1]);
                 }
                 if (y + 1 < 10 && hex[x][y + 1].getOwner() == null&&(!hex[x][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x][y+1].getTerrain().getName().matches("Mountain||Ocean"))) {
                     sixNeighborHexs.add(hex[x][y + 1]);
-                    if (x - 1 >= 0 && hex[x - 1][y + 1].getOwner() == null&&(!hex[x-1][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x-1][y+1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                        sixNeighborHexs.add(hex[x - 1][y + 1]);
-                    }
+                }
+                if (x - 1 >= 0 &&y+1<10&& hex[x - 1][y + 1].getOwner() == null&&(!hex[x-1][y+1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))&&(!hex[x-1][y+1].getTerrain().getName().matches("Mountain||Ocean"))) {
+                    sixNeighborHexs.add(hex[x - 1][y + 1]);
                 }
             }
 
@@ -292,10 +296,10 @@ public class CityController {
     }
 
     public static String buyHex(int count) {
-        Player buyer = GameController.getCurrentPlayer();
+        
 
         int price = GameController.getSelectedCity().getHexs().size() * 5;
-        if (buyer.getGold() < price) {
+        if (GameController.getCurrentPlayer().getGold() < price) {
             return "you don't have enough money";
         }
         if (toBuyTiles.get(count - 1).getOwner() != null) {
@@ -303,11 +307,11 @@ public class CityController {
             return "this hex has an owner";
         }
 
-        buyer.decreaseGold(price);
+        GameController.getCurrentPlayer().decreaseGold(price);
         GameController.getSelectedCity().addHex(toBuyTiles.get(count - 1));
 //        if (toBuyTiles.get(count - 1).getResource().getType().equals("Luxury"))
 //            GameController.happinessDueToLuxuries(toBuyTiles.get(count - 1).getResource().getName());
-        toBuyTiles.get(count - 1).setOwner(buyer);
+        toBuyTiles.get(count - 1).setOwner(GameController.getCurrentPlayer());
 
         return "new hex added to your city successfully";
 

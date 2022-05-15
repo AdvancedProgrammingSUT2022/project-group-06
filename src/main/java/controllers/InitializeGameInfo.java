@@ -171,9 +171,16 @@ public class InitializeGameInfo {
 
                 technologyInfo.put(name, info);
                 setArray.add(name);
-                for (Player player: players) {
-                player.getAchievedTechnologies().put(name, false);
-            }
+                for (Player player: GameController.getPlayers()) {
+                    
+                    if(name.equals("Agriculture"))
+                    {
+                        player.getAchievedTechnologies().put(name, true);
+                    }else{
+                        player.getAchievedTechnologies().put(name, false);
+                    }
+                    
+                }
             }
             
             
@@ -257,10 +264,10 @@ public class InitializeGameInfo {
         initializeHashMap();
         initializeUnitInfo();
         initializeGameWorld();
+       
         
 
     }
-
 
     public static void initializeGameWorld() {
 

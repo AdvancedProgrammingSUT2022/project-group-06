@@ -159,12 +159,11 @@ public class UnitController {
         return "the railroad will be constructed in 3 turns";
     }
 
-    public static void makeUnit(String name, Hex hex,String type) {
+    public static void makeUnit(String name, Hex hex,String type) { 
         String theType=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         if(theType.equals("Settler")){
             Settler newSettler=new Settler(name, hex, GameController.getCurrentPlayer());
             newSettler.build(type);
-            hex.setCivilianUnit(newSettler);
         } else if(theType.equals("Worker")){
             Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
             newWorker.build(type);

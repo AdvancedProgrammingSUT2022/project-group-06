@@ -8,6 +8,7 @@ import models.maprelated.City;
 import models.units.Civilian;
 import models.units.Military;
 import models.units.Settler;
+import models.units.Unit;
 import models.units.Worker;
 
 
@@ -55,6 +56,8 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.showResearchMenu());
             } else if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
                 System.out.println(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
+            } else if((matcher = getMatcher("increase (--cityproduction|-cp) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
+                System.out.println(GameController.cheatCityProduction(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
             } else if ((matcher = getMatcher("increase (--movepoint|-mp) (?<amount>\\d+) (?<x>\\d+) (?<y>\\d+) (?<type>[a-zA-Z]+)", command)) != null) {
                 System.out.println(GameController.cheatMP((Integer.parseInt(matcher.group("amount"))),Integer.parseInt(matcher.group("x")),Integer.parseInt(matcher.group("y")),matcher.group("type")));
             } else if((matcher = getMatcher("increase (--happiness|-h) (?<amount>\\d+)", command)) != null){ 
@@ -63,7 +66,7 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.cheatPopulation((Integer.parseInt(matcher.group("amount")))));
             } else if((matcher = getMatcher("increase (--score|-s) (?<amount>\\d+)", command)) != null){ 
                 System.out.println(GameController.cheatScore((Integer.parseInt(matcher.group("amount")))));
-            } else if((matcher = getMatcher("increase (--production|-p) (?<amount>\\d+)", command)) != null){ 
+            } else if((matcher = getMatcher("increase (--production|-pr) (?<amount>\\d+)", command)) != null){
                 System.out.println(GameController.cheatProduction((Integer.parseInt(matcher.group("amount")))));
             } else if((matcher = getMatcher("increase (--cityMeleeCombatStrength|-cmcs) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null){
                 System.out.println(GameController.cheatMeleeCombatStrength(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
@@ -94,6 +97,8 @@ public class GameMenu extends Menu {
                 }
             } else if ((matcher = getMatcher("buy tile", command)) != null) {
                 System.out.println(buyTile(matcher));
+            } else if((matcher = getMatcher("unit change construction to (?<name>[a-zA-Z]+)", command)) != null){
+                System.out.println(unitchangeConstruction(matcher.group("name")));
             } else if ((matcher = getMatcher("unit make (--unitname|-un) (?<unitname>[a-zA-Z]+)", command)) != null) {
                 System.out.println(CityController.startMakingUnit(matcher.group("unitname")));
             } else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -229,11 +234,11 @@ public class GameMenu extends Menu {
                 isSelect=false;
         } else if(mapCommands(command)){
             return isSelect;
-        }else{
+        } else{
             if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             System.out.println("invalid command");
         }
-        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
+//        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
         return isSelect;
     }
 
@@ -268,7 +273,6 @@ public class GameMenu extends Menu {
         Matcher matcher;
         boolean wasSleep = wake();
         while(isSelect) {
-            if(!GameController.getWorld().getHex()[1][1].isPillaged()) System.out.println("khar");
             command = scanner.nextLine();
             if (command.equals("sleep")) {
                 System.out.println(UnitController.sleepUnit());
@@ -280,10 +284,10 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
-            } else if((matcher = getMatcher("change construction to (?<name>[a-zA-Z]+)", command)) != null){
-                System.out.println(changeConstruction(matcher.group("name")));
             } else if(command.equals("quarry build")){
                 System.out.println(GameController.makeQuarry());
+            } else if(command.equals("factory build")){
+                System.out.println(GameController.makeFactory());
             } else if(command.equals("plantation build")){
                 System.out.println(GameController.makePlantation());
             } else if(command.equals("camp build")){
@@ -312,16 +316,18 @@ public class GameMenu extends Menu {
         }
     }
 
-    private static String changeConstruction(String name)
+    private static String unitchangeConstruction(String name)
     {
-        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
-            return "select a worker first";
+        if(GameController.getSelectedHex()==null)
+        {
+            return "select a tile first";
         }
+        
         boolean check=false;
         Construction oldConstruction=null;
         for(Construction temp:GameController.getCurrentPlayer().getUnfinishedProjects())
         {
-            if(temp.getHex().equals(UnitController.getSelectedUnit().getHex()))
+            if(temp.getHex().equals(GameController.getSelectedHex())&&(temp instanceof  Unit))
             {
                 check=true;
                 oldConstruction=temp;
@@ -330,51 +336,81 @@ public class GameMenu extends Menu {
         
         if(!check)
         {
-            return "there is no ongoing construction in this tile";
+            return "there is no ongoing Unit construction in this tile";
         }
-        String result= new String();
-        switch (name)
-        {
-            case "Mine":
-                result=GameController.startBuildMine();
-                break;
-            case "Farm":
-                result=GameController.startBuildFarm();
-                break;
-            case "Post":
-                result=GameController.startMakeingTradingPost();
-                break;
-            case "Pasture":
-                result=GameController.makingPasture();
-                break;
-            case "Lumber":
-                result=GameController.makingLumberMill();
-                break;
-            case "Camp":
-                result=GameController.makingCamp();
-                break;
-            case "Plantation":
-                result=GameController.makePlantation();
-                break;
-            case "Quarry":
-                result=GameController.makeQuarry();
-                break;
-            case "Factory":
-                result=GameController.makeFactory();
-                break;
-            default:
-                return "invalid Construction name";
-                       
-        }
+        String result= CityController.startMakingUnit(name);
         if(result.contains("process"))
         {
             GameController.getCurrentPlayer().getUnfinishedProjects().remove(oldConstruction);
-            return "construction change successfully";
+            return "construction changed successfully";
         }
-
+    
         return result;
-
     }
+
+    // private static String changeConstruction(String name)
+    // {
+    //     if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
+    //         return "select a worker first";
+    //     }
+    //     boolean check=false;
+    //     Construction oldConstruction=null;
+    //     for(Construction temp:GameController.getCurrentPlayer().getUnfinishedProjects())
+    //     {
+    //         if(temp.getHex().equals(UnitController.getSelectedUnit().getHex()))
+    //         {
+    //             check=true;
+    //             oldConstruction=temp;
+    //         }
+    //     }
+        
+    //     if(!check)
+    //     {
+    //         return "there is no ongoing construction in this tile";
+    //     }
+    //     String result= new String();
+    //     switch (name)
+    //     {
+    //         case "Mine":
+    //             result=GameController.startBuildMine();
+    //             break;
+    //         case "Farm":
+    //             result=GameController.startBuildFarm();
+    //             break;
+    //         case "Post":
+    //             result=GameController.startMakeingTradingPost();
+    //             break;
+    //         case "Pasture":
+    //             result=GameController.makingPasture();
+    //             break;
+    //         case "Lumber":
+    //             result=GameController.makingLumberMill();
+    //             break;
+    //         case "Camp":
+    //             result=GameController.makingCamp();
+    //             break;
+    //         case "Plantation":
+    //             result=GameController.makePlantation();
+    //             break;
+    //         case "Quarry":
+    //             result=GameController.makeQuarry();
+    //             break;
+    //         case "Factory":
+    //             result=GameController.makeFactory();
+    //             break;
+    //         default:
+    //             return "invalid Construction name";
+                       
+    //     }
+    //     if(result.contains("process"))
+    //     {
+    //         GameController.getCurrentPlayer().getUnfinishedProjects().remove(oldConstruction);
+    //         return "construction change successfully";
+    //     }
+
+    //     return result;
+
+    // }
     private static String buyTile(Matcher matcher) {
         String result = CityController.presaleTiles();
         if (result == null) {
@@ -436,7 +472,7 @@ public class GameMenu extends Menu {
 
     private static void moveUnitView(int x, int y) {
         System.out.println(UnitController.startMovement(x, y));
-        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
+        //System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
 
     }
 
