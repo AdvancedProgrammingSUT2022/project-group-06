@@ -46,7 +46,6 @@ public class UnitController {
     }
 
 
-
     public static boolean canMoveThrough(int x, int y) {
         return !hex[x][y].getTerrain().getName().equals("Mountain") && !hex[x][y].getTerrain().getName().equals("Ocean");
     }
@@ -64,11 +63,13 @@ public class UnitController {
     public static void setSelectedUnit(Unit selectedUnit) {
         UnitController.selectedUnit = selectedUnit;
     }
+
     private static void makeVisible(int x, int y, int[][] tempDirection, int i) {
         if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
             hex[x + tempDirection[i][0]][y + tempDirection[i][1]].setState(HexState.Visible,GameController.getCurrentPlayer());
         }
     }
+
     private static void changeView(int[][] direction, int x, int y){
         for (int j = 0; j < direction.length; j++) {
             makeVisible(x, y, direction, j);
@@ -82,11 +83,8 @@ public class UnitController {
     private static void setRevealedTiles() {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
             for (int j = 0; j < getWorld().getHexInHeight(); j++) {
-               // System.out.println(i + " " + j);
-                if (GameController.getCurrentPlayer() == null)
-                    System.out.println("cp is null");
-                if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
-                    System.out.println("is null");
+            //    if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
+            //        System.out.println("is null");
                 if (hex[i][j].getState(GameController.getCurrentPlayer()).equals(HexState.Visible)) {
                     hex[i][j].setState(HexState.Revealed, GameController.getCurrentPlayer());
                     GameController.getCurrentPlayer().addToRevealedHexes(hex[i][j]);

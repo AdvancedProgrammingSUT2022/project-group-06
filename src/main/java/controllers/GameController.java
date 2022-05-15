@@ -433,13 +433,12 @@ public class GameController {
         currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
         //todo: complete followings
         feedCitizens();
+        growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
-        addFoodFromTiles();
         UnitController.changeTurn();
         //handle siege units
         //hazine tamir O negahdari buldings
-        //roshd shar ezafe shodan sharvanda
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
         for (int i = 0; i < currentPlayer.getCities().size(); i++) {
@@ -470,25 +469,35 @@ public class GameController {
     }
 
     public static void addFoodFromTiles() {
-        for (int i = 0; i < currentPlayer.getCities().size(); i++) {
-            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
-                currentPlayer.increaseFood(currentPlayer.getCities().get(i).getHexs().get(j).getTerrain().getFood());
+        for (Player player : players) {
+            for (City city : player.getCities()) {
+                for (Hex hex : city.getHexs()) {
+                    city.increaseFood(hex.getTerrain().getFood());
+                }
             }
         }
     }
 
-    public static void saveExtraFood() {
-        for (int i = 0; i < getWorld().getHexInWidth(); i++) {
-            for (int j = 0; j < getWorld().getHexInHeight(); j++) {
-               // if (hex[i][j].getOwner() == currentPlayer && hex[i][j].getHasCitizen())
-                    //hex[i][j].getCity().increaseFood(hex[i][j].getOwner());
+    public static void growCity() {
+        addFoodFromTiles();
+
+        for (Player player : players) {
+            for (Construction project : player.getUnfinishedProjects()) {
+                if (project instanceof Unit && project.getName().equals("Settler"))
+                    ((Unit) project).getCurrentHex().getCity().decreaseFood(((Unit) project).getCurrentHex().getTerrain().getFood());
+            }
+        }//food production will stop if a settler unit is being implemented
+
+        for (Player player : players) {
+            for (City city : player.getCities()) {
+                if (player.getHappiness() >= 0) { //city growth stops if people are unhappy
+                    if (city.getFood() / player.getFoodForNewCitizen() > 5)
+                        player.setFoodForNewCitizen(player.getFoodForNewCitizen() * 2);
+                    city.increasePopulation(city.getFood() / player.getFoodForNewCitizen());//city growth
+                    city.decreaseFood(city.getFood());
+                }
             }
         }
-        //TODO: city growth and food
-        //should be called each turn
-        //TODO: if added citizens are more than 20 do the line below
-        currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
-
     }
 
     private static String unitActions() {
@@ -545,7 +554,8 @@ public class GameController {
         //todo: stop city growth
         for (int i = 0; i < currentPlayer.getMilitaries().size(); i++) {
             currentPlayer.getMilitaries().get(i).setCombatStrength((int) (currentPlayer.getMilitaries().get(i).getCombatStrength() * 0.75));
-        } //combat strength for military units decrease 25%
+        }
+        //combat strength for military units decrease 25%
     }
 
     public static void happinessDueToLuxuries(String name) {
