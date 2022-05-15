@@ -1,8 +1,6 @@
 package controllers;
 
-import enums.Color;
-import enums.HexState;
-import enums.UnitState;
+import enums.*;
 import models.Player;
 import models.gainable.Construction;
 import models.gainable.Improvement;
@@ -408,6 +406,23 @@ public class GameController {
         }
     }
 
+    public static void feedCitizens() {
+        for (City city : currentPlayer.getCities()) {
+            currentPlayer.decreaseFood(city.getPopulation());
+            currentPlayer.increaseFood(city.getNumberOfUnemployedCitizen());
+        }
+    }
+
+    public static void addGoldFromWorkersActivities() {
+        //working on tiles with river, beach and oasis increases gold
+        for (City city : currentPlayer.getCities()) {
+            for (Hex hex : city.getHexs()) {
+                if (hex.getHasCitizen() && (hex.isNextToAnyRiver() || hex.getTerrain().getName().equals(TerrainNames.Coast) || hex.getFeature().getName().equals(FeatureNames.Oasis)))
+                    currentPlayer.increaseGold(2);
+            }
+        }
+    }
+
     public static String changeTurn() {
         String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;
@@ -417,11 +432,10 @@ public class GameController {
         }
         currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
         //todo: complete followings
-        //feedUnits and citizens(bikar ye mahsol baghie 2 food)
+        feedCitizens();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
         addFoodFromTiles();
-        //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         UnitController.changeTurn();
         //handle siege units
         //hazine tamir O negahdari buldings
@@ -436,7 +450,7 @@ public class GameController {
                     currentPlayer.decreaseGold(3);//gold to maintain railroads
             }
         }
-
+        addGoldFromWorkersActivities();
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
@@ -541,8 +555,7 @@ public class GameController {
                     return;
             }
         }
-
-        currentPlayer.increaseHappiness(1); //new luxuries add to happiness
+        currentPlayer.increaseHappiness(4); //new luxuries add to happiness
     }
 
 
@@ -1141,14 +1154,16 @@ public class GameController {
         return true;
     }
 
-    public String stopWorkingOnTechnology() {
+    public static String stopWorkingOnTechnology() {
         currentPlayer.addArchivedTechnology(currentPlayer.getCurrentResearch());
         currentPlayer.getUnfinishedProjects().remove(currentPlayer.getCurrentResearch());
         currentPlayer.setCurrentResearch(null);
         return "stopped working on this technology";
     }
 
-    public String startWorkingOnTechnology(String name) {
+    public static String startWorkingOnTechnology(String name) {
+        if (!currentPlayer.getAchievedTechnologies().containsKey(name))
+            return "there is no such technology";
         HashMap<String, Boolean> achievedTech = currentPlayer.getAchievedTechnologies();
         Technology technology = new Technology(name);
         ArrayList<String> neededTech = technology.getNeededPreviousTechnologies();
@@ -1172,17 +1187,6 @@ public class GameController {
         }
         currentPlayer.addUnfinishedProject(technology);
         return "started working on this technology";
-    }
-
-
-    //TODO: below method is just for checking FOW, should be deleted later
-    public static void showHexState() {
-       /* for (int i = 0; i < getWorld().getHexInWidth(); i++) {
-            for (int j = 0; j < getWorld().getHexInHeight(); j++)
-                System.out.println("c: " + i + "  " + j + " : " + "state: " + hex[i][j].getState(currentPlayer));
-        } */
-        for (int i = 0; i < currentPlayer.getUnits().size(); i++)
-            System.out.println("c: " + currentPlayer.getUnits().get(i).getX() + " " + currentPlayer.getUnits().get(i).getY());
     }
 
     public static String buyUnit(String name)

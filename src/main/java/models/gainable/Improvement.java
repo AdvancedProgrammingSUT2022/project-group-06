@@ -82,8 +82,8 @@ public class Improvement implements Construction {
                 makeFactory();;
                 break;
 
-
         }
+
     }
 
     public static void reverseCamp(Hex hex)
@@ -103,6 +103,7 @@ public class Improvement implements Construction {
         if(hex.getResource()!=null&&hex.getResource().getName().matches("Furs||Ivory"))
         {
             hex.getCity().increaseGold(hex.getResource().getGold());
+            GameController.happinessDueToLuxuries(hex.getResource().getName());
         }
         if(hex.getResource()!=null&&hex.getResource().getName().equals("Deer"))
         {
@@ -191,8 +192,8 @@ public class Improvement implements Construction {
             {
                 hex.getCity().increaseProduction(hex.getResource().getProduction());
             }
+            GameController.happinessDueToLuxuries(hex.getResource().getName());
         }
-
 
     }
 
@@ -264,7 +265,9 @@ public class Improvement implements Construction {
             {
                 hex.getCity().increaseGold(hex.getResource().getGold());
             }
+            GameController.happinessDueToLuxuries(hex.getResource().getName());
         }
+
     }
 
     public static void reverseQuarry(Hex hex)
@@ -282,7 +285,9 @@ public class Improvement implements Construction {
         if(hex.getResource()!=null&&hex.getResource().getName().equals("Marble"))
         {
             hex.getCity().increaseGold(hex.getResource().getGold());
+            GameController.happinessDueToLuxuries(hex.getResource().getName());
         }
+
     }
     private void makeFactory()
     {

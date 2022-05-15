@@ -91,6 +91,7 @@ public class CombatController {
     private static String meleeCityCombat(City city) {
         Military temp = new Military("Scout",hex[0][0],GameController.getCurrentPlayer());
         hex[0][0].setMilitaryUnit(temp);
+        //TODO: fekr konam in print bayad remove she
         System.out.println("meleCombat"+UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         //handel tile train and feature
         int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
@@ -148,5 +149,6 @@ public class CombatController {
         looser.removeCity(city);
         player.addCity(city);
         city.setHitPoint(0);
+        GameController.getCurrentPlayer().decreaseHappiness(3);//happiness decreases due to annexed cities
     }
 }

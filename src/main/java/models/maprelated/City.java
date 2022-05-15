@@ -33,7 +33,8 @@ public class City implements Combatable {
     private  Hex capital;
     private int trophy=0;
 
-
+    private int numberOfUnemployedCitizen;
+    private int health;
 
     public int getTrophy()
     {
@@ -92,8 +93,7 @@ public class City implements Combatable {
     public void increaseNumberOfUnemployedCitizen(int amount) {
         this.numberOfUnemployedCitizen += amount;
     }
-    private int numberOfUnemployedCitizen;
-    private int health;
+
 
     public int getMeleeCombatStrength() {
         return this.meleeCombatStrength;

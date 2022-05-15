@@ -153,6 +153,14 @@ public class Hex {
         return hasRiver;
     }
 
+    public boolean isNextToAnyRiver() {
+        for (boolean river : hasRiver) {
+            if (river)
+                return true;
+        }
+        return false;
+    }
+
     public int riverDir() {
         for (int i = 0; i < 4; i++) {
             if (hasRiver[i]) return i;

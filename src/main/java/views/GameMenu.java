@@ -11,9 +11,10 @@ import models.units.Settler;
 import models.units.Worker;
 
 
+import java.awt.*;
 import java.util.Scanner;
 import java.util.regex.Matcher;
-
+import java.util.regex.Pattern;
 
 
 public class GameMenu extends Menu {
@@ -51,8 +52,8 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.cityBanner());
             } else if (command.equals("city list panel")) {
                 System.out.println(GameController.citiesPanel());
-            } else if (command.equals("show research menu")) {
-                System.out.println(GameController.showResearchMenu());
+            } else if (command.equals("research menu")) {
+                System.out.println(technologiesView(scanner));
             } else if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
                 System.out.println(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
             } else if ((matcher = getMatcher("increase (--movepoint|-mp) (?<amount>\\d+) (?<x>\\d+) (?<y>\\d+) (?<type>[a-zA-Z]+)", command)) != null) {
@@ -123,6 +124,23 @@ public class GameMenu extends Menu {
             //TODO:
             //GameController.showHexState();
         }
+    }
+
+    private static String technologiesView(Scanner scanner) {
+        System.out.println(GameController.showResearchMenu());
+        String command = scanner.nextLine();
+        Matcher startWorkingMatcher = Pattern.compile("start working on technology (?<name>[A-Za-z]+)").matcher(command);
+        Matcher changeMatcher = Pattern.compile("change working technology to (?<name>[A-Za-z]+)").matcher(command);
+
+        if (command.equals("Exit"))
+            return "exited research menu";
+        if (startWorkingMatcher.matches())
+            return GameController.startWorkingOnTechnology(startWorkingMatcher.group("name"));
+        if (changeMatcher.matches()) {
+            GameController.stopWorkingOnTechnology();
+            return GameController.startWorkingOnTechnology(changeMatcher.group("name"));
+        }
+        return "invalid command";
     }
 
     private static boolean mapCommands(String command) {
@@ -436,8 +454,6 @@ public class GameMenu extends Menu {
 
     private static void moveUnitView(int x, int y) {
         System.out.println(UnitController.startMovement(x, y));
-        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
-
     }
 
 

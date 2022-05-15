@@ -46,25 +46,6 @@ public class UnitController {
     }
 
 
-    private static int[] getDirectionIndex(int[][] direction, int dx, int dy, Unit unit) {
-        if (dx != 0) dx = dx / Math.abs(dx);
-        if (dy != 0) dy = dy / Math.abs(dy);
-        for (int[] ints : direction) {
-            if (ints[0] == dx && ints[1] == dy
-                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean"))
-                return ints;
-        }
-        for (int[] ints : direction) {
-            if ((ints[0] == dx || ints[1] == dy)
-                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
-                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean"))
-                return ints;
-        }
-        return null;
-    }
 
     public static boolean canMoveThrough(int x, int y) {
         return !hex[x][y].getTerrain().getName().equals("Mountain") && !hex[x][y].getTerrain().getName().equals("Ocean");
@@ -280,6 +261,43 @@ public class UnitController {
         unfinishedMovements.remove(movement);
     }
 
+    private static int[] getDirectionIndex(int[][] direction, int dx, int dy, Unit unit) {
+        if (dx != 0) dx = dx / Math.abs(dx);
+        if (dy != 0) dy = dy / Math.abs(dy);
+        for (int[] ints : direction) {
+            if (ints[0] == dx && ints[1] == dy
+                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean")
+                    && !isHexOccupied(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
+                return ints;
+        }
+        for (int[] ints : direction) {
+            if ((ints[0] == dx || ints[1] == dy)
+                    && !isOutOfBounds(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1])
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Mountain")
+                    && !hex[unit.getCurrentHex().getX() + ints[0]][unit.getCurrentHex().getY() + ints[1]].getTerrain().getName().equals("Ocean")
+                    && !isHexOccupied(unit.getCurrentHex().getX() + ints[0], unit.getCurrentHex().getY() + ints[1]))
+                return ints;
+        }
+        return null;
+    }
+
+    public static boolean checkForRiverOnWay(Movement movement, Hex nextHex) {
+        int dx = nextHex.getX() - movement.getCurrentHex().getX();
+        int dy = nextHex.getY() - movement.getCurrentHex().getY();
+
+        if (dx == -1 && dy == -1 && movement.getCurrentHex().getHasRiver()[0])
+            return true;
+        if (dx == 0 && dy == -1 && movement.getCurrentHex().getHasRiver()[1])
+            return true;
+        if (dx == -1 && dy == 1 && movement.getCurrentHex().getHasRiver()[2])
+            return true;
+        if (dx == 0 && dy == 1 && movement.getCurrentHex().getHasRiver()[3])
+            return true;
+        return false;
+    }
+
     public static String moveUnit(Movement movement) {
 
         Unit unit = movement.getUnit();
@@ -295,6 +313,8 @@ public class UnitController {
                 && (hex[x][y].hasRoad() || hex[x][y].hasRailRoad())
                 && (int) (hex[x][y].getTerrain().getMovePoint() * 0.2) >= 0)
             unit.decreaseMP((int) (hex[x][y].getTerrain().getMovePoint() * 0.2));
+        else if (checkForRiverOnWay(movement, nextHex))
+            unit.setMP(0);
         else if (hex[x][y].getTerrain().getMovePoint() >= 0)
             unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
         else {
