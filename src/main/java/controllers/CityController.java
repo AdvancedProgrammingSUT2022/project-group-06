@@ -212,6 +212,7 @@ public class CityController {
         City.addCities(newCity);
         UnitController.getSelectedUnit().getCurrentHex().setCity(newCity);
         GameController.getCurrentPlayer().addCity(newCity);
+        getCurrentPlayer().decreaseHappiness(2);//happiness decrease as the number of cities grow
         return "new city created successfully";
     }
 

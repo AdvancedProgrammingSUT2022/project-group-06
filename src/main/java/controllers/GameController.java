@@ -427,6 +427,13 @@ public class GameController {
         }
     }
 
+    public static void resetMovePoints() {
+        for (Civilian civilian : currentPlayer.getCivilians())
+            civilian.setMP(civilian.getBackUpMp());
+        for (Military military : currentPlayer.getMilitaries())
+            military.setMP(military.getBackUpMp());
+    }
+
     public static String changeTurn() {
         String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;
@@ -440,8 +447,6 @@ public class GameController {
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         healAndMpAndOrder();
-        //increase gold food and since(3 capital 1 citizen)...//citizen productions
-        //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         UnitController.changeTurn();
         //handle siege units
         //hazine tamir O negahdari buldings
@@ -459,7 +464,7 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        //reset unit MP
+        resetMovePoints();
 
         if (playerCount == GameController.getPlayers().size() - 1) {
             playerCount = 0;
@@ -557,7 +562,6 @@ public class GameController {
     }
 
     public static void unhappinessEffects() {
-        //todo: stop city growth
         for (int i = 0; i < currentPlayer.getMilitaries().size(); i++) {
             currentPlayer.getMilitaries().get(i).setCombatStrength((int) (currentPlayer.getMilitaries().get(i).getCombatStrength() * 0.75));
         }
