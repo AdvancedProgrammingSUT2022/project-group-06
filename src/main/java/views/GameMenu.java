@@ -202,6 +202,7 @@ public class GameMenu extends Menu {
         command=scanner.nextLine();
         GameController.getSelectedHex().setOwner(GameController.getCurrentPlayer());
         UnitController.makeUnit("Settler", GameController.getSelectedHex(),"gold");
+
         UnitController.setSelectedUnit(GameController.getCiviliansByLocation(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY()));
         System.out.println(CityController.buildCity(command));
         GameController.getCurrentPlayer().setMainCity(City.getCityByName(command));
@@ -225,13 +226,15 @@ public class GameMenu extends Menu {
         }else if(command.equals("wake")){
             System.out.println(UnitController.wakeUpUnit());
         } else if(command.equals("delete")){
-            System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
+            System.out.println(UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit()));
         } else if(command.equals("alert")){
             System.out.println(UnitController.alert());
         }else if(command.equals("garrison")){
             System.out.println(UnitController.garrison());
         }else if(command.equals("fortify")){
             System.out.println(UnitController.fortify());
+        }else if(command.equals("fortify until heal")){
+            System.out.println(UnitController.fortifyUtilHeal());
         }else if(command.equals("ranged attack setup")){
             System.out.println(UnitController.setUpSiegeForRangeAttack());
         }else if(command.equals("pillage")){
@@ -315,7 +318,7 @@ public class GameMenu extends Menu {
             }else if(command.equals("wake")) {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
-                System.out.println(UnitController.deleteUnit(UnitController.getSelectedUnit()));
+                System.out.println(UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit()));
             } else if(command.equals("quarry build")){
                 System.out.println(GameController.makeQuarry());
             } else if(command.equals("factory build")){

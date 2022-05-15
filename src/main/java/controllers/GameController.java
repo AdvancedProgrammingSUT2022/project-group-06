@@ -7,12 +7,9 @@ import models.gainable.Improvement;
 import models.gainable.Technology;
 import models.maprelated.*;
 import models.units.Civilian;
-import models.units.Combatable;
 import models.units.Military;
 import models.units.Unit;
 import models.units.Worker;
-import net.bytebuddy.matcher.StringMatcher;
-import models.units.*;
 
 
 import java.util.*;
@@ -392,8 +389,22 @@ public class GameController {
     public static Civilian getCiviliansByLocation(int x, int y) {
         return world.getHex()[x][y].getCivilianUnit();
     }
-
-    private static void healAndMpAndOrder() {
+    private static void resetOrdersAndOrdered(){
+        for (Military military : currentPlayer.getMilitaries()) {
+            military.setOrdered(false);
+            military.setMP(military.getBackUpMp());
+        }
+        for (Civilian civilian: currentPlayer.getCivilians()) {
+            civilian.setOrdered(false);
+        }
+        for (Construction construction: currentPlayer.getUnfinishedProjects()) {
+            construction.getWorker().setOrdered(true);
+        }
+        for (Movement movement:UnitController.getUnfinishedMovements()) {
+            movement.getUnit().setOrdered(true);
+        }
+    }
+    private static void heal() {
         for (Military military : currentPlayer.getMilitaries()) {
             if (military.getHealth() < military.getMaxHealth()) {
                 military.increaseHealth(1);
@@ -446,7 +457,8 @@ public class GameController {
         feedCitizens();
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
-        healAndMpAndOrder();
+        heal();
+        resetOrdersAndOrdered();
         UnitController.changeTurn();
         //handle siege units
         //hazine tamir O negahdari buldings
@@ -1147,7 +1159,7 @@ public class GameController {
                 deleteConstruction.add(process);
             } else if (process instanceof Unit) {
                 Unit previewUnit = new Unit(process.getName(), process.getHex(), currentPlayer);
-                currentPlayer.decreaseProduction(previewUnit.getNeededProduction() / process.getDefaultLeftTurn());
+                currentPlayer.decreaseProduction(previewUnit.getNeededProduction() / process.getLeftTurns());
                 process.decreaseLeftTurns();
             }else {
                 process.decreaseLeftTurns();

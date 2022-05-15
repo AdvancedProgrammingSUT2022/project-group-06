@@ -76,12 +76,4 @@ public class Technology implements Construction {
         return null;
     }
 
-    @Override
-    public int getDefaultLeftTurn() {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-   
-
 }

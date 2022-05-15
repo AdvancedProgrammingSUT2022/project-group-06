@@ -28,7 +28,9 @@ public class UnitController {
     private static Unit selectedUnit;
     private static final Hex[][] hex = getWorld().getHex();
     private static final ArrayList<Movement> unfinishedMovements = new ArrayList<Movement>();
-
+    public static ArrayList<Movement> getUnfinishedMovements(){
+        return unfinishedMovements;
+    }
     public static void setCurrentPlayer(Player player) {
         GameController.setCurrentPlayer(player);
     }
@@ -177,6 +179,7 @@ public class UnitController {
         return "fortified successfully";
     }
     public static String fortifyUtilHeal(){
+
         return "fortified successfully";
     }
 
@@ -196,13 +199,15 @@ public class UnitController {
         selectedUnit.setState(UnitState.Alert);
         return "alerted successfully";
     }
-    public static String deleteUnit(Unit unit){
+    public static String deleteMilitaryUnit(Unit unit){
         unit.getOwner().removeUnit( unit);
         unit.getCurrentHex().setMilitaryUnit(null);
         selectedUnit = null;
         return "unit deleted";
     }
     public static String deleteUnitAction(Unit unit){
+        if(unit instanceof Civilian)unit.getCurrentHex().setCivilianUnit(null);
+        else unit.getCurrentHex().setMilitaryUnit(null);
         unit.getOwner().removeUnit( unit);
         unit.getCurrentHex().setMilitaryUnit(null);
         selectedUnit = null;
@@ -383,7 +388,10 @@ public class UnitController {
     }
 
     public static void changeTurn() {
-        for (Movement unfinishedMovement : unfinishedMovements)
-            moveUnit(unfinishedMovement);
+        for (int i = 0; i < unfinishedMovements.size(); i++) {
+            moveUnit(unfinishedMovements.get(i));
+        }
+/*        for (Movement unfinishedMovement : unfinishedMovements)
+            moveUnit(unfinishedMovement);*/
     }
 }

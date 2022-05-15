@@ -33,7 +33,7 @@ public class CombatController {
         hex[x][y].getMilitaryUnit().decreaseHealth(temp);
         //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
         if(hex[x][y].getMilitaryUnit().getHealth()<=0){
-            UnitController.deleteUnit(hex[x][y].getMilitaryUnit());
+            UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
             return "city win";
         }
         return "attacked successfully";
@@ -107,7 +107,7 @@ public class CombatController {
         UnitController.getSelectedUnit().decreaseHealth(cityStrength);
         //System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         if (UnitController.getSelectedUnit().getHealth() <= 0) {
-            UnitController.deleteUnit(UnitController.getSelectedUnit());
+            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             return "you lose the battle unit is death";
         }
         if (city.getHitPoint() <= 0) {
