@@ -309,7 +309,7 @@ public class Improvement implements Construction {
     }
     @Override
     public void zeroMpWorker() {
-        worker.setMP(0);
+        worker.setOrdered(true);
     }
 
 

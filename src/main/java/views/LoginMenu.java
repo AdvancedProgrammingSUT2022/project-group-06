@@ -32,11 +32,11 @@ public class LoginMenu extends Menu
             System.out.println(UserController.logout());
             return false;
         }else if((matcher=Commands.getMatcher(command, Commands.CHANGEMENU))!=null) {
-            if(UserController.loggedInUser==null) {
+            if(UserController.getLoggedInUser() ==null) {
                 System.out.println("please login first");
                 return false;
             }
-            if(loginController.changeMenu(matcher)) {
+            if(loginController.changeMenu(matcher.group("menuname"))) {
                 mainMenu.run(scanner);
                 return false;
             }

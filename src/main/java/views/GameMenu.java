@@ -194,6 +194,7 @@ public class GameMenu extends Menu {
         String command;
         Matcher matcher;
         boolean wasSleep = wake();
+        boolean wasOrdered = order();
         while(isSelect){
             command = scanner.nextLine();
         if(command.equals("sleep")){
@@ -215,25 +216,35 @@ public class GameMenu extends Menu {
         }else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }  else {
-            isSelect = orderToAllUnits(isSelect, command, wasSleep);
+            isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
         }
         }
     }
 
-    private boolean orderToAllUnits(boolean isSelect, String command,boolean wasSleep) {
+    private boolean order() {
+        if(UnitController.getSelectedUnit().isOrdered())return true;
+        UnitController.getSelectedUnit().setOrdered(true);
+        return false;
+    }
+
+    private boolean orderToAllUnits(boolean isSelect, String command,boolean wasSleep,boolean wasOrdered) {
         Matcher matcher;
         if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }else if(command.equals("unselect unit")){
-                UnitController.setSelectedUnit(null);
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
+            if(!wasOrdered) UnitController.getSelectedUnit().setOrdered(false);
+            UnitController.setSelectedUnit(null);
                 isSelect=false;
         } else if(mapCommands(command)){
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             return isSelect;
         }else{
             if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
+            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             System.out.println("invalid command");
         }
-        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
         return isSelect;
     }
 
@@ -242,6 +253,7 @@ public class GameMenu extends Menu {
         Matcher matcher;
         String command;
         boolean wasSleep = wake();
+        boolean wasOrdered = order();
         while(isSelect){
             command = scanner.nextLine();
             if ((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null) {
@@ -252,10 +264,11 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnitAction(UnitController.getSelectedUnit()));
-            } else isSelect = orderToAllUnits(isSelect, command, wasSleep);
+            } else isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
         }
     }
     private boolean wake(){
+        UnitController.getSelectedUnit().setOrdered(true);
         if(UnitController.getSelectedUnit().getState() == UnitState.Sleep || UnitController.getSelectedUnit().getState() == UnitState.Alert){
             UnitController.getSelectedUnit().setState(UnitState.Active);
             return true;
@@ -267,6 +280,7 @@ public class GameMenu extends Menu {
         String command;
         Matcher matcher;
         boolean wasSleep = wake();
+        boolean wasOrdered = order();
         while(isSelect) {
             if(!GameController.getWorld().getHex()[1][1].isPillaged()) System.out.println("khar");
             command = scanner.nextLine();
@@ -308,7 +322,7 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.removeRailRoad());
             }else if(command.equals("repair")){
                 System.out.println(GameController.repair());
-            } else isSelect = orderToAllUnits(isSelect, command, wasSleep);
+            } else isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
         }
     }
 
@@ -436,8 +450,6 @@ public class GameMenu extends Menu {
 
     private static void moveUnitView(int x, int y) {
         System.out.println(UnitController.startMovement(x, y));
-        System.out.println(GameController.getWorld().getHex()[0][0].getOwner().getName());
-
     }
 
 

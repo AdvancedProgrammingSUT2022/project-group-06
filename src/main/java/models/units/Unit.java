@@ -30,7 +30,8 @@ public class Unit implements Combatable , Construction
     protected String neededResource;
     protected Player owner;
     protected int neededProduction=10;
-
+    private int defenciveBounes = 0;
+    private boolean ordered = false;
     //todo: set combat type
 
     public int getNeededProduction()
@@ -54,6 +55,14 @@ public class Unit implements Combatable , Construction
     public void setMP(int amount)
     {
         MP=amount;
+    }
+
+    public boolean isOrdered() {
+        return ordered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        this.ordered = ordered;
     }
 
     public int getBackUpMp()
@@ -287,4 +296,10 @@ public class Unit implements Combatable , Construction
         return maxHealth;
     }
 
+    public void increaseBounes(int amount){
+        this.defenciveBounes += amount;
+    }
+    public int getDefenciveBounes(){
+        return this.defenciveBounes;
+    }
 }

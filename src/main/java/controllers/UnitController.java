@@ -212,7 +212,14 @@ public class UnitController {
         if(Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
         if(Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
         selectedUnit.setState(UnitState.Fortified);
-        selectedUnit.setFirstFortify(false);
+        if (selectedUnit.isFirstFortify()){
+            selectedUnit.increaseBounes((selectedUnit.getCombatStrength()*125/100));
+            selectedUnit.setFirstFortify(false);
+        }
+        else selectedUnit.increaseBounes((selectedUnit.getCombatStrength()*150/100));
+        return "fortified successfully";
+    }
+    public static String fortifyUtilHeal(){
         return "fortified successfully";
     }
 
@@ -264,7 +271,6 @@ public class UnitController {
         if(selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
         selectedUnit.getCurrentHex().setPillaged(true);
         if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
-        selectedUnit.setMP(0);
         return "pillaged successfully";
     }
 
@@ -305,8 +311,6 @@ public class UnitController {
 
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement.getDestination().getX(), movement.getDestination().getY());
-        //todo:
-        System.out.println(hex[0][0].getOwner().getName());
         if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != GameController.getCurrentPlayer())) {
             forceEndMovement(movement);
             return;
@@ -336,7 +340,6 @@ public class UnitController {
 
         if (nextHex.getX() == movement.getDestination().getX() && nextHex.getY() == movement.getDestination().getY())
             unfinishedMovements.remove(movement);
-        System.out.println(hex[0][0].getOwner().getName());
     }
 
     public static String startMovement(int x, int y) {
@@ -351,7 +354,6 @@ public class UnitController {
         unfinishedMovements.add(movement);
 
         moveUnit(movement);
-        System.out.println(hex[0][0].getOwner().getName());
         return "unit is on its way";
     }
 

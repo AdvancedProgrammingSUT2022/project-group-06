@@ -175,9 +175,7 @@ public class InitializeGameInfo {
                 player.getAchievedTechnologies().put(name, false);
             }
             }
-            
-            
-            
+
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

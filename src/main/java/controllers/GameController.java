@@ -395,11 +395,15 @@ public class GameController {
         return world.getHex()[x][y].getCivilianUnit();
     }
 
-    private static void heal() {
+    private static void healAndMpAndOrder() {
         for (Military military : currentPlayer.getMilitaries()) {
             if (military.getHealth() < military.getMaxHealth()) {
                 military.increaseHealth(1);
             }
+            military.setMP(military.getBackUpMp());
+        }
+        for (Civilian civilian: currentPlayer.getCivilians()){
+            civilian.setMP(civilian.getBackUpMp());
         }
         for (City city : currentPlayer.getCities()) {
             if (city.getHitPoint() < city.getMaxHitPoint()) {
@@ -419,7 +423,7 @@ public class GameController {
         //todo: complete followings
         //feedUnits and citizens(bikar ye mahsol baghie 2 food)
         //healUnits and cities(1hit point)//handel tarmim asib
-        heal();
+        healAndMpAndOrder();
         //increase gold food and since(3 capital 1 citizen)...//citizen productions
         //decrease turn of project kavosh, city (UNIT/BUILDING) produce
         UnitController.changeTurn();
@@ -448,7 +452,7 @@ public class GameController {
 
     private static String unitActions() {
         for (Military military : currentPlayer.getMilitaries()) {
-            if (!(military.getState() == UnitState.Sleep) && military.getMP() != 0) {
+            if (!(military.getState() == UnitState.Sleep) && !military.isOrdered()) {
                 if (military.getState() == UnitState.Alert) {
                     if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
                         return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
@@ -458,7 +462,7 @@ public class GameController {
             }
         }
         for (Civilian civilian : currentPlayer.getCivilians()) {
-            if (!(civilian.getState() == UnitState.Sleep) && civilian.getMP() != 0) {
+            if (!(civilian.getState() == UnitState.Sleep) &&  !civilian.isOrdered()) {
                 return "unit in " + civilian.getX() + "," + civilian.getY() + "coordinates needs order";
             }
         }
@@ -477,6 +481,7 @@ public class GameController {
     }
 
     private static boolean checkExistOfEnemy(int x, int y, int[][] tempDirection, int i) {
+        System.out.println((x + tempDirection[i][0]) +" "+(y + tempDirection[i][1]));
         if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
             if(hex[x + tempDirection[i][0]][y + tempDirection[i][1]].getMilitaryUnit()!=null&&
                hex[x + tempDirection[i][0]][y + tempDirection[i][1]].getMilitaryUnit().getOwner()!= currentPlayer){
@@ -903,9 +908,6 @@ public class GameController {
         Improvement lumber = new Improvement("lumber", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         lumber.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(lumber);
-        String temp = "the process of " + "making a "+"LumberMill"+" Improvement" + " on the hex: x=" + UnitController.getSelectedUnit().getCurrentHex().getX() + " y=" + UnitController.getSelectedUnit().getCurrentHex().getY() + " started successfullly";
-        GameController.getCurrentPlayer().addNotifications(temp);
-        GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a Lumber Mill started";
     }
 
@@ -1026,7 +1028,7 @@ public class GameController {
                     continue;
                 }
 
-                process.getWorker().setMP(process.getWorker().getBackUpMp());
+                process.getWorker().setOrdered(false);
 
 
                 process.build(null);
@@ -1172,7 +1174,6 @@ public class GameController {
         if (!InitializeGameInfo.unitInfo.containsKey(name)) {
             return "invalid unit name";
         }
-
         String type=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         GameController.setSelectedCity(GameController.getSelectedHex().getCity());
 
