@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import controllers.CityController;
+import controllers.CombatController;
 import controllers.GameController;
 import enums.HexState;
 import models.Player;
@@ -47,7 +48,10 @@ public class City implements Combatable {
     public City(Player owner, String name, Hex beginingHex) {
         this.owner = owner;
         this.name = name;
-        population = 1;
+        increasePopulation(1);
+        this.increaseFood(beginingHex.getTerrain().getFood());
+        this.increaseGold(beginingHex.getTerrain().getGold());
+        this.increaseProduction(beginingHex.getTerrain().getProduction());
         food = 0;
         science = 0;
         gold = 40;
@@ -56,6 +60,7 @@ public class City implements Combatable {
         this.food += beginingHex.getTerrain().getFood();
         beginingHex.setOwner(owner);
         beginingHex.setCity(this);
+        beginingHex.setHasCitizen(true);
         this.capital = beginingHex;
         beginingHex.setCapital(this);
         health = 20;
@@ -187,31 +192,28 @@ public class City implements Combatable {
         hex.setOwner(this.owner);
         hex.setCity(this);
         hexs.add(hex);
-        this.food += hex.getTerrain().getFood();
     }
 
-    public static void deleteCity(City city){
+    public static String deleteCity(City city){
         //todo : if garrison delete the unit from all unit list
+        if(city.getOwner().getMainCity() == city){
+            CombatController.addCityToTerritory(city,GameController.getCurrentPlayer());
+            return "this city is the main city of the opp civilization you can not delete this we will add this to your cities";
+        }
         city.getCapital().setCapital(null);
         for (Hex hex: city.hexs){
             hex.setOwner(null);
             hex.setCity(null);
             cities.remove(city);
         }
+        return "deleted";
     }
     public int getPopulation() {
         return this.population;
     }
 
     public void increasePopulation(int amount) {
-        for (int i = 0; i < amount; i++) {
-            for (Hex hex : hexs) {
-                if (!hex.getHasCitizen()) {
-                    CityController.lockCitizenTo(hex.getX(), hex.getY());
-                    break;
-                }
-            }
-        }
+        this.population += amount;
         owner.increasePopulation(amount);
     }
 

@@ -106,14 +106,19 @@ public class CombatController {
         city.decreaseHitPoint(unitStrength);
         UnitController.getSelectedUnit().decreaseHealth(cityStrength);
         //System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
-        if (UnitController.getSelectedUnit().getHealth() <= 0) {
+        if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() > 0) {
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             return "you lose the battle unit is death";
         }
-        if (city.getHitPoint() <= 0) {
+        if (city.getHitPoint() <= 0 && UnitController.getSelectedUnit().getHealth() > 0) {
             //todo : move unit to city coordinates
             GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
             return "done";
+        }
+        if(UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() <= 0){
+            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
+            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
+            return "unit and city are death";
         }
         UnitController.getSelectedUnit().setMP(0);
         return "attack is done";
@@ -143,13 +148,18 @@ public class CombatController {
         return "";
     }
 
-    public static void addCityToTerritory(City city, Player player) {
+    public static String addCityToTerritory(City city, Player player) {
         //todo: check correction : yanni nemikad dige kar dige ba azafe kardan be teritory kard?
         Player looser = city.getOwner();
+        city.getCapital().setOwner(player);
+        for (Hex hex:city.getHexs()) {
+            hex.setOwner(player);
+        }
         city.setOwner(player);
         looser.removeCity(city);
         player.addCity(city);
         city.setHitPoint(0);
         GameController.getCurrentPlayer().decreaseHappiness(3);//happiness decreases due to annexed cities
+        return "added successfully";
     }
 }

@@ -104,10 +104,10 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.startMakingUnit(matcher.group("unitname")));
             } else if ((matcher = getMatcher("select combat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectMilitary(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-                if(UnitController.getSelectedUnit()!= null) orderToSelectedUnit(scanner);
+                if(UnitController.getSelectedUnit()!= null) orderToSelectedUnit();
             } else if ((matcher = getMatcher("select noncombat (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 selectCivilian(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-                if(UnitController.getSelectedUnit()!= null) orderToSelectedUnit(scanner);
+                if(UnitController.getSelectedUnit()!= null) orderToSelectedUnit();
             }else if ((matcher = getMatcher("Remove citizen at (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+) from work", command)) != null) {
                 System.out.println(CityController.removeCitizenFromWork(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("lock an citizen to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
@@ -202,23 +202,21 @@ public class GameMenu extends Menu {
         command=scanner.nextLine();
         GameController.getSelectedHex().setOwner(GameController.getCurrentPlayer());
         UnitController.makeUnit("Settler", GameController.getSelectedHex(),"gold");
-
         UnitController.setSelectedUnit(GameController.getCiviliansByLocation(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY()));
         System.out.println(CityController.buildCity(command));
         GameController.getCurrentPlayer().setMainCity(City.getCityByName(command));
+        UnitController.setSelectedUnit(null);
         return false;
     }
-    private void orderToSelectedUnit(Scanner scanner) {
-        if(UnitController.getSelectedUnit() instanceof Worker)orderToWorker(scanner);
-        else if(UnitController.getSelectedUnit() instanceof Settler)orderToSettler(scanner);
-        else if(UnitController.getSelectedUnit() instanceof Military)orderToMilitary(scanner);
+    private void orderToSelectedUnit() {
+        if(UnitController.getSelectedUnit() instanceof Worker)orderToWorker();
+        else if(UnitController.getSelectedUnit() instanceof Settler)orderToSettler();
+        else if(UnitController.getSelectedUnit() instanceof Military)orderToMilitary();
     }
-    private void orderToMilitary(Scanner scanner) {
+    private void orderToMilitary() {
         boolean isSelect = true;
         String command;
         Matcher matcher;
-        boolean wasSleep = wake();
-        boolean wasOrdered = order();
         while(isSelect){
             command = scanner.nextLine();
         if(command.equals("sleep")){
@@ -241,45 +239,32 @@ public class GameMenu extends Menu {
             System.out.println(UnitController.pillage());
         }else if ((matcher = getMatcher("attack (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             attackUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
-        }  else {
-            isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
+        } else {
+            isSelect = orderToAllUnits(isSelect, command);
         }
         }
     }
 
-    private boolean order() {
-        if(UnitController.getSelectedUnit().isOrdered())return true;
-        UnitController.getSelectedUnit().setOrdered(true);
-        return false;
-    }
 
-    private boolean orderToAllUnits(boolean isSelect, String command,boolean wasSleep,boolean wasOrdered) {
+    private boolean orderToAllUnits(boolean isSelect, String command) {
         Matcher matcher;
         if ((matcher = getMatcher("move to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
             moveUnitView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
         }else if(command.equals("unselect unit")){
-            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
-            if(!wasOrdered) UnitController.getSelectedUnit().setOrdered(false);
             UnitController.setSelectedUnit(null);
                 isSelect=false;
         } else if(mapCommands(command)){
-            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
-            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             return isSelect;
         } else{
-            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
-            if(wasSleep) UnitController.getSelectedUnit().setState(UnitState.Sleep);
             System.out.println("invalid command");
         }
         return isSelect;
     }
 
-    private void orderToSettler(Scanner scanner) {
+    private void orderToSettler() {
         boolean isSelect = true;
         Matcher matcher;
         String command;
-        boolean wasSleep = wake();
-        boolean wasOrdered = order();
         while(isSelect){
             command = scanner.nextLine();
             if ((matcher = getMatcher("city build (--cityname|-cn) (?<name>[a-zA-Z_ ]+)", command)) != null) {
@@ -290,23 +275,13 @@ public class GameMenu extends Menu {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){
                 System.out.println(UnitController.deleteUnitAction(UnitController.getSelectedUnit()));
-            } else isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
+            } else isSelect = orderToAllUnits(isSelect, command);
         }
     }
-    private boolean wake(){
-        UnitController.getSelectedUnit().setOrdered(true);
-        if(UnitController.getSelectedUnit().getState() == UnitState.Sleep || UnitController.getSelectedUnit().getState() == UnitState.Alert){
-            UnitController.getSelectedUnit().setState(UnitState.Active);
-            return true;
-        }
-        return false;
-    }
-    private void orderToWorker(Scanner scanner) {
+    private void orderToWorker() {
         boolean isSelect = true;
         String command;
         Matcher matcher;
-        boolean wasSleep = wake();
-        boolean wasOrdered = order();
         while(isSelect) {
             command = scanner.nextLine();
             if (command.equals("sleep")) {
@@ -347,7 +322,7 @@ public class GameMenu extends Menu {
                 System.out.println(GameController.removeRailRoad());
             }else if(command.equals("repair")){
                 System.out.println(GameController.repair());
-            } else isSelect = orderToAllUnits(isSelect, command, wasSleep,wasOrdered);
+            } else isSelect = orderToAllUnits(isSelect, command );
         }
     }
 
@@ -519,9 +494,10 @@ public class GameMenu extends Menu {
             System.out.println("you can not attack with a civilian unit");
             return;
         }
-        if (UnitController.getSelectedUnit().getMP() == 0){
-            System.out.println("you do not have move point");
+        if (UnitController.getSelectedUnit().isOrdered()){
+            System.out.println("you have already ordered this unit");
         }
+        UnitController.getSelectedUnit().setState(UnitState.Active);
         String combatResult = CombatController.attackUnit(x, y);
         System.out.println(combatResult);
     }
@@ -530,10 +506,10 @@ public class GameMenu extends Menu {
         System.out.println("you win the battle select a number: \n 1.delete it \n 2.add it to your territory");
         switch (scanner.nextInt()) {
             case 1:
-                City.deleteCity(city);
+                System.out.println(City.deleteCity(city));
                 break;
             case 2:
-                CombatController.addCityToTerritory(city, player);
+                System.out.println(CombatController.addCityToTerritory(city, player));
         }
     }
 

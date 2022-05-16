@@ -30,11 +30,11 @@ public class Unit implements Combatable , Construction
     protected String neededResource;
     protected Player owner;
     protected int neededProduction=10;
-    private int defenciveBounes = 0;
-    private boolean ordered = false;
+    protected int defenciveBounes = 0;
+    protected boolean ordered = false;
+   // protected boolean isFortifiedUntilHeal= false;
+
     //todo: set combat type
-
-
     public int getNeededProduction()
     {
         return neededProduction;
@@ -50,8 +50,16 @@ public class Unit implements Combatable , Construction
     protected String combatType;
 
     protected boolean isFirstFortify = true;
-
     int leftTurns;
+
+/*    public boolean isFortifiedUntilHeal() {
+        return isFortifiedUntilHeal;
+    }
+
+    public void setFortifiedUntilHeal(boolean fortifiedUntilHeal) {
+        isFortifiedUntilHeal = fortifiedUntilHeal;
+    }*/
+
 
     public void setMP(int amount)
     {
@@ -138,7 +146,9 @@ public class Unit implements Combatable , Construction
     public boolean isFirstFortify() {
         return isFirstFortify;
     }
+    public void unFortify(){
 
+    }
     public void setFirstFortify(boolean firstFortify) {
         isFirstFortify = firstFortify;
     }

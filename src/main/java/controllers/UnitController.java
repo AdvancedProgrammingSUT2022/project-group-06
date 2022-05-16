@@ -112,6 +112,9 @@ public class UnitController {
             return "you can't construct road on ocean";
         if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
             return "you can't build road on ice";
+        UnitController.getSelectedUnit().setOrdered(true);
+        selectedUnit.setState(UnitState.Active);
+
         Improvement road = new Improvement("Road", selectedUnit, hex[x][y]);
         road.setLeftTurns(3);
         GameController.getCurrentPlayer().addUnfinishedProject(road);
@@ -133,7 +136,8 @@ public class UnitController {
             return "you can't construct railroad on ocean";
         if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
             return "you can't build railroad on ice";
-
+        UnitController.getSelectedUnit().setOrdered(true);
+        selectedUnit.setState(UnitState.Active);
         Improvement railroad = new Improvement("RailRoad", selectedUnit, hex[x][y]);
         railroad.setLeftTurns(3);
         GameController.getCurrentPlayer().addUnfinishedProject(railroad);
@@ -163,8 +167,10 @@ public class UnitController {
     public static String setUpSiegeForRangeAttack(){
         if(selectedUnit == null) return "you did not select a unit";
         if(! (selectedUnit instanceof Siege)) return "selected unit is not a siege";
+        selectedUnit.setState(UnitState.Active);
+        selectedUnit.setOrdered(true);
         ((Siege)selectedUnit).setReadyToAttack(true);
-        return "siege is ready now";
+        return "siege is ready for the next turn";
     }
     public static String fortify(){
         if(selectedUnit == null || selectedUnit instanceof Civilian) return "you did not select a military unit";
@@ -179,7 +185,7 @@ public class UnitController {
         return "fortified successfully";
     }
     public static String fortifyUtilHeal(){
-
+        selectedUnit.setState(UnitState.FortifiedUntilHeal);
         return "fortified successfully";
     }
 
@@ -222,7 +228,8 @@ public class UnitController {
         return "successfully sleep";
     }
     public static String wakeUpUnit(){
-        if(selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert){
+        if(selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert||
+                selectedUnit.getState() == UnitState.FortifiedUntilHeal||selectedUnit.getState() == UnitState.Fortified){
             selectedUnit.setState(UnitState.Active);
             return "successfully waked up";
         }
@@ -231,6 +238,8 @@ public class UnitController {
     public static String pillage(){
         if(selectedUnit == null) return "select a military unit first";
         if(selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
+        selectedUnit.setState(UnitState.Active);
+        selectedUnit.setOrdered(true);
         selectedUnit.getCurrentHex().setPillaged(true);
         if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
         return "pillaged successfully";
@@ -399,7 +408,8 @@ public class UnitController {
             return "The unit can't go through chosen destination hex";
         else if (selectedUnit instanceof Civilian && hex[x][y].getMilitaryUnit() != null && hex[x][y].getOwner() != getCurrentPlayer())
             return "a noncombat unit can't move to a tile with enemy military unit";
-
+        selectedUnit.setState(UnitState.Active);
+        selectedUnit.setOrdered(true);
         Movement movement = new Movement(selectedUnit, selectedUnit.getCurrentHex(), hex[x][y]);
         unfinishedMovements.add(movement);
 

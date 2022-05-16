@@ -6,5 +6,6 @@ public enum UnitState
     Sleep(),
     Alert(),
     Fortified(),
+    FortifiedUntilHeal,
     Garrisoned();
 }

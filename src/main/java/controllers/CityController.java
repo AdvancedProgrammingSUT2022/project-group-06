@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 
 import enums.HexState;
+import enums.UnitState;
 import models.Player;
 import models.gainable.Construction;
 import models.maprelated.City;
@@ -205,7 +206,8 @@ public class CityController {
                 return "a city with this name already exists";
             }
         }
-
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
         City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
         GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
         if (GameController.getCurrentPlayer().getHappiness() < 0) GameController.unhappinessEffects();
@@ -328,9 +330,12 @@ public class CityController {
             return "this tile is not yours";
         }
         if (!hex[x][y].getHasCitizen()) return "there is no citizen";
-        //todo: kam kardan ghodrat tolid
+        City city = hex[x][y].getCity();
+        city.decreaseFood(hex[x][y].getTerrain().getFood());
+        city.decreaseGold(hex[x][y].getTerrain().getGold());
+        city.decreaseProduction(hex[x][y].getTerrain().getProduction());
         hex[x][y].setHasCitizen(false);
-        GameController.getSelectedCity().decreaseNumberOfUnemployedCitizen(1);
+        GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
         return "citizen removed successfully";
     }
 
@@ -341,18 +346,21 @@ public class CityController {
         if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
             return "this tile is not yours";
         }
-        if (!hex[x][y].getHasCitizen()) return "there is already a citizen";
+        if (hex[x][y].getHasCitizen()) return "there is already a citizen";
         if (GameController.getSelectedCity().getNumberOfUnemployedCitizen() > 0) {
             GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
-            //todo: afzayesh
+            City city = hex[x][y].getCity();
+            city.increaseFood(hex[x][y].getTerrain().getFood());
+            city.increaseGold(hex[x][y].getTerrain().getGold());
+            city.increaseProduction(hex[x][y].getTerrain().getProduction());
             hex[x][y].setHasCitizen(true);
             return "citizen locked";
-        } else return "unemployed a citizen firt";
-
+        } else return "unemployed a citizen first";
     }
 
-    public static int showUnEmployedCitizen() {
-        return GameController.getSelectedCity().getPopulation();
+    public static String showUnEmployedCitizen() {
+        if(GameController.getSelectedCity() == null) return "please select a city first";
+        return String.valueOf(GameController.getSelectedCity().getNumberOfUnemployedCitizen());
     }
 
     public static String cityBanner() {

@@ -25,5 +25,4 @@ public enum UnitType
     infantry(),
     panzer(),
     tank();
-    
 }

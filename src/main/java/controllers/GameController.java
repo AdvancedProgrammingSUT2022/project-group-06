@@ -6,10 +6,7 @@ import models.gainable.Construction;
 import models.gainable.Improvement;
 import models.gainable.Technology;
 import models.maprelated.*;
-import models.units.Civilian;
-import models.units.Military;
-import models.units.Unit;
-import models.units.Worker;
+import models.units.*;
 
 
 import java.util.*;
@@ -73,9 +70,15 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
-        hex[0][0] = new Hex(0,0 , new Terrain("Hills"),null);
+        hex[0][0] = new Hex(0,0 , new Terrain("Grassland"),null);
         hex[0][0].setState(HexState.Visible,currentPlayer);
+        hex[0][0].setState(HexState.Visible, players.get(1));
         hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
+        Military warrior= new Military("Warrior", world.getHex()[1][0], players.get(1));
+        warrior.setCombatStrength(10000);
+        hex[1][0].setState(HexState.Visible,currentPlayer);
+        hex[1][0].setState(HexState.Visible, players.get(1));
+
         //UnitController.makeUnit("Archer",hex[0][0]);
         //hex[1][1].setState(HexState.Visible,currentPlayer);
         //Worker worker = new Worker("Worker", hex[1][1] ,GameController.currentPlayer);
@@ -392,7 +395,6 @@ public class GameController {
     private static void resetOrdersAndOrdered(){
         for (Military military : currentPlayer.getMilitaries()) {
             military.setOrdered(false);
-            military.setMP(military.getBackUpMp());
         }
         for (Civilian civilian: currentPlayer.getCivilians()) {
             civilian.setOrdered(false);
@@ -410,11 +412,11 @@ public class GameController {
             if (military.getHealth() < military.getMaxHealth()) {
                 military.increaseHealth(1);
             }
-            military.setMP(military.getBackUpMp());
+            if(military.getState() == UnitState.FortifiedUntilHeal){
+                military.increaseHealth(2);
+            }
         }
-        for (Civilian civilian: currentPlayer.getCivilians()){
-            civilian.setMP(civilian.getBackUpMp());
-        }
+
         for (City city : currentPlayer.getCities()) {
             if (city.getHitPoint() < city.getMaxHitPoint()) {
                 city.increaseHitPoint(1);
@@ -449,21 +451,13 @@ public class GameController {
 
     public static void productionFromTerrains() {
         for (City city : currentPlayer.getCities()) {
-            for (Hex hex : city.getHexs()) {
-                city.increaseProduction(hex.getTerrain().getProduction());
-                currentPlayer.increaseProduction(hex.getTerrain().getProduction());
-            }
+            currentPlayer.increaseProduction(city.getProduction());
         }
     }
 
     public static void goldFromTerrains() {
         for (City city : currentPlayer.getCities()) {
-            for (Hex hex : city.getHexs()) {
-                if (hex.getHasCitizen()) {
-                    city.increaseGold(hex.getTerrain().getGold());
-                    currentPlayer.increaseGold(hex.getTerrain().getGold());
-                }
-            }
+            currentPlayer.increaseGold(city.getGold());
         }
     }
 
@@ -474,17 +468,16 @@ public class GameController {
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
         }
-        currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
-        //todo: complete followings
+        currentPlayer.increaseGold(goldPerTurn);
         goldFromTerrains();
         productionFromTerrains();
+        addFoodFromTiles();
         feedCitizens();
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
         resetOrdersAndOrdered();
         UnitController.changeTurn();
-        //handle siege units
         //hazine tamir O negahdari buldings
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
         if (currentPlayer.getHappiness() < 0) unhappinessEffects();
@@ -522,25 +515,20 @@ public class GameController {
     }
 
     public static void growCity() {
-        addFoodFromTiles();
-
         for (Player player : players) {
             for (Construction project : player.getUnfinishedProjects()) {
                 if (project instanceof Unit && project.getName().equals("Settler"))
                     ((Unit) project).getCurrentHex().getCity().decreaseFood(((Unit) project).getCurrentHex().getTerrain().getFood());
             }
         }//food production will stop if a settler unit is being implemented
-
-
-            for (City city : currentPlayer.getCities()) {
-                if (currentPlayer.getHappiness() >= 0) { //city growth stops if people are unhappy
-                    if (city.getFood() / currentPlayer.getFoodForNewCitizen() > 5)
-                        currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
-                    implementNewCitizens(city, city.getFood() / currentPlayer.getFoodForNewCitizen());
-                    city.decreaseFood(city.getFood());
-                }
+        for (City city : currentPlayer.getCities()) {
+            if (currentPlayer.getHappiness() >= 0) { //city growth stops if people are unhappy
+                if (city.getFood() / currentPlayer.getFoodForNewCitizen() > 5)
+                    currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
+                implementNewCitizens(city, city.getFood() / currentPlayer.getFoodForNewCitizen());
+                city.decreaseFood(city.getFood());
             }
-
+        }
     }
 
     public static void implementNewCitizens(City city, int amount) {
@@ -548,6 +536,9 @@ public class GameController {
         for (Hex hex : city.getHexs()) {
             if (!hex.getHasCitizen() && amount > 0) {
                 hex.setHasCitizen(true);
+                city.increaseFood(hex.getTerrain().getFood());
+                city.increaseGold(hex.getTerrain().getGold());
+                city.increaseProduction(hex.getTerrain().getProduction());
                 amount--;
             }
         }
@@ -556,7 +547,7 @@ public class GameController {
 
     private static String unitActions() {
         for (Military military : currentPlayer.getMilitaries()) {
-            if (!(military.getState() == UnitState.Sleep) && !military.isOrdered()) {
+            if ((military.getState() == UnitState.Active) && !military.isOrdered()) {
                 if (military.getState() == UnitState.Alert) {
                     if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
                         return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
@@ -566,7 +557,7 @@ public class GameController {
             }
         }
         for (Civilian civilian : currentPlayer.getCivilians()) {
-            if (!(civilian.getState() == UnitState.Sleep) &&  !civilian.isOrdered()) {
+            if ((civilian.getState() == UnitState.Active) &&  !civilian.isOrdered()) {
                 return "unit in " + civilian.getX() + "," + civilian.getY() + "coordinates needs order";
             }
         }
@@ -837,7 +828,7 @@ public class GameController {
                 }
             }
         }
-        
+
 
         return economicInfo.toString();
 
@@ -862,11 +853,14 @@ public class GameController {
     }
 
     public static String startBuildMine() {
-
         String isPossible;
         if ((isPossible = isMakingMinePossible()) != null) {
             return isPossible;
         }
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement Mine = new Improvement("Mine", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         String type = UnitController.getSelectedUnit().getCurrentHex().getFeature().getName();
 
@@ -911,10 +905,14 @@ public class GameController {
 
 
     public static String startBuildFarm() {
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
         String isPossible;
         if ((isPossible = isMakingFarmPossible()) != null) {
             return isPossible;
         }
+
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
 
         Improvement Farm = new Improvement("Farm", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
 
@@ -954,6 +952,9 @@ public class GameController {
         if ((error = removeError("Jungle")) != null) {
             return error;
         }
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement delete = new Improvement("remove jungle", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         delete.setLeftTurns(7);
         currentPlayer.addUnfinishedProject(delete);
@@ -965,6 +966,10 @@ public class GameController {
         if ((error = removeError("forest")) != null) {
             return error;
         }
+
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement delete = new Improvement("remove forest", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         delete.setLeftTurns(4);
         currentPlayer.addUnfinishedProject(delete);
@@ -976,6 +981,9 @@ public class GameController {
         if ((error = removeError("Marsh")) != null) {
             return error;
         }
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement delete = new Improvement("remove marsh", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         delete.setLeftTurns(6);
         currentPlayer.addUnfinishedProject(delete);
@@ -989,6 +997,9 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().hasRailRoad() || !UnitController.getSelectedUnit().getCurrentHex().hasRoad()) {
             return "this tile dont have road or railroad";
         }
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement delete = new Improvement("remove road", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         delete.setLeftTurns(7);
         currentPlayer.addUnfinishedProject(delete);
@@ -1002,6 +1013,9 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().isPillaged()) {
             return "this tile is not pillaged";
         }
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement repair = new Improvement("repair", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         repair.setLeftTurns(3);
         currentPlayer.addUnfinishedProject(repair);
@@ -1022,6 +1036,9 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Plain||Desert||Grassland|||Tundra")) {
             return "you can not build a TradingPost on this tile";
         }
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
 
         Improvement post = new Improvement("post", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         post.setLeftTurns(5);
@@ -1049,6 +1066,9 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle")) {
             return "you can not build a Lumber Mill on this tile";
         }
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
 
         Improvement lumber = new Improvement("lumber", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         lumber.setLeftTurns(5);
@@ -1076,6 +1096,9 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Desert||Plain||Grassland||Tundra||Hills")) {
             return "you can not build a Pasture on this tile";
         }
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
 
         Improvement Pasture = new Improvement("Pasture", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         Pasture.setLeftTurns(5);
@@ -1103,7 +1126,9 @@ public class GameController {
         if (UnitController.getSelectedUnit().getCurrentHex().getFeature()!=null&&!UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Jungle")||!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain")) {
             return "you can not build a Camp on this tile";
         }
-
+        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
         Improvement camp = new Improvement("camp", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         camp.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(camp);
@@ -1112,7 +1137,6 @@ public class GameController {
         GameController.getCurrentPlayer().setNotificationsTurns(GameController.getTurn());
         return "process for building a camp started";
     }
-
     public static String makePlantation() {
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
@@ -1124,6 +1148,10 @@ public class GameController {
         if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
+
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
 
         Improvement plantation = new Improvement("Plantation", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         plantation.setLeftTurns(5);
@@ -1145,6 +1173,10 @@ public class GameController {
         {
             return "this tile is not yours";
         }
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement quarry = new Improvement("Quarry", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         quarry.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(quarry);
@@ -1165,6 +1197,10 @@ public class GameController {
         if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
+        if(selectedHex.isPillaged()) return "this hex is pillaged";
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        UnitController.getSelectedUnit().setOrdered(true);
+
         Improvement factory = new Improvement("Factory", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
         factory.setLeftTurns(5);
         currentPlayer.addUnfinishedProject(factory);
@@ -1242,8 +1278,6 @@ public class GameController {
         demographics.append("total number of military units: " + currentPlayer.getMilitaries().size() + "\n");
         demographics.append("total number of civilian units: " + currentPlayer.getCivilians().size() + "\n");
         demographics.append("population: " + currentPlayer.getPopulation());
-
-
         return demographics.toString();
     }
 
