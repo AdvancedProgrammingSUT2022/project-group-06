@@ -58,7 +58,6 @@ public class Technology implements Construction {
     @Override
     public void build(String type) {
         owner.unlockTechnology(this.name);
-        owner.getUnfinishedProjects().remove(this);
     }
 
     @Override

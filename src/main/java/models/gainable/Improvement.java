@@ -145,7 +145,7 @@ public class Improvement implements Construction {
     {
         hex.getCity().increaseFood(1);
         hex.addImprovement(this);
-        if(hex.getFeature().getName().matches("Marsh||Jungle||Forest"))
+        if(hex.getFeature()!=null&&hex.getFeature().getName().matches("Marsh||Jungle||Forest"))
         {
             hex.setFeature(null);
         }
@@ -177,7 +177,7 @@ public class Improvement implements Construction {
     {
         hex.getCity().increaseProduction(1);
         hex.addImprovement(this);
-        if(hex.getFeature().getName().matches("Marsh||Jungle||Forest"))
+        if(hex.getFeature()!=null&&hex.getFeature().getName().matches("Marsh||Jungle||Forest"))
         {
             hex.setFeature(null);
         }

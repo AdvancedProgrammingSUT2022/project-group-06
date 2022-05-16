@@ -811,6 +811,9 @@ public class GameController {
         StringBuilder economicInfo = new StringBuilder();
         int count = 1;
         for (City temp : currentPlayer.getCities()) {
+
+            ArrayList<Construction> technologies=new ArrayList<Construction>();
+
             economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
             economicInfo.append("\t\tpoplulation: " + temp.getPopulation() + "\n");
             economicInfo.append("\t\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
@@ -821,13 +824,25 @@ public class GameController {
             economicInfo.append("\t\tproduction: " + temp.getProduction() + "\n");
 
             for (Construction construction : currentPlayer.getUnfinishedProjects()) {
-                if (construction.getHex().getCity().getName().equals(temp.getName())) {
+                if (!(construction instanceof  Technology)&&construction.getHex().getCity().getName().equals(temp.getName())) {
                     economicInfo.append("\t\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
+                }
+                if(construction instanceof Technology)
+                {
+                    technologies.add(construction);
                 }
 
             }
 
+            if(!technologies.isEmpty())
+            {
+                for(Construction tech:technologies)
+                {
+                    economicInfo.append("pending technology: "+tech.getName());
+                }
+            }
         }
+        
 
         return economicInfo.toString();
 
@@ -892,7 +907,7 @@ public class GameController {
             return "you can not have two Improvements in one tile";
         }
 
-        if (UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Ice")) {
+        if (UnitController.getSelectedUnit().getCurrentHex().getFeature()!=null&&UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Ice")) {
             return "you can not make a Farm on Ice";
         }
 
@@ -1090,7 +1105,7 @@ public class GameController {
         if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
-        if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Jungle||Tundra||Hills||Plain")) {
+        if (UnitController.getSelectedUnit().getCurrentHex().getFeature()!=null&&!UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Jungle")||!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain")) {
             return "you can not build a Camp on this tile";
         }
 
@@ -1312,6 +1327,7 @@ public class GameController {
         StringBuilder output = new StringBuilder("started working on this technology");
         output.append("turns required: ");
         output.append(turns);
+        currentPlayer.getNotifications().add(output.toString());
         return output.toString();
     }
 
