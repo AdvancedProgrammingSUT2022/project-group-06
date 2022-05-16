@@ -432,7 +432,10 @@ public class UnitController {
         } else {
             direction = getDirectionIndex(oddDirection, deltaX, deltaY, unit);
         }
-        assert direction != null;
+        if (direction == null) {
+            forceEndMovement(movement);
+            return null;
+        }
         return hex[unit.getCurrentHex().getX() + direction[0]][unit.getCurrentHex().getY() + direction[1]];
     }
 

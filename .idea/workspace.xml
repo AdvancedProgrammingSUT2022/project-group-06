@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="add happiness">
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,7 +156,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="N1" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>
