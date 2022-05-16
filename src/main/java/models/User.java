@@ -1,17 +1,15 @@
 package models;
 
-public class User 
-{
+public class User {
     private String username;
     private String password;
     private String nickName;
     private int score;
 
-    public User(String username,String password,String nickname)
-    {
-        this.username=username;
-        this.password=password;
-        this.nickName=nickname;
+    public User(String username, String password, String nickname) {
+        this.username = username;
+        this.password = password;
+        this.nickName = nickname;
     }
 
     public String getUsername() {
@@ -43,12 +41,12 @@ public class User
     }
 
     public void increaseScore(int amount) {
-        score+=amount;
+        score += amount;
     }
 
     public void decreaseScore(int amount) {
-        score-=amount;
+        score -= amount;
     }
-    
-   
+
+
 }

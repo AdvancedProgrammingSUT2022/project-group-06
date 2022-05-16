@@ -1,7 +1,6 @@
 package enums;
 
-public enum TerrainNames
-{
+public enum TerrainNames {
     Coast("Coast"),
     Desert("Desert"),
     Grasslannd("Grasslands"),
@@ -13,9 +12,11 @@ public enum TerrainNames
     Tundra("Tundra");
 
     private String character;
+
     TerrainNames(String terrainNames) {
         this.character = terrainNames;
     }
+
     public String getCharacter() {
         return this.character;
     }

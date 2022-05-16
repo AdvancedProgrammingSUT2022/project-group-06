@@ -20,38 +20,40 @@ public class UserControllerTest {
     User user;
 
     @Test
-    public void testChangePassWhenInvalidPass(){
+    public void testChangePassWhenInvalidPass() {
         UserController.loggedInUser = user;
         when(user.getPassword()).thenReturn("ho");
-        String res = UserController.changePassword("hi","hello");
+        String res = UserController.changePassword("hi", "hello");
         Assertions.assertEquals("current password is invalid", res);
     }
 
     @Test
-    public void testChangePassWhenSamePass(){
+    public void testChangePassWhenSamePass() {
         UserController.loggedInUser = user;
         when(user.getPassword()).thenReturn("hi");
-        String res = UserController.changePassword("hi","hi");
+        String res = UserController.changePassword("hi", "hi");
         Assertions.assertEquals("current pass is equal to new pass", res);
     }
 
     @Test
-    public void testChangePass(){
+    public void testChangePass() {
         UserController.loggedInUser = user;
         when(user.getPassword()).thenReturn("hi");
-        String res = UserController.changePassword("hi","hello");
+        String res = UserController.changePassword("hi", "hello");
         Assertions.assertEquals("password changed successfully!", res);
     }
+
     @Test
-    public void changeNickNameErrorTest(){
+    public void changeNickNameErrorTest() {
         UserController.setNicknames(new ArrayList<String>(List.of("hello")));
         UserController.loggedInUser = user;
         String res = UserController.changeNickname("hello");
         Assertions.assertTrue(res.startsWith("user with nickname"));
         user.setNickName(null);
     }
+
     @Test
-    public void changeNickName(){
+    public void changeNickName() {
         UserController.loggedInUser = user;
         String res = UserController.changeNickname("hello");
         verify(user).setNickName("hello");
@@ -59,27 +61,23 @@ public class UserControllerTest {
     }
 
     @Test
-    public void logoutTest(){
+    public void logoutTest() {
         UserController.loggedInUser = user;
         Assertions.assertEquals("logout successfully", UserController.logout());
         Assertions.assertNull(UserController.loggedInUser);
     }
+
     @Test
-    public void logoutTestWithNoLogin(){
+    public void logoutTestWithNoLogin() {
         UserController.loggedInUser = null;
 //        System.out.println( UserController.loggedInUser.getNickName());
         Assertions.assertEquals("you have not logged in yet", UserController.logout());
     }
-    @Test
-    public void createUserTest(){
-       /* UserController userController = new UserController();
-        userController.setUsers(new HashMap<>());
-        userController.s
-        userController.createUser("asy","123","asemaneh");
-        verify( userController.getNicknames().add("asemaneh"));*/
+
+
+    public void saveUserTest() {
     }
-    public void saveUserTest(){
-    }
-    public void importSavedUsersTest(){
+
+    public void importSavedUsersTest() {
     }
 }

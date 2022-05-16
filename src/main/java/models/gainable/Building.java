@@ -4,18 +4,17 @@ import models.maprelated.Hex;
 import models.units.Unit;
 import models.units.Worker;
 
-public class Building implements Construction
-{
+public class Building implements Construction {
     private int cost;
     private int maintenance;
     private int leftTurns;
-    
+
     public Building(int cost, int maintenance, int leftTurns) {
         this.cost = cost;
         this.maintenance = maintenance;
         this.leftTurns = leftTurns;
     }
-  
+
     public int getCost() {
         return this.cost;
     }
@@ -60,12 +59,11 @@ public class Building implements Construction
     @Override
     public void zeroMpWorker() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
-    public Unit getWorker()
-    {
+    public Unit getWorker() {
         return null;
     }
 

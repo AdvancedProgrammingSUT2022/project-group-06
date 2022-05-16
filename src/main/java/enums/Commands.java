@@ -4,8 +4,7 @@ package enums;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
-public enum Commands 
-{
+public enum Commands {
     //All
     CHANGEMENU("[ \\t]*menu[ \\t]+enter[ \\t]+(?<menuname>[a-zA-Z]+ [A-Za-z]+)[ \\t]*"),
     EXIT("[ \\t]*exit[ \\t]+menu[ \\t]*"),
@@ -19,20 +18,17 @@ public enum Commands
 
     private String regex;
 
-    Commands(String regex)
-    {
-        this.regex=regex;
+    Commands(String regex) {
+        this.regex = regex;
     }
 
 
-    public static Matcher getMatcher(String input, Commands command)
-    {
-       
-        Pattern pattern= Pattern.compile(command.regex);
-        Matcher matcher= pattern.matcher(input);
+    public static Matcher getMatcher(String input, Commands command) {
 
-        if(matcher.matches())
-        {
+        Pattern pattern = Pattern.compile(command.regex);
+        Matcher matcher = pattern.matcher(input);
+
+        if (matcher.matches()) {
             return matcher;
         }
         return null;

@@ -33,20 +33,20 @@ public class City implements Combatable {
     private Player owner = null;
     private int hitPoint = 20;
     final private int maxHitPoint = 20;
-    private  Hex capital;
-    private int trophy=0;
+    private Hex capital;
+    private int trophy = 0;
 
     private int numberOfUnemployedCitizen;
     private int health;
 
-    public int getTrophy()
-    {
+    public int getTrophy() {
         return trophy;
     }
-    public void setTrophy(int amount)
-    {
-        trophy=amount;
+
+    public void setTrophy(int amount) {
+        trophy = amount;
     }
+
     public City(Player owner, String name, Hex beginingHex) {
         this.owner = owner;
         this.name = name;
@@ -68,7 +68,7 @@ public class City implements Combatable {
         beginingHex.setCapital(this);
         health = 20;
         this.numberOfUnemployedCitizen = 0;
-        if(Objects.equals(this.capital.getTerrain().getName(), "Hills")){
+        if (Objects.equals(this.capital.getTerrain().getName(), "Hills")) {
             meleeCombatStrength += 3;
             rangedCombatStrength += 3;
         }
@@ -77,6 +77,7 @@ public class City implements Combatable {
     public void setOwner(Player owner) {
         this.owner = owner;
     }
+
     public Hex getCapital() {
         return capital;
     }
@@ -84,9 +85,11 @@ public class City implements Combatable {
     public void setHitPoint(int hitPoint) {
         this.hitPoint = hitPoint;
     }
+
     public void decreaseHitPoint(int amount) {
         hitPoint -= amount;
     }
+
     public int getHitPoint() {
         return hitPoint;
     }
@@ -99,6 +102,7 @@ public class City implements Combatable {
     public void decreaseNumberOfUnemployedCitizen(int amount) {
         this.numberOfUnemployedCitizen -= amount;
     }
+
     public void increaseNumberOfUnemployedCitizen(int amount) {
         this.numberOfUnemployedCitizen += amount;
     }
@@ -130,7 +134,7 @@ public class City implements Combatable {
     }
 
     @Override
-    public  boolean isInPossibleCombatRange(int x, int y, int seenRange ,int attackerX ,int attackerY) {
+    public boolean isInPossibleCombatRange(int x, int y, int seenRange, int attackerX, int attackerY) {
         int range = 2;
         if (seenRange == range) return false;
         boolean res = false;
@@ -140,7 +144,7 @@ public class City implements Combatable {
                 return true;
             }
             res = isInPossibleCombatRange(x, y, seenRange + 1, attackerX + ints[0], attackerY + ints[1]);
-            if(res) break;
+            if (res) break;
         }
         return res;
     }
@@ -154,8 +158,6 @@ public class City implements Combatable {
     public int getY() {
         return capital.getY();
     }
-
-  
 
 
     public static City getCityByName(String name) {
@@ -189,22 +191,23 @@ public class City implements Combatable {
         hexs.add(hex);
     }
 
-    public static String deleteCity(City city){
-        if(city.getCapital().getMilitaryUnit()!= null){
+    public static String deleteCity(City city) {
+        if (city.getCapital().getMilitaryUnit() != null) {
             UnitController.deleteMilitaryUnit(city.getCapital().getMilitaryUnit());
         }
-        if(city.getOwner().getMainCity() == city){
-            CombatController.addCityToTerritory(city,GameController.getCurrentPlayer());
+        if (city.getOwner().getMainCity() == city) {
+            CombatController.addCityToTerritory(city, GameController.getCurrentPlayer());
             return "this city is the main city of the opp civilization you can not delete this we will add this to your cities";
         }
         city.getCapital().setCapital(null);
-        for (Hex hex: city.hexs){
+        for (Hex hex : city.hexs) {
             hex.setOwner(null);
             hex.setCity(null);
             cities.remove(city);
         }
         return "deleted";
     }
+
     public int getPopulation() {
         return this.population;
     }
@@ -306,7 +309,8 @@ public class City implements Combatable {
     public int getMaxHitPoint() {
         return maxHitPoint;
     }
-    public void increaseHitPoint(int amount){
+
+    public void increaseHitPoint(int amount) {
         this.hitPoint += amount;
     }
 

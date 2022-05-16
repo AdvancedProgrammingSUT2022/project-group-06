@@ -21,8 +21,7 @@ public class Menu {
 
     protected static Matcher getMatcher(String regex, String input) {
         Matcher matcher = Pattern.compile(regex).matcher(input);
-        if (matcher.find())
-            return matcher;
+        if (matcher.find()) return matcher;
         return null;
     }
 

@@ -21,7 +21,7 @@ public class Player {//-currentProject
     private static ArrayList<String> technologies = new ArrayList<String>();
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
 
-    private int gold =129;
+    private int gold = 129;
     private int happiness;
     private int production;
     private int food;
@@ -38,7 +38,7 @@ public class Player {//-currentProject
     private ArrayList<Military> militaries = new ArrayList<Military>();
     private ArrayList<Civilian> civilians = new ArrayList<Civilian>();
     private String name;
-    private ArrayList<Construction> unfinishedProjects=new ArrayList<Construction>();
+    private ArrayList<Construction> unfinishedProjects = new ArrayList<Construction>();
     private ArrayList<Technology> archivedTechnologies = new ArrayList<>();
     private City mainCity;
 
@@ -47,21 +47,19 @@ public class Player {//-currentProject
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
     private Technology currentResearch;
 
-    public ArrayList<String> getTechnologies()
-    {
+    public ArrayList<String> getTechnologies() {
         return technologies;
     }
-    public void increaseTrophies(int amount)
-    {
-        trophies+=amount;
+
+    public void increaseTrophies(int amount) {
+        trophies += amount;
     }
-    public ArrayList<Construction> getUnfinishedProjects()
-    {
+
+    public ArrayList<Construction> getUnfinishedProjects() {
         return unfinishedProjects;
     }
-    
-    public void addUnfinishedProject(Construction construction)
-    {
+
+    public void addUnfinishedProject(Construction construction) {
         unfinishedProjects.add(construction);
     }
 
@@ -78,10 +76,10 @@ public class Player {//-currentProject
     }
 
 
-    public static void addTechnology(String technology)
-    {
+    public static void addTechnology(String technology) {
         technologies.add(technology);
     }
+
     public City getMainCity() {
         return mainCity;
     }
@@ -90,14 +88,15 @@ public class Player {//-currentProject
         this.mainCity = mainCity;
     }
 
-    public void setTechnologyForPlayers(){
+    public void setTechnologyForPlayers() {
         for (String temp : technologies) {
             achievedTechnologies.put(temp, false);
         }
     }
+
     public static void setTechnologies(ArrayList<String> set) {
-        
-        technologies= new ArrayList<>(set);
+
+        technologies = new ArrayList<>(set);
     }
 
     public void addToRevealedHexes(Hex hex) {
@@ -120,9 +119,10 @@ public class Player {//-currentProject
         reveledHexes.put(hex, hexCopy);
     }
 
-    public void removeFromReveledTiles(Hex hex){
+    public void removeFromReveledTiles(Hex hex) {
         reveledHexes.remove(hex);
     }
+
     public HashMap<Hex, Hex> getReveledHexes() {
         return reveledHexes;
     }
@@ -221,7 +221,7 @@ public class Player {//-currentProject
 
     public void removeUnit(Unit unit) {
         units.remove(unit);
-        if(unit instanceof Military) militaries.remove(unit);
+        if (unit instanceof Military) militaries.remove(unit);
         if (unit instanceof Civilian) civilians.remove(unit);
     }
 

@@ -22,14 +22,16 @@ public class LoginControllerTest {
     HashMap<String, User> users;
     @Mock
     User user;
+
     @Test
-    public void testInvalidCommandOfLogin(){
+    public void testInvalidCommandOfLogin() {
         LoginController loginController = new LoginController();
         String res = loginController.login("user login -u mastmai");
         Assertions.assertEquals("invalid command!", res);
     }
+
     @Test
-    public void testInvalidLogin(){
+    public void testInvalidLogin() {
         LoginController loginController = new LoginController();
         String res = loginController.login("user login -u mastmai -p 002");
         Assertions.assertEquals("Username and password didn't match!", res);
@@ -37,46 +39,49 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void testValidLogin(){
+    public void testValidLogin() {
         String pass = "002";
         when(user.getPassword()).thenReturn(pass);
         LoginController loginController = new LoginController();
-        UserController.getUsers().put("mastmali",user);
+        UserController.getUsers().put("mastmali", user);
         String res = loginController.login("user login -u mastmali -p 002");
         Assertions.assertEquals("user logged in successfully!", res);
     }
 
     @Test
-    public void testInvalidCommandOfCreateUser(){
+    public void testInvalidCommandOfCreateUser() {
         LoginController loginController = new LoginController();
         String res = loginController.createUser("user create -u mastmai -p 002");
         Assertions.assertEquals("invalid command!", res);
     }
 
     @Test
-    public void testInvalidCreateUser(){
-        UserController.getUsers().put("ali",user);
+    public void testInvalidCreateUser() {
+        UserController.getUsers().put("ali", user);
         LoginController loginController = new LoginController();
         String res = loginController.createUser("user login -u ali -p 002 -n hell");
         Assertions.assertTrue(res.startsWith("user with username "));
         UserController.getUsers().clear();
     }
+
     @Test
-    public void testInvalidCreateUser2(){
+    public void testInvalidCreateUser2() {
         UserController userController = new UserController();
         userController.getNicknames().add("hell");
         LoginController loginController = new LoginController();
         String res = loginController.createUser("user login -u ali -p 002 -n hell");
         Assertions.assertTrue(res.startsWith("user with nickname "));
     }
+
     @Test
-    public void testValidCreateUser(){
+    public void testValidCreateUser() {
         LoginController loginController = new LoginController();
         String res = loginController.createUser("user login -u mastmali -p 002 -n java");
         Assertions.assertEquals("user created successfuly", res);
     }
+
     @Test
-    public void changeMenu(){
+    public void changeMenu() {
         LoginController loginController = new LoginController();
         Assertions.assertFalse(loginController.changeMenu("sfasd"));
         Assertions.assertTrue(loginController.changeMenu("Main Menu"));

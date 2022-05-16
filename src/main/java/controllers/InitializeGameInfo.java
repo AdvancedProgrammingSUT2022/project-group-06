@@ -27,19 +27,22 @@ public class InitializeGameInfo {
     private static final HashMap<String, String[]> terrainPossibleFeature = new HashMap<String, String[]>();
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
     private static final HashMap<String, Color> playerColor = new HashMap<String, Color>();
-    private static final ArrayList<Player>  players = new ArrayList<Player>();
+    private static final ArrayList<Player> players = new ArrayList<Player>();
     private static int numberOFPlayers;
 
     private static final Random random = new Random();
-    private static final World world = new World();;
+    private static final World world = new World();
+    ;
 
 
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
         return appropriateTerrain;
     }
-    public static HashMap<String, ArrayList<String>> getAppropriateFeature(){
+
+    public static HashMap<String, ArrayList<String>> getAppropriateFeature() {
         return appropriateFeature;
     }
+
     public static ArrayList<Player> getPlayers() {
         return players;
     }
@@ -163,7 +166,7 @@ public class InitializeGameInfo {
             File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
             String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
             String[] readInfo = readTechnologyInfo.split("\n");
-            ArrayList<String> setArray=new ArrayList<String>();
+            ArrayList<String> setArray = new ArrayList<String>();
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
                 String name = read[0];
@@ -171,15 +174,14 @@ public class InitializeGameInfo {
 
                 technologyInfo.put(name, info);
                 setArray.add(name);
-                for (Player player: GameController.getPlayers()) {
-                    
-                    if(name.equals("Agriculture"))
-                    {
+                for (Player player : GameController.getPlayers()) {
+
+                    if (name.equals("Agriculture")) {
                         player.getAchievedTechnologies().put(name, true);
-                    }else{
+                    } else {
                         player.getAchievedTechnologies().put(name, false);
                     }
-                    
+
                 }
             }
 
@@ -428,7 +430,7 @@ public class InitializeGameInfo {
 
     private static void setPlayerHex(ArrayList<Hex> playerHex, Player player) {
         for (Hex hex : playerHex) {
-            hex.setState(HexState.Visible,player);
+            hex.setState(HexState.Visible, player);
         }
     }
 

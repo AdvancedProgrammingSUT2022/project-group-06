@@ -1,6 +1,6 @@
 package enums;
-public enum FeatureNames
-{
+
+public enum FeatureNames {
     Fallout("Fallout"),
     Floodplains("Floodplains"),
     Forest("Forest"),
@@ -10,9 +10,11 @@ public enum FeatureNames
     Oasis("Oasis");
 
     private String character;
+
     FeatureNames(String featureNames) {
         this.character = featureNames;
     }
+
     public String getCharacter() {
         return this.character;
     }

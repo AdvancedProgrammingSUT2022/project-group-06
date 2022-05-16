@@ -1,7 +1,6 @@
 package enums;
 
-public enum HexState
-{
+public enum HexState {
     Visible(),
     Revealed(),
     FogOfWar();

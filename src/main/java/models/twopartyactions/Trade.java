@@ -2,23 +2,20 @@ package models.twopartyactions;
 
 import models.Player;
 
-public class Trade 
-{
+public class Trade {
     private Player firstParty;
     private Player secondParty;
     private String good;
-    
 
-    public Trade(Player firstParty, Player secondParty, String good) 
-    {
+
+    public Trade(Player firstParty, Player secondParty, String good) {
         this.firstParty = firstParty;
         this.secondParty = secondParty;
         this.good = good;
     }
-    
-    public void doTrade()
-    {
-        
+
+    public void doTrade() {
+
     }
 
     public Player getFirstParty() {
@@ -34,6 +31,5 @@ public class Trade
         return this.good;
     }
 
-   
- 
+
 }

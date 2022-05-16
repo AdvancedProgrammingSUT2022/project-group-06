@@ -12,9 +12,8 @@ import models.gainable.Construction;
 import models.maprelated.City;
 import models.maprelated.Hex;
 
-public class Unit implements Combatable , Construction
-{
-    protected static ArrayList<Unit> units=new ArrayList<Unit>();
+public class Unit implements Combatable, Construction {
+    protected static ArrayList<Unit> units = new ArrayList<Unit>();
     final protected int maxHealth = 10;
     protected int health;
     protected int combatStrength;
@@ -23,38 +22,37 @@ public class Unit implements Combatable , Construction
     protected Hex currentHex;
     protected UnitState state;
     protected int MP;
-    protected  int backUpMP;
+    protected int backUpMP;
     protected String name;
     protected int cost;
     protected String neededTech;
     protected String neededResource;
     protected Player owner;
-    protected int neededProduction=10;
+    protected int neededProduction = 10;
     protected int defenciveBounes = 0;
     protected boolean ordered = false;
 
     //todo: set combat type
-    public int getNeededProduction()
-    {
+    public int getNeededProduction() {
         return neededProduction;
     }
-    public String getNeededResource()
-    {
+
+    public String getNeededResource() {
         return neededResource;
     }
-    public String getNeededTech()
-    {
+
+    public String getNeededTech() {
         return neededTech;
     }
+
     protected String combatType;
 
     protected boolean isFirstFortify = true;
     int leftTurns;
 
 
-    public void setMP(int amount)
-    {
-        MP=amount;
+    public void setMP(int amount) {
+        MP = amount;
     }
 
     public boolean isOrdered() {
@@ -65,8 +63,7 @@ public class Unit implements Combatable , Construction
         this.ordered = ordered;
     }
 
-    public int getBackUpMp()
-    {
+    public int getBackUpMp() {
         return backUpMP;
     }
 
@@ -92,60 +89,55 @@ public class Unit implements Combatable , Construction
     }
 
     @Override
-    public Hex getHex()
-    {
+    public Hex getHex() {
         return currentHex;
     }
-    public Unit(String name,Hex hex, Player owner)
-    {
+
+    public Unit(String name, Hex hex, Player owner) {
         this.owner = owner;
-        this.name=name;
-        this.currentHex=hex;
+        this.name = name;
+        this.currentHex = hex;
         this.state = UnitState.Active;
-        String[] info=InitializeGameInfo.unitInfo.get(name).split(" ");
-        this.cost=Integer.parseInt(info[0]);
-        combatStrength=Integer.parseInt(info[1]);
-        rangedStrength=Integer.parseInt(info[2]);
-        range=Integer.parseInt(info[3]);
-        MP=Integer.parseInt(info[4]);
+        String[] info = InitializeGameInfo.unitInfo.get(name).split(" ");
+        this.cost = Integer.parseInt(info[0]);
+        combatStrength = Integer.parseInt(info[1]);
+        rangedStrength = Integer.parseInt(info[2]);
+        range = Integer.parseInt(info[3]);
+        MP = Integer.parseInt(info[4]);
         backUpMP = MP;
-        combatType=info[7];
-        health=maxHealth;
+        combatType = info[7];
+        health = maxHealth;
 
 
-        String tech=info[6];
-        String resource=info[5];
+        String tech = info[6];
+        String resource = info[5];
 
-        if(tech.equals("NA"))
-        {
-            neededTech=null;
+        if (tech.equals("NA")) {
+            neededTech = null;
+        } else {
+            neededTech = tech;
         }
-        else
-        {
-            neededTech=tech;
-        }
-        if(resource.equals("NA"))
-        {
-            neededResource=null;
-        }
-        else
-        {
-            neededResource=resource;
+        if (resource.equals("NA")) {
+            neededResource = null;
+        } else {
+            neededResource = resource;
         }
 
     }
+
     public boolean isFirstFortify() {
         return isFirstFortify;
     }
-    public void unFortify(){
+
+    public void unFortify() {
 
     }
+
     public void setFirstFortify(boolean firstFortify) {
         isFirstFortify = firstFortify;
     }
 
-    public static ArrayList<Unit> getUnits()
-    {
+    public static ArrayList<Unit> getUnits() {
         return units;
     }
 
@@ -154,8 +146,8 @@ public class Unit implements Combatable , Construction
     }
 
     public int calculateCombatModifier(Combatable defender) {
-        combatStrength = combatStrength* (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) /100;
-        combatStrength =combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
+        combatStrength = combatStrength * (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) / 100;
+        combatStrength = combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) / 100;
         return this.combatStrength;
     }
 
@@ -175,8 +167,7 @@ public class Unit implements Combatable , Construction
         this.rangedStrength = rangedStrength;
     }
 
-    public int getCost()
-    {
+    public int getCost() {
         return cost;
     }
 
@@ -185,14 +176,14 @@ public class Unit implements Combatable , Construction
     }
 
     public void increaseHealth(int amount) {
-        health+=amount;
+        health += amount;
     }
 
     public void decreaseHealth(int amount) {
-        health-=amount;
+        health -= amount;
     }
 
-   
+
     public Hex getCurrentHex() {
         return this.currentHex;
     }
@@ -204,9 +195,11 @@ public class Unit implements Combatable , Construction
     public UnitState getState() {
         return this.state;
     }
-    public void setState(UnitState state){
+
+    public void setState(UnitState state) {
         this.state = state;
     }
+
     public void changeUnitState(UnitState state) {
         this.state = state;
     }
@@ -216,10 +209,11 @@ public class Unit implements Combatable , Construction
     }
 
     public void increaseMP(int amount) {
-        MP+=amount;
+        MP += amount;
     }
+
     public void decreaseMP(int amount) {
-        MP-=amount;
+        MP -= amount;
     }
 
 
@@ -231,7 +225,7 @@ public class Unit implements Combatable , Construction
         return owner;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -251,8 +245,8 @@ public class Unit implements Combatable , Construction
     }
 
     @Override
-    public  boolean isInPossibleCombatRange(int x, int y, int seenRange ,int attackerX ,int attackerY) {
-        if (seenRange == (this.getRange()==0 ? 1 : this.getRange())) return false;
+    public boolean isInPossibleCombatRange(int x, int y, int seenRange, int attackerX, int attackerY) {
+        if (seenRange == (this.getRange() == 0 ? 1 : this.getRange())) return false;
         boolean res = false;
         int[][] direction = GameController.getDirection(attackerY);
         for (int[] ints : direction) {
@@ -260,7 +254,7 @@ public class Unit implements Combatable , Construction
                 return true;
             }
             res = isInPossibleCombatRange(x, y, seenRange + 1, attackerX + ints[0], attackerY + ints[1]);
-            if(res) break;
+            if (res) break;
         }
         return res;
     }
@@ -280,6 +274,7 @@ public class Unit implements Combatable , Construction
         // TODO Auto-generated method stub
 
     }
+
     @Override
     public Unit getWorker() {
         // TODO Auto-generated method stub
@@ -294,10 +289,11 @@ public class Unit implements Combatable , Construction
         return maxHealth;
     }
 
-    public void increaseBounes(int amount){
+    public void increaseBounes(int amount) {
         this.defenciveBounes += amount;
     }
-    public int getDefenciveBounes(){
+
+    public int getDefenciveBounes() {
         return this.defenciveBounes;
     }
 }

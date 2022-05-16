@@ -2,8 +2,7 @@ package models.twopartyactions;
 
 import models.units.Unit;
 
-public class Combat 
-{
+public class Combat {
     private Unit firstUnit;
     private Unit secondUnit;
 
@@ -17,10 +16,10 @@ public class Combat
         return this.firstUnit;
     }
 
-  
+
     public Unit getSecondUnit() {
         return this.secondUnit;
     }
 
-    
+
 }

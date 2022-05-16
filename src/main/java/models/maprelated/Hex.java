@@ -31,11 +31,10 @@ public class Hex {
     private boolean hasRailRoad;
     private boolean isPillaged = false;
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
-    private ArrayList<Improvement> improvements=new ArrayList<Improvement>();
+    private ArrayList<Improvement> improvements = new ArrayList<Improvement>();
 
-    public void setFeature(Feature newFeature)
-    {
-        feature=newFeature;
+    public void setFeature(Feature newFeature) {
+        feature = newFeature;
     }
 
     public void setHasCitizen(boolean hasCitizen) {
@@ -84,7 +83,7 @@ public class Hex {
     }
 
     public void setState(HexState hexState, Player player) {
-        this.StateOfHexForEachPlayer.put(player,hexState);
+        this.StateOfHexForEachPlayer.put(player, hexState);
     }
 
     public void setOwner(Player owner) {
@@ -169,7 +168,7 @@ public class Hex {
 
     public void addImprovement(Improvement improvement) {
         improvements.add(improvement);
-        
+
     }
 
     public boolean isPillaged() {

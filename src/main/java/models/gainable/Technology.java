@@ -69,7 +69,7 @@ public class Technology implements Construction {
     @Override
     public void zeroMpWorker() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
@@ -77,7 +77,6 @@ public class Technology implements Construction {
         // TODO Auto-generated method stub
         return null;
     }
-
 
 
 }

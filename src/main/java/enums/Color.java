@@ -1,6 +1,7 @@
 package enums;
+
 public enum Color {
-    BLACK ("\033[0;30m"),
+    BLACK("\033[0;30m"),
     RED("\033[0;31m"),
     GREEN("\033[0;32m"),
     YELLOW("\033[0;33m"),
@@ -16,9 +17,11 @@ public enum Color {
     ANSI_WHITE_BACKGROUND("\u001b[48;5;15m"),
     ANSI_Bright_BLUE_BACKGROUND("\u001b[48;5;51m");
     private final String character;
+
     Color(String color) {
         this.character = color;
     }
+
     public String getCharacter() {
         return character;
     }

@@ -23,7 +23,4 @@ public interface Construction {
     Unit getWorker();
 
 
-
-    
-  
 }

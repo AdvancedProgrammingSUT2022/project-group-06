@@ -27,7 +27,7 @@ public class UserController {
         return users;
     }
 
-    public  void setUsers(HashMap<String, User> users) {
+    public void setUsers(HashMap<String, User> users) {
         UserController.users = users;
     }
 
@@ -45,12 +45,12 @@ public class UserController {
         nicknames.add(nickname);
     }
 
-    public void Login   (String username, String password) {
+    public void Login(String username, String password) {
         loggedInUser = users.get(username);
     }
 
     public static String logout() {
-        if(loggedInUser == null){
+        if (loggedInUser == null) {
             return "you have not logged in yet";
         }
         loggedInUser = null;
@@ -63,19 +63,18 @@ public class UserController {
             String resourceName = "files/UserInfo.txt";
             ClassLoader classLoader = LoginMenu.class.getClassLoader();
             File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            
 
-            
+
             PrintWriter user = new PrintWriter(file);
 
-    
+
             users.forEach((key, value) -> {
 
                 user.write(key + " " + value.getPassword() + " " + value.getNickName() + "\n");
 
             });
 
-    
+
             user.close();
         } catch (Exception e) {
             System.out.println(e);
@@ -121,6 +120,7 @@ public class UserController {
     public static boolean isPasswordValid(String password) {
         return loggedInUser.getPassword().equals(password);
     }
+
     public static String changeNickname(String nickname) {
         if (isNicknameUsed(nickname))
             return ("user with nickname" + nickname + "already exists");

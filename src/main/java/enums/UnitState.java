@@ -1,7 +1,6 @@
 package enums;
 
-public enum UnitState 
-{
+public enum UnitState {
     Active(),
     Sleep(),
     Alert(),

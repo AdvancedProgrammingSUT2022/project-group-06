@@ -1,7 +1,6 @@
 package enums;
 
-public enum UnitType 
-{
+public enum UnitType {
     archer(),
     chariotarcher(),
     scout(),

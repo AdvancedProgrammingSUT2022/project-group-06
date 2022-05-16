@@ -28,9 +28,11 @@ public class UnitController {
     private static Unit selectedUnit;
     private static final Hex[][] hex = getWorld().getHex();
     private static final ArrayList<Movement> unfinishedMovements = new ArrayList<Movement>();
-    public static ArrayList<Movement> getUnfinishedMovements(){
+
+    public static ArrayList<Movement> getUnfinishedMovements() {
         return unfinishedMovements;
     }
+
     public static void setCurrentPlayer(Player player) {
         GameController.setCurrentPlayer(player);
     }
@@ -68,16 +70,16 @@ public class UnitController {
 
     private static void makeVisible(int x, int y, int[][] tempDirection, int i) {
         if (!isOutOfBounds(x + tempDirection[i][0], y + tempDirection[i][1])) {
-            hex[x + tempDirection[i][0]][y + tempDirection[i][1]].setState(HexState.Visible,GameController.getCurrentPlayer());
+            hex[x + tempDirection[i][0]][y + tempDirection[i][1]].setState(HexState.Visible, GameController.getCurrentPlayer());
         }
     }
 
-    private static void changeView(int[][] direction, int x, int y){
+    private static void changeView(int[][] direction, int x, int y) {
         for (int j = 0; j < direction.length; j++) {
             makeVisible(x, y, direction, j);
             int[][] tempDirection = getDirection(y + direction[j][1]);
             for (int i = 0; i < tempDirection.length; i++) {
-              makeVisible(x + direction[j][0], y + direction[j][1], tempDirection, i);
+                makeVisible(x + direction[j][0], y + direction[j][1], tempDirection, i);
             }
         }
     }
@@ -85,8 +87,8 @@ public class UnitController {
     private static void setRevealedTiles() {
         for (int i = 0; i < getWorld().getHexInWidth(); i++) {
             for (int j = 0; j < getWorld().getHexInHeight(); j++) {
-            //    if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
-            //        System.out.println("is null");
+                //    if (hex[i][j].getState(GameController.getCurrentPlayer()) == null)
+                //        System.out.println("is null");
                 if (hex[i][j].getState(GameController.getCurrentPlayer()).equals(HexState.Visible)) {
                     hex[i][j].setState(HexState.Revealed, GameController.getCurrentPlayer());
                     GameController.getCurrentPlayer().addToRevealedHexes(hex[i][j]);
@@ -144,58 +146,62 @@ public class UnitController {
         return "the railroad will be constructed in 3 turns";
     }
 
-    public static void makeUnit(String name, Hex hex,String type) { 
-        String theType=InitializeGameInfo.unitInfo.get(name).split(" ")[7];
-        if(theType.equals("Settler")){
-            Settler newSettler=new Settler(name, hex, GameController.getCurrentPlayer());
+    public static void makeUnit(String name, Hex hex, String type) {
+        String theType = InitializeGameInfo.unitInfo.get(name).split(" ")[7];
+        if (theType.equals("Settler")) {
+            Settler newSettler = new Settler(name, hex, GameController.getCurrentPlayer());
             newSettler.build(type);
-        } else if(theType.equals("Worker")){
-            Worker newWorker=new Worker(name, hex,GameController.getCurrentPlayer());
+        } else if (theType.equals("Worker")) {
+            Worker newWorker = new Worker(name, hex, GameController.getCurrentPlayer());
             newWorker.build(type);
-        } else if(theType.equals("Ranged")){
-            Ranged newRanged=new Ranged(name, hex, GameController.getCurrentPlayer());
+        } else if (theType.equals("Ranged")) {
+            Ranged newRanged = new Ranged(name, hex, GameController.getCurrentPlayer());
             newRanged.build(type);
-        } else if(theType.equals("Siege")){
-            Siege newSiege=new Siege(name, hex, GameController.getCurrentPlayer());
+        } else if (theType.equals("Siege")) {
+            Siege newSiege = new Siege(name, hex, GameController.getCurrentPlayer());
             newSiege.build(type);
-        }else if(theType.equals("Melee")){
-            Melee newMelee=new Melee(name, hex, GameController.getCurrentPlayer());
+        } else if (theType.equals("Melee")) {
+            Melee newMelee = new Melee(name, hex, GameController.getCurrentPlayer());
             newMelee.build(type);
         }
 
     }
-    public static String setUpSiegeForRangeAttack(){
-        if(selectedUnit == null) return "you did not select a unit";
-        if(! (selectedUnit instanceof Siege)) return "selected unit is not a siege";
+
+    public static String setUpSiegeForRangeAttack() {
+        if (selectedUnit == null) return "you did not select a unit";
+        if (!(selectedUnit instanceof Siege)) return "selected unit is not a siege";
         selectedUnit.setState(UnitState.Active);
         selectedUnit.setOrdered(true);
-        ((Siege)selectedUnit).setReadyToAttack(true);
+        ((Siege) selectedUnit).setReadyToAttack(true);
         return "siege is ready for the next turn";
     }
-    public static String fortify(){
-        if(selectedUnit == null || selectedUnit instanceof Civilian) return "you did not select a military unit";
-        if(Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
-        if(Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
+
+    public static String fortify() {
+        if (selectedUnit == null || selectedUnit instanceof Civilian) return "you did not select a military unit";
+        if (Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
+        if (Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
         selectedUnit.setState(UnitState.Fortified);
-        if (selectedUnit.isFirstFortify()){
-            selectedUnit.increaseBounes((selectedUnit.getCombatStrength()*125/100));
+        if (selectedUnit.isFirstFortify()) {
+            selectedUnit.increaseBounes((selectedUnit.getCombatStrength() * 125 / 100));
             selectedUnit.setFirstFortify(false);
-        }
-        else selectedUnit.increaseBounes((selectedUnit.getCombatStrength()*150/100));
+        } else selectedUnit.increaseBounes((selectedUnit.getCombatStrength() * 150 / 100));
         return "fortified successfully";
     }
-    public static String fortifyUtilHeal(){
+
+    public static String fortifyUtilHeal() {
         selectedUnit.setState(UnitState.FortifiedUntilHeal);
         return "fortified successfully";
     }
 
-    public static String garrison(){
+    public static String garrison() {
         //todo: move unit to capital city and move errors
-        if(selectedUnit == null || selectedUnit instanceof Civilian) {
+        if (selectedUnit == null || selectedUnit instanceof Civilian) {
             return "you did not select a military unit";
-        }if(selectedUnit.getCurrentHex().getCapital() == null){
+        }
+        if (selectedUnit.getCurrentHex().getCapital() == null) {
             return "there is no capital";
-        }if(selectedUnit.getCurrentHex().getOwner() != GameController.getCurrentPlayer()){
+        }
+        if (selectedUnit.getCurrentHex().getOwner() != GameController.getCurrentPlayer()) {
             return ("this is not your city");
         }
         selectedUnit.setOrdered(true);
@@ -203,67 +209,69 @@ public class UnitController {
         return "garrisoned successfully";
     }
 
-    public static String alert(){
+    public static String alert() {
         selectedUnit.setState(UnitState.Alert);
         return "alerted successfully";
     }
-    public static String deleteMilitaryUnit(Unit unit){
-        unit.getOwner().removeUnit( unit);
+
+    public static String deleteMilitaryUnit(Unit unit) {
+        unit.getOwner().removeUnit(unit);
         unit.getCurrentHex().setMilitaryUnit(null);
         selectedUnit = null;
         return "unit deleted";
     }
-    public static String deleteUnitAction(Unit unit){
-        if(unit instanceof Civilian)unit.getCurrentHex().setCivilianUnit(null);
+
+    public static String deleteUnitAction(Unit unit) {
+        if (unit instanceof Civilian) unit.getCurrentHex().setCivilianUnit(null);
         else unit.getCurrentHex().setMilitaryUnit(null);
-        unit.getOwner().removeUnit( unit);
+        unit.getOwner().removeUnit(unit);
         unit.getCurrentHex().setMilitaryUnit(null);
         selectedUnit = null;
-        GameController.getCurrentPlayer().increaseGold(unit.getCost()/10);
+        GameController.getCurrentPlayer().increaseGold(unit.getCost() / 10);
         return "unit deleted";
     }
-    public static String sleepUnit(){
-        if(selectedUnit.getState() == UnitState.Sleep){
+
+    public static String sleepUnit() {
+        if (selectedUnit.getState() == UnitState.Sleep) {
             return "unit is already sleep";
         }
         selectedUnit.setState(UnitState.Sleep);
         return "successfully sleep";
     }
-    public static String wakeUpUnit(){
-        if(selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert||
-                selectedUnit.getState() == UnitState.FortifiedUntilHeal||selectedUnit.getState() == UnitState.Fortified){
+
+    public static String wakeUpUnit() {
+        if (selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert ||
+                selectedUnit.getState() == UnitState.FortifiedUntilHeal || selectedUnit.getState() == UnitState.Fortified) {
             selectedUnit.setState(UnitState.Active);
             return "successfully waked up";
         }
         return "unit is already awake";
     }
-    public static String pillage(){
-        if(selectedUnit == null) return "select a military unit first";
-        if(selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
+
+    public static String pillage() {
+        if (selectedUnit == null) return "select a military unit first";
+        if (selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
         selectedUnit.setState(UnitState.Active);
         selectedUnit.setOrdered(true);
         selectedUnit.getCurrentHex().setPillaged(true);
-        if(!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
+        if (!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
         return "pillaged successfully";
     }
 
-    private static void reverseImprovement()
-    {
-        for(Improvement temp:selectedUnit.getCurrentHex().getImprovement())
-        {
-            String type=temp.getName();
-            switch(type)
-            {
+    private static void reverseImprovement() {
+        for (Improvement temp : selectedUnit.getCurrentHex().getImprovement()) {
+            String type = temp.getName();
+            switch (type) {
                 case "Camp":
                     Improvement.reverseCamp(selectedUnit.getCurrentHex());
                     break;
-                case "Farm":    
+                case "Farm":
                     Improvement.reverseFarm(selectedUnit.getCurrentHex());
                     break;
-                case "Mine":    
+                case "Mine":
                     Improvement.reverseMine(selectedUnit.getCurrentHex());
                     break;
-                case "Pasture":   
+                case "Pasture":
                     Improvement.reversePasture(selectedUnit.getCurrentHex());
                     break;
                 case "Plantation":
@@ -461,7 +469,7 @@ public class UnitController {
     public static void changeTurn() {
         for (int i = 0; i < unfinishedMovements.size(); i++) {
             if (unfinishedMovements.get(i).getUnit().getOwner() == getCurrentPlayer())
-            moveUnit(unfinishedMovements.get(i));
+                moveUnit(unfinishedMovements.get(i));
         }
     }
 }
