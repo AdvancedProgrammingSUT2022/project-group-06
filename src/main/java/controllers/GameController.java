@@ -459,8 +459,10 @@ public class GameController {
     public static void goldFromTerrains() {
         for (City city : currentPlayer.getCities()) {
             for (Hex hex : city.getHexs()) {
-                city.increaseGold(hex.getTerrain().getGold());
-                currentPlayer.increaseGold(hex.getTerrain().getGold());
+                if (hex.getHasCitizen()) {
+                    city.increaseGold(hex.getTerrain().getGold());
+                    currentPlayer.increaseGold(hex.getTerrain().getGold());
+                }
             }
         }
     }
@@ -531,16 +533,27 @@ public class GameController {
             }
         }//food production will stop if a settler unit is being implemented
 
-        for (Player player : players) {
-            for (City city : player.getCities()) {
-                if (player.getHappiness() >= 0) { //city growth stops if people are unhappy
-                    if (city.getFood() / player.getFoodForNewCitizen() > 5)
-                        player.setFoodForNewCitizen(player.getFoodForNewCitizen() * 2);
-                    city.increasePopulation(city.getFood() / player.getFoodForNewCitizen());//city growth
+
+            for (City city : currentPlayer.getCities()) {
+                if (currentPlayer.getHappiness() >= 0) { //city growth stops if people are unhappy
+                    if (city.getFood() / currentPlayer.getFoodForNewCitizen() > 5)
+                        currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
+                    implementNewCitizens(city, city.getFood() / currentPlayer.getFoodForNewCitizen());
                     city.decreaseFood(city.getFood());
                 }
             }
+
+    }
+
+    public static void implementNewCitizens(City city, int amount) {
+        city.increasePopulation(city.getFood() / currentPlayer.getFoodForNewCitizen());//city growth
+        for (Hex hex : city.getHexs()) {
+            if (!hex.getHasCitizen() && amount > 0) {
+                hex.setHasCitizen(true);
+                amount--;
+            }
         }
+        city.increaseNumberOfUnemployedCitizen(amount);
     }
 
     private static String unitActions() {
