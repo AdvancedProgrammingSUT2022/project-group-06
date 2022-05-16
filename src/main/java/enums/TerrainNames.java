@@ -2,13 +2,21 @@ package enums;
 
 public enum TerrainNames
 {
-    Coast(),
-    Desert(),
-    Grasslannd(),
-    Hills(),
-    Mountain(),
-    Ocean(),
-    Plains(),
-    Snow(),
-    Tundra();
+    Coast("Coast"),
+    Desert("Desert"),
+    Grasslannd("Grasslands"),
+    Hills("Hills"),
+    Mountain("Mountain"),
+    Ocean("Ocean"),
+    Plains("Plain"),
+    Snow("Snow"),
+    Tundra("Tundra");
+
+    private String character;
+    TerrainNames(String terrainNames) {
+        this.character = terrainNames;
+    }
+    public String getCharacter() {
+        return this.character;
+    }
 }

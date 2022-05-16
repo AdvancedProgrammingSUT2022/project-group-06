@@ -433,7 +433,8 @@ public class GameController {
         //working on tiles with river, beach and oasis increases gold
         for (City city : currentPlayer.getCities()) {
             for (Hex hex : city.getHexs()) {
-                if (hex.getHasCitizen() && (hex.isNextToAnyRiver() || hex.getTerrain().getName().equals(TerrainNames.Coast) || hex.getFeature().getName().equals(FeatureNames.Oasis)))
+                if (hex.getHasCitizen() && (hex.isNextToAnyRiver() || hex.getTerrain().getName().equals(TerrainNames.Coast.getCharacter())
+                        || (hex.getFeature() != null && hex.getFeature().getName().equals(FeatureNames.Oasis.getCharacter()))))
                     currentPlayer.increaseGold(2);
             }
         }

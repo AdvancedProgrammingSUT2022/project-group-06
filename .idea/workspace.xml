@@ -8,7 +8,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/UnitController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/enums/FeatureNames.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/FeatureNames.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/enums/TerrainNames.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/enums/TerrainNames.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

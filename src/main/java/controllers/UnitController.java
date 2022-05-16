@@ -106,11 +106,11 @@ public class UnitController {
             return "you don't have required technology for building roads";
         if (hex[x][y].hasRoad())
             return "this hex already has road";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain))
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
             return "you can't construct road on mountain";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean))
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
             return "you can't construct road on ocean";
-        if (hex[x][y].getFeature().getName().equals(FeatureNames.Ice))
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
             return "you can't build road on ice";
         Improvement road = new Improvement("Road", selectedUnit, hex[x][y]);
         road.setLeftTurns(3);
@@ -127,11 +127,11 @@ public class UnitController {
             return "you don't have required technology for building roads";
         if (hex[x][y].hasRailRoad())
             return "this hex already has railroad";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain))
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
             return "you can't construct railroad on mountain";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean))
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
             return "you can't construct railroad on ocean";
-        if (hex[x][y].getFeature().getName().equals(FeatureNames.Ice))
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
             return "you can't build railroad on ice";
 
         Improvement railroad = new Improvement("RailRoad", selectedUnit, hex[x][y]);
