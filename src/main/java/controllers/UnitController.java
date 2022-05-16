@@ -291,6 +291,41 @@ public class UnitController {
         return null;
     }
 
+    public static boolean checkForZOC(Hex current) {
+        int[][] direction = getDirection(current.getY());
+
+        for (int i = 0; i < direction.length; i++) {
+            for (int j = i + 1; j < direction.length; j++) {
+                Hex neighbor1, neighbor2;
+                if (!isOutOfBounds(current.getX() + direction[i][0], current.getY() + direction[i][1])
+                        && !isOutOfBounds(current.getX() + direction[j][0], current.getY() + direction[j][1])) {
+                    neighbor1 = hex[current.getX() + direction[i][0]][current.getY() + direction[i][1]];
+                    neighbor2 = hex[current.getX() + direction[j][0]][current.getY() + direction[j][1]];
+                    int[][] tempDirection1 = getDirection(neighbor1.getY());
+                    int[][] tempDirection2 = getDirection(neighbor2.getY());
+                    Hex hex1, hex2;
+
+                    for (int k1 = 0; k1 < tempDirection1.length; k1++) {
+                        if (!isOutOfBounds(neighbor1.getX() + tempDirection1[i][0], neighbor1.getY() + tempDirection1[i][1])) {
+                            hex1 = hex[neighbor1.getX() + tempDirection1[i][0]][neighbor1.getY() + tempDirection1[i][1]];
+                            if (hex1.getOwner() != null && hex1.getOwner() != getCurrentPlayer() && hex1.getMilitaryUnit() != null) {
+                                for (int k2 = 0; k2 < tempDirection2.length; k2++) {
+                                    if (!isOutOfBounds(neighbor2.getX() + tempDirection1[j][0], neighbor2.getY() + tempDirection1[j][1])) {
+                                        hex2 = hex[neighbor1.getX() + tempDirection1[i][0]][neighbor1.getY() + tempDirection1[i][1]];
+
+                                        if (hex2.getOwner() != null && hex2.getOwner() != getCurrentPlayer() && hex2.getMilitaryUnit() != null)
+                                            return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public static boolean checkForRiverOnWay(Movement movement, Hex nextHex) {
         int dx = nextHex.getX() - movement.getCurrentHex().getX();
         int dy = nextHex.getY() - movement.getCurrentHex().getY();
@@ -322,6 +357,8 @@ public class UnitController {
                 && (int) (hex[x][y].getTerrain().getMovePoint() * 0.2) >= 0)
             unit.decreaseMP((int) (hex[x][y].getTerrain().getMovePoint() * 0.2));
         else if (checkForRiverOnWay(movement, nextHex))
+            unit.setMP(0);
+        else if (checkForZOC(hex[x][y]))
             unit.setMP(0);
         else if (hex[x][y].getTerrain().getMovePoint() >= 0)
             unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
