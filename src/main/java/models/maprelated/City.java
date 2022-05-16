@@ -22,6 +22,7 @@ public class City implements Combatable {
     private int rangedCombatStrength = 8;
     private int meleeCombatStrength = 8;
     private int food;
+    private int changingFood;
     private int science;
     private int gold;
     private int production;
@@ -53,6 +54,7 @@ public class City implements Combatable {
         this.increaseGold(beginingHex.getTerrain().getGold());
         this.increaseProduction(beginingHex.getTerrain().getProduction());
         food = 0;
+        changingFood = 0;
         science = 0;
         gold = 40;
         production = 0;
@@ -311,5 +313,17 @@ public class City implements Combatable {
     }
     public void increaseHitPoint(int amount){
         this.hitPoint += amount;
+    }
+
+    public int getChangingFood() {
+        return this.changingFood;
+    }
+
+    public void increaseChangingFood(int amount) {
+        this.changingFood += amount;
+    }
+
+    public void decreaseChangingFood(int amount) {
+        this.changingFood -= amount;
     }
 }

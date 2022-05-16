@@ -426,8 +426,8 @@ public class GameController {
 
     public static void feedCitizens() {
         for (City city : currentPlayer.getCities()) {
-            currentPlayer.decreaseFood(city.getPopulation());
-            currentPlayer.increaseFood(city.getNumberOfUnemployedCitizen());
+            city.decreaseChangingFood(city.getPopulation());
+            city.increaseChangingFood(city.getNumberOfUnemployedCitizen());
         }
     }
 
@@ -509,24 +509,24 @@ public class GameController {
     }
 
     public static void addFoodFromTiles() {
+        currentPlayer.decreaseFood(currentPlayer.getFood());
         for (City city : currentPlayer.getCities()) {
+            city.increaseChangingFood(city.getFood());
             currentPlayer.increaseFood(city.getFood());
-        }
+        } //reset civilization food each turn
     }
 
     public static void growCity() {
-        for (Player player : players) {
-            for (Construction project : player.getUnfinishedProjects()) {
+            for (Construction project : currentPlayer.getUnfinishedProjects()) {
                 if (project instanceof Unit && project.getName().equals("Settler"))
                     ((Unit) project).getCurrentHex().getCity().decreaseFood(((Unit) project).getCurrentHex().getTerrain().getFood());
-            }
-        }//food production will stop if a settler unit is being implemented
+            }//food production will stop if a settler unit is being implemented
+
         for (City city : currentPlayer.getCities()) {
             if (currentPlayer.getHappiness() >= 0) { //city growth stops if people are unhappy
-                if (city.getFood() / currentPlayer.getFoodForNewCitizen() > 5)
+                if (city.getChangingFood() / currentPlayer.getFoodForNewCitizen() > 5)
                     currentPlayer.setFoodForNewCitizen(currentPlayer.getFoodForNewCitizen() * 2);
-                implementNewCitizens(city, city.getFood() / currentPlayer.getFoodForNewCitizen());
-                city.decreaseFood(city.getFood());
+                implementNewCitizens(city, city.getChangingFood()/ currentPlayer.getFoodForNewCitizen());
             }
         }
     }
