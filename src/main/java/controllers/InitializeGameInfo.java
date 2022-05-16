@@ -252,9 +252,6 @@ public class InitializeGameInfo {
     }
 
     public static void run() {
-/*        new Player("A");
-        new Player("B");
-        new Player("C");*/
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
@@ -262,9 +259,6 @@ public class InitializeGameInfo {
         initializeHashMap();
         initializeUnitInfo();
         initializeGameWorld();
-       
-        
-
     }
 
     public static void initializeGameWorld() {
@@ -273,36 +267,8 @@ public class InitializeGameInfo {
         initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeRiver(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeCivilizations(numberOFPlayers, world.getHexInHeight(), world.getHexInWidth());
-        //printResource();
-        //players.get(0).addToRevealedHexes(world.getHex()[0][0]);
     }
-/*    private void initializePlayerTiles() {
-        Player[] players = new Player[2];
-        players[0] = new Player("A");
-        players[1] = new Player("B");
-        world.getHex()[0][0].setOwner(players[0]);
-        world.getHex()[0][1].setOwner(players[1]);
-    }*/
 
-    /*    private static void printResource() {
-            Hex[][] hex = world.getHex();
-            for (int i = 0; i < world.getHexInHeight(); i++) {
-                for (int j = 0; j < world.getHexInWidth(); j++) {
-                    System.out.print("terrain: "+hex[i][j].getTerrain().getName());
-                    if (hex[i][j].getResource() != null) {
-                        System.out.print(" resource: " + hex[i][j].getResource().getName());
-                    }
-                    if (hex[i][j].getFeature() != null) {
-                        System.out.print(" feature: " + hex[i][j].getFeature().getName());
-                    }
-                    if (hex[i][j].getImprovement() != null) {
-                        System.out.print(" improvement: " + hex[i][j].getImprovement());
-                    }
-                    System.out.println(" x,y:"+i + " "+ j);
-
-                }
-            }
-        }*/
     private static String randomPickAName(ArrayList<String> names) {
         return names.get(Math.abs(Math.abs(random.nextInt())) % names.size());
     }
@@ -461,16 +427,9 @@ public class InitializeGameInfo {
     }
 
     private static void setPlayerHex(ArrayList<Hex> playerHex, Player player) {
-/*        for (int i = 0; i < playerHex.size(); i++) {
-            System.out.println(playerHex.get(i).getX()+ " " + playerHex.get(i).getY());
-        }
-        System.out.println(playerHex.size());
-        System.out.println("===================");*/
         for (Hex hex : playerHex) {
-            //hex.setOwner(player);
             hex.setState(HexState.Visible,player);
         }
-
     }
 
 

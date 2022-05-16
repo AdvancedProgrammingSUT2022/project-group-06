@@ -7,6 +7,7 @@ import java.util.Objects;
 import controllers.CityController;
 import controllers.CombatController;
 import controllers.GameController;
+import controllers.UnitController;
 import enums.HexState;
 import models.Player;
 import models.gainable.Building;
@@ -143,15 +144,7 @@ public class City implements Combatable {
         }
         return res;
     }
-    /*        int[][] direction = GameController.getDirection(y);
-            for (int i = 0; i < direction.length; i++) {
-                x = x + direction[x][0];
-                y = y + direction[y][1];
-                int[][]  secondDirection = GameController.getDirection(y);
-                for (int j = 0; j < direction.length; j++) {
-                    if()
-                }
-            }*/
+
     @Override
     public int getX() {
         return capital.getX();
@@ -197,7 +190,9 @@ public class City implements Combatable {
     }
 
     public static String deleteCity(City city){
-        //todo : if garrison delete the unit from all unit list
+        if(city.getCapital().getMilitaryUnit()!= null){
+            UnitController.deleteMilitaryUnit(city.getCapital().getMilitaryUnit());
+        }
         if(city.getOwner().getMainCity() == city){
             CombatController.addCityToTerritory(city,GameController.getCurrentPlayer());
             return "this city is the main city of the opp civilization you can not delete this we will add this to your cities";

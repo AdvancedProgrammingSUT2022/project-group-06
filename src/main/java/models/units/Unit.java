@@ -32,7 +32,6 @@ public class Unit implements Combatable , Construction
     protected int neededProduction=10;
     protected int defenciveBounes = 0;
     protected boolean ordered = false;
-   // protected boolean isFortifiedUntilHeal= false;
 
     //todo: set combat type
     public int getNeededProduction()
@@ -51,14 +50,6 @@ public class Unit implements Combatable , Construction
 
     protected boolean isFirstFortify = true;
     int leftTurns;
-
-/*    public boolean isFortifiedUntilHeal() {
-        return isFortifiedUntilHeal;
-    }
-
-    public void setFortifiedUntilHeal(boolean fortifiedUntilHeal) {
-        isFortifiedUntilHeal = fortifiedUntilHeal;
-    }*/
 
 
     public void setMP(int amount)
@@ -163,9 +154,6 @@ public class Unit implements Combatable , Construction
     }
 
     public int calculateCombatModifier(Combatable defender) {
-/*        System.out.println("terrain: " + this.currentHex.getTerrain().getCombatModifiersPercentage());
-        if(this.state == UnitState.Fortified) System.out.println((this.isFirstFortify()) ? 25 : 50);
-        System.out.println("asib: :"+ (1 - (this.health / this.maxHealth)) * 100);*/
         combatStrength = combatStrength* (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) /100;
         combatStrength =combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) /100;
         return this.combatStrength;

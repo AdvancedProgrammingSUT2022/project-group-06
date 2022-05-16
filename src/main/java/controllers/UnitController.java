@@ -198,6 +198,8 @@ public class UnitController {
         }if(selectedUnit.getCurrentHex().getOwner() != GameController.getCurrentPlayer()){
             return ("this is not your city");
         }
+        selectedUnit.setOrdered(true);
+        selectedUnit.setState(UnitState.Garrisoned);
         return "garrisoned successfully";
     }
 

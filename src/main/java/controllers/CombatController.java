@@ -26,12 +26,9 @@ public class CombatController {
         if(! GameController.getSelectedCity().isInPossibleCombatRange(x, y, 0, GameController.getSelectedCity().getX(), GameController.getSelectedCity().getY())) {
             return "out of range";
         }
-        //System.out.println( GameController.getSelectedCity().getHitPoint()+" "+  GameController.getSelectedCity().getRangedCombatStrength());
-        //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
         int temp =  GameController.getSelectedCity().getRangedCombatStrength();
         temp -=  hex[x][y].getMilitaryUnit().getDefenciveBounes();
         hex[x][y].getMilitaryUnit().decreaseHealth(temp);
-        //System.out.println(hex[x][y].getMilitaryUnit().getHealth());
         if(hex[x][y].getMilitaryUnit().getHealth()<=0){
             UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
             return "city win";
@@ -53,8 +50,6 @@ public class CombatController {
         if(!attacker.isInPossibleCombatRange(x, y,0, attacker.getX(), attacker.getY())){
             return "out of sight range";
         }
-/*        attacker.attack(calculateCombatModifier());
-        defender.defend(calculateCombatModifier());*/
         return  handelCombatType(defenderCity, x, y);
     }
 
@@ -91,21 +86,14 @@ public class CombatController {
     }
 
     private static String meleeCityCombat(City city) {
-        //Military temp = new Military("Scout",hex[0][0],GameController.getCurrentPlayer());
-        //hex[0][0].setMilitaryUnit(temp);
-        //System.out.println("meleCombat"+UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
-        //handel tile train and feature
         int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
         int cityStrength = city.getMeleeCombatStrength();
         //todo : saze defaie divar
         if(city.getCapital().getMilitaryUnit() != null){
-            //System.out.println("ll"+city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker));
             cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
         }
-        //System.out.println(cityStrength+ " "+unitStrength);
         city.decreaseHitPoint(unitStrength);
         UnitController.getSelectedUnit().decreaseHealth(cityStrength);
-        //System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() > 0) {
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             return "you lose the battle unit is death";
@@ -125,17 +113,13 @@ public class CombatController {
     }
 
     private static String rangedCityCombat(City city) {
-        //System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
-        // handel tile train and feature
         int unitStrength = ((Ranged)UnitController.getSelectedUnit()).calculateRangedAttackStrength();
-         //System.out.println(unitStrength);
         //todo :saze defaie divar
         city.decreaseHitPoint(unitStrength);
         if (city.getHitPoint() < 1) {
             city.setHitPoint(1);
         }
-        //System.out.println(UnitController.getSelectedUnit().getHealth()+" "+city.getHitPoint() );
         UnitController.getSelectedUnit().setMP(0);
         return "attack is done";
     }

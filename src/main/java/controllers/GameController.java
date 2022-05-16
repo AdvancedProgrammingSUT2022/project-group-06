@@ -70,40 +70,6 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
-//        hex[0][0] = new Hex(0,0 , new Terrain("Grassland"),null);
-//        hex[0][0].setState(HexState.Visible,currentPlayer);
-//        hex[0][0].setState(HexState.Visible, players.get(1));
-//        hex[1][0] = new Hex(1,0 , new Terrain("Hills"),null);
-//        Military warrior= new Military("Warrior", world.getHex()[1][0], players.get(1));
-//        warrior.setCombatStrength(10000);
-//        hex[1][0].setState(HexState.Visible,currentPlayer);
-//        hex[1][0].setState(HexState.Visible, players.get(1));
-//
-//        //UnitController.makeUnit("Archer",hex[0][0]);
-//        //hex[1][1].setState(HexState.Visible,currentPlayer);
-//        //Worker worker = new Worker("Worker", hex[1][1] ,GameController.currentPlayer);
-//        //hex[1][1].setPillaged(true);
-///*        Improvement improvement = new Improvement("Mine",worker,hex[1][1]);
-//        City city2 =makeCityForTesting(5, 7,"aseman");
-//        hex[1][1].setCity(city2);
-//        improvement.build();*/
-//        //City city1 = makeCityForTesting(0, 0,"asy");
-///*        city1.addHex(world.getHex()[0][1]);
-//        City city2 =makeCityForTesting(5, 7,"aseman");
-//        City city3 =makeCityForTesting(1, 2,"asemane");
-//        world.getHex()[0][1].setState(HexState.Visible, currentPlayer);*/
-///*        Siege siege = new Siege("Catapult", world.getHex()[1][0], players.get(1));
-//        world.getHex()[1][0].setMilitaryUnit(siege);
-//        world.getHex()[1][0].setState(HexState.Visible, currentPlayer);*/
-    }
-
-    private static City makeCityForTesting(int x, int y, String name) {
-        City city = new City(players.get(0), name, world.getHex()[x][y]);
-        world.getHex()[x][y].setCity(city);
-        world.getHex()[x][y].setState(HexState.Visible, currentPlayer);
-        currentPlayer.addCity(city);
-        City.addCities(city);
-        return city;
     }
 
     private static void removeOwnerOfHexes() {
@@ -192,7 +158,6 @@ public class GameController {
         if (x < 0 || y < 0 || x >= world.getHexInHeight() || y >= world.getHexInWidth()) {
             return "oops invalid cell!";
         }
-        //if(hex[x][y].getState(currentPlayer) == HexState.FogOfWar) return "he zerange inja fog of ware";
         return getString(x, y, y, x);
     }
 
@@ -289,6 +254,7 @@ public class GameController {
         int x = hex.getX(), y = hex.getY();
         String color = "\u001b[48;5;243m";
         int align = y % 2 == 1 ? 3 : 0;
+
         for (int i = hexHeight * x; i < hexHeight * (x + 1); i++) {
             int k = i % hexHeight < 3 ? Math.abs((i % hexHeight) - 2) : Math.abs((i % hexHeight) - 3);
             for (int j = (hexWidth - 2) * y + k; j < (hexWidth - 2) * y + hexWidth - k + 1; j++) {
@@ -301,6 +267,8 @@ public class GameController {
                 } else string[i + align][j] = color + " " + Color.ANSI_RESET.getCharacter();
             }
         }
+        string[hexHeight * x + 2 + align][(hexWidth - 2) * y + 4] = color + hex.getX() % 10 + Color.ANSI_RESET.getCharacter();
+        string[hexHeight * x + 2 + align][(hexWidth - 2) * y + 8] = color + hex.getY() % 10 + Color.ANSI_RESET.getCharacter();
     }
 
     private static void initializeString(int[] mapBoundaries, String[][] string) {
@@ -547,13 +515,13 @@ public class GameController {
 
     private static String unitActions() {
         for (Military military : currentPlayer.getMilitaries()) {
-            if ((military.getState() == UnitState.Active) && !military.isOrdered()) {
-                if (military.getState() == UnitState.Alert) {
-                    if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
-                        return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
-                    }
-                } else
+            if (military.getState() == UnitState.Alert && !military.isOrdered()) {
+                if (enemyIsNear(getDirection(military.getY()), military.getX(), military.getY())){
                     return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
+                }
+            }
+            if ((military.getState() == UnitState.Active) && !military.isOrdered()) {
+                return "unit in " + military.getX() + "," + military.getY() + "coordinates needs order";
             }
         }
         for (Civilian civilian : currentPlayer.getCivilians()) {
