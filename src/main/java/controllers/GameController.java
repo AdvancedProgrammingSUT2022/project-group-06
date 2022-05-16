@@ -518,7 +518,10 @@ public class GameController {
     public static void addFoodFromTiles() {
             for (City city : currentPlayer.getCities()) {
                 for (Hex hex : city.getHexs()) {
-                    city.increaseFood(hex.getTerrain().getFood());
+                    if (hex.getHasCitizen()) {
+                        city.increaseFood(hex.getTerrain().getFood());
+                        currentPlayer.increaseFood(hex.getTerrain().getFood());
+                    }
                 }
             }
     }
@@ -1272,11 +1275,10 @@ public class GameController {
         return true;
     }
 
-    public static String stopWorkingOnTechnology() {
+    public static void stopWorkingOnTechnology() {
         currentPlayer.addArchivedTechnology(currentPlayer.getCurrentResearch());
         currentPlayer.getUnfinishedProjects().remove(currentPlayer.getCurrentResearch());
         currentPlayer.setCurrentResearch(null);
-        return "stopped working on this technology";
     }
 
     public static String startWorkingOnTechnology(String name) {
