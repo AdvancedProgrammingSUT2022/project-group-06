@@ -455,6 +455,15 @@ public class GameController {
         }
     }
 
+    public static void goldFromTerrains() {
+        for (City city : currentPlayer.getCities()) {
+            for (Hex hex : city.getHexs()) {
+                city.increaseGold(hex.getTerrain().getGold());
+                currentPlayer.increaseGold(hex.getTerrain().getGold());
+            }
+        }
+    }
+
     public static String changeTurn() {
         String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;
@@ -464,6 +473,7 @@ public class GameController {
         }
         currentPlayer.increaseGold(goldPerTurn);///////////////////////////////////////////////////
         //todo: complete followings
+        goldFromTerrains();
         productionFromTerrains();
         feedCitizens();
         growCity();

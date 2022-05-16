@@ -424,6 +424,25 @@ public class UnitController {
         return hex[unit.getCurrentHex().getX() + direction[0]][unit.getCurrentHex().getY() + direction[1]];
     }
 
+    public static String promoteUnit(int x, int y) {
+        if (isOutOfBounds(x, y))
+            return "invalid location";
+        if (hex[x][y].getMilitaryUnit() == null)
+            return "there is no military unit in this tile";
+        if (getCurrentPlayer().getGold() < 10)
+            return "you don't have enough gold";
+
+        Military military = hex[x][y].getMilitaryUnit();
+        military.setCombatStrength(military.getCombatStrength() + 1);//promote military unit
+        getCurrentPlayer().decreaseGold(10);
+        if (hex[x][y].getCity().getGold() >= 10)
+            hex[x][y].getCity().decreaseGold(10);
+        else
+            hex[x][y].getCity().decreaseGold(hex[x][y].getCity().getGold());
+
+        return "unit promoted successfully";
+    }
+
     public static void changeTurn() {
         for (int i = 0; i < unfinishedMovements.size(); i++) {
             if (unfinishedMovements.get(i).getUnit().getOwner() == getCurrentPlayer())

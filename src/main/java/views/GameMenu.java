@@ -112,6 +112,8 @@ public class GameMenu extends Menu {
                 System.out.println(CityController.removeCitizenFromWork(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if ((matcher = getMatcher("lock an citizen to (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 System.out.println(CityController.lockCitizenTo(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
+            } else if ((matcher = getMatcher("promote unit -c (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
+                System.out.println(UnitController.promoteUnit(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y"))));
             } else if (command.equals("show unemployed citizens")) {
                 System.out.println(CityController.showUnEmployedCitizen());
             }else if (command.equals("exit menu"))
