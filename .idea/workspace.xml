@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="ce7ff9d2-8769-41a5-9142-c425fcc8da56" name="Changes" comment="add happiness">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/CityController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/GameController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/City.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/maprelated/Hex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/views/GameMenu.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,6 +127,7 @@
       <workItem from="1652627680485" duration="4989000" />
       <workItem from="1652642638743" duration="284000" />
       <workItem from="1652691026815" duration="2751000" />
+      <workItem from="1652706037060" duration="1613000" />
     </task>
     <task id="LOCAL-00001" summary="add happiness">
       <created>1651564842058</created>
