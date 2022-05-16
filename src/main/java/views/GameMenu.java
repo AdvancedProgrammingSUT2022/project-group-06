@@ -314,7 +314,7 @@ public class GameMenu extends Menu {
             } else if ((matcher = getMatcher("construct road (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null) {
                 constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             } else if ((matcher = getMatcher("construct railroad (--coordinates|-c) (?<x>-?\\d+) (?<y>-?\\d+)", command)) != null){
-                constructRoadView(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
+                constructRailroadMenu(Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")));
             }else if(command.equals("wake")) {
                 System.out.println(UnitController.wakeUpUnit());
             } else if(command.equals("delete")){

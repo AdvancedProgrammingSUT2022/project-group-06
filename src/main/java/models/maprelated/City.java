@@ -53,6 +53,7 @@ public class City implements Combatable {
         gold = 40;
         production = 0;
         hexs.add(beginingHex);
+        this.food += beginingHex.getTerrain().getFood();
         beginingHex.setOwner(owner);
         beginingHex.setCity(this);
         this.capital = beginingHex;
@@ -186,6 +187,7 @@ public class City implements Combatable {
         hex.setOwner(this.owner);
         hex.setCity(this);
         hexs.add(hex);
+        this.food += hex.getTerrain().getFood();
     }
 
     public static void deleteCity(City city){

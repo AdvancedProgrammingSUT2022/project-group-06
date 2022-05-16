@@ -516,14 +516,9 @@ public class GameController {
     }
 
     public static void addFoodFromTiles() {
-            for (City city : currentPlayer.getCities()) {
-                for (Hex hex : city.getHexs()) {
-                    if (hex.getHasCitizen()) {
-                        city.increaseFood(hex.getTerrain().getFood());
-                        currentPlayer.increaseFood(hex.getTerrain().getFood());
-                    }
-                }
-            }
+        for (City city : currentPlayer.getCities()) {
+            currentPlayer.increaseFood(city.getFood());
+        }
     }
 
     public static void growCity() {
