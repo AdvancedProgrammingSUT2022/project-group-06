@@ -6,6 +6,7 @@ public enum Menus {
     PROFILE(""),
     MAIN(""),
     GAME(""),
+    GAMEMenu("game-page"),
     SETTING(""),
     GAMEOVER("");
 

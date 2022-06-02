@@ -11,7 +11,7 @@ import project.civilization.CivilizationApplication;
 import java.io.FileNotFoundException;
 import java.net.URL;
 
-public class LoginPage {
+public class LoginPage extends GameMenus{
     public Text error;
     @FXML
     private Button loginButton;

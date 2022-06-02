@@ -20,11 +20,11 @@ public class CivilizationApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = loadFXML(Menus.LOGIN);
+        Parent root = loadFXML(Menus.GAMEMenu);
         assert root != null;
         Scene scene = new Scene(root );
         CivilizationApplication.scene = scene;
-        stage.setTitle("Cuphead");
+        stage.setTitle("Civilization");
         stage.setScene(scene);
         stage.show();
         Music.addMusic("songs/start.mp3");
@@ -36,6 +36,10 @@ public class CivilizationApplication extends Application {
         LoginMenu loginMenu = new LoginMenu();
         UserController.importSavedUsers();
         loginMenu.run(scanner);*/
+    }
+    public static void changeMenu(Menus menuName){
+        Parent root = loadFXML(menuName);
+        CivilizationApplication.scene.setRoot(root);
     }
 
     private static Parent loadFXML(Menus menuName){

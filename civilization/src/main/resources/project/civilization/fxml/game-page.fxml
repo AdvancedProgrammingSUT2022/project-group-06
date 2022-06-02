@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.civilization.views.GamePage"
+            prefHeight="400.0" prefWidth="600.0"
+            fx:id="borderPane">
+    <center>
+
+        <VBox spacing="10" alignment="CENTER" maxWidth="350">
+            <Label text="number of players"/>
+            <TextField fx:id="numberOfPlayers" promptText="enter number of players you want to play with" />
+            <Label text="number of players"/>
+            <Label text="choose a map size"/>
+            <Button text="level 1" />
+            <Button text="level 2" />
+            <Button text="level 3" onMouseClicked="#backToMain"/>
+            <ChoiceBox fx:id="mapSize"/>
+            <Button fx:id="backToMAinButton" text="Back" onMouseClicked="#backToMain"/>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>
+
