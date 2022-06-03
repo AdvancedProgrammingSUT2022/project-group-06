@@ -38,6 +38,10 @@ label{
     -fx-text-fill: #0f1010;
 }
 
+.menu-bar{
+    -fx-background-image: url("../pictures/menu_background/2.jfif");
+    -fx-background-position: center center;
+}
 #title{
     -fx-font-size: 50;
     -fx-font-weight: bold;

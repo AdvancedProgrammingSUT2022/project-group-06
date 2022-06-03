@@ -8,7 +8,7 @@ public enum Menus {
     GAME(""),
     GAMEMenu("game-page"),
     SETTING(""),
-    GAMEOVER("");
+    GAMEOVER(""), LOADGAME("load-game-page");
 
     private final String character;
 

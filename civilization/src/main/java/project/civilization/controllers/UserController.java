@@ -4,12 +4,16 @@ package project.civilization.controllers;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import project.civilization.CivilizationApplication;
 import project.civilization.models.User;
 import project.civilization.views.LoginMenu;
 
@@ -58,10 +62,12 @@ public class UserController {
 
     public static void saveUsers() {
         try {
-
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UserInfo.txt")).toExternalForm());
+            File file = new File(Objects.requireNonNull(address.toExternalForm()));
+            /*String user = new String(Files.readAllBytes(Paths.get(address.toURI())));
             String resourceName = "files/UserInfo.txt";
             ClassLoader classLoader = LoginMenu.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
+            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());*/
 
 
             PrintWriter user = new PrintWriter(file);
@@ -83,10 +89,8 @@ public class UserController {
 
     public static void importSavedUsers() {
         try {
-            String resourceName = "files/UserInfo.txt";
-            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            String user = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UserInfo.txt")).toExternalForm());
+            String user = new String(Files.readAllBytes(Paths.get(address.toURI())));
             if (user.equals("")) {
                 return;
             }
@@ -102,7 +106,7 @@ public class UserController {
                 nicknames.add(Nickname);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

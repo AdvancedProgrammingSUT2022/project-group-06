@@ -1,6 +1,7 @@
 package project.civilization.controllers;
 
 
+import project.civilization.CivilizationApplication;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
 import project.civilization.models.Player;
@@ -8,6 +9,8 @@ import project.civilization.models.maprelated.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -83,10 +86,8 @@ public class InitializeGameInfo {
 
     public static void initializeUnitInfo() {
         try {
-            String resourceName = "files/UnitInfo.txt";
-            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            String readUnitInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UnitInfo.txt")).toExternalForm());
+            String readUnitInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readUnitInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -110,7 +111,7 @@ public class InitializeGameInfo {
                 unitInfo.put(name, info);
 
             }
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -118,10 +119,8 @@ public class InitializeGameInfo {
 
     public static void initializeTerrainInfo() {
         try {
-            String resourceName = "files/TerrainInfo.txt";
-            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            String readTerrainInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/TerrainInfo.txt")).toExternalForm());
+            String readTerrainInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
 
             String[] readInfo = readTerrainInfo.split("\n");
             for (String temp : readInfo) {
@@ -133,7 +132,7 @@ public class InitializeGameInfo {
                 terrainInfo.put(name, info);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -141,10 +140,8 @@ public class InitializeGameInfo {
 
     public static void initializeFeatureInfo() {
         try {
-            String resourceName = "files/FeatureInfo.txt";
-            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            String readFeatureInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/FeatureInfo.txt")).toExternalForm());
+            String readFeatureInfo= new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readFeatureInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -154,7 +151,7 @@ public class InitializeGameInfo {
 
                 featureInfo.put(name, info);
             }
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -162,10 +159,8 @@ public class InitializeGameInfo {
 
     public static void initializeTechnologyInfo() {
         try {
-            String resourceName = "files/TechnologyInfo.txt";
-            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/TechnologyInfo.txt")).toExternalForm());
+            String readTechnologyInfo= new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readTechnologyInfo.split("\n");
             ArrayList<String> setArray = new ArrayList<String>();
             for (String temp : readInfo) {
@@ -186,7 +181,7 @@ public class InitializeGameInfo {
                 }
             }
 
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -194,10 +189,8 @@ public class InitializeGameInfo {
 
     public static void initializeResourceInfo() {
         try {
-            String resourceName = "files/ResourceInfo.txt";
-            ClassLoader classLoader = InitializeGameInfo.class.getClassLoader();
-            File file = new File(Objects.requireNonNull(classLoader.getResource(resourceName)).getFile());
-            String readResourceInfo = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/ResourceInfo.txt")).toExternalForm());
+            String readResourceInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readResourceInfo.split("\n");
             for (String temp : readInfo) {
 
@@ -225,7 +218,7 @@ public class InitializeGameInfo {
 
                 resourceInfo.put(name, info);
             }
-        } catch (IOException e) {
+        } catch (IOException | URISyntaxException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
