@@ -432,7 +432,6 @@ public class InitializeGameInfo {
         String[] size = mapSize.split("\\*");
         int hexInHeight = Integer.parseInt(size[0]);
         int hexInWidth = Integer.parseInt(size[1]);
-        System.out.println(hexInWidth+" "+hexInHeight);
         world.setHexInHeight(hexInHeight);
         world.setWorldWidth(hexInWidth);
     }
