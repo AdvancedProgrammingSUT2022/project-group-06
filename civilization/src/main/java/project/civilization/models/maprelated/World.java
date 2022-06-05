@@ -1,5 +1,6 @@
 package project.civilization.models.maprelated;
 
+import com.google.gson.annotations.Expose;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
 import project.civilization.models.Player;
@@ -7,14 +8,18 @@ import project.civilization.models.Player;
 import java.util.*;
 
 public class World {
-    private final int worldWidth;
-    private final int worldHeight;
-    private final String[][] string;
-
-    private final int hexInWidth;
-    private final int hexInHeight;
-    private final Hex[][] hex;
-    //public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
+    @Expose
+    private int worldWidth;
+    @Expose
+    private int worldHeight;
+    @Expose
+    private String[][] string;
+    @Expose
+    private int hexInWidth;
+    @Expose
+    private int hexInHeight;
+    @Expose
+    private Hex[][] hex;
 
     public World() {
         worldWidth = 120;
@@ -48,5 +53,29 @@ public class World {
     public int getHexInWidth() {
         return hexInWidth;
     }
+    public void setWorldWidth(int worldWidth) {
+        this.worldWidth = worldWidth;
+    }
+
+    public void setWorldHeight(int worldHeight) {
+        this.worldHeight = worldHeight;
+    }
+
+    public void setString(String[][] string) {
+        this.string = string;
+    }
+
+    public void setHexInWidth(int hexInWidth) {
+        this.hexInWidth = hexInWidth;
+    }
+
+    public void setHexInHeight(int hexInHeight) {
+        this.hexInHeight = hexInHeight;
+    }
+
+    public void setHex(Hex[][] hex) {
+        this.hex = hex;
+    }
+
 
 }

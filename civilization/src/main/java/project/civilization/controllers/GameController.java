@@ -2,20 +2,27 @@ package project.civilization.controllers;
 
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
+import com.google.gson.graph.GraphAdapterBuilder;
 import project.civilization.enums.*;
+import project.civilization.models.Game;
 import project.civilization.models.Player;
+import project.civilization.models.User;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
 import project.civilization.models.gainable.Technology;
-import project.civilization.models.maprelated.City;
-import project.civilization.models.maprelated.Hex;
-import project.civilization.models.maprelated.Movement;
-import project.civilization.models.maprelated.World;
+import project.civilization.models.maprelated.*;
 import project.civilization.models.units.Civilian;
 import project.civilization.models.units.Military;
 import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
+
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class GameController {
@@ -31,7 +38,7 @@ public class GameController {
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
-
+    private static ArrayList<Game> allGames = new ArrayList<>();
     public static int getTurn() {
         return turn;
     }
@@ -78,6 +85,8 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
+        hex[0][0].setState(HexState.Visible,players.get(0));
     }
 
     private static void removeOwnerOfHexes() {
@@ -1392,6 +1401,26 @@ public class GameController {
         UnitController.makeUnit(name, GameController.getSelectedHex(), "gold");
         return "Unit created successfully";
 
+    }
+
+    public static String saveGame(String gameName) {
+        Game game = new Game(gameName,hex);
+        allGames.add(game);
+        FileWriter fileWriter;
+        try {
+            fileWriter = new FileWriter("games.json");
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
+            fileWriter.write(gson.toJson(hex));
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "saved successfully";
+    }
+
+    public static String loadGame(String GameName) {
+        return "there is no game with this name";
     }
 
 }

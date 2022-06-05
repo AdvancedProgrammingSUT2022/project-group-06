@@ -1,7 +1,13 @@
 package project.civilization.enums;
 
-public enum HexState {
+import java.io.Serializable;
+
+public enum HexState implements Serializable {
     Visible(),
     Revealed(),
     FogOfWar();
+
+    public String getState(){
+        return this.name();
+    }
 }

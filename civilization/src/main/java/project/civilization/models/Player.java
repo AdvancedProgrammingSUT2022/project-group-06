@@ -2,6 +2,8 @@ package project.civilization.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.HexState;
 import project.civilization.models.gainable.Construction;
@@ -14,31 +16,43 @@ import project.civilization.models.units.Civilian;
 import project.civilization.models.units.Military;
 import project.civilization.models.units.Unit;
 
-public class Player {//-currentProject
-    private static ArrayList<String> technologies = new ArrayList<String>();
-    private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
-
+public class Player {
+    @Expose
     private int gold = 129;
+    @Expose
     private int happiness;
+    @Expose
     private int production;
+    @Expose
     private int food;
+    @Expose
     private int trophies;
+    @Expose
     private int population;
+    @Expose
     private int foodForNewCitizen;
+    @Expose
+    private String name;
+    @Expose
+    private int score;
+    @Expose
+    private ArrayList<String> notifications = new ArrayList<String>();
+    @Expose
+    private static ArrayList<String> technologies = new ArrayList<String>();
+    @Expose
+    private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
+    @Expose
+    private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
+
     private ArrayList<Unit> units = new ArrayList<Unit>();
     private ArrayList<City> cities = new ArrayList<City>();
-    private int score;
     private ArrayList<Trade> trades = new ArrayList<Trade>();
-    private ArrayList<String> notifications = new ArrayList<String>();
-    private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
     private ArrayList<Combat> combats = new ArrayList<Combat>();
     private ArrayList<Military> militaries = new ArrayList<Military>();
     private ArrayList<Civilian> civilians = new ArrayList<Civilian>();
-    private String name;
     private ArrayList<Construction> unfinishedProjects = new ArrayList<Construction>();
     private ArrayList<Technology> archivedTechnologies = new ArrayList<>();
     private City mainCity;
-
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
     private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();

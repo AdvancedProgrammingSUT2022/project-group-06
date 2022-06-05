@@ -16,17 +16,17 @@
 
         <VBox spacing="10" alignment="CENTER" maxWidth="350">
             <Text fx:id="error"/>
+            <TilePane alignment="CENTER">
+                <Label text="number of players"/>
+                <ChoiceBox fx:id="numberOfPlayer"/>
+            </TilePane>
+            <TilePane alignment="CENTER">
+            <Label text="map size "/>
+            <ChoiceBox fx:id="mapSize"/>
+            </TilePane>
             <VBox fx:id="invitationBox" spacing="10" alignment="CENTER" maxWidth="350">
                 <Button text="challenge a friend" onMouseClicked="#changeUsername"/>
             </VBox>
-            <Label text="number of players"/>
-            <TextField fx:id="numberOfPlayers" promptText="enter number of players you want to play with" />
-            <Label text="number of players"/>
-            <Label text="choose a map size"/>
-            <Button text="level 1" />
-            <Button text="level 2" />
-            <Button text="level 3" onMouseClicked="#backToMain"/>
-            <ChoiceBox fx:id="mapSize"/>
             <Button text="load a game" onMouseClicked="#loadGame"/>
             <Button fx:id="backToMAinButton" text="Back" onMouseClicked="#backToMain"/>
 

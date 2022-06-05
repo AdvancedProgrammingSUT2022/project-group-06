@@ -1,13 +1,19 @@
 package project.civilization.models.maprelated;
+import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
 public class Feature {
-
+    @Expose
     private String name;
+    @Expose
     private int food;
+    @Expose
     private int production;
+    @Expose
     private int gold;
+    @Expose
     private int movePoint;
+    @Expose
     private int combatModifiersPercentage;
 
     public Feature(String name) {

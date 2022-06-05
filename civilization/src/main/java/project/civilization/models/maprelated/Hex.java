@@ -1,5 +1,6 @@
 package project.civilization.models.maprelated;
 
+import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.Color;
@@ -14,23 +15,37 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Hex {
+    @Expose
     private int x;
+    @Expose
     private int y;
+    @Expose
+    private boolean[] hasRiver = new boolean[]{false, false, false, false};
+    @Expose
+    private boolean hasCitizen = false;
+    @Expose
+    private boolean hasRoad;
+    @Expose
+    private boolean hasRailRoad;
+    @Expose
+    private boolean isPillaged = false;
+    @Expose
     private Player owner = null;
+    @Expose
     private Terrain terrain;
+    @Expose
     private Feature feature;
+    @Expose
     private Resource resource;
+    @Expose
+    private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
+
+    private ArrayList<Improvement> improvements = new ArrayList<Improvement>();
     private Military militaryUnit;
     private Civilian civilianUnit;
-    private boolean[] hasRiver = new boolean[]{false, false, false, false};
-    private boolean hasCitizen = false;
     private City capital = null;
     private City city = null;
-    private boolean hasRoad;
-    private boolean hasRailRoad;
-    private boolean isPillaged = false;
-    private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
-    private ArrayList<Improvement> improvements = new ArrayList<Improvement>();
+
 
     public void setFeature(Feature newFeature) {
         feature = newFeature;

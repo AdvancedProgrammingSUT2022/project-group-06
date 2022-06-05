@@ -31,11 +31,12 @@ public class CivilizationApplication extends Application {
     }
 
     public static void main(String[] args) {
-        //launch();
+        launch();
+        /*
         Scanner scanner = new Scanner(System.in);
         LoginMenu loginMenu = new LoginMenu();
         UserController.importSavedUsers();
-        loginMenu.run(scanner);
+        loginMenu.run(scanner);*/
     }
     public static void changeMenu(Menus menuName){
         Parent root = loadFXML(menuName);
