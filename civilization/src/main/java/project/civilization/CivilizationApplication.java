@@ -24,8 +24,7 @@ public class CivilizationApplication extends Application {
     public void start(Stage stage) throws IOException {
 //        Parent root = loadFXML(Menus.GAMEMenu);
         //TODO:
-        Parent root = loadFXML(Menus.CHAT);
-        ChatMenu.setPane((BorderPane) root);
+        Parent root = loadFXML(Menus.CHATNAVIGATION);
 
         assert root != null;
         Scene scene = new Scene(root );
@@ -45,7 +44,7 @@ public class CivilizationApplication extends Application {
     }
     public static void changeMenu(Menus menuName){
         Parent root = loadFXML(menuName);
-        if (menuName.equals("chat-page"))
+        if (menuName.equals(Menus.CHAT))
             ChatMenu.setPane((BorderPane) root);
         CivilizationApplication.scene.setRoot(root);
     }

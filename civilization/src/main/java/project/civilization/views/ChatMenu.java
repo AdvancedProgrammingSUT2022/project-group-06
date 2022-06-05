@@ -79,6 +79,7 @@ public class ChatMenu {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 editMessageView(message1);
+                pane.getChildren().remove(optionsVBox);
             }
         });
         deleteButton = new Button("delete for yourself");
@@ -86,6 +87,7 @@ public class ChatMenu {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 ChatController.deleteMessage(message1, pane);
+                pane.getChildren().remove(optionsVBox);
             }
         });
         deleteForAllButton = new Button("delete for all");
@@ -93,6 +95,7 @@ public class ChatMenu {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 ChatController.deleteMessage(message1, pane);
+                pane.getChildren().remove(optionsVBox);
             }
         });
         optionsVBox.setLayoutX(x - 30);
