@@ -1,16 +1,35 @@
 package project.civilization.models;
 
+import javafx.scene.image.Image;
+
 public class User {
     private String username;
     private String password;
     private String nickName;
     private int score;
+    private Image avatarPic;
+    private int picNum;
 
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickName = nickname;
     }
+
+    public Image getAvatarPic()
+    {
+        return avatarPic;
+    }
+    public int getPicNum()
+    {
+        return picNum;
+    }
+    
+    public void setAvatarPic(Image image, int num) {
+        this.avatarPic = image;
+        this.picNum = num;
+    }
+
 
     public String getUsername() {
         return this.username;

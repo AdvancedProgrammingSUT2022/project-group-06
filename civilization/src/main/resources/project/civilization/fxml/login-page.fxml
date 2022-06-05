@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="project.civilization.views.LoginPage"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 
-</AnchorPane>
+<BorderPane id="login-menu" prefHeight="650.0" prefWidth="1200.0" stylesheets="@../css/loginregisterstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.civilization.views.LoginPage">
+    <center>
+
+        <VBox alignment="CENTER" maxWidth="350" spacing="10">
+
+         
+                    <Label alignment="CENTER" prefHeight="34.0" prefWidth="96.0" text="Username" />
+                    <TextField fx:id="username" promptText="enter your username" />
+                    <Label alignment="CENTER" text="Password" />
+                    <TextField fx:id="password" promptText="enter your password" />
+                    <Button fx:id="loginButton" onMouseClicked="#login" text="Login" />
+            
+                    <Label alignment="CENTER" prefHeight="10.0" prefWidth="233.0" text="Don't have an account?" textAlignment="CENTER" />
+                    <Button onMouseClicked="#register" text="Register now" />
+                    <Label id="error" fx:id="error" alignment="CENTER" prefHeight="55.0" prefWidth="438.0" text="" textAlignment="CENTER" />
+                    <Button onMouseClicked="#exit" text="Exit" />
+            
+        </VBox>
+
+    </center>
+
+</BorderPane>

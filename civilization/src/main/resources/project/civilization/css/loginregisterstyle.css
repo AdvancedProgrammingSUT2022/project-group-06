@@ -7,32 +7,39 @@ Button {
     -fx-pref-width: 330;
     -fx-pref-height: 35;
     -fx-border-radius: 5;
-    -fx-background-color: none;
+    -fx-background-color: rgba(0, 0, 0, 0.39);
 }
 Button:hover{
     -fx-font-size: 18;
     -fx-font-weight: bold;
     -fx-font-family: "Viner Hand ITC";
-    -fx-text-fill: #082521;
+    -fx-text-fill: #d3bb16;
     -fx-pref-width: 330;
     -fx-pref-height: 35;
     -fx-border-radius: 5;
-    -fx-background-color: none;
+    -fx-background-color: rgba(0, 0, 0, 0.733);
 
 }
 
 TextField{
+    border: 5px solid rgb(0, 0, 0);
     -fx-max-width: 330;
     -fx-pref-height: 35;
     -fx-border-radius: 5;
     -fx-background-color: white;
+    
 }
 
 Label{
+
+   
+   
     -fx-font-size: 20;
+    -fx-border-radius: 100;
     -fx-font-weight: bold;
-    -fx-font-family: "Viner Hand ITC";
-    -fx-text-fill: #d3bb16;
+    -fx-font-family: "Times New Roman";
+    -fx-text-fill: #201414;
+   
 }
 #pane{
     -fx-background-size: 1200 650;
@@ -61,7 +68,7 @@ Label{
     -fx-background-size: 1200 650;
 }
 #login-menu{
-    -fx-background-image: url("../pictures/menu_background/loginmenu.jpg");
+    -fx-background-image: url("../pictures/menu_background/loginmenu.png");
     -fx-background-size: 1200 650;
 }
 #register-menu{
@@ -86,8 +93,10 @@ Label{
     -fx-background-image: url("../pictures/menu_background/gameMenu.jpg");
     -fx-background-size: 1200 650;
 }
+
 #error{
-    -fx-font-size: 27;
+    text-align: center;
+    -fx-font-size: 15;
     -fx-font-weight: bold;
     -fx-text-fill: #fa0202;
 }

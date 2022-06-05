@@ -4,6 +4,7 @@ module project.civilization {
     requires com.google.gson;
     requires javafx.media;
     requires gson.extras;
+    requires java.desktop;
 
     exports  project.civilization;
     exports  project.civilization.views;

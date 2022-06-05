@@ -22,17 +22,18 @@ public class CivilizationApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = loadFXML(Menus.GAMEMenu);
+        Parent root = loadFXML(Menus.LOGIN);
         assert root != null;
         Scene scene = new Scene(root );
         CivilizationApplication.scene = scene;
         stage.setTitle("Civilization");
         stage.setScene(scene);
         stage.show();
-        Music.addMusic("songs/start.mp3");
+        //Music.addMusic("songs/start.mp3");
     }
 
     public static void main(String[] args) {
+        UserController.importSavedUsers();
         launch();
         /*
         Scanner scanner = new Scanner(System.in);
