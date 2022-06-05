@@ -157,7 +157,7 @@ public class UserController {
        
                 User addUser = new User(Username, Password, Nickname);
                 
-                addUser.setAvatarPic(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".jpg").toExternalForm()), picNum);
+                addUser.setAvatarPic(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".png").toExternalForm()), picNum);
                 addUser.increaseScore(score);
                 users.put(Username, addUser);
                 usersArray.add(addUser);

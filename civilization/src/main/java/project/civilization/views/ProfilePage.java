@@ -1,12 +1,16 @@
 package project.civilization.views;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-
-import javax.swing.JFileChooser;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -15,16 +19,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
+
 import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
+
+
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 
-public class ProfilePage extends GameMenus{
 
-    private int avatarPicCount = 5;
+public class ProfilePage  extends GameMenus {
+
+    private int avatarPicCount = 4;
     private int currentPic = 1;
 
     @FXML
@@ -37,15 +43,52 @@ public class ProfilePage extends GameMenus{
     private Label passwordError;
     @FXML
     private ImageView avatarPic;
-
+    
     
 
     public void initialize()
     {   
+
+        JFrame frame = new JFrame("Profile Picture");  
+        JPanel panel = new JPanel();  
+        panel.setLayout(new FlowLayout());
+        
+        JLabel avatar=new JLabel();
+        
+        // JButton backButton = new JButton();  
+        // JButton selectImage=new JButton();
+        // JButton nextImage=new JButton();
+        // JLabel changeNickname=new JLabel();
+        // JTextField newNickname=new JTextField();
+        // JButton changeNicknameButton=new JButton();
+        // JLabel changePassword=new JLabel();
+        // JTextField newPassword=new JTextField();
+        // JButton changePasswordButton=new JButton();
+        // JButton deleteAccount=new JButton();
+
+          
+        // panel.add(backButton);
+        // panel.add(selectImage);
+        // panel.add(nextImage);
+        // panel.add(changeNickname);
+        // panel.add(newNickname);
+        // panel.add(changeNicknameButton);
+        // panel.add(changePassword);
+        // panel.add(newPassword);
+        // panel.add(changePasswordButton);
+        // panel.add(deleteAccount);       
+        frame.add(panel);  
+        frame.setSize(400,500);  
+        frame.setLocationRelativeTo(null);  
+          
+        frame.setVisible(true);  
+
+
+
         avatarPic.setImage(UserController.getLoggedInUser().getAvatarPic());
         currentPic=UserController.getLoggedInUser().getPicNum();
     }
-    public void selectImage(MouseEvent mouseEvent)
+    public void selectImage(MouseEvent mouseEvent) throws IOException
     {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg");
         JFileChooser imageChoooser=new JFileChooser();
@@ -53,8 +96,14 @@ public class ProfilePage extends GameMenus{
         int response=imageChoooser.showOpenDialog(null);
         if(response==JFileChooser.APPROVE_OPTION)
         {
-            String imageName=imageChoooser.getSelectedFile().getAbsolutePath();
-            avatarPic.setImage(new Image(imageName));
+            JFileChooser fileChooser=new JFileChooser();
+            File file = fileChooser.getSelectedFile();
+            // ImageIcon imageTemp=new ImageIcon(fileChooser.getSelectedFile().getAbsolutePath());
+            // Image image=imageTemp.getImage();
+            BufferedImage picture = ImageIO.read(file);
+            Image image = SwingFXUtils.toFXImage(picture, null);
+            avatarPic.setImage(image);
+
         }
     }
     public void changeAvatarPic(MouseEvent mouseEvent) throws MalformedURLException {
@@ -65,7 +114,7 @@ public class ProfilePage extends GameMenus{
         } else {
             currentPic++;
         }
-        Image nextImage = new Image(CivilizationApplication.class.getResource("pictures/avatar/" + currentPic + ".jpg").toExternalForm());
+        Image nextImage = new Image(CivilizationApplication.class.getResource("pictures/avatar/" + currentPic + ".png").toExternalForm());
         avatarPic.setImage(nextImage);
         UserController.getLoggedInUser().setAvatarPic(nextImage, currentPic);
     }
@@ -122,6 +171,8 @@ public class ProfilePage extends GameMenus{
             CivilizationApplication.changeMenu(Menus.LOGIN);
         }
     }
+   
 
+ 
     
 }

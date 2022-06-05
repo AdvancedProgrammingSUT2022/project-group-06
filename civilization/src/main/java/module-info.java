@@ -5,6 +5,8 @@ module project.civilization {
     requires javafx.media;
     requires gson.extras;
     requires java.desktop;
+    requires javafx.swing;
+
 
     exports  project.civilization;
     exports  project.civilization.views;
@@ -15,7 +17,7 @@ module project.civilization {
 
     opens  project.civilization to javafx.fxml, javafx.media, javafx.base ;
     opens  project.civilization.fxml to javafx.media, javafx.base ;
-    opens project.civilization.views to javafx.fxml;
+    opens  project.civilization.views to javafx.fxml;
     opens  project.civilization.models to com.google.gson;
     opens  project.civilization.models.gainable to com.google.gson;
     opens  project.civilization.models.maprelated to com.google.gson;

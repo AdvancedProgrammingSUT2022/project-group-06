@@ -3,7 +3,7 @@ package project.civilization.enums;
 import project.civilization.views.ChatMenu;
 
 public enum Menus {
-    SCORE(""),
+    SCORE("score-page"),
     LOGIN("login-page"),
     PROFILE("profile-page"),
     MAIN("main-page"),

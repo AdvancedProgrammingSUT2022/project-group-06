@@ -2,7 +2,7 @@ package project.civilization.models;
 
 import javafx.scene.image.Image;
 
-public class User {
+public class User implements Comparable{
     private String username;
     private String password;
     private String nickName;
@@ -10,10 +10,23 @@ public class User {
     private Image avatarPic;
     private int picNum;
 
+    // @Override
+    // public String toString()
+    // {
+    //     return this.name;
+    // }
+    @Override
+    public int compareTo(Object o) {
+        return Integer.compare(((User)o).getScore(),this.score );
+    }
+
+
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickName = nickname;
+        this.score=0;
+        
     }
 
     public Image getAvatarPic()

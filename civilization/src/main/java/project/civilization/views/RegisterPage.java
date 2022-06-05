@@ -29,7 +29,7 @@ import project.civilization.models.units.Civilian;
 public class RegisterPage extends GameMenus{
     
     
-    private int avatarPicCount = 5;
+    private int avatarPicCount = 4;
     private int currentPic = 1;
 
     @FXML
@@ -54,7 +54,7 @@ public class RegisterPage extends GameMenus{
         Random rand = new Random();
         int picNum = rand.nextInt(5) + 1;
         currentPic = picNum;
-        avatarPic.setImage(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".jpg").toExternalForm()));
+        avatarPic.setImage(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".png").toExternalForm()));
     }
 
     public void register(MouseEvent mouseEvent) {
@@ -103,7 +103,7 @@ public class RegisterPage extends GameMenus{
         } else {
             currentPic++;
         }
-        Image nextImage = new Image(CivilizationApplication.class.getResource("pictures/avatar/" + currentPic + ".jpg").toExternalForm());
+        Image nextImage = new Image(CivilizationApplication.class.getResource("pictures/avatar/" + currentPic + ".png").toExternalForm());
         avatarPic.setImage(nextImage);
     }
 }
