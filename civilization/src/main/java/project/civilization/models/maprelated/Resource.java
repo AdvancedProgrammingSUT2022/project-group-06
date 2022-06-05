@@ -1,21 +1,26 @@
 package project.civilization.models.maprelated;
 
+import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
 import java.util.ArrayList;
 
 public class Resource {
     private static ArrayList<Resource> resources = new ArrayList<Resource>();
+    @Expose
     private int food;
+    @Expose
     private int production;
+    @Expose
     private int gold;
+    @Expose
     private String name;
+    @Expose
     private String requiredImprovement;
-    private ArrayList<String> appropriateTerrain = new ArrayList<>();
-    private ArrayList<String> appropriateFeature = new ArrayList<>();
+    @Expose
     private String requiredTechnology;
+    @Expose
     private String type;
-
 
     public Resource(String name) {
         String info = InitializeGameInfo.getResourceInfo().get(name);
@@ -27,18 +32,6 @@ public class Resource {
         this.requiredImprovement = splitInfo[4];
         this.requiredTechnology = splitInfo[5];
         this.type = splitInfo[6];
-
-        String[] terrainOrFeature = splitInfo[3].split(",");
-        for (String temp : terrainOrFeature) {
-            if (InitializeGameInfo.getFeatureInfo().containsKey(temp)) {
-                appropriateFeature.add(temp);
-            } else {
-                appropriateTerrain.add(temp);
-            }
-
-        }
-
-
         resources.add(this);
     }
 
@@ -63,9 +56,6 @@ public class Resource {
         return this.requiredImprovement;
     }
 
-    public ArrayList<String> getAppropriateTerrain() {
-        return this.appropriateTerrain;
-    }
 
     public String getName() {
         return name;

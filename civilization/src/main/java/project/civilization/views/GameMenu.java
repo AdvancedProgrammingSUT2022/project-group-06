@@ -30,14 +30,16 @@ public class GameMenu extends Menu {
         String command = scanner.nextLine();
         Matcher matcher;
 
-
         while (true) {
             boolean validCommand = true;
             if (command.equals("construction delete")) {
                 System.out.println(GameController.deleteConstruction());
-            } else if ((matcher = getMatcher("unit buy (-un||--unitname) (?<name>[a-zA-Z]+)", command)) != null) {
-                System.out.println(GameController.buyUnit(matcher.group("name")));
-                ;
+            }else if ((matcher = getMatcher("save game (-n||--name) (?<name>[a-zA-Z]+)", command)) != null) {
+                System.out.println(GameController.saveGame(matcher.group("name")));
+            }else if ((matcher = getMatcher("load game (-n||--name) (?<name>[a-zA-Z]+)", command)) != null) {
+                System.out.println(GameController.loadGame(matcher.group("name")));
+            }else if ((matcher = getMatcher("unit buy ", command)) != null) {
+                System.out.println(GameController.buyUnit(matcher.group("name")));;
             } else if (command.equals("demographic screen")) {
                 System.out.println(GameController.demographicScreen());
             } else if (command.equals("unit activate")) {

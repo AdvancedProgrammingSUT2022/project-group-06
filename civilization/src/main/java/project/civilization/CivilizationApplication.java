@@ -22,10 +22,7 @@ public class CivilizationApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-//        Parent root = loadFXML(Menus.GAMEMenu);
-        //TODO:
-        Parent root = loadFXML(Menus.CHATNAVIGATION);
-
+        Parent root = loadFXML(Menus.GAMEMenu);
         assert root != null;
         Scene scene = new Scene(root );
         CivilizationApplication.scene = scene;
@@ -37,10 +34,11 @@ public class CivilizationApplication extends Application {
 
     public static void main(String[] args) {
         launch();
+        /*
         Scanner scanner = new Scanner(System.in);
         LoginMenu loginMenu = new LoginMenu();
         UserController.importSavedUsers();
-        loginMenu.run(scanner);
+        loginMenu.run(scanner);*/
     }
     public static void changeMenu(Menus menuName){
         Parent root = loadFXML(menuName);

@@ -36,7 +36,6 @@ public class InitializeGameInfo {
 
     private static final Random random = new Random();
     private static final World world = new World();
-    ;
 
 
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
@@ -429,4 +428,12 @@ public class InitializeGameInfo {
     }
 
 
+    public static void setMapSize(String mapSize) {
+        String[] size = mapSize.split("\\*");
+        int hexInHeight = Integer.parseInt(size[0]);
+        int hexInWidth = Integer.parseInt(size[1]);
+        System.out.println(hexInWidth+" "+hexInHeight);
+        world.setHexInHeight(hexInHeight);
+        world.setWorldWidth(hexInWidth);
+    }
 }
