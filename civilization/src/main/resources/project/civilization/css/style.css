@@ -1,5 +1,9 @@
 
 Button {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-font-family: "Viner Hand ITC";
+    -fx-text-fill: #d3bb16;
     -fx-pref-width: 330;
     -fx-pref-height: 35;
     -fx-border-radius: 5;
@@ -13,8 +17,11 @@ TextField{
     -fx-background-color: white;
 }
 
-label{
-    -fx-text-fill: #626C8F;
+Label{
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-font-family: "Viner Hand ITC";
+    -fx-text-fill: #d3bb16;
 }
 #pane{
     -fx-background-size: 1200 650;
@@ -39,14 +46,23 @@ label{
 }
 
 .menu-bar{
-    -fx-background-image: url("../pictures/menu_background/2.jfif");
+    -fx-background-color:transparent;
+    -fx-background-image: url("../pictures/menu_background/menuBarBackground.png");
     -fx-background-position: center center;
 }
 #title{
     -fx-font-size: 50;
     -fx-font-weight: bold;
 }
-
+#vbox_style {
+    -fx-border-color: black;
+    -fx-border-insets: 5;
+    -fx-border-width: 3;
+}
+#menu{
+    -fx-background-image: url("../pictures/menu_background/gameMenu.jpg");
+    -fx-background-size: 1200 650;
+}
 #error{
     -fx-font-size: 27;
     -fx-font-weight: bold;
@@ -54,7 +70,17 @@ label{
 }
 
 Text{
-    -fx-font-size: 35;
+    -fx-font-size: 50;
     -fx-font-weight: bold;
     -fx-text-fill: #97fa02;
+}
+
+.choiceBox {
+    -fx-pref-width: 10;
+    -fx-pref-height: 10;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+    -fx-font-family: "Viner Hand ITC";
+    -fx-text-fill: #d3bb16;
+    -fx-background-color: #2f342f;
 }

@@ -9,6 +9,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.InitializeGameInfo;
@@ -23,6 +24,7 @@ public class GamePage extends GameMenus{
     public Text error;
     public VBox invitationBox;
     public ChoiceBox<String> numberOfPlayer;
+    public Rectangle fadeRectangle;
     private TextField textField;
     private TextField invitationText;
     private Text hint = new Text();
