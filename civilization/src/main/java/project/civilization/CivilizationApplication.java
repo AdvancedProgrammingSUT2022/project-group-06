@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
+import project.civilization.views.ChatMenu;
 import project.civilization.views.LoginMenu;
 import project.civilization.views.Menu;
 import project.civilization.views.Music;
@@ -20,7 +22,11 @@ public class CivilizationApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = loadFXML(Menus.GAMEMenu);
+//        Parent root = loadFXML(Menus.GAMEMenu);
+        //TODO:
+        Parent root = loadFXML(Menus.CHAT);
+        ChatMenu.setPane((BorderPane) root);
+
         assert root != null;
         Scene scene = new Scene(root );
         CivilizationApplication.scene = scene;
@@ -31,7 +37,7 @@ public class CivilizationApplication extends Application {
     }
 
     public static void main(String[] args) {
-        //launch();
+        launch();
         Scanner scanner = new Scanner(System.in);
         LoginMenu loginMenu = new LoginMenu();
         UserController.importSavedUsers();
@@ -39,6 +45,8 @@ public class CivilizationApplication extends Application {
     }
     public static void changeMenu(Menus menuName){
         Parent root = loadFXML(menuName);
+        if (menuName.equals("chat-page"))
+            ChatMenu.setPane((BorderPane) root);
         CivilizationApplication.scene.setRoot(root);
     }
 

@@ -1,5 +1,7 @@
 package project.civilization.enums;
 
+import project.civilization.views.ChatMenu;
+
 public enum Menus {
     SCORE(""),
     LOGIN("login-page"),
@@ -8,7 +10,8 @@ public enum Menus {
     GAME(""),
     GAMEMenu("game-page"),
     SETTING(""),
-    GAMEOVER(""), LOADGAME("load-game-page");
+    GAMEOVER(""), LOADGAME("load-game-page"),
+    CHAT("chat-page");
 
     private final String character;
 

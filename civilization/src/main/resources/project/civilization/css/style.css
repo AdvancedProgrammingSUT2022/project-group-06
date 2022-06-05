@@ -58,3 +58,9 @@ Text{
     -fx-font-weight: bold;
     -fx-text-fill: #97fa02;
 }
+
+#hBox_style{
+    -fx-border-color: black;
+    -fx-border-insets: 5;
+    -fx-border-width: 3;
+}
