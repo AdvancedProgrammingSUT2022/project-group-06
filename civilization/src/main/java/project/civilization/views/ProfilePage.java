@@ -1,14 +1,13 @@
 package project.civilization.views;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import javax.imageio.ImageIO;
-import javax.swing.*;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -19,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javax.swing.JFileChooser;
 
 import javafx.scene.input.MouseEvent;
 
@@ -49,11 +49,11 @@ public class ProfilePage  extends GameMenus {
     public void initialize()
     {   
 
-        JFrame frame = new JFrame("Profile Picture");  
-        JPanel panel = new JPanel();  
-        panel.setLayout(new FlowLayout());
+        // JFrame frame = new JFrame("Profile Picture");  
+        // JPanel panel = new JPanel();  
+        // panel.setLayout(new FlowLayout());
         
-        JLabel avatar=new JLabel();
+        // JLabel avatar=new JLabel();
         
         // JButton backButton = new JButton();  
         // JButton selectImage=new JButton();
@@ -77,11 +77,11 @@ public class ProfilePage  extends GameMenus {
         // panel.add(newPassword);
         // panel.add(changePasswordButton);
         // panel.add(deleteAccount);       
-        frame.add(panel);  
-        frame.setSize(400,500);  
-        frame.setLocationRelativeTo(null);  
+        // frame.add(panel);  
+        // frame.setSize(400,500);  
+        // frame.setLocationRelativeTo(null);  
           
-        frame.setVisible(true);  
+        // frame.setVisible(true);  
 
 
 
@@ -91,18 +91,22 @@ public class ProfilePage  extends GameMenus {
     public void selectImage(MouseEvent mouseEvent) throws IOException
     {
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "jpeg");
-        JFileChooser imageChoooser=new JFileChooser();
-        imageChoooser.setFileFilter(filter);
-        int response=imageChoooser.showOpenDialog(null);
+        JFileChooser imageChooser=new JFileChooser();
+        imageChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
+        imageChooser.setFileFilter(filter);
+        int response=imageChooser.showOpenDialog(null);
         if(response==JFileChooser.APPROVE_OPTION)
         {
-            JFileChooser fileChooser=new JFileChooser();
-            File file = fileChooser.getSelectedFile();
+           
+            File file = imageChooser.getSelectedFile();
             // ImageIcon imageTemp=new ImageIcon(fileChooser.getSelectedFile().getAbsolutePath());
-            // Image image=imageTemp.getImage();
-            BufferedImage picture = ImageIO.read(file);
-            Image image = SwingFXUtils.toFXImage(picture, null);
-            avatarPic.setImage(image);
+            // // Image image=imageTemp.getImage();
+            // BufferedImage picture = ImageIO.read(file);
+            // Image image = SwingFXUtils.toFXImage(picture, null);
+            Image selectedImage=new Image(file.getAbsolutePath());
+            avatarPic.setImage(selectedImage);
+            currentPic=1;
+            UserController.getLoggedInUser().setAvatarPic(selectedImage, 0);
 
         }
     }
