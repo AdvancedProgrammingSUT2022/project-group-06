@@ -17,6 +17,16 @@ public class Terrain {
     @Expose
     private int combatModifiersPercentage;
 
+    private javafx.scene.image.ImageView terrainView;
+
+    public javafx.scene.image.ImageView getTerrainView() {
+        return terrainView;
+    }
+
+    public void setTerrainView(javafx.scene.image.ImageView terrainView) {
+        this.terrainView = terrainView;
+    }
+
     public Terrain(String name) {
         String info = InitializeGameInfo.getTerrainInfo().get(name);
         String[] splitInfo = info.split(" ");

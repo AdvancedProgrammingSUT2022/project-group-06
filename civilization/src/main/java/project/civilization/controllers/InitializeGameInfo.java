@@ -247,6 +247,10 @@ public class InitializeGameInfo {
     }
 
     public static void run() {
+        numberOFPlayers = 3;
+        Player a = new Player("A");
+        Player b = new Player("B");
+        Player c = new Player("C");
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();

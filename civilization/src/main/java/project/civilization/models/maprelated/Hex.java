@@ -11,6 +11,7 @@ import project.civilization.models.units.Civilian;
 import project.civilization.models.units.Military;
 import project.civilization.models.units.Unit;
 
+import javax.swing.text.html.ImageView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,7 +46,6 @@ public class Hex {
     private Civilian civilianUnit;
     private City capital = null;
     private City city = null;
-
 
     public void setFeature(Feature newFeature) {
         feature = newFeature;

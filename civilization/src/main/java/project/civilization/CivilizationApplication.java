@@ -22,7 +22,8 @@ public class CivilizationApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = loadFXML(Menus.LOGIN);
+        //Parent root = loadFXML(Menus.LOGIN);
+        Parent root = loadMapForTest();
         assert root != null;
         Scene scene = new Scene(root );
         CivilizationApplication.scene = scene;
@@ -48,6 +49,15 @@ public class CivilizationApplication extends Application {
         CivilizationApplication.scene.setRoot(root);
     }
 
+    private static Parent loadMapForTest(){
+        try {
+            URL address = new URL(CivilizationApplication.class.getResource("fxml/" + "map-page"+ ".fxml").toExternalForm());
+            return FXMLLoader.load(address);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     private static Parent loadFXML(Menus menuName){
         if(menuName == Menus.GAME){
             Music.addMusic("songs/MUS_Genie_A.wav");

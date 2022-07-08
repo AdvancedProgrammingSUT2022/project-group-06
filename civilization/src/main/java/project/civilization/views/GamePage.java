@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -25,6 +27,8 @@ public class GamePage extends GameMenus{
     public VBox invitationBox;
     public ChoiceBox<String> numberOfPlayer;
     public Rectangle fadeRectangle;
+    public Button invitationButton;
+    public Button loadGameButton;
     private TextField textField;
     private TextField invitationText;
     private Text hint = new Text();
@@ -32,7 +36,17 @@ public class GamePage extends GameMenus{
     public void initialize(){
         createMapSizeChoiceBoxes();
         createNumberOfPlayerChoiceBoxes();
+        setToolTips();
+
+    }
+
+    private void setToolTips() {
+        Tooltip tooltip1 =new Tooltip("you can invite a friend to play online game with you");
+        invitationButton.setTooltip(tooltip1);
+        Image image = new Image(CivilizationApplication.class.getResource("pictures/menu_background/sendInvitation.png").toExternalForm());
+        tooltip1.setGraphic(new ImageView(image));
         backToMAinButton.setTooltip(new Tooltip("stupid it is clear that you can back to main by this button"));
+        loadGameButton.setTooltip(new Tooltip("you can load your saved games and continue them"));
     }
 
     private void createNumberOfPlayerChoiceBoxes() {

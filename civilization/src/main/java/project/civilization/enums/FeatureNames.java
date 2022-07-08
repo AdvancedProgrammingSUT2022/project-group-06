@@ -1,7 +1,6 @@
 package project.civilization.enums;
 
 public enum FeatureNames {
-    Fallout("Fallout"),
     Floodplains("Floodplains"),
     Forest("Forest"),
     Ice("Ice"),

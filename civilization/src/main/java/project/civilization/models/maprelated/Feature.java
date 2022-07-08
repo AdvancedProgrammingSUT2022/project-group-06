@@ -16,6 +16,15 @@ public class Feature {
     @Expose
     private int combatModifiersPercentage;
 
+    private javafx.scene.image.ImageView featureView;
+
+    public javafx.scene.image.ImageView getFeatureView() {
+        return featureView;
+    }
+
+    public void setFeatureView(javafx.scene.image.ImageView featureView) {
+        this.featureView = featureView;
+    }
     public Feature(String name) {
         String info = InitializeGameInfo.getFeatureInfo().get(name);
         String[] splitInfo = info.split(" ");
