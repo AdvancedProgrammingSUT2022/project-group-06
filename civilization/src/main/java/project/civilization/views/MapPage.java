@@ -101,7 +101,7 @@ public class MapPage {
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         featureView.setX(50 + (j * 150));
-        featureView.setY(align+ 100 + i * 200);
+        featureView.setY(align + i * 200);
         pane.getChildren().add(featureView);
     }
 
