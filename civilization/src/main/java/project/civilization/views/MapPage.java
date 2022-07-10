@@ -1,10 +1,12 @@
 package project.civilization.views;
+
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.InitializeGameInfo;
+import project.civilization.enums.HexState;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 
@@ -19,9 +21,9 @@ public class MapPage {
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 Hex hex = world.getHex()[i][j];
-                initializeTileView(i, j, hex);
-                if(hex.getFeature() != null){
-                    initializeFeatureView(i, j, hex);
+                initializeTerrainView(hex);
+                if (hex.getFeature() != null) {
+                    initializeFeatureView(hex);
                 }
             }
         }
@@ -79,10 +81,33 @@ public class MapPage {
         Hex[][] hexes = world.getHex();
         for (int i = mapBoundaries[0]; i < mapBoundaries[1]; i++) {
             for (int j = mapBoundaries[2]; j < mapBoundaries[3]; j++) {
-                setTerrainViewCoordinates(i, j , hexes[i][j].getTerrain().getTerrainView());
-                if(hexes[i][j].getFeature() != null) {
-                    setFeatureViewCoordinates(i, j , hexes[i][j].getFeature().getFeatureView());
+                if (hexes[i][j].getState(InitializeGameInfo.getPlayers().get(0)) == HexState.FogOfWar) {
+                    initializeFogOfWarView(hexes[i][j]);
+                } else {
+                    setTerrainViewCoordinates(i, j, hexes[i][j].getTerrain().getTerrainView());
+                    if (hexes[i][j].getFeature() != null) {
+                        setFeatureViewCoordinates(i, j, hexes[i][j].getFeature().getFeatureView());
+                    }
+                    initializeRiverView(hexes[i][j]);
                 }
+            }
+        }
+    }
+
+    private void initializeFogOfWarView(Hex hex) {
+        String riverAddress = "pictures/terrainTexturs/fogofwar.png";
+        Image riverImage = new Image(CivilizationApplication.class.getResource(riverAddress).toExternalForm());
+        javafx.scene.image.ImageView riverView = new javafx.scene.image.ImageView(riverImage);
+        setTerrainViewCoordinates(hex.getX(), hex.getY(), riverView);
+    }
+
+    private void initializeRiverView(Hex hex) {
+        for (int i = 0; i < 4; i++) {
+            if (hex.isRiver(i)) {
+                String riverAddress = "pictures/river/" + i + ".png";
+                Image riverImage = new Image(CivilizationApplication.class.getResource(riverAddress).toExternalForm());
+                javafx.scene.image.ImageView riverView = new javafx.scene.image.ImageView(riverImage);
+                setTerrainViewCoordinates(hex.getX(), hex.getY(), riverView);
             }
         }
     }
@@ -91,12 +116,12 @@ public class MapPage {
         int align = (j % 2 == 0) ? 0 : 100;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
-        terrainView.setX (j * 150);
+        terrainView.setX(j * 150);
         terrainView.setY(align + i * 200);
         pane.getChildren().add(terrainView);
     }
 
-    private void setFeatureViewCoordinates(int i, int j, ImageView featureView){
+    private void setFeatureViewCoordinates(int i, int j, ImageView featureView) {
         int align = (j % 2 == 0) ? 100 : 200;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
@@ -105,7 +130,7 @@ public class MapPage {
         pane.getChildren().add(featureView);
     }
 
-    private void initializeFeatureView(int i, int j, Hex hex) {
+    private void initializeFeatureView(Hex hex) {
         Image featureImage;
         String featureAddress = "pictures/featureTexture/" + hex.getFeature().getName() + ".png";
         featureImage = new Image(CivilizationApplication.class.getResource(featureAddress).toExternalForm());
@@ -113,9 +138,10 @@ public class MapPage {
         hex.getFeature().setFeatureView(featureView);
     }
 
-    private void initializeTileView(int i, int j, Hex hex) {
+    private void initializeTerrainView(Hex hex) {
         Image image;
-        String address = "pictures/terrainTexturs/" + hex.getTerrain().getName() + "200-200.png";
+        String address;
+        address = "pictures/terrainTexturs/" + hex.getTerrain().getName() + "200-200.png";
         image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
         javafx.scene.image.ImageView imageView = new javafx.scene.image.ImageView(image);
         hex.getTerrain().setTerrainView(imageView);
