@@ -18,7 +18,7 @@ public class Resource {
     @Expose
     private String requiredImprovement;
     @Expose
-    private String requiredTechnology;
+    public String requiredTechnology;
     @Expose
     private String type;
 

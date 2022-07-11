@@ -19,11 +19,12 @@ import java.util.Scanner;
 
 public class CivilizationApplication extends Application {
     private static Scene scene;
-
+    public static Stage stages;
     @Override
     public void start(Stage stage) throws IOException {
-        //Parent root = loadFXML(Menus.LOGIN);
+        //Parent root = loadFXML(Menus.GAMEMenu);
         Parent root = loadMapForTest();
+        this.stages = stage;
         assert root != null;
         Scene scene = new Scene(root );
         CivilizationApplication.scene = scene;

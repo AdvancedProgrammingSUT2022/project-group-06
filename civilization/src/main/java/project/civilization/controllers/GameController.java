@@ -85,8 +85,8 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
-        hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
-        hex[0][0].setState(HexState.Visible,players.get(0));
+        /*hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
+        hex[0][0].setState(HexState.Visible,players.get(0));*/
     }
 
     private static void removeOwnerOfHexes() {

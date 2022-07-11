@@ -61,7 +61,7 @@ Label{
     -fx-background-size: 1200 650;
 }
 #login-menu{
-    -fx-background-image: url("../pictures/menu_background/loginmenu.jpg");
+    -fx-background-image: url("../pictures/menu_background/loginmenu.png");
     -fx-background-size: 1200 650;
 }
 #register-menu{

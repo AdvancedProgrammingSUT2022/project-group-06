@@ -52,7 +52,7 @@ public class RegisterPage extends GameMenus{
 
     public void initialize() {
         Random rand = new Random();
-        int picNum = rand.nextInt(5) + 1;
+        int picNum = rand.nextInt(4) + 1;
         currentPic = picNum;
         avatarPic.setImage(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".png").toExternalForm()));
     }

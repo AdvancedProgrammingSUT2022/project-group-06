@@ -263,7 +263,7 @@ public class InitializeGameInfo {
     public static void initializeGameWorld() {
 
         initializeHex(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
-        initializeResource(10, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
+        initializeResource(20, world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeRiver(world.getHexInHeight(), world.getHexInWidth(), world.getHex());
         initializeCivilizations(numberOFPlayers, world.getHexInHeight(), world.getHexInWidth());
     }

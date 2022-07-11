@@ -6,10 +6,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.shape.Rectangle?>
 <BorderPane id="main-menu" prefHeight="650.0" prefWidth="1200.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.civilization.views.MainPage">
+    <Rectangle opacity="0.7" fill="black" height="430" width="400" fx:id="fadeRectangle" x="400" y="150"/>
     <center>
 
-        <VBox alignment="CENTER" maxWidth="442.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="442.0" spacing="10" styleClass="menu-bar">
+        <VBox alignment="CENTER" maxWidth="480" maxHeight="571" spacing="10" styleClass="menu-bar">
             <Button onMouseClicked="#newGame" prefHeight="123.0" text="New Game">
             <VBox.margin>
                <Insets top="70.0" />

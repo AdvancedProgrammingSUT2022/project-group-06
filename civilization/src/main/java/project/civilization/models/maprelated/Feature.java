@@ -37,7 +37,6 @@ public class Feature {
 
     }
 
-
     public String getName() {
         return this.name;
     }

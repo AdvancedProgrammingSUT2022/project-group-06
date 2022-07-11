@@ -30,8 +30,9 @@ public class MainPage extends GameMenus{
     }
 
     public void newGame(MouseEvent mouseEvent) {
-        
-       
+
+        CivilizationApplication.changeMenu(Menus.GAMEMenu);
+
     }
 
     public void loadGame(MouseEvent mouseEvent) {
