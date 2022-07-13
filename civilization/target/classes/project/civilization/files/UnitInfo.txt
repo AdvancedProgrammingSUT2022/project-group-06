@@ -14,7 +14,7 @@ Longswordsman#150 18 0 0 3 Iron Steel Melee
 Pikeman#100 10 0 0 2 NA CivilService Melee 
 Trebuchet#170 6 20 2 2 Iron Physics Siege 
 Canon#250 10 26 2 2 NA Chemistry Siege 
-Calalry#260 25 0 0 3 Horses MilitaryScience Melee 
+Cavalry#260 25 0 0 3 Horses MilitaryScience Melee
 Lancer#220 22 0 0 4 Horses Metallurgy Melee 
 Musketman#120 16 0 0 2 NA Gunpowder Melee 
 Rifleman#200 25 0 0 2 NA Rifling Melee 

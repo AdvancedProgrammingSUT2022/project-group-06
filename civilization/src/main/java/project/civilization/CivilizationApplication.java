@@ -50,7 +50,7 @@ public class CivilizationApplication extends Application {
         CivilizationApplication.scene.setRoot(root);
     }
 
-    private static Parent loadMapForTest(){
+    public static Parent loadMapForTest(){
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + "map-page"+ ".fxml").toExternalForm());
             return FXMLLoader.load(address);

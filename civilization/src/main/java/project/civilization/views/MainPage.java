@@ -11,6 +11,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 
@@ -36,8 +37,9 @@ public class MainPage extends GameMenus{
     }
 
     public void loadGame(MouseEvent mouseEvent) {
-        CivilizationApplication.changeMenu(Menus.LOADGAME);
-
+        //CivilizationApplication.changeMenu(Menus.LOADGAME);
+        MapPage.isANewGame = false;
+        CivilizationApplication.loadMapForTest();
     }
 
     public void profile(MouseEvent mouseEvent) {

@@ -38,7 +38,7 @@ public class Hex {
     private Feature feature;
     @Expose
     private Resource resource;
-    @Expose
+
     private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
 
     private ArrayList<Improvement> improvements = new ArrayList<Improvement>();

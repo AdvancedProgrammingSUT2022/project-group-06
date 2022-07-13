@@ -439,4 +439,13 @@ public class InitializeGameInfo {
         world.setHexInHeight(hexInHeight);
         world.setWorldWidth(hexInWidth);
     }
+
+    public static void runAsLoadGame() {
+        initializeTerrainInfo();
+        initializeFeatureInfo();
+        initializeResourceInfo();
+        initializeTechnologyInfo();
+        initializeHashMap();
+        initializeUnitInfo();
+    }
 }

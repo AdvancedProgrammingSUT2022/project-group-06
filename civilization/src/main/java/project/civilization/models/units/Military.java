@@ -1,12 +1,14 @@
 package project.civilization.models.units;
 
+import com.google.gson.annotations.SerializedName;
 import project.civilization.controllers.GameController;
 import project.civilization.enums.UnitType;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
 
 public class Military extends Unit {
-
+    @SerializedName("type")
+    private String typeName;
 
     @Override
     public void build(String type) {
@@ -24,6 +26,7 @@ public class Military extends Unit {
 
     public Military(String name, Hex hex, Player owner) {
         super(name, hex, owner);
+        typeName = getClass().getName();
         hex.setMilitaryUnit(this);
 
     }

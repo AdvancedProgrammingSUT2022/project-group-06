@@ -2,6 +2,7 @@ package project.civilization.models.units;
 
 import java.util.ArrayList;
 
+import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.UnitState;
@@ -12,9 +13,13 @@ import project.civilization.models.maprelated.Hex;
 public class Unit implements Combatable, Construction {
     protected static ArrayList<Unit> units = new ArrayList<Unit>();
     final protected int maxHealth = 10;
+    @Expose
     protected int health;
+    @Expose
     protected int combatStrength;
+    @Expose
     protected int rangedStrength;
+    @Expose
     protected int range;
     protected Hex currentHex;
     protected UnitState state;

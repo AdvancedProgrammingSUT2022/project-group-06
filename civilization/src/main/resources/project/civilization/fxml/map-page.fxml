@@ -11,5 +11,7 @@
             prefHeight="650.0" prefWidth="1200.0"
             fx:id="pane" stylesheets="@../css/style.css" >
 
+    <Button fx:id="saveGameButton" layoutX="50" layoutY="0" text="save game" onMouseClicked="#saveGame"/>
+    <Button fx:id="nextTurnButton" layoutX="400" layoutY="0" text="next turn" onMouseClicked="#nextTurn"/>
 
 </Pane>
