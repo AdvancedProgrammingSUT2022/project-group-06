@@ -169,7 +169,7 @@ public class UnitController {
     public static String setUpSiegeForRangeAttack() {
         if (selectedUnit == null) return "you did not select a unit";
         if (!(selectedUnit instanceof Siege)) return "selected unit is not a siege";
-        selectedUnit.setState(UnitState.Active);
+        selectedUnit.setState(UnitState.setUpForRangeAttack);
         selectedUnit.setOrdered(true);
         ((Siege) selectedUnit).setReadyToAttack(true);
         return "siege is ready for the next turn";
@@ -224,7 +224,6 @@ public class UnitController {
         if (unit instanceof Civilian) unit.getCurrentHex().setCivilianUnit(null);
         else unit.getCurrentHex().setMilitaryUnit(null);
         unit.getOwner().removeUnit(unit);
-        unit.getCurrentHex().setMilitaryUnit(null);
         selectedUnit = null;
         GameController.getCurrentPlayer().increaseGold(unit.getCost() / 10);
         return "unit deleted";
@@ -414,7 +413,7 @@ public class UnitController {
         else if (isHexOccupied(x, y))
             return "Destination hex already has a unit of this type";
         else if (!canMoveThrough(x, y))
-            return "The unit can't go through chosen destination hex";
+            return "The unit can't go through chosen destination hex(motion/ocean)";
         else if (selectedUnit instanceof Civilian && hex[x][y].getMilitaryUnit() != null && hex[x][y].getOwner() != getCurrentPlayer())
             return "a noncombat unit can't move to a tile with enemy military unit";
         selectedUnit.setState(UnitState.Active);

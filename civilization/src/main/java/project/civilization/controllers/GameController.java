@@ -460,8 +460,9 @@ public class GameController {
     }
 
     public static String changeTurn() {
+        // TODO: 7/14/2022 : 
 /*        String unitOrders = unitActions();
-        if (unitOrders != null) return unitOrders;
+        if (unitOrders != null) return unitOrders;*/
         int goldPerTurn = 0;
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
@@ -474,7 +475,8 @@ public class GameController {
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
-        resetOrdersAndOrdered();
+        // TODO: 7/14/2022 : 
+        //resetOrdersAndOrdered();
         UnitController.changeTurn();
         //hazine tamir O negahdari buldings
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
@@ -491,7 +493,7 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        resetMovePoints();*/
+        resetMovePoints();
         if (playerCount == GameController.getPlayers().size() - 1) {
             playerCount = 0;
             turn++;
