@@ -21,8 +21,8 @@ public class NotificationHistory {
  
     @FXML
     private AnchorPane anchorPane;
-    @FXML
-    private Button close;
+   
+
     
     int lowerBound=0;
     int upperBound=400;
@@ -88,7 +88,7 @@ public class NotificationHistory {
     
     public void close(MouseEvent mouseEvent)
     {
-        //MapPage.removeNotificationHistory();
+      // MapPage.closePanel("notification-history");
     }
 
 }

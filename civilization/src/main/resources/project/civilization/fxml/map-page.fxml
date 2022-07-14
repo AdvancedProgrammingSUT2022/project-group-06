@@ -20,6 +20,8 @@
             </font>
          </Button>
          <Button fx:id="notification" layoutX="718.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#notification" styleClass="gamepageButton" text="Notification" />
+         <Button layoutX="615.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#demographic" styleClass="gamepageButton" text="Demographic" />
+         <Button layoutX="554.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#units" styleClass="gamepageButton" text="Units" />
       </children>
    </AnchorPane>
 

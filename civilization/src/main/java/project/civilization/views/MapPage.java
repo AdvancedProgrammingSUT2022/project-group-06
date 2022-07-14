@@ -1,6 +1,7 @@
 package project.civilization.views;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -68,29 +69,97 @@ public class MapPage {
         });
         handleKeyEvent();
     }
+
+
+    private Node openPanel;
+
     // public static void removeNotificationHistory()
     // {
     //     pane.getChildren().remove(notificationHistory);
     // }   
     // private static Node notificationHistory;
-    public void notification(MouseEvent mouseEvent)
+    // public static void closePanel(String name)
+    // {
+    //     FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
+    //         try {
+    //             // notificationHistory=;
+    //             pane.getChildren().remove((Node) loader.load());
+    //         } catch (IOException e) {
+                
+    //             e.printStackTrace();
+    //         }
+    // }
+   
+    public void loadPanel(String name)
     {
-        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/notification-history.fxml"));
+        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
             try {
                 // notificationHistory=;
-                Node newNode= (loader.load());
-                newNode.setLayoutY(80);
-                newNode.setLayoutX(80);
-                pane.getChildren().add(newNode);
+                openPanel= (Node)(loader.load());
+                openPanel.setLayoutY(80);
+                openPanel.setLayoutX(80);
+                pane.getChildren().add(openPanel);
+
+
+                Button closeButton=new Button();
+                closeButton.setLayoutX(80);
+                closeButton.setLayoutY(80);
+                closeButton.setPrefSize(60, 15);
+                closeButton.setText("Close");
+                closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+                
+                pane.getChildren().add(closeButton);
+                closeButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        closeButton.setStyle("-fx-background-color:#3a3a3a; -fx-text-fill: goldenrod");
+                        
+                    }
+                    
+                });
+                closeButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+                        
+                    }
+                    
+                });
+                closeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent arg0) {
+                        pane.getChildren().remove(openPanel);
+                        pane.getChildren().remove(closeButton);  
+                    }
+                    
+                });
             } catch (IOException e) {
                 
                 e.printStackTrace();
             }
+
+    }
+
+    public void units(MouseEvent mouseEvent)
+    {
+        loadPanel("units-panel");
+    }
+    public void notification(MouseEvent mouseEvent)
+    {
+        loadPanel("notification-history");
+    }
+    public void demographic(MouseEvent mouseEvent)
+    {
+        loadPanel("demographic");
     }
 
     private void loadGme() {
         InitializeGameInfo.runAsLoadGame();
     }
+    
 
     private void handleKeyEvent() {
         pane.setOnKeyPressed(e -> {
