@@ -1,0 +1,31 @@
+
+#notification{
+    -fx-background-color: rgba(0, 0, 0, 0.881);
+    -fx-background-size: 1200 650;
+}
+#title
+{
+    -fx-background-color: rgb(41, 122, 130);
+}
+
+.button
+{
+    -fx-background-color:  rgb(41, 122, 130);
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color:rgba(0, 0, 0, 0.881);
+     /* */
+    -fx-border-color : rgb(41, 122, 130);
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+    
+}
+
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color : rgba(41, 123, 130, 0.721);
+
+}
+
