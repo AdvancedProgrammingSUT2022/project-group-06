@@ -13,10 +13,14 @@ import javafx.stage.Popup;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
+import project.civilization.controllers.UnitController;
 import project.civilization.enums.HexState;
+import project.civilization.enums.UnitState;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 import project.civilization.models.units.Unit;
+
+import javax.swing.*;
 
 public class MapPage {
     public Pane pane;
@@ -127,10 +131,10 @@ public class MapPage {
                     }
                     initializeRiverView(hexes[i][j]);
                     if (hexes[i][j].getMilitaryUnit() != null) {
-                        initializeUnitView(hexes[i][j], hexes[i][j].getMilitaryUnit(), 30, 0);
+                        initializeMilitaryUnitView(hexes[i][j], hexes[i][j].getMilitaryUnit(), 30, 0);
                     }
                     if( hexes[i][j].getCivilianUnit() != null){
-                        initializeUnitView(hexes[i][j], hexes[i][j].getCivilianUnit(), 100, 0);
+                        initializeCivilianView(hexes[i][j], hexes[i][j].getCivilianUnit(), 100, 0);
                     }
                     if (hexes[i][j].getOwner() != null) {
                         initializeOwnerView(hexes[i][j]);
@@ -156,13 +160,74 @@ public class MapPage {
         pane.getChildren().add(text);
     }
 
-    private void initializeUnitView(Hex hex, Unit unit, int alignX, int alignY) {
+    private void initializeMilitaryUnitView(Hex hex, Unit unit, int alignX, int alignY) {
+        ImageView unitView =  makeView(hex, unit, alignX, alignY);
+        unitView.setOnMouseClicked(event -> {
+            selectMilitaryUnit(hex);
+        });
+    }
+    private void initializeCivilianView(Hex hex, Unit unit, int alignX, int alignY) {
+        ImageView unitView =  makeView(hex, unit, alignX, alignY);
+        unitView.setOnMouseClicked(event -> {
+            selectCivilianUnit(hex);
+        });
+    }
+
+    private ImageView makeView(Hex hex, Unit unit, int alignX, int alignY) {
         String unitAddress = "pictures/units/" + unit.getName() + ".png";
         Image UnitImage = new Image(CivilizationApplication.class.getResource(unitAddress).toExternalForm());
-        javafx.scene.image.ImageView unitView = new javafx.scene.image.ImageView(UnitImage);
+        ImageView unitView = new ImageView(UnitImage);
         unitView.setScaleX(2);
         unitView.setScaleY(2);
         setHexDetailsViewCoordinates(hex.getX(), hex.getY(), unitView ,alignY , alignX);
+        return unitView;
+    }
+
+    private void selectMilitaryUnit(Hex hex) {
+         if (hex.getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
+            UnitController.setSelectedUnit(hex.getMilitaryUnit());
+            System.out.println("The military unit was selected successfully");
+            VBox vBox = new VBox();
+
+             ImageView fortifyView = createImageView("pictures/unitActionsIcon/Fortify.png");
+             fortifyView.setOnMouseClicked(event -> {
+                 UnitController.fortify();
+             });
+             vBox.getChildren().add(fortifyView);
+
+             ImageView moveView = createImageView("pictures/unitActionsIcon/MoveIcon.png");
+             vBox.getChildren().add(moveView);
+             fortifyView.setOnMouseClicked(event -> {
+
+             });
+
+             ImageView rangedAttackView = createImageView("pictures/unitActionsIcon/RangeAttackIcone.png");
+             vBox.getChildren().add(rangedAttackView);
+             fortifyView.setOnMouseClicked(event -> {
+
+             });
+
+             ImageView sth = createImageView("pictures/unitActionsIcon/what the hell is this.png");
+             vBox.getChildren().add(sth);
+             fortifyView.setOnMouseClicked(event -> {
+
+             });
+             vBox.setLayoutY(400);
+             pane.getChildren().add(vBox);
+        }
+    }
+
+    private ImageView createImageView(String address) {
+        Image image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+        ImageView view = new ImageView(image);
+        return view;
+    }
+
+    private void selectCivilianUnit(Hex hex) {
+        if (hex.getCivilianUnit().getOwner() == GameController.getCurrentPlayer()){
+            UnitController.setSelectedUnit(hex.getCivilianUnit());
+            System.out.println("The civilian unit was selected successfully");
+        }
     }
 
     private void initializeRevealedView(Hex hex) {
