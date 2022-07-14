@@ -2,6 +2,8 @@ package project.civilization.views;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -20,16 +22,20 @@ import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 import project.civilization.models.units.Unit;
 
+import java.io.IOException;
+
 import javax.swing.*;
 
 public class MapPage {
-    public Pane pane;
+    public  Pane pane;
     private static int[] mapBoundaries;
     public static boolean isANewGame = true;
     @FXML
     private Button saveGameButton;
     @FXML
     private Button nextTurnButton;
+    @FXML
+    private Button notification;
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -61,6 +67,25 @@ public class MapPage {
             pane.requestFocus();
         });
         handleKeyEvent();
+    }
+    // public static void removeNotificationHistory()
+    // {
+    //     pane.getChildren().remove(notificationHistory);
+    // }   
+    // private static Node notificationHistory;
+    public void notification(MouseEvent mouseEvent)
+    {
+        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/notification-history.fxml"));
+            try {
+                // notificationHistory=;
+                Node newNode= (loader.load());
+                newNode.setLayoutY(80);
+                newNode.setLayoutX(80);
+                pane.getChildren().add(newNode);
+            } catch (IOException e) {
+                
+                e.printStackTrace();
+            }
     }
 
     private void loadGme() {
@@ -255,9 +280,9 @@ public class MapPage {
             }
         }
     }
-
+    int bar=50;
     private void setTerrainViewCoordinates(int i, int j, ImageView terrainView) {
-        int align = (j % 2 == 0) ? 0 : 100;
+        int align = (j % 2 == 0) ? 0+bar : 100+bar;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         terrainView.setX(j * 150);
@@ -266,7 +291,7 @@ public class MapPage {
     }
 
     private void setHexDetailsViewCoordinates(int i, int j, ImageView featureView, int alignY,int alignX) {
-        int align = (j % 2 == 0) ? 100 : 200;
+        int align = (j % 2 == 0) ? 100+bar : 200+bar;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         featureView.setX(alignX + (j * 150));

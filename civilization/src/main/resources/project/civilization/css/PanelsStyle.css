@@ -1,16 +1,30 @@
 
-#notification{
+#background{
     -fx-background-color: rgba(0, 0, 0, 0.881);
     -fx-background-size: 1200 650;
 }
 #title
 {
     -fx-background-color: rgb(41, 122, 130);
+    -fx-font-weight: bold;
 }
+Label
+{
+    -fx-text-fill: goldenrod;
+}
+.gamepageButton
+{
 
-.button
+    border-radius: 100%;
+    -fx-font-weight: bold;
+    -fx-background-color: white;
+    
+}
+#panelbutton
 {
     -fx-background-color:  rgb(41, 122, 130);
+    -fx-font-weight: bold;
+    
 }
 
 .scroll-bar:vertical .track{
