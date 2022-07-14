@@ -14,6 +14,7 @@ module project.civilization {
     exports  project.civilization.models.units;
     exports  project.civilization.models.gainable;
     exports  project.civilization.models.twopartyactions;
+    
 
     opens  project.civilization to javafx.fxml, javafx.media, javafx.base ;
     opens  project.civilization.fxml to javafx.media, javafx.base ;

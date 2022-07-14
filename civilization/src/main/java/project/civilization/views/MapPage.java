@@ -1,8 +1,11 @@
 package project.civilization.views;
 
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -19,8 +22,12 @@ import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 import project.civilization.models.units.Unit;
 
+import java.io.IOException;
+
+import javax.swing.*;
+
 public class MapPage {
-    public Pane pane;
+    public  Pane pane;
     private static int[] mapBoundaries;
     public static boolean isANewGame = true;
     private boolean wantToMove = false;
@@ -29,6 +36,8 @@ public class MapPage {
     private Button saveGameButton;
     @FXML
     private Button nextTurnButton;
+    @FXML
+    private Button notification;
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -60,6 +69,92 @@ public class MapPage {
             pane.requestFocus();
         });
         handleKeyEvent();
+    }
+
+
+    private Node openPanel;
+
+    // public static void removeNotificationHistory()
+    // {
+    //     pane.getChildren().remove(notificationHistory);
+    // }
+    // private static Node notificationHistory;
+    // public static void closePanel(String name)
+    // {
+    //     FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
+    //         try {
+    //             // notificationHistory=;
+    //             pane.getChildren().remove((Node) loader.load());
+    //         } catch (IOException e) {
+
+    //             e.printStackTrace();
+    //         }
+    // }
+
+    public void loadPanel(String name)
+    {
+        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
+            try {
+                // notificationHistory=;
+                openPanel= (Node)(loader.load());
+                openPanel.setLayoutY(80);
+                openPanel.setLayoutX(80);
+                pane.getChildren().add(openPanel);
+
+
+                Button closeButton=new Button();
+                closeButton.setLayoutX(80);
+                closeButton.setLayoutY(80);
+                closeButton.setPrefSize(60, 15);
+                closeButton.setText("Close");
+                closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+                pane.getChildren().add(closeButton);
+                closeButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        closeButton.setStyle("-fx-background-color:#3a3a3a; -fx-text-fill: goldenrod");
+
+                    }
+
+                });
+                closeButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+                    }
+
+                });
+                closeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent arg0) {
+                        pane.getChildren().remove(openPanel);
+                        pane.getChildren().remove(closeButton);
+                    }
+
+                });
+            } catch (IOException e) {
+
+                e.printStackTrace();
+            }
+
+    }
+
+    public void units(MouseEvent mouseEvent)
+    {
+        loadPanel("units-panel");
+    }
+    public void notification(MouseEvent mouseEvent)
+    {
+        loadPanel("notification-history");
+    }
+    public void demographic(MouseEvent mouseEvent)
+    {
+        loadPanel("demographic");
     }
 
     private void loadGme() {
@@ -199,7 +294,6 @@ public class MapPage {
         });
     }
 
-
     private void initializeCivilianView(Hex hex, Unit unit, int alignX, int alignY) {
         ImageView unitView =  makeView(hex, unit, alignX, alignY);
         unitView.setOnMouseClicked(event -> {
@@ -235,7 +329,7 @@ public class MapPage {
             ImageView foundCity = createImageView("pictures/unitActionsIcon/foundCity.png");
             vBox.getChildren().add(foundCity);
             foundCity.setOnMouseClicked(event -> {
-               String res = CityController.buildCity(
+                String res = CityController.buildCity(
                         UnitController.getSelectedUnit().getOwner().getName()+UnitController.getSelectedUnit().getOwner().getCities().size());
                 if(!res.equals("new city created successfully")){
                     Alert alert = new Alert(Alert.AlertType.INFORMATION,res);
@@ -401,9 +495,9 @@ public class MapPage {
             }
         }
     }
-
+    int bar=50;
     private void setTerrainViewCoordinates(int i, int j, ImageView terrainView) {
-        int align = (j % 2 == 0) ? 0 : 100;
+        int align = (j % 2 == 0) ? 0+bar : 100+bar;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         terrainView.setX(j * 150);
@@ -412,7 +506,7 @@ public class MapPage {
     }
 
     private void setHexDetailsViewCoordinates(int i, int j, ImageView featureView, int alignY,int alignX) {
-        int align = (j % 2 == 0) ? 100 : 200;
+        int align = (j % 2 == 0) ? 100+bar : 200+bar;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         featureView.setX(alignX + (j * 150));
