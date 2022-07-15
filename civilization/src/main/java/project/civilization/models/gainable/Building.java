@@ -1,5 +1,6 @@
 package project.civilization.models.gainable;
 
+import javafx.scene.image.ImageView;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
@@ -8,6 +9,8 @@ public class Building implements Construction {
     private int cost;
     private int maintenance;
     private int leftTurns;
+
+    private ImageView buildingView;
 
     public Building(int cost, int maintenance, int leftTurns) {
         this.cost = cost;
@@ -68,4 +71,11 @@ public class Building implements Construction {
     }
 
 
+    public ImageView getBuildingView() {
+        return buildingView;
+    }
+
+    public void setBuildingView(ImageView buildingView) {
+        this.buildingView = buildingView;
+    }
 }

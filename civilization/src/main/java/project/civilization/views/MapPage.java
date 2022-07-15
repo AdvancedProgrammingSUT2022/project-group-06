@@ -149,7 +149,8 @@ public class MapPage {
     }
     public void notification(MouseEvent mouseEvent)
     {
-        loadPanel("notification-history");
+//        loadPanel("notification-history");
+        loadPanel("technology-tree-page");//TODO
     }
     public void demographic(MouseEvent mouseEvent)
     {
