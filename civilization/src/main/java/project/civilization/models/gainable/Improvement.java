@@ -6,6 +6,7 @@ import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 public class Improvement implements Construction {
+    private int maxTurn;
     private int leftTurns;
     private String name;
     private Hex hex;
@@ -21,9 +22,14 @@ public class Improvement implements Construction {
         return worker;
     }
 
+    public int getMaxTurn() {
+        return maxTurn;
+    }
+
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
+        this.maxTurn = leftTurns;
     }
 
     @Override

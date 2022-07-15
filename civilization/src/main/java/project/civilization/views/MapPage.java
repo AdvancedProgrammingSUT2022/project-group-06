@@ -3,11 +3,9 @@ package project.civilization.views;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,9 +16,12 @@ import project.civilization.CivilizationApplication;
 import project.civilization.controllers.*;
 import project.civilization.enums.HexState;
 import project.civilization.enums.UnitState;
+import project.civilization.models.gainable.Construction;
+import project.civilization.models.gainable.Improvement;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 import project.civilization.models.units.Unit;
+import project.civilization.models.units.Worker;
 
 import java.io.IOException;
 
@@ -33,9 +34,7 @@ public class MapPage {
     private boolean wantToMove = false;
     private boolean wantToAttack = false;
     @FXML
-    private Button saveGameButton;
-    @FXML
-    private Button nextTurnButton;
+    private AnchorPane anchorPane;
     @FXML
     private Button notification;
 
@@ -90,8 +89,7 @@ public class MapPage {
     //             e.printStackTrace();
     //         }
     // }
-
-    public void loadPanel(String name)
+    public  void loadPanel(String name)
     {
         FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
             try {
@@ -134,6 +132,10 @@ public class MapPage {
                     public void handle(MouseEvent arg0) {
                         pane.getChildren().remove(openPanel);
                         pane.getChildren().remove(closeButton);
+                        Platform.runLater(() -> {
+                            pane.requestFocus();
+                        });
+                        resetPane();
                     }
 
                 });
@@ -233,15 +235,55 @@ public class MapPage {
                     }
                     if( hexes[i][j].getCivilianUnit() != null){
                         initializeCivilianView(hexes[i][j], hexes[i][j].getCivilianUnit(), 100, 20);
+
                     }
                     if (hexes[i][j].getCity() != null) {
                         initializeCity(hexes[i][j]);
                     }
+/*                    if (!hexes[i][j].getImprovement().isEmpty()) {
+                        initializeImprovementsView(hexes[i][j]);
+                    }*/
                     if (hexes[i][j].getOwner() != null) {
                         initializeOwnerView(hexes[i][j]);
                     }
                 }
             }
+        }
+    }
+
+    private void initializeWorkingWorkers(Unit unit, ImageView unitView) {
+        for (Construction imp: GameController.getCurrentPlayer().getUnfinishedProjects()) {
+            if(imp instanceof Improvement && imp.getWorker().equals(unit)){
+                Text text = new Text("Building "+imp.getName());
+                text.setX(unitView.getX());
+                text.setY(unitView.getY()-20);
+                text.setStyle("    -fx-font-size: 15;\n" +
+                        "    -fx-text-fill: black;");
+                ProgressBar makingProgress = new ProgressBar();
+                makingProgress.setLayoutX(unitView.getX()+20);
+                makingProgress.setLayoutY(unitView.getY());
+                makingProgress.setPrefWidth(100);
+                makingProgress.setPrefHeight(20);
+                unitView.setOnMouseEntered(event -> {
+                    makingProgress.setProgress(imp.getLeftTurns()*1.0/((Improvement)imp).getMaxTurn());
+                    pane.getChildren().add(makingProgress);
+                });
+                unitView.setOnMouseExited(event -> {
+                    pane.getChildren().remove(makingProgress);
+                });
+                pane.getChildren().add(text);
+            }
+        }
+    }
+
+    private void initializeImprovementsView(Hex hex) {
+        for (Improvement imp :hex.getImprovement()) {
+            ImageView imageView = makeImageView("pictures/improvements/"+imp.getName()+".png",
+                    hex.getTerrain().getTerrainView().getX()+50,
+            hex.getTerrain().getTerrainView().getX()+50);
+           /* imageView.setOnMouseClicked(event -> {
+
+            });*/
         }
     }
 
@@ -272,14 +314,13 @@ public class MapPage {
     }
 
     private void initializeButtons() {
-        pane.getChildren().add(saveGameButton);
-        pane.getChildren().add(nextTurnButton);
+        pane.getChildren().add(anchorPane);
     }
 
     private void initializeOwnerView(Hex hex) {
         Text text = new Text(hex.getOwner().getName());
-        text.setX(hex.getTerrain().getTerrainView().getX() + 100);
-        text.setY(hex.getTerrain().getTerrainView().getY() + 0);
+        text.setX(hex.getTerrain().getTerrainView().getX() + 120);
+        text.setY(hex.getTerrain().getTerrainView().getY() + 30);
         text.setStyle("    -fx-font-size: 25;\n" +
                 "    -fx-text-fill: black;");
         text.minWidth(100);
@@ -296,8 +337,13 @@ public class MapPage {
 
     private void initializeCivilianView(Hex hex, Unit unit, int alignX, int alignY) {
         ImageView unitView =  makeView(hex, unit, alignX, alignY);
+        initializeWorkingWorkers(unit, unitView);
         unitView.setOnMouseClicked(event -> {
             selectCivilianUnit(hex);
+            // TODO: 7/15/2022 : check is ordered
+            if(unit instanceof Worker /*&& !unit.isOrdered()*/){
+                loadPanel("worker-action-panel");
+            }
         });
     }
 
@@ -318,6 +364,7 @@ public class MapPage {
     }
     private void selectCivilianUnit(Hex hex) {
         if (hex.getCivilianUnit().getOwner() == GameController.getCurrentPlayer()){
+            showInformationOfUnit(hex.getCivilianUnit());
             UnitController.setSelectedUnit(hex.getCivilianUnit());
             VBox vBox = new VBox();
             ImageView delete = createImageView("pictures/unitActionsIcon/delete.png");
@@ -341,7 +388,7 @@ public class MapPage {
             ImageView moveView = createImageView("pictures/unitActionsIcon/move.png");
             vBox.getChildren().add(moveView);
             moveView.setOnMouseClicked(event -> {
-
+                wantToMove = true;
             });
             vBox.setLayoutY(100);
             pane.getChildren().add(vBox);
@@ -576,6 +623,14 @@ public class MapPage {
                     " ,MP:" + hex.getFeature().getMovePoint());
             addVboxToPopup(label1, vBox);
         }
+        if (hex.getImprovement() != null) {
+            StringBuilder improvementsName= new StringBuilder();
+            for (Improvement improvement: hex.getImprovement()) {
+                improvementsName.append(improvement.getName()+" ");
+            }
+            Label label1 = new Label(improvementsName.toString());
+            addVboxToPopup(label1, vBox);
+        }
         popup.getContent().add(vBox);
         popup.setY(10);
         popup.setAutoHide(true);
@@ -598,6 +653,7 @@ public class MapPage {
         String outPut = GameController.changeTurn();
         if (outPut.startsWith("Turn changed successfully")) {
             GameController.checkTimeVariantProcesses();
+            //GameController.getAvailableWorkOfActiveWorkers
             if (GameController.getTurn() == 1) GameController.startGame();
             Platform.runLater(() -> {
                 pane.requestFocus();

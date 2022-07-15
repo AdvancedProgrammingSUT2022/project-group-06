@@ -6,10 +6,10 @@
 <?import javafx.scene.text.Font?>
 
 <Pane fx:id="pane" prefHeight="650.0" prefWidth="1200.0" stylesheets="@../css/PanelsStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.civilization.views.MapPage">
-   <AnchorPane id="title" prefHeight="50.0" prefWidth="1200.0">
+   <AnchorPane fx:id="anchorPane" id="title" prefHeight="50.0" prefWidth="1200.0">
       <children>
       
-                            <Button fx:id="saveGameButton" layoutX="14.0" layoutY="11.0" onMouseClicked="#saveGame" prefHeight="26.0" prefWidth="46.0" styleClass="gamepageButton" text="Save ">
+          <Button fx:id="saveGameButton" layoutX="14.0" layoutY="11.0" onMouseClicked="#saveGame" prefHeight="26.0" prefWidth="46.0" styleClass="gamepageButton" text="Save ">
             <font>
                <Font name="System Bold" size="12.0" />
             </font>
