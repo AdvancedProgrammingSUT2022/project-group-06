@@ -169,7 +169,7 @@ public class InitializeGameInfo {
 
                 technologyInfo.put(name, info);
                 setArray.add(name);
-                for (Player player : GameController.getPlayers()) {
+                for (Player player : players) {
 
                     if (name.equals("Agriculture")) {
                         player.getAchievedTechnologies().put(name, true);
@@ -247,10 +247,10 @@ public class InitializeGameInfo {
     }
 
     public static void run() {
-        numberOFPlayers = 3;
+/*        numberOFPlayers = 3;
         Player a = new Player("A");
         Player b = new Player("B");
-        Player c = new Player("C");
+        Player c = new Player("C");*/
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();

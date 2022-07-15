@@ -15,7 +15,9 @@ public enum Menus {
     LOADGAME("load-game-page"),
     CHAT("chat-page"),
     CHATNAVIGATION("chat-navigation-page"),
-    STARTPRIVATECHAT("start-private-chat-page");
+    STARTPRIVATECHAT("start-private-chat-page"),
+    CHALLENGEPAGE("challenge-page"),
+    MAPPAGE("map-page");
 
     private final String character;
 

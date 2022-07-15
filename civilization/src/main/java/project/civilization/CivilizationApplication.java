@@ -9,21 +9,18 @@ import javafx.stage.Stage;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 import project.civilization.views.ChatMenu;
-import project.civilization.views.LoginMenu;
-import project.civilization.views.Menu;
 import project.civilization.views.Music;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Scanner;
 
 public class CivilizationApplication extends Application {
     private static Scene scene;
     public static Stage stages;
     @Override
     public void start(Stage stage) throws IOException {
-        //Parent root = loadFXML(Menus.GAMEMenu);
-        Parent root = loadMapForTest();
+        Parent root = loadFXML(Menus.LOGIN);
+        //Parent root = loadMapForTest();
         this.stages = stage;
         assert root != null;
         Scene scene = new Scene(root );
@@ -50,14 +47,13 @@ public class CivilizationApplication extends Application {
         CivilizationApplication.scene.setRoot(root);
     }
 
-    public static Parent loadMapForTest(){
+    public static void loadMapForTest(){
         try {
-            URL address = new URL(CivilizationApplication.class.getResource("fxml/" + "map-page"+ ".fxml").toExternalForm());
-            return FXMLLoader.load(address);
+            URL address = new URL(CivilizationApplication.class.getResource("fxml/" + "map-page" + ".fxml").toExternalForm());
+            FXMLLoader.load(address);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
     }
 
     

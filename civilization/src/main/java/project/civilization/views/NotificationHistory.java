@@ -36,8 +36,8 @@ public class NotificationHistory {
     private void writeNotifications()
     {
         //hardcode tor test
-        Player newPlayer=new Player("niki");
-        GameController.setCurrentPlayer(newPlayer);
+        //Player newPlayer=new Player("niki");
+        //GameController.setCurrentPlayer(newPlayer);
         ArrayList<String> notifications =GameController.getCurrentPlayer().getNotifications();
         ArrayList<Integer> turns= GameController.getCurrentPlayer().getNotificationsTurns();
 

@@ -67,14 +67,6 @@ public class GameController {
         return selectedCity;
     }
 
-    public static ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public static void addPlayer(Player newPlayer) {
-        players.add(newPlayer);
-    }
-
     public static Hex getSelectedHex() {
         return selectedHex;
     }
@@ -497,13 +489,13 @@ public class GameController {
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
         resetMovePoints();
-        if (playerCount == GameController.getPlayers().size() - 1) {
+        if (playerCount == players.size() - 1) {
             playerCount = 0;
             turn++;
         } else {
             playerCount++;
         }
-        currentPlayer = GameController.getPlayers().get(playerCount);
+        currentPlayer = players.get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
