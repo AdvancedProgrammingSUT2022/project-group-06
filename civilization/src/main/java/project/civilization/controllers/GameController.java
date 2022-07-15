@@ -1456,4 +1456,11 @@ public class GameController {
     return null;
     }
 
+
+    public static Boolean isAchieved(String name) {
+        if (currentPlayer.getAchievedTechnologies().get(name) != null) {
+            return currentPlayer.getAchievedTechnologies().get(name);
+        }
+        return null;
+    }
 }

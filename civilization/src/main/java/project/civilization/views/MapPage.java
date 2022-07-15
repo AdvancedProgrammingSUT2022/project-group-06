@@ -28,6 +28,7 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class MapPage {
+
     public  Pane pane;
     private static int[] mapBoundaries;
     public static boolean isANewGame = true;
@@ -37,6 +38,8 @@ public class MapPage {
     private Button nextTurnButton;
     @FXML
     private Button notification;
+    @FXML
+    private Button technologyMenu;//TODO: remove button
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -149,12 +152,16 @@ public class MapPage {
     }
     public void notification(MouseEvent mouseEvent)
     {
-//        loadPanel("notification-history");
-        loadPanel("technology-tree-page");//TODO
+        loadPanel("notification-history");
+//        loadPanel("technology-tree-page");//TODO
     }
     public void demographic(MouseEvent mouseEvent)
     {
         loadPanel("demographic");
+    }
+
+    public void technology(MouseEvent mouseEvent) {
+        loadPanel("technology-page");
     }
 
     private void loadGme() {
