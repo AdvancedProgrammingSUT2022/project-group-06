@@ -168,23 +168,23 @@ public class MapPage {
             int[] directions = new int[]{0, 0, 0, 0};
             switch (e.getCode()) {
                 case RIGHT:
-                    directions[2]++;
-                    directions[3]++;
+                    directions[2] = 1;
+                    directions[3] = 1;
                     MoveMap(directions);
                     break;
                 case LEFT:
-                    directions[2]--;
-                    directions[3]--;
+                    directions[2] = -1;
+                    directions[3] = -1;
                     MoveMap(directions);
                     break;
                 case UP:
-                    directions[0]--;
-                    directions[1]--;
+                    directions[0] = -1;
+                    directions[1] = -1;
                     MoveMap(directions);
                     break;
                 case DOWN:
-                    directions[0]++;
-                    directions[1]++;
+                    directions[0] = 1;
+                    directions[1] = 1;
                     MoveMap(directions);
                     break;
                 default:
