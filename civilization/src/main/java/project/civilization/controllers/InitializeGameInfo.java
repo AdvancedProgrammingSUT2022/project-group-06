@@ -35,7 +35,7 @@ public class InitializeGameInfo {
     private static int numberOFPlayers;
 
     private static final Random random = new Random();
-    private static final World world = new World();
+    private static World world ;
 
 
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
@@ -436,8 +436,7 @@ public class InitializeGameInfo {
         String[] size = mapSize.split("\\*");
         int hexInHeight = Integer.parseInt(size[0]);
         int hexInWidth = Integer.parseInt(size[1]);
-        world.setHexInHeight(hexInHeight);
-        world.setWorldWidth(hexInWidth);
+        world = new World(hexInHeight, hexInWidth);
     }
 
     public static void runAsLoadGame() {

@@ -21,12 +21,12 @@ public class World {
     @Expose
     private Hex[][] hex;
 
-    public World() {
-        worldWidth = 120;
-        worldHeight = 65;
+    public World(int hexInHeight, int hexInWidth) {
+        worldWidth = 12 * hexInWidth;
+        worldHeight = 7 * hexInHeight;
         string = new String[worldHeight][worldWidth];
-        hexInWidth = 10;
-        hexInHeight = 10;
+        this.hexInHeight = hexInHeight;
+        this.hexInWidth = hexInWidth;
         hex = new Hex[hexInHeight][hexInWidth];
     }
 
