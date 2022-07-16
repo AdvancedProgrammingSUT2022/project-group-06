@@ -94,6 +94,10 @@ public class MapPage {
         FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
             try {
                 // notificationHistory=;
+                if(openPanel!=null)
+                {
+                    return;
+                }
                 openPanel= (Node)(loader.load());
                 openPanel.setLayoutY(80);
                 openPanel.setLayoutX(80);
@@ -132,6 +136,7 @@ public class MapPage {
                     public void handle(MouseEvent arg0) {
                         pane.getChildren().remove(openPanel);
                         pane.getChildren().remove(closeButton);
+                        openPanel=null;
                         Platform.runLater(() -> {
                             pane.requestFocus();
                         });
@@ -161,6 +166,10 @@ public class MapPage {
     public void military(MouseEvent mouseEvent)
     {
         loadPanel("military-panel");
+    }
+    public void citiesPanel(MouseEvent mouseEvent)
+    {
+        loadPanel("city-panel");
     }
     private void loadGme() {
         InitializeGameInfo.runAsLoadGame();

@@ -23,12 +23,12 @@ public class MilitaryPanel {
     public void initialize() {
       
         //hardcode for test
-        Player newPlayer=new Player("Niki");
-        for(int i=0;i<50;i++)
-        {
-            newPlayer.addToMilitaries(new Military("Warrior", new Hex(0,0, null, null), newPlayer));
-        }
-        GameController.setCurrentPlayer(newPlayer);
+        // Player newPlayer=new Player("Niki");
+        // for(int i=0;i<50;i++)
+        // {
+        //     newPlayer.addToMilitaries(new Military("Warrior", new Hex(0,0, null, null), newPlayer));
+        // }
+        // GameController.setCurrentPlayer(newPlayer);
         
         writeMilitaryInfo();
 
@@ -50,16 +50,18 @@ public class MilitaryPanel {
 
         demoPane.setStyle("-fx-background-color: black");
         demoPane.getChildren().add(militaryInfo);
+        demoPane.setPrefHeight(screenHeight);
         // demoPane.setLayoutX(50);
         // demoPane.setLayoutY(50);
 
-        scrollPane.setStyle("-fx-background-color: black");
+        
+        scrollPane.setPrefHeight(screenHeight);
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
         scrollPane.setContent(demoPane);
         scrollPane.setLayoutY(27);
         scrollPane.setPannable(true);
-        
+        scrollPane.setStyle("-fx-background-color: black");
         anchorPane.setStyle("-fx-background-color:black");
         
 
