@@ -35,7 +35,7 @@ public class InitializeGameInfo {
     private static int numberOFPlayers;
 
     private static final Random random = new Random();
-    private static final World world = new World();
+    private static World world ;
 
 
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
@@ -169,7 +169,7 @@ public class InitializeGameInfo {
 
                 technologyInfo.put(name, info);
                 setArray.add(name);
-                for (Player player : GameController.getPlayers()) {
+                for (Player player : players) {
 
                     if (name.equals("Agriculture")) {
                         player.getAchievedTechnologies().put(name, true);
@@ -247,10 +247,10 @@ public class InitializeGameInfo {
     }
 
     public static void run() {
-        numberOFPlayers = 3;
+/*        numberOFPlayers = 3;
         Player a = new Player("A");
         Player b = new Player("B");
-        Player c = new Player("C");
+        Player c = new Player("C");*/
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
@@ -436,8 +436,7 @@ public class InitializeGameInfo {
         String[] size = mapSize.split("\\*");
         int hexInHeight = Integer.parseInt(size[0]);
         int hexInWidth = Integer.parseInt(size[1]);
-        world.setHexInHeight(hexInHeight);
-        world.setWorldWidth(hexInWidth);
+        world = new World(hexInHeight, hexInWidth);
     }
 
     public static void runAsLoadGame() {

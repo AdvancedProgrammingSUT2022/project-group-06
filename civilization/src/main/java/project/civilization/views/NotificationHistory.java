@@ -36,8 +36,8 @@ public class NotificationHistory {
     private void writeNotifications()
     {
         //hardcode tor test
-        Player newPlayer=new Player("niki");
-        GameController.setCurrentPlayer(newPlayer);
+        //Player newPlayer=new Player("niki");
+        //GameController.setCurrentPlayer(newPlayer);
         ArrayList<String> notifications =GameController.getCurrentPlayer().getNotifications();
         ArrayList<Integer> turns= GameController.getCurrentPlayer().getNotificationsTurns();
 
@@ -73,15 +73,20 @@ public class NotificationHistory {
             
 
             demoPane.getChildren().add(notification);
-            demoPane.setStyle("-fx-background-color: #1a1a1a" );
+        
             startSize+=height;
         }
+        
+        
+        demoPane.setStyle("-fx-background-color:black");
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
         scrollPane.setLayoutY(27);
         scrollPane.setContent(demoPane);
         scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color:black");
 
+        anchorPane.setStyle("-fx-background-color:black");
         anchorPane.getChildren().add(scrollPane);
     }
     

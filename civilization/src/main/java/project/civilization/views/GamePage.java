@@ -96,28 +96,12 @@ public class GamePage extends GameMenus{
     }
 
     public void changeUsername(MouseEvent mouseEvent) {
-        if(invitationBox.getChildren().size() == 1){
-            textField = new TextField();
-            textField.setPromptText("enter enemy username");
-            invitationText = new TextField();
-            invitationText.setPromptText("enter enemy username");
-            Button apply = new Button();
-            apply.setText("send");
-            invitationBox.getChildren().add(textField);
-            invitationBox.getChildren().add(invitationText);
-            invitationBox.getChildren().add(apply);
-            apply.setOnMouseClicked(this::applySendIvitation);
-        }
-    }
-
-    private void applySendIvitation(MouseEvent mouseEvent) {
-        invitationBox.getChildren().remove(textField);
-        invitationBox.getChildren().remove(invitationText);
-        invitationBox.getChildren().remove(1);
+        CivilizationApplication.changeMenu(Menus.CHALLENGEPAGE);
     }
 
     public void loadGame(MouseEvent mouseEvent) {
         CivilizationApplication.changeMenu(Menus.LOADGAME);
 
     }
+
 }

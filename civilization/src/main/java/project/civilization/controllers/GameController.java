@@ -67,14 +67,6 @@ public class GameController {
         return selectedCity;
     }
 
-    public static ArrayList<Player> getPlayers() {
-        return players;
-    }
-
-    public static void addPlayer(Player newPlayer) {
-        players.add(newPlayer);
-    }
-
     public static Hex getSelectedHex() {
         return selectedHex;
     }
@@ -93,7 +85,10 @@ public class GameController {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if(hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")){
-                    UnitController.makeUnit("Settler", hex[i][j], "gold");
+                    UnitController.makeUnit("Worker", hex[i][j], "gold");
+                    City newCity = new City(GameController.getCurrentPlayer(), "fuck",
+                            hex[i][j]);
+
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     return;
                 }
@@ -1456,6 +1451,111 @@ public class GameController {
     return null;
     }
 
+    public static ArrayList<String> getAvailableWorks(Unit selectedUnit) {
+        ArrayList<String> availableWorks = new ArrayList<>();
+        if( UnitController.getSelectedUnit().getCurrentHex().getOwner() == null ||
+                !UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)){
+            return availableWorks;
+        }
+        if(isConstructionPossible() && !UnitController.getSelectedUnit().getCurrentHex().isPillaged()){
+            availableWorks.add("quarry build");
+            availableWorks.add("factory build");
+            availableWorks.add("plantation build");
+            if (canBuildCamp()) availableWorks.add("camp build");
+            if (canBuildPasture()) availableWorks.add("pasture build");
+            if(canBuildLumber())availableWorks.add("lumber mill build");
+            if(canBuildPost()) availableWorks.add("post build");
+            if(canBuildFarm())availableWorks.add("farm build");
+            if(canBuildMine())availableWorks.add("mine build");
+        }
+        if(UnitController.getSelectedUnit().getCurrentHex().isPillaged()){
+            availableWorks.add("repair");
+        }
+        if (removeError("Jungle") == null) availableWorks.add("remove jungle");
+        if (removeError("Forest") == null) availableWorks.add("remove forest");
+        if (removeError("Marsh") == null) availableWorks.add("remove marsh");
+        availableWorks.add("remove way");
+        return availableWorks;
+    }
+    private static boolean canBuildMine(){
+        if (UnitController.getSelectedUnit().getCurrentHex().getResource() == null ||
+                (UnitController.getSelectedUnit().getCurrentHex().getResource().getName().equals("Ice||FoodPlains"))
+                || (UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Mountain||Ocean"))) {
+            return false;
+        }
+        return true;
+    }
+    private static boolean canBuildFarm(){
+        if (UnitController.getSelectedUnit().getCurrentHex().getFeature() != null && UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Ice")) {
+            return false;
+        }
+        return true;
+    }
+    private static boolean canBuildPost(){
+        if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Plain||Desert||Grassland|||Tundra")) {
+            return false;
+        }
+        return true;
+    }
+    private static boolean canBuildLumber(){
+        if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle")) {
+            return false;
+        }
+        if (!currentPlayer.getAchievedTechnologies().get("Construction")) {
+            return false;
+        }
+        return true;
+    }
+    private static boolean canBuildPasture() {
+        if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Desert||Plain||Grassland||Tundra||Hills")) {
+            return false;
+        }
+        return currentPlayer.getAchievedTechnologies().get("AnimalHusbandry");
+    }
+
+    private static boolean canBuildCamp() {
+        return  currentPlayer.getAchievedTechnologies().get("Trapping") &&
+                (UnitController.getSelectedUnit().getCurrentHex().getFeature() != null &&
+                        (UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Jungle")
+                                &&UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain"))
+                );
+    }
+
+    public static void orderToWorker(String command){
+/*        if (command.equals("construct road")){
+            constructRoadView();
+        } else if (command.equals("construct railroad")){
+            constructRailroadMenu();
+        }else*/ if (command.equals("quarry build")) {
+            System.out.println(GameController.makeQuarry());
+        } else if (command.equals("factory build")) {
+            System.out.println(GameController.makeFactory());
+        } else if (command.equals("plantation build")) {
+            System.out.println(GameController.makePlantation());
+        } else if (command.equals("camp build")) {
+            System.out.println(GameController.makingCamp());
+        } else if (command.equals("pasture build")) {
+            System.out.println(GameController.makingPasture());
+        } else if (command.equals("lumber mill build")) {
+            System.out.println(GameController.makingLumberMill());
+        } else if (command.equals("post build")) {
+            System.out.println(GameController.startMakeingTradingPost());
+        } else if (command.equals("farm build")) {
+            System.out.println(GameController.startBuildFarm());
+        } else if (command.equals("mine build")) {
+            System.out.println(GameController.startBuildMine());
+        } else if (command.equals("remove jungle")) {
+            System.out.println(GameController.removeJungle());
+        } else if (command.equals("remove forest")) {
+            System.out.println(GameController.removeForest());
+        } else if (command.equals("remove marsh")) {
+            System.out.println(GameController.removeMarsh());
+        } else if (command.equals("remove way")) {
+            System.out.println(GameController.removeRailRoad());
+        } else if (command.equals("repair")) {
+            System.out.println(GameController.repair());
+        }
+    }
 
     public static Boolean isAchieved(String name) {
         if (currentPlayer.getAchievedTechnologies().get(name) != null) {

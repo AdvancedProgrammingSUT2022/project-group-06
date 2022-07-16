@@ -11,7 +11,6 @@ import project.civilization.models.gainable.Construction;
 import project.civilization.models.maprelated.Hex;
 
 public class Unit implements Combatable, Construction {
-    protected static ArrayList<Unit> units = new ArrayList<Unit>();
     final protected int maxHealth = 10;
     @Expose
     protected int health;
@@ -137,10 +136,6 @@ public class Unit implements Combatable, Construction {
 
     public void setFirstFortify(boolean firstFortify) {
         isFirstFortify = firstFortify;
-    }
-
-    public static ArrayList<Unit> getUnits() {
-        return units;
     }
 
     public String getCombatType() {

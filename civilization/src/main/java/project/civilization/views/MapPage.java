@@ -3,20 +3,20 @@ package project.civilization.views;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import project.civilization.CivilizationApplication;
-import project.civilization.controllers.GameController;
-import project.civilization.controllers.InitializeGameInfo;
-import project.civilization.controllers.UnitController;
+import project.civilization.controllers.*;
 import project.civilization.enums.HexState;
 import project.civilization.enums.UnitState;
 import project.civilization.models.maprelated.Hex;
@@ -28,7 +28,6 @@ import java.io.IOException;
 import javax.swing.*;
 
 public class MapPage {
-
     public  Pane pane;
     private static int[] mapBoundaries;
     public static boolean isANewGame = true;
@@ -38,8 +37,6 @@ public class MapPage {
     private Button nextTurnButton;
     @FXML
     private Button notification;
-    @FXML
-    private Button technologyMenu;//TODO: remove button
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -158,6 +155,14 @@ public class MapPage {
     public void demographic(MouseEvent mouseEvent)
     {
         loadPanel("demographic");
+    }
+    public void military(MouseEvent mouseEvent)
+    {
+        loadPanel("military-panel");
+    }
+    public void citiesPanel(MouseEvent mouseEvent)
+    {
+        loadPanel("city-panel");
     }
 
     public void technology(MouseEvent mouseEvent) {
