@@ -55,6 +55,7 @@ public class TechnologyMenu {
                 loadPanel("technology-tree-page");
             }
         });
+        pane.setStyle("-fx-background-color:black");
         pane.getChildren().add(openTreeButton);
     }
 

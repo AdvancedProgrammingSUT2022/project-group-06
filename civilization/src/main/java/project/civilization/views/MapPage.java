@@ -37,6 +37,8 @@ public class MapPage {
     private Button nextTurnButton;
     @FXML
     private Button notification;
+    @FXML
+    private Button technologyMenu;
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -166,7 +168,7 @@ public class MapPage {
     }
 
     public void technology(MouseEvent mouseEvent) {
-        loadPanel("technology-page");
+        loadPanel("technology-menu-page");
     }
 
     private void loadGme() {
