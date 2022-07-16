@@ -158,7 +158,10 @@ public class MapPage {
     {
         loadPanel("demographic");
     }
-
+    public void military(MouseEvent mouseEvent)
+    {
+        loadPanel("military-panel");
+    }
     private void loadGme() {
         InitializeGameInfo.runAsLoadGame();
     }

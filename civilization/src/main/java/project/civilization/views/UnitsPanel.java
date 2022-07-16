@@ -67,6 +67,7 @@ public class UnitsPanel {
             
 
             demoPane.getChildren().add(newUnit);
+            demoPane.setPrefHeight(screenHeight);
             demoPane.setStyle("-fx-background-color: #1a1a1a" );
             startSize+=height;
         }

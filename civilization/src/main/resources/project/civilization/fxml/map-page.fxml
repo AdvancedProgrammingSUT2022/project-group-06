@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 <Pane fx:id="pane" prefHeight="650.0" prefWidth="1200.0" stylesheets="@../css/PanelsStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.civilization.views.MapPage">
-   <AnchorPane fx:id="anchorPane" id="title" prefHeight="50.0" prefWidth="1200.0">
+   <AnchorPane id="title" fx:id="anchorPane" prefHeight="50.0" prefWidth="1200.0">
       <children>
       
           <Button fx:id="saveGameButton" layoutX="14.0" layoutY="11.0" onMouseClicked="#saveGame" prefHeight="26.0" prefWidth="46.0" styleClass="gamepageButton" text="Save ">
@@ -22,6 +22,7 @@
          <Button fx:id="notification" layoutX="718.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#notification" styleClass="gamepageButton" text="Notification" />
          <Button layoutX="615.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#demographic" styleClass="gamepageButton" text="Demographic" />
          <Button layoutX="554.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#units" styleClass="gamepageButton" text="Units" />
+         <Button layoutX="446.0" layoutY="11.0" mnemonicParsing="false" onMouseClicked="#military" styleClass="gamepageButton" text="Military Panel" />
       </children>
    </AnchorPane>
 
