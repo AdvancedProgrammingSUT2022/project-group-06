@@ -455,8 +455,9 @@ public class GameController {
     }
 
     public static String changeTurn() {
+        // TODO: 7/14/2022 : 
 /*        String unitOrders = unitActions();
-        if (unitOrders != null) return unitOrders;
+        if (unitOrders != null) return unitOrders;*/
         int goldPerTurn = 0;
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
@@ -469,7 +470,8 @@ public class GameController {
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
-        resetOrdersAndOrdered();
+        // TODO: 7/14/2022 : 
+        //resetOrdersAndOrdered();
         UnitController.changeTurn();
         //hazine tamir O negahdari buldings
         currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
@@ -486,14 +488,14 @@ public class GameController {
         //improvements
         for (Player player : players)
             player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        resetMovePoints();*/
-        if (playerCount == GameController.getPlayers().size() - 1) {
+        resetMovePoints();
+        if (playerCount == players.size() - 1) {
             playerCount = 0;
             turn++;
         } else {
             playerCount++;
         }
-        currentPlayer = GameController.getPlayers().get(playerCount);
+        currentPlayer = players.get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
@@ -835,11 +837,11 @@ public class GameController {
     }
 
     public static String startBuildMine() {
-        String isPossible;
+/*        String isPossible;
         if ((isPossible = isMakingMinePossible()) != null) {
             return isPossible;
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -886,11 +888,13 @@ public class GameController {
 
 
     public static String startBuildFarm() {
+/*
         if (selectedHex.isPillaged()) return "this hex is pillaged";
         String isPossible;
         if ((isPossible = isMakingFarmPossible()) != null) {
             return isPossible;
         }
+*/
 
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
@@ -923,16 +927,19 @@ public class GameController {
         if (!(UnitController.getSelectedUnit() instanceof Worker)) {
             return "choose a worker";
         }
-        if (!Objects.equals(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName(), name))
-            return "this tile dont have" + name;
+        if(UnitController.getSelectedUnit().getCurrentHex().getFeature() != null){
+            if (!Objects.equals(UnitController.getSelectedUnit().getCurrentHex().getFeature().getName(), name))
+                return "this tile dont have" + name;
+        }
+
         return null;
     }
 
     public static String removeJungle() {
-        String error;
+/*        String error;
         if ((error = removeError("Jungle")) != null) {
             return error;
-        }
+        }*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -943,10 +950,12 @@ public class GameController {
     }
 
     public static String removeForest() {
+/*
         String error;
-        if ((error = removeError("forest")) != null) {
+        if ((error = removeError("Forest")) != null) {
             return error;
         }
+*/
 
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
@@ -958,10 +967,10 @@ public class GameController {
     }
 
     public static String removeMarsh() {
-        String error;
+/*        String error;
         if ((error = removeError("Marsh")) != null) {
             return error;
-        }
+        }*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -988,12 +997,12 @@ public class GameController {
     }
 
     public static String repair() {
-        if (!(UnitController.getSelectedUnit() instanceof Worker)) {
+/*        if (!(UnitController.getSelectedUnit() instanceof Worker)) {
             return "choose a worker";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().isPillaged()) {
             return "this tile is not pillaged";
-        }
+        }*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1004,7 +1013,7 @@ public class GameController {
     }
 
     public static String startMakeingTradingPost() {
-        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
+/*        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)) {
@@ -1016,7 +1025,7 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Plain||Desert||Grassland|||Tundra")) {
             return "you can not build a TradingPost on this tile";
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1030,7 +1039,7 @@ public class GameController {
     }
 
     public static String makingLumberMill() {
-        if (!currentPlayer.getAchievedTechnologies().get("Construction")) {
+/*        if (!currentPlayer.getAchievedTechnologies().get("Construction")) {
             return "you have not achieved the required technology to build a Lumber Mill";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)) {
@@ -1045,7 +1054,7 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().equals("Jungle")) {
             return "you can not build a Lumber Mill on this tile";
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1059,7 +1068,7 @@ public class GameController {
     }
 
     public static String makingPasture() {
-        if (!currentPlayer.getAchievedTechnologies().get("AnimalHusbandry")) {
+/*        if (!currentPlayer.getAchievedTechnologies().get("AnimalHusbandry")) {
             return "you have not achieved the required technology to build a Pasture";
         }
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
@@ -1074,7 +1083,7 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Desert||Plain||Grassland||Tundra||Hills")) {
             return "you can not build a Pasture on this tile";
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1088,7 +1097,7 @@ public class GameController {
     }
 
     public static String makingCamp() {
-        if (!currentPlayer.getAchievedTechnologies().get("Trapping")) {
+/*        if (!currentPlayer.getAchievedTechnologies().get("Trapping")) {
             return "you have not achieved the required technology to build a Camp";
         }
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
@@ -1103,7 +1112,7 @@ public class GameController {
         if (UnitController.getSelectedUnit().getCurrentHex().getFeature() != null && !UnitController.getSelectedUnit().getCurrentHex().getFeature().getName().equals("Jungle") || !UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain")) {
             return "you can not build a Camp on this tile";
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
         Improvement camp = new Improvement("camp", UnitController.getSelectedUnit(), UnitController.getSelectedUnit().getCurrentHex());
@@ -1116,7 +1125,7 @@ public class GameController {
     }
 
     public static String makePlantation() {
-        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
+/*        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)) {
@@ -1126,7 +1135,7 @@ public class GameController {
             return "you can not have two Improvements in one tile";
         }
 
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1140,7 +1149,7 @@ public class GameController {
     }
 
     public static String makeQuarry() {
-        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
+/*        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
         if (!isConstructionPossible()) {
@@ -1149,7 +1158,7 @@ public class GameController {
         if (!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)) {
             return "this tile is not yours";
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1163,7 +1172,7 @@ public class GameController {
     }
 
     public static String makeFactory() {
-        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
+/*        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Worker)) {
             return "select a worker first";
         }
         if (!UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)) {
@@ -1172,7 +1181,7 @@ public class GameController {
         if (!isConstructionPossible()) {
             return "you can not have two Improvements in one tile";
         }
-        if (selectedHex.isPillaged()) return "this hex is pillaged";
+        if (selectedHex.isPillaged()) return "this hex is pillaged";*/
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
 
@@ -1555,8 +1564,7 @@ public class GameController {
         } else if (command.equals("repair")) {
             System.out.println(GameController.repair());
         }
-    }
-
+    } 
     public static Boolean isAchieved(String name) {
         if (currentPlayer.getAchievedTechnologies().get(name) != null) {
             return currentPlayer.getAchievedTechnologies().get(name);
