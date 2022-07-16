@@ -27,7 +27,7 @@ public class TechnologyMenu {
     private Label lastTechnologyLabel;//showing the last studied technology
     @FXML
     private Button openTreeButton; //open technology tree
-    //name of technologies you can start researching
+    //name of technologies you can start researching//TODO
 
     private ArrayList<HBox> techBoxes;
     int screenWidth=600;
@@ -39,12 +39,16 @@ public class TechnologyMenu {
     }
 
     public void initialize() {
-        lastTechnologyLabel = new Label();//TODO: set label
+        lastTechnologyLabel = new Label("Agriculture");
+        lastTechnologyLabel.setLayoutX(300);
+        lastTechnologyLabel.setLayoutY(100);
+        pane.getChildren().add(lastTechnologyLabel);
         openTreeButton = new Button();
         openTreeButton.setLayoutY(300);
-        openTreeButton.setLayoutX(150);
-        openTreeButton.setPrefWidth(100);
-        openTreeButton.setPrefHeight(70);
+        openTreeButton.setLayoutX(250);
+        openTreeButton.setPrefWidth(150);
+        openTreeButton.setPrefHeight(10);
+        openTreeButton.setText("open technology tree");
         openTreeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

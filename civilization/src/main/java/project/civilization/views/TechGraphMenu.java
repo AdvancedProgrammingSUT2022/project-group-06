@@ -7,9 +7,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import project.civilization.controllers.GameController;
 
 import javafx.scene.shape.Line;
+
 import java.util.ArrayList;
 
 public class TechGraphMenu {
@@ -27,15 +29,312 @@ public class TechGraphMenu {
         initializeTree();
     }
 
-    private void initializeLines() {
+    private void initializeLines(AnchorPane demoPane) {
+        lines = new ArrayList<>();
+        initializeLineBlock1();
+        initializeLineBlock2();
+        initializeLineBlock3();
+        initializeLineBlock4();
+        initializeLineBlock5();
+        initializeLineBlock6();
+        initializeLineBlock7();
+        initializeLineBlock8();
+        initializeLineBlock9();
+        initializeLineBlock10();
+        initializeLineBlock11();
+        addColorForLines(demoPane);
     }
 
     private void initializeLineBlock1() {
-        Line line1 = new Line();
-        line1.setStartX();
-        line1.setStartY();
-        line1.setEndX();
-        line1.setEndY();
+        Line line1 = new Line(90, 190, 150, 65);
+        lines.add(line1);
+
+        Line line2 = new Line(90, 190, 150, 150);
+        lines.add(line2);
+
+        Line line3 = new Line(90, 190, 150, 240);
+        lines.add(line3);
+
+        Line line4 = new Line(90, 190, 150, 330);
+        lines.add(line4);
+    }
+
+    private void initializeLineBlock2() {
+        Line line1 = new Line(230, 60, 300, 50);
+        lines.add(line1);
+
+        Line line2 = new Line(230, 60, 300, 100);
+        lines.add(line2);
+
+        Line line3 = new Line(230, 60, 300, 150);
+        lines.add(line3);
+
+        Line line4 = new Line(230, 150, 300, 200);
+        lines.add(line4);
+
+        Line line5 = new Line(230, 150, 300, 250);
+        lines.add(line5);
+
+        Line line6 = new Line(230, 240, 300, 250);
+        lines.add(line6);
+
+        Line line7 = new Line(230, 340, 300, 305);
+        lines.add(line7);
+
+        Line line8 = new Line(230, 340, 300, 360);
+        lines.add(line8);
+    }
+
+    private void initializeLineBlock3() {
+        Line line1 = new Line(380, 50, 450, 60);
+        lines.add(line1);
+
+        Line line2 = new Line(380, 210, 450, 140);
+        lines.add(line2);
+
+        Line line3 = new Line(380, 260, 450, 140);
+        lines.add(line3);
+
+        Line line4 = new Line(380, 260, 450, 220);
+        lines.add(line4);
+
+        Line line5 = new Line(380, 260, 450, 300);
+        lines.add(line5);
+
+        Line line6 = new Line(380, 310, 450, 310);
+        lines.add(line6);
+
+        Line line7 = new Line(380, 360, 600, 335);
+        lines.add(line7);
+
+        Line line8 = new Line(380, 110, 600, 50);
+        lines.add(line8);
+
+        Line line9 = new Line(380, 160, 600, 50);
+        lines.add(line9);
+
+        Line line10 = new Line(380, 160, 600, 120);
+        lines.add(line10);
+    }
+
+    private void initializeLineBlock4() {
+        Line line1 = new Line(530, 230, 600, 270);
+        lines.add(line1);
+
+        Line line2 = new Line(530, 230, 600, 190);
+        lines.add(line2);
+
+        Line line3 = new Line(530, 300, 600, 330);
+        lines.add(line3);
+
+        Line line4 = new Line(530, 140, 750, 140);
+        lines.add(line4);
+
+        Line line5 = new Line(530, 60, 900, 50);
+        lines.add(line5);
+    }
+
+    private void initializeLineBlock5() {
+        Line line1 = new Line(680, 55, 750, 70);
+        lines.add(line1);
+
+        Line line2 = new Line(680, 120, 750, 70);
+        lines.add(line2);
+
+        Line line3 = new Line(680, 120, 750, 140);
+        lines.add(line3);
+
+        Line line4 = new Line(680, 190, 750, 140);
+        lines.add(line4);
+
+        Line line5 = new Line(680, 190, 750, 220);
+        lines.add(line5);
+
+        Line line6 = new Line(680, 265, 750, 310);
+        lines.add(line6);
+
+        Line line7 = new Line(680, 340, 750, 310);
+        lines.add(line7);
+
+        Line line8 = new Line(680, 265, 900, 230);
+        lines.add(line8);
+    }
+
+    private void initializeLineBlock6() {
+        Line line1 = new Line(830, 65, 900, 50);
+        lines.add(line1);
+
+        Line line2 = new Line(830, 65, 900, 110);
+        lines.add(line2);
+
+        Line line3 = new Line(830, 145, 900, 110);
+        lines.add(line3);
+
+        Line line4 = new Line(830, 145, 900, 170);
+        lines.add(line4);
+
+        Line line5 = new Line(830, 225, 900, 170);
+        lines.add(line5);
+
+        Line line6 = new Line(830, 225, 900, 230);
+        lines.add(line6);
+
+        Line line7 = new Line(830, 305, 900, 295);
+        lines.add(line7);
+
+        Line line8 = new Line(830, 305, 900, 360);
+        lines.add(line8);
+    }
+
+    private void initializeLineBlock7() {
+        Line line1 = new Line(980, 50, 1050, 60);
+        lines.add(line1);
+
+        Line line2 = new Line(980, 110, 1050, 60);
+        lines.add(line2);
+
+        Line line3 = new Line(980, 110, 1050, 130);
+        lines.add(line3);
+
+        Line line4 = new Line(980, 110, 1050, 200);
+        lines.add(line4);
+
+        Line line5 = new Line(980, 170, 1050, 200);
+        lines.add(line5);
+
+        Line line6 = new Line(980, 170, 1050, 270);
+        lines.add(line6);
+
+        Line line7 = new Line(980, 230, 1050, 270);
+        lines.add(line7);
+
+        Line line8 = new Line(980, 295, 1050, 270);
+        lines.add(line8);
+
+        Line line9 = new Line(980, 295, 1050, 340);
+        lines.add(line9);
+
+        Line line10 = new Line(980, 360, 1050, 340);
+        lines.add(line10);
+    }
+
+    private void initializeLineBlock8() {
+        Line line1 = new Line(1130, 60, 1200, 60);
+        lines.add(line1);
+
+        Line line2 = new Line(1130, 130, 1200,  130);
+        lines.add(line2);
+
+        Line line3 = new Line(1130, 200, 1200, 130);
+        lines.add(line3);
+
+        Line line4 = new Line(1130, 200, 1200, 200);
+        lines.add(line4);
+
+        Line line5 = new Line(1130, 270, 1200, 200);
+        lines.add(line5);
+
+        Line line6 = new Line(1130, 270, 1200, 270);
+        lines.add(line6);
+
+        Line line7 = new Line(1130, 340, 1200, 270);
+        lines.add(line7);
+
+        Line line8 = new Line(1130, 340, 1200, 345);
+        lines.add(line8);
+    }
+
+    private void initializeLineBlock9() {
+        Line line1 = new Line(1280, 60, 1350, 50);
+        lines.add(line1);
+
+        Line line2 = new Line(1280, 130, 1350, 50);
+        lines.add(line2);
+
+        Line line3 = new Line(1280, 130, 1350, 110);
+        lines.add(line3);
+
+        Line line4 = new Line(1280, 200, 1350, 110);
+        lines.add(line4);
+
+        Line line5 = new Line(1280, 200, 1350, 170);
+        lines.add(line5);
+
+        Line line6 = new Line(1280, 200, 1350, 230);
+        lines.add(line6);
+
+        Line line7 = new Line(1280, 270, 1350, 230);
+        lines.add(line7);
+
+        Line line8 = new Line(1280, 270, 1350, 290);
+        lines.add(line8);
+
+        Line line9 = new Line(1280, 340, 1350, 290);
+        lines.add(line9);
+
+        Line line10 = new Line(1280, 340, 1350, 350);
+        lines.add(line10);
+    }
+
+    private void initializeLineBlock10() {
+        Line line1 = new Line(1430, 60, 1500, 60);
+        lines.add(line1);
+
+        Line line2 = new Line(1430, 120, 1500, 60);
+        lines.add(line2);
+
+        Line line3 = new Line(1430, 120, 1500, 140);
+        lines.add(line3);
+
+        Line line4 = new Line(1430, 120, 1500, 220);
+        lines.add(line4);
+
+        Line line5 = new Line(1430, 180, 1500, 220);
+        lines.add(line5);
+
+        Line line6 = new Line(1430, 240, 1500, 220);
+        lines.add(line6);
+
+        Line line7 = new Line(1430, 300, 1500, 300);
+        lines.add(line7);
+
+        Line line8 = new Line(1430, 360, 1500, 300);
+        lines.add(line8);
+    }
+
+    private void initializeLineBlock11() {
+        Line line1 = new Line(1580, 60, 1650, 60);
+        lines.add(line1);
+
+        Line line2 = new Line(1580, 140, 1650, 60);
+        lines.add(line2);
+
+        Line line3 = new Line(1580, 140, 1650, 130);
+        lines.add(line3);
+
+        Line line4 = new Line(1580, 140, 1650, 200);
+        lines.add(line4);
+
+        Line line5 = new Line(1580, 220, 1650, 340);
+        lines.add(line5);
+
+        Line line6 = new Line(1580, 220, 1650, 200);
+        lines.add(line6);
+
+        Line line7 = new Line(1580, 220, 1650, 270);
+        lines.add(line7);
+
+        Line line8 = new Line(1580, 300, 1650, 340);
+        lines.add(line8);
+    }
+
+
+    private void addColorForLines(AnchorPane demoPane) {
+        for (Line line : lines) {
+            line.setStroke(Color.GOLDENROD);
+            line.setStrokeWidth(1);
+            demoPane.getChildren().add(line);
+        }
     }
 
     private void initializeTree() {
@@ -55,13 +354,14 @@ public class TechGraphMenu {
         initializeBox10(demoPane);
         initializeBox11(demoPane);
         initializeBox12(demoPane);
-        initializeBox13(demoPane);
-        initializeBox14(demoPane);
-        initializeBox15(demoPane);
+
         setBorderForAllBoxes();
+        initializeLines(demoPane);
+
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
         scrollPane.setLayoutY(27);
+        demoPane.setStyle("-fx-background-color:black");
         scrollPane.setContent(demoPane);
         scrollPane.setPannable(true);
         anchorPane.getChildren().add(scrollPane);
