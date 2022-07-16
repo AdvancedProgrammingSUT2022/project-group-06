@@ -68,11 +68,12 @@ public class RegisterPage extends GameMenus{
 
             if(UserController.isNicknameUnique(nickname.getText()))
             {
-                User newUser = new User(username.getText(), password.getText(),nickname.getText());
-                newUser.setAvatarPic(avatarPic.getImage(), currentPic);
+                // User newUser = new User(username.getText(), password.getText(),nickname.getText());
+                // newUser.setAvatarPic(avatarPic.getImage(), currentPic);
 
-                UserController.getUsers().put(username.getText(), newUser);
-                UserController.getUsersArray().add(newUser);
+                // UserController.getUsers().put(username.getText(), newUser);
+                // UserController.getUsersArray().add(newUser);
+                UserController.createUser(username.getText(), password.getText(),nickname.getText(),avatarPic.getImage(),currentPic);
                 Alert alert = new Alert(AlertType.INFORMATION, "New Account created successfully :)\nMoving to Login Menu");
                 alert.showAndWait();
 

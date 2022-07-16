@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
@@ -199,6 +200,10 @@ public class MapPage {
                     directions[1] = 1;
                     MoveMap(directions);
                     break;
+                case CONTROL:
+                    break;
+                case C:
+                    break;        
                 default:
                     break;
             }
