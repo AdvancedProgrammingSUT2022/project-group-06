@@ -83,8 +83,6 @@ public class ProfilePage  extends GameMenus {
           
         // frame.setVisible(true);  
 
-
-
         avatarPic.setImage(UserController.getLoggedInUser().getAvatarPic());
         currentPic=UserController.getLoggedInUser().getPicNum();
     }
