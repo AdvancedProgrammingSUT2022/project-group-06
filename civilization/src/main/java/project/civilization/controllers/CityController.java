@@ -36,6 +36,18 @@ public class CityController {
 
     }
 
+    public static City getCityWithName(String name)
+    {
+        for(City temp:GameController.getCurrentPlayer().getCities())
+        {
+            if(temp.getName().equals(name))
+            {
+                return temp;
+            }
+        }
+        return null;
+    }
+
     public static String showTrophies() {
         StringBuilder trophy = new StringBuilder();
         if (GameController.getSelectedCity() == null) {

@@ -1,18 +1,24 @@
 package project.civilization.views;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.CityController;
 import project.civilization.controllers.GameController;
 
 public class CityScreen {
@@ -71,6 +77,15 @@ public class CityScreen {
         
             startSize+=height;
         }
+        
+        Button buyHex=new Button();
+        buyHex.setText("Buy Hex");
+        buyHex.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+        
+
+        handleButtonUsage(buyHex);
+
+        demoPane.getChildren().add(buyHex);
 
         demoPane.setStyle("-fx-background-color:black");
         scrollPane.setMaxHeight(screenHeight);
@@ -84,5 +99,99 @@ public class CityScreen {
         anchorPane.getChildren().add(scrollPane);
 
     }
+
+    private void handleButtonUsage(Button button)
+    {
+        button.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+
+                loadPanel(cityName);
+                
+            }
+            
+        });
+        button.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                button.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
+                
+            }
+            
+        });
+        button.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                button.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+                
+            }
+            
+        });
+    }
+
+    private Node openPanel;
+    public void loadPanel(String cityName)
+    {
+        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/buy-hex.fxml"));
+        try {
+            // notificationHistory=;
+            if(openPanel!=null)
+            {
+                return;
+            }
+            BuyHex cityScreenController=new BuyHex(cityName);
+            loader.setController(cityScreenController);
+            openPanel= (Node)(loader.load());
+            openPanel.setLayoutY(80);
+            openPanel.setLayoutX(80);
+            anchorPane.getChildren().add(openPanel);
+
+
+            Button closeButton=new Button();
+            closeButton.setLayoutX(80);
+            closeButton.setLayoutY(80);
+            closeButton.setPrefSize(60, 15);
+            closeButton.setText("Close");
+            closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+            anchorPane.getChildren().add(closeButton);
+            closeButton.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    closeButton.setStyle("-fx-background-color:#3a3a3a; -fx-text-fill: goldenrod");
+
+                }
+
+            });
+            closeButton.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+                }
+
+            });
+            closeButton.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent arg0) {
+                    anchorPane.getChildren().remove(openPanel);
+                    anchorPane.getChildren().remove(closeButton);
+                    openPanel=null;
+                }
+
+            });
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
 
 }
