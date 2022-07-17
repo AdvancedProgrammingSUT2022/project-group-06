@@ -127,7 +127,7 @@ public class LoginController {
             return "user with nickname " + nickname + " already exists";
         }
 
-        //userController.createUser(username, password, nickname);
+        userController.createUser(username, password, nickname);
         return "user created successfuly";
     }
 

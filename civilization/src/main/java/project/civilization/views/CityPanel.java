@@ -53,8 +53,6 @@ public class CityPanel {
             city.setPrefWidth(screenWidth);
             city.setPrefHeight(buttonHeight);
             city.setLayoutY(startSize);
-
-            
             
          
             city.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
