@@ -52,12 +52,10 @@ public class UserController {
         return nicknames;
     }
 
-    public static void createUser(String username, String password, String nickname,Image image,int currentPic) {
+    public void createUser(String username, String password, String nickname) {
         User user = new User(username, password, nickname);
         users.put(username, user);
         nicknames.add(nickname);
-        usersArray.add(user);
-        user.setAvatarPic(image, currentPic);
     }
 
     public static boolean isNicknameUnique(String nickname)
