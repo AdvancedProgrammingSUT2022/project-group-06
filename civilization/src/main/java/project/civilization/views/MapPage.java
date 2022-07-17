@@ -1,6 +1,10 @@
 package project.civilization.views;
 
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -25,6 +29,8 @@ import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.*;
 
@@ -38,6 +44,9 @@ public class MapPage {
     private AnchorPane anchorPane;
     @FXML
     private Button notification;
+
+   
+
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -69,6 +78,8 @@ public class MapPage {
             pane.requestFocus();
         });
         handleKeyEvent();
+
+       
     }
 
 
@@ -176,40 +187,129 @@ public class MapPage {
         InitializeGameInfo.runAsLoadGame();
     }
 
+    Boolean ctrl=false;
     private void handleKeyEvent() {
         pane.setOnKeyPressed(e -> {
             int[] directions = new int[]{0, 0, 0, 0};
             switch (e.getCode()) {
                 case RIGHT:
+                    ctrl=false;
                     directions[2] = 1;
                     directions[3] = 1;
                     MoveMap(directions);
                     break;
                 case LEFT:
+                    ctrl=false;
                     directions[2] = -1;
                     directions[3] = -1;
                     MoveMap(directions);
                     break;
                 case UP:
+                    ctrl=false;
                     directions[0] = -1;
                     directions[1] = -1;
                     MoveMap(directions);
                     break;
                 case DOWN:
+                    ctrl=false;
                     directions[0] = 1;
                     directions[1] = 1;
                     MoveMap(directions);
                     break;
                 case CONTROL:
-                    break;
+                    ctrl=true;
+                break;       
                 case C:
-                    break;        
+                    if(ctrl)
+                    {
+                        cheatMenu();
+                    }
+                    break;
                 default:
+                    ctrl=false; 
                     break;
             }
         });
     }
 
+    private void cheatMenu()
+    {
+        VBox hBox=new VBox();
+        HBox vBox=new HBox();
+        TextField cheat=new TextField();
+        cheat.setStyle("-fx-background-color: black; -fx-text-fill: white");
+        cheat.setPrefWidth(300);
+        Button button=new Button();
+        Button close=new Button();
+        button.setStyle("-fx-font-weight: bold; -fx-background-color: white;");
+        close.setStyle("-fx-font-weight: bold; -fx-background-color: white;");
+        button.setText("Ok");
+        close.setText("close");
+        vBox.getChildren().add(close);
+        vBox.getChildren().add(button);
+        hBox.getChildren().add(cheat);
+        hBox.getChildren().add(vBox);
+        Label error=new Label();
+        error.setStyle("-fx-text-fill:red");
+        hBox.getChildren().add(error);
+        pane.getChildren().add(hBox);
+        close.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                pane.getChildren().remove(hBox);
+                Platform.runLater(() -> {
+                    pane.requestFocus();
+                });
+                resetPane();
+            }
+
+        });
+
+        button.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) 
+            {
+                Matcher matcher;
+                String command=cheat.getText();
+                if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
+                    error.setText(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
+                } else if ((matcher = getMatcher("increase (--cityproduction|-cp) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
+                    error.setText(GameController.cheatCityProduction(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+                } else if ((matcher = getMatcher("increase (--movepoint|-mp) (?<amount>\\d+) (?<x>\\d+) (?<y>\\d+) (?<type>[a-zA-Z]+)", command)) != null) {
+                    error.setText(GameController.cheatMP((Integer.parseInt(matcher.group("amount"))), Integer.parseInt(matcher.group("x")), Integer.parseInt(matcher.group("y")), matcher.group("type")));
+                } else if ((matcher = getMatcher("increase (--happiness|-h) (?<amount>\\d+)", command)) != null) {
+                    error.setText(GameController.cheatHappiness((Integer.parseInt(matcher.group("amount")))));
+                } else if ((matcher = getMatcher("increase (--population|-p) (?<amount>\\d+)", command)) != null) {
+                    error.setText(GameController.cheatPopulation((Integer.parseInt(matcher.group("amount")))));
+                } else if ((matcher = getMatcher("increase (--score|-s) (?<amount>\\d+)", command)) != null) {
+                    error.setText(GameController.cheatScore((Integer.parseInt(matcher.group("amount")))));
+                } else if ((matcher = getMatcher("increase (--production|-pr) (?<amount>\\d+)", command)) != null) {
+                    error.setText(GameController.cheatProduction((Integer.parseInt(matcher.group("amount")))));
+                } else if ((matcher = getMatcher("increase (--cityMeleeCombatStrength|-cmcs) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
+                    error.setText(GameController.cheatMeleeCombatStrength(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+                } else if ((matcher = getMatcher("increase (--cityRangedCombatStrength|-crcs) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
+                    error.setText(GameController.cheatRangedCombatStrength(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+                } else if ((matcher = getMatcher("increase (--cityhitpoint|-chp) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
+                    error.setText(GameController.cheatCityHitPoint(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+                } else if ((matcher = getMatcher("increase (--cityfood|-cf) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
+                    error.setText(GameController.cheatCityFood(Integer.parseInt(matcher.group("amount")), matcher.group("cityname")));
+                } else if ((matcher = getMatcher("increase (--trophy|-t) (?<amount>\\d+)", command)) != null) {
+                    error.setText(GameController.cheatTrophy(Integer.parseInt(matcher.group("amount"))));
+                }
+            }
+        });
+        
+    }
+
+    private static Matcher getMatcher(String regex, String input) {
+        Matcher matcher = Pattern.compile(regex).matcher(input);
+        if (matcher.find()) return matcher;
+        return null;
+    }
+    
+    
     private void MoveMap(int[] directions) {
         if (mapBoundaries[0] + directions[0] < 0 || mapBoundaries[1] + directions[1] > InitializeGameInfo.getWorld().getHexInHeight() ||
                 mapBoundaries[2] + directions[2] < 0 || mapBoundaries[3] + directions[3] > InitializeGameInfo.getWorld().getHexInWidth()) {
