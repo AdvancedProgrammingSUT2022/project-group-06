@@ -44,8 +44,9 @@ public class MapPage {
     private AnchorPane anchorPane;
     @FXML
     private Button notification;
+    @FXML
+    private Button technologyMenu;
 
-   
 
 
     public void initialize() {
@@ -78,8 +79,6 @@ public class MapPage {
             pane.requestFocus();
         });
         handleKeyEvent();
-
-       
     }
 
 
@@ -104,62 +103,62 @@ public class MapPage {
     public  void loadPanel(String name)
     {
         FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
-            try {
-                // notificationHistory=;
-                if(openPanel!=null)
-                {
-                    return;
-                }
-                openPanel= (Node)(loader.load());
-                openPanel.setLayoutY(80);
-                openPanel.setLayoutX(80);
-                pane.getChildren().add(openPanel);
-
-
-                Button closeButton=new Button();
-                closeButton.setLayoutX(80);
-                closeButton.setLayoutY(80);
-                closeButton.setPrefSize(60, 15);
-                closeButton.setText("Close");
-                closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
-
-                pane.getChildren().add(closeButton);
-                closeButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        closeButton.setStyle("-fx-background-color:#3a3a3a; -fx-text-fill: goldenrod");
-
-                    }
-
-                });
-                closeButton.setOnMouseExited(new EventHandler<MouseEvent>() {
-
-                    @Override
-                    public void handle(MouseEvent event) {
-                        closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
-
-                    }
-
-                });
-                closeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-                    @Override
-                    public void handle(MouseEvent arg0) {
-                        pane.getChildren().remove(openPanel);
-                        pane.getChildren().remove(closeButton);
-                        openPanel=null;
-                        Platform.runLater(() -> {
-                            pane.requestFocus();
-                        });
-                        resetPane();
-                    }
-
-                });
-            } catch (IOException e) {
-
-                e.printStackTrace();
+        try {
+            // notificationHistory=;
+            if(openPanel!=null)
+            {
+                return;
             }
+            openPanel= (Node)(loader.load());
+            openPanel.setLayoutY(80);
+            openPanel.setLayoutX(80);
+            pane.getChildren().add(openPanel);
+
+
+            Button closeButton=new Button();
+            closeButton.setLayoutX(80);
+            closeButton.setLayoutY(80);
+            closeButton.setPrefSize(60, 15);
+            closeButton.setText("Close");
+            closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+            pane.getChildren().add(closeButton);
+            closeButton.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    closeButton.setStyle("-fx-background-color:#3a3a3a; -fx-text-fill: goldenrod");
+
+                }
+
+            });
+            closeButton.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+                }
+
+            });
+            closeButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent arg0) {
+                    pane.getChildren().remove(openPanel);
+                    pane.getChildren().remove(closeButton);
+                    openPanel=null;
+                    Platform.runLater(() -> {
+                        pane.requestFocus();
+                    });
+                    resetPane();
+                }
+
+            });
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
 
     }
 
@@ -182,6 +181,9 @@ public class MapPage {
     public void citiesPanel(MouseEvent mouseEvent)
     {
         loadPanel("city-panel");
+    }
+    public void technology(MouseEvent mouseEvent) {
+        loadPanel("technology-menu-page");
     }
     private void loadGme() {
         InitializeGameInfo.runAsLoadGame();
@@ -218,7 +220,7 @@ public class MapPage {
                     break;
                 case CONTROL:
                     ctrl=true;
-                break;       
+                    break;
                 case C:
                     if(ctrl)
                     {
@@ -226,7 +228,8 @@ public class MapPage {
                     }
                     break;
                 default:
-                    ctrl=false; 
+                    ctrl=false;
+                    ctrl=false;
                     break;
             }
         });
@@ -269,7 +272,7 @@ public class MapPage {
         button.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
 
             @Override
-            public void handle(MouseEvent arg0) 
+            public void handle(MouseEvent arg0)
             {
                 Matcher matcher;
                 String command=cheat.getText();
@@ -300,7 +303,7 @@ public class MapPage {
                 }
             }
         });
-        
+
     }
 
     private static Matcher getMatcher(String regex, String input) {
@@ -308,8 +311,8 @@ public class MapPage {
         if (matcher.find()) return matcher;
         return null;
     }
-    
-    
+
+
     private void MoveMap(int[] directions) {
         if (mapBoundaries[0] + directions[0] < 0 || mapBoundaries[1] + directions[1] > InitializeGameInfo.getWorld().getHexInHeight() ||
                 mapBoundaries[2] + directions[2] < 0 || mapBoundaries[3] + directions[3] > InitializeGameInfo.getWorld().getHexInWidth()) {
@@ -397,7 +400,7 @@ public class MapPage {
         for (Improvement imp :hex.getImprovement()) {
             ImageView imageView = makeImageView("pictures/improvements/"+imp.getName()+".png",
                     hex.getTerrain().getTerrainView().getX()+50,
-            hex.getTerrain().getTerrainView().getX()+50);
+                    hex.getTerrain().getTerrainView().getX()+50);
            /* imageView.setOnMouseClicked(event -> {
 
             });*/
@@ -512,91 +515,91 @@ public class MapPage {
         }
     }
     private void selectMilitaryUnit(Hex hex) {
-         if (hex.getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
-             showInformationOfUnit(hex.getMilitaryUnit());
-             UnitController.setSelectedUnit(hex.getMilitaryUnit());
+        if (hex.getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
+            showInformationOfUnit(hex.getMilitaryUnit());
+            UnitController.setSelectedUnit(hex.getMilitaryUnit());
             VBox vBox = new VBox();
-             ImageView delete = createImageView("pictures/unitActionsIcon/delete.png");
-             vBox.getChildren().add(delete);
-             delete.setOnMouseClicked(event -> {
+            ImageView delete = createImageView("pictures/unitActionsIcon/delete.png");
+            vBox.getChildren().add(delete);
+            delete.setOnMouseClicked(event -> {
                 UnitController.deleteUnitAction(UnitController.getSelectedUnit());
-                 resetPane();
-             });
-             ImageView pillage = createImageView("pictures/unitActionsIcon/pillage.png");
-             vBox.getChildren().add(pillage);
-             pillage.setOnMouseClicked(event -> {
-                 UnitController.pillage();
-                 resetPane();
-             });
-             ImageView alertView = createImageView("pictures/unitActionsIcon/alert.png");
-             vBox.getChildren().add(alertView);
-             alertView.setOnMouseClicked(event -> {
-                 UnitController.alert();
-                 resetPane();
-             });
-             ImageView sleepView = createImageView("pictures/unitActionsIcon/sleep.png");
-             vBox.getChildren().add(sleepView);
-             sleepView.setOnMouseClicked(event -> {
-                 UnitController.sleepUnit();
-                 resetPane();
-             });
-             ImageView fortifyView = createImageView("pictures/unitActionsIcon/fortify.png");
-             vBox.getChildren().add(fortifyView);
-             fortifyView.setOnMouseClicked(event -> {
-                 System.out.println(UnitController.fortify());
-                 resetPane();
-             });
-             ImageView wake = createImageView("pictures/unitActionsIcon/wake.png");
-             vBox.getChildren().add(wake);
-             wake.setOnMouseClicked(event -> {
+                resetPane();
+            });
+            ImageView pillage = createImageView("pictures/unitActionsIcon/pillage.png");
+            vBox.getChildren().add(pillage);
+            pillage.setOnMouseClicked(event -> {
+                UnitController.pillage();
+                resetPane();
+            });
+            ImageView alertView = createImageView("pictures/unitActionsIcon/alert.png");
+            vBox.getChildren().add(alertView);
+            alertView.setOnMouseClicked(event -> {
+                UnitController.alert();
+                resetPane();
+            });
+            ImageView sleepView = createImageView("pictures/unitActionsIcon/sleep.png");
+            vBox.getChildren().add(sleepView);
+            sleepView.setOnMouseClicked(event -> {
+                UnitController.sleepUnit();
+                resetPane();
+            });
+            ImageView fortifyView = createImageView("pictures/unitActionsIcon/fortify.png");
+            vBox.getChildren().add(fortifyView);
+            fortifyView.setOnMouseClicked(event -> {
+                System.out.println(UnitController.fortify());
+                resetPane();
+            });
+            ImageView wake = createImageView("pictures/unitActionsIcon/wake.png");
+            vBox.getChildren().add(wake);
+            wake.setOnMouseClicked(event -> {
                 UnitController.wakeUpUnit();
                 resetPane();
-             });
-             ImageView moveView = createImageView("pictures/unitActionsIcon/move.png");
-             vBox.getChildren().add(moveView);
-             moveView.setOnMouseClicked(event -> {
+            });
+            ImageView moveView = createImageView("pictures/unitActionsIcon/move.png");
+            vBox.getChildren().add(moveView);
+            moveView.setOnMouseClicked(event -> {
                 wantToMove = true;
-             });
+            });
 
-             ImageView garrison = createImageView("pictures/unitActionsIcon/garrison.png");
-             vBox.getChildren().add(garrison);
-             garrison.setOnMouseClicked(event -> {
+            ImageView garrison = createImageView("pictures/unitActionsIcon/garrison.png");
+            vBox.getChildren().add(garrison);
+            garrison.setOnMouseClicked(event -> {
                 UnitController.garrison();
-             });
+            });
 
-             ImageView attack = createImageView("pictures/unitActionsIcon/attack.png");
-             vBox.getChildren().add(attack);
-             attack.setOnMouseClicked(event -> {
-                 wantToAttack = true;
-             });
-
-             ImageView rangedAttackView = createImageView("pictures/unitActionsIcon/rangeAttack.png");
-             vBox.getChildren().add(rangedAttackView);
-             rangedAttackView.setOnMouseClicked(event -> {
+            ImageView attack = createImageView("pictures/unitActionsIcon/attack.png");
+            vBox.getChildren().add(attack);
+            attack.setOnMouseClicked(event -> {
                 wantToAttack = true;
-             });
-             ImageView setUpRangeAttackView = createImageView("pictures/unitActionsIcon/setUpForRangeAttack.png");
-             vBox.getChildren().add(setUpRangeAttackView);
-             setUpRangeAttackView.setOnMouseClicked(event -> {
-                 String res = UnitController.setUpSiegeForRangeAttack();
-                 if(!res.equals("siege is ready for the next turn")){
-                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
-                     alert.showAndWait();
-                 }else resetPane();
-             });
-             ImageView fortifyUntilHeal = createImageView("pictures/unitActionsIcon/fortifyUntilHeal.png");
-             vBox.getChildren().add(fortifyUntilHeal);
-             fortifyUntilHeal.setOnMouseClicked(event -> {
-                 UnitController.fortifyUtilHeal();
-                 resetPane();
-             });
+            });
+
+            ImageView rangedAttackView = createImageView("pictures/unitActionsIcon/rangeAttack.png");
+            vBox.getChildren().add(rangedAttackView);
+            rangedAttackView.setOnMouseClicked(event -> {
+                wantToAttack = true;
+            });
+            ImageView setUpRangeAttackView = createImageView("pictures/unitActionsIcon/setUpForRangeAttack.png");
+            vBox.getChildren().add(setUpRangeAttackView);
+            setUpRangeAttackView.setOnMouseClicked(event -> {
+                String res = UnitController.setUpSiegeForRangeAttack();
+                if(!res.equals("siege is ready for the next turn")){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
+                    alert.showAndWait();
+                }else resetPane();
+            });
+            ImageView fortifyUntilHeal = createImageView("pictures/unitActionsIcon/fortifyUntilHeal.png");
+            vBox.getChildren().add(fortifyUntilHeal);
+            fortifyUntilHeal.setOnMouseClicked(event -> {
+                UnitController.fortifyUtilHeal();
+                resetPane();
+            });
 /*             ImageView cancel = createImageView("pictures/unitActionsIcon/cancel.png");
              vBox.getChildren().add(cancel);
              cancel.setOnMouseClicked(event -> {
                  resetPane();
              });*/
-             vBox.setLayoutY(100);
-             pane.getChildren().add(vBox);
+            vBox.setLayoutY(100);
+            pane.getChildren().add(vBox);
         }
     }
 

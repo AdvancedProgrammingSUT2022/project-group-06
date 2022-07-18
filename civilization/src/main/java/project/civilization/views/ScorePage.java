@@ -17,7 +17,7 @@ public class ScorePage extends GameMenus {
     private int defaultPointX=800;
     public void initialize() {
 
-    
+
         int temp=1;
 
         Collections.sort(UserController.getUsersArray());
@@ -39,7 +39,7 @@ public class ScorePage extends GameMenus {
             list.getChildren().add(pointLabel);
 
             temp++;
-            
+
         }
     }
 

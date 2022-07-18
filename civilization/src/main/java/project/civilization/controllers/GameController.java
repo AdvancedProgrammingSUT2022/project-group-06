@@ -455,7 +455,7 @@ public class GameController {
     }
 
     public static String changeTurn() {
-        // TODO: 7/14/2022 : 
+        // TODO: 7/14/2022 :
 /*        String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;*/
         int goldPerTurn = 0;
@@ -470,7 +470,7 @@ public class GameController {
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
-        // TODO: 7/14/2022 : 
+        // TODO: 7/14/2022 :
         //resetOrdersAndOrdered();
         UnitController.changeTurn();
         //hazine tamir O negahdari buldings
@@ -825,7 +825,7 @@ public class GameController {
                     continue;
                 }
                 ArrayList<Construction> technologies = new ArrayList<Construction>();
-    
+
                 economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
                 economicInfo.append("\t\tpoplulation: " + temp.getPopulation() + "\n");
                 economicInfo.append("\t\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
@@ -834,7 +834,7 @@ public class GameController {
                 economicInfo.append("\t\tgold " + temp.getGold() + "\n");
                 economicInfo.append("\t\ttrophy: " + temp.getTrophy() + "\n");
                 economicInfo.append("\t\tproduction: " + temp.getProduction() + "\n");
-    
+
                 for (Construction construction : currentPlayer.getUnfinishedProjects()) {
                     if (!(construction instanceof Technology) && construction.getHex().getCity().getName().equals(temp.getName())) {
                         economicInfo.append("\t\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
@@ -842,15 +842,15 @@ public class GameController {
                     if (construction instanceof Technology) {
                         technologies.add(construction);
                     }
-    
+
                 }
-    
+
                 if (!technologies.isEmpty()) {
                     for (Construction tech : technologies) {
                         economicInfo.append("pending technology: " + tech.getName());
                     }
                 }
-        }   
+        }
 
         return economicInfo.toString();
 
@@ -1494,7 +1494,7 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    return null;
+        return null;
     }
 
     public static ArrayList<String> getAvailableWorks(Unit selectedUnit) {
@@ -1601,7 +1601,7 @@ public class GameController {
         } else if (command.equals("repair")) {
             System.out.println(GameController.repair());
         }
-    } 
+    }
     public static Boolean isAchieved(String name) {
         if (currentPlayer.getAchievedTechnologies().get(name) != null) {
             return currentPlayer.getAchievedTechnologies().get(name);

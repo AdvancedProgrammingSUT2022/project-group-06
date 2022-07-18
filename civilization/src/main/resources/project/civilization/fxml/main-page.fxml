@@ -13,22 +13,22 @@
 
         <VBox alignment="CENTER" maxWidth="480" maxHeight="571" spacing="10" styleClass="menu-bar">
             <Button onMouseClicked="#newGame" prefHeight="123.0" text="New Game">
-            <VBox.margin>
-               <Insets top="70.0" />
-            </VBox.margin></Button>
+                <VBox.margin>
+                    <Insets top="70.0" />
+                </VBox.margin></Button>
             <Button onMouseClicked="#loadGame" prefHeight="10.0" text="Load Game" />
             <Button fx:id="profile" onMouseClicked="#profile" prefHeight="39.0" text="Profile" />
             <Button fx:id="setting" onMouseClicked="#setting" prefHeight="10.0" text="Setting" />
             <Button onMouseClicked="#scoreBoard" prefHeight="10.0" text="Score Board" />
             <Button onMouseClicked="#logout" prefHeight="10.0" text="Logout" />
             <Button onMouseClicked="#exit" prefHeight="0.0" text="Exit" />
-            
+
         </VBox>
 
     </center>
-   <top>
+    <top>
 
-            <Label fx:id="name" prefHeight="0.0" prefWidth="122.0" text="Civilizatoin " BorderPane.alignment="CENTER" />
-   </top>
+        <Label fx:id="name" prefHeight="0.0" prefWidth="122.0" text="Civilizatoin " BorderPane.alignment="CENTER" />
+    </top>
 
 </BorderPane>

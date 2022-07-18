@@ -27,8 +27,8 @@ import project.civilization.models.units.Civilian;
 
 
 public class RegisterPage extends GameMenus{
-    
-    
+
+
     private int avatarPicCount = 4;
     private int currentPic = 1;
 

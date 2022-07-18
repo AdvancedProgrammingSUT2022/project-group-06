@@ -81,12 +81,12 @@ public class UserController {
 
     public static String login(String username, String password) {
 
-      
+
         for (User user : usersArray) {
             if (user.getUsername().equals(username)) {
                 if (user.getPassword().equals(password)) {
                     loggedInUser = user;
-                
+
                     return null;
                 }
 
@@ -121,18 +121,18 @@ public class UserController {
 
             URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UserInfo.txt")).toExternalForm());
             File file = new File(Paths.get(address.toURI()).toString());
-           
-            
+
+
             PrintWriter user = new PrintWriter(file);
 
-                       
+
             users.forEach((key, value) -> {
-            
+
                 user.write(key + " " + value.getPassword() + " " + value.getNickName() +" "+value.getScore()+" "+value.getPicNum()+ "\n");
 
             });
-            
-            
+
+
 
             user.close();
         } catch (Exception e) {
@@ -157,9 +157,9 @@ public class UserController {
                 int score=Integer.parseInt(read[3]);
                 int picNum=Integer.parseInt(read[4]);
 
-       
+
                 User addUser = new User(Username, Password, Nickname);
-                
+
                 addUser.setAvatarPic(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".png").toExternalForm()), picNum);
                 addUser.increaseScore(score);
                 users.put(Username, addUser);

@@ -19,9 +19,9 @@ import project.civilization.models.units.Unit;
 public class MilitaryPanel {
     @FXML
     private AnchorPane anchorPane;
-    
+
     public void initialize() {
-      
+
         //hardcode for test
         // Player newPlayer=new Player("Niki");
         // for(int i=0;i<50;i++)
@@ -29,12 +29,12 @@ public class MilitaryPanel {
         //     newPlayer.addToMilitaries(new Military("Warrior", new Hex(0,0, null, null), newPlayer));
         // }
         // GameController.setCurrentPlayer(newPlayer);
-        
+
         writeMilitaryInfo();
 
     }
     private void writeMilitaryInfo()
-    {   
+    {
         int screenWidth=600;
         int screenHeight=400;
 
@@ -54,7 +54,7 @@ public class MilitaryPanel {
         // demoPane.setLayoutX(50);
         // demoPane.setLayoutY(50);
 
-        
+
         scrollPane.setPrefHeight(screenHeight);
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
@@ -63,7 +63,7 @@ public class MilitaryPanel {
         scrollPane.setPannable(true);
         scrollPane.setStyle("-fx-background-color: black");
         anchorPane.setStyle("-fx-background-color:black");
-        
+
 
         anchorPane.getChildren().add(scrollPane);
 

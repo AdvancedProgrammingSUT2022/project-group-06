@@ -144,7 +144,7 @@ public class Player {
         militaries = new ArrayList<Military>();
         //initial happiness
         //hardcode
-      
+
         this.happiness = 10;
         InitializeGameInfo.getPlayers().add(this);
         this.foodForNewCitizen = 2;

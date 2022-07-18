@@ -56,7 +56,7 @@ public class CivilizationApplication extends Application {
         }
     }
 
-    
+
     private static Parent loadFXML(Menus menuName){
         if(menuName == Menus.GAME){
             Music.addMusic("songs/MUS_Genie_A.wav");

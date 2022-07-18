@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane id="background" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/PanelsStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <Label id="title" fx:id="title" alignment="CENTER" layoutY="-4.0" prefHeight="27.0" prefWidth="600.0"  />
-   </children>
+    <children>
+        <Label id="title" fx:id="title" alignment="CENTER" layoutY="-4.0" prefHeight="27.0" prefWidth="600.0"  />
+    </children>
 </AnchorPane>

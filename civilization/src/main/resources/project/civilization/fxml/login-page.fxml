@@ -11,18 +11,18 @@
 
         <VBox alignment="CENTER" maxWidth="350" spacing="10">
 
-         
-                    <Label alignment="CENTER" prefHeight="34.0" prefWidth="96.0" text="Username" />
-                    <TextField fx:id="username" promptText="enter your username" />
-                    <Label alignment="CENTER" text="Password" />
-                    <TextField fx:id="password" promptText="enter your password" />
-                    <Button fx:id="loginButton" onMouseClicked="#login" text="Login" />
-            
-                    <Label alignment="CENTER" prefHeight="10.0" prefWidth="233.0" text="Don't have an account?" textAlignment="CENTER" />
-                    <Button onMouseClicked="#register" text="Register now" />
-                    <Label id="error" fx:id="error" alignment="CENTER" prefHeight="55.0" prefWidth="438.0" text="" textAlignment="CENTER" />
-                    <Button onMouseClicked="#exit" text="Exit" />
-            
+
+            <Label alignment="CENTER" prefHeight="34.0" prefWidth="96.0" text="Username" />
+            <TextField fx:id="username" promptText="enter your username" />
+            <Label alignment="CENTER" text="Password" />
+            <TextField fx:id="password" promptText="enter your password" />
+            <Button fx:id="loginButton" onMouseClicked="#login" text="Login" />
+
+            <Label alignment="CENTER" prefHeight="10.0" prefWidth="233.0" text="Don't have an account?" textAlignment="CENTER" />
+            <Button onMouseClicked="#register" text="Register now" />
+            <Label id="error" fx:id="error" alignment="CENTER" prefHeight="55.0" prefWidth="438.0" text="" textAlignment="CENTER" />
+            <Button onMouseClicked="#exit" text="Exit" />
+
         </VBox>
 
     </center>

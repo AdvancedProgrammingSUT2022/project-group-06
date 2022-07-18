@@ -17,7 +17,7 @@ import project.civilization.enums.Menus;
 
 
 public class MainPage extends GameMenus{
-    
+
 
     @FXML
     private Label name;
@@ -26,7 +26,7 @@ public class MainPage extends GameMenus{
 
     public void initialize() {
         name.setText("Welcome " + UserController.getLoggedInUser().getUsername());
-       
+
 
     }
 
@@ -43,7 +43,7 @@ public class MainPage extends GameMenus{
     }
 
     public void profile(MouseEvent mouseEvent) {
-        
+
         CivilizationApplication.changeMenu(Menus.PROFILE);
     }
 
@@ -62,12 +62,12 @@ public class MainPage extends GameMenus{
 
     public void logout(MouseEvent mouseEvent)
     {
-     
+
         Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to logout?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
-            
+
             UserController.setLoggedInUser(null);
             Alert alertFinish=new Alert(AlertType.INFORMATION, "Logout successfull\nProceeding to login menu");
             alertFinish.showAndWait();

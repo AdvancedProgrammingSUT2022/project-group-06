@@ -28,18 +28,18 @@ public class LoginPage extends GameMenus{
     public void login(MouseEvent mouseEvent) {
         if (username.getText().equals("") || password.getText().equals("")) {
             error.setText("Fill all fields");
-           
+
             // error.setStyle("-fx-text-fill: #ff0066;");
             return;
         }
         String result;
         if ((result = UserController.login(username.getText(), password.getText())) != null) {
             error.setText(result);
-            
+
             // error.setStyle("-fx-text-fill: #ff0066;");
             return;
         }
-       
+
         CivilizationApplication.changeMenu(Menus.MAIN);
     }
 

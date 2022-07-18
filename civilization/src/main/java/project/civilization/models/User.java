@@ -26,7 +26,7 @@ public class User implements Comparable{
         this.password = password;
         this.nickName = nickname;
         this.score=0;
-        
+
     }
 
     public Image getAvatarPic()
@@ -37,7 +37,7 @@ public class User implements Comparable{
     {
         return picNum;
     }
-    
+
     public void setAvatarPic(Image image, int num) {
         this.avatarPic = image;
         this.picNum = num;

@@ -97,7 +97,7 @@ public class CityPanel {
         }
 
     }
-    
+
     private void getCities()
     {
         ScrollPane scrollPane=new ScrollPane();
@@ -129,25 +129,25 @@ public class CityPanel {
                     String cityName= temp.substring(temp.indexOf(")", 0)+2);
                     loadPanel(cityName);
                 }
-                
+
             });
             city.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
                     city.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
-                    
+
                 }
-                
+
             });
             city.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
                     city.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
-                    
+
                 }
-                
+
             });
 
             demoPane.getChildren().add(city);
@@ -163,6 +163,6 @@ public class CityPanel {
         scrollPane.setPannable(true);
 
         anchorPane.getChildren().add(scrollPane);
-        
+
     }
 }

@@ -23,8 +23,8 @@
                 <ChoiceBox fx:id="numberOfPlayer"  styleClass="choiceBox"/>
             </TilePane>
             <TilePane alignment="CENTER">
-            <Label text="map size "/>
-            <ChoiceBox fx:id="mapSize" styleClass="choiceBox"/>
+                <Label text="map size "/>
+                <ChoiceBox fx:id="mapSize" styleClass="choiceBox"/>
             </TilePane>
             <VBox fx:id="invitationBox" spacing="10" alignment="CENTER" maxWidth="350">
                 <Button fx:id="invitationButton" text="challenge a friend" onMouseClicked="#changeUsername"/>

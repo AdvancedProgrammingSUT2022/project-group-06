@@ -35,17 +35,17 @@ public class CityScreen {
     }
     public void initialize()
     {
-        
+
         title.setText(cityName);
         ScrollPane scrollPane=new ScrollPane();
         Pane demoPane=new Pane();
-        
+
         int startSize=50;
         int height=50;
         int vBoxHeight=30;
         int screenWidth=600;
         int screenHeight=400;
-        
+
         List<String> info=Arrays.asList(GameController.cityScreen(cityName).split("\n"));
 
         for(int i=0;i<info.size();i++)
@@ -74,14 +74,14 @@ public class CityScreen {
             vBox.setLayoutX(100);
 
             demoPane.getChildren().add(vBox);
-        
+
             startSize+=height;
         }
-        
+
         Button buyHex=new Button();
         buyHex.setText("Buy Hex");
         buyHex.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
-        
+
 
         handleButtonUsage(buyHex);
 
@@ -110,25 +110,25 @@ public class CityScreen {
                 loadPanel(cityName);
                 
             }
-            
+
         });
         button.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
                 button.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
-                
+
             }
-            
+
         });
         button.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
                 button.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
-                
+
             }
-            
+
         });
     }
 
