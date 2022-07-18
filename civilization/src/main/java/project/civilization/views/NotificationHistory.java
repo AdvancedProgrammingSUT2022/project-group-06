@@ -18,17 +18,17 @@ import project.civilization.controllers.GameController;
 import project.civilization.models.Player;
 
 public class NotificationHistory {
- 
+
     @FXML
     private AnchorPane anchorPane;
-   
 
-    
+
+
     int lowerBound=0;
     int upperBound=400;
 
     public void initialize() {
-      
+
         writeNotifications();
 
     }
@@ -43,19 +43,19 @@ public class NotificationHistory {
 
         ScrollPane scrollPane=new ScrollPane();
         Pane demoPane=new Pane();
-        
+
         int startSize=50;
         int height=50;
         int labelHeight=30;
         int screenWidth=600;
         int screenHeight=400;
 
-     
-        
+
+
 
         for(int i=notifications.size()-1;i>=0;i--)
         {
-          
+
             Label notification=new Label();
             notification.setText(turns.get(i)+") "+notifications.get(i));
             notification.setLayoutY(startSize);
@@ -70,14 +70,14 @@ public class NotificationHistory {
             // newLine.setStartY(startSize+labelHeight);
             // newLine.setEndY(startSize+labelHeight);
             // newLine.prefWidth(10);
-            
+
 
             demoPane.getChildren().add(notification);
-        
+
             startSize+=height;
         }
-        
-        
+
+
         demoPane.setStyle("-fx-background-color:black");
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
@@ -89,11 +89,11 @@ public class NotificationHistory {
         anchorPane.setStyle("-fx-background-color:black");
         anchorPane.getChildren().add(scrollPane);
     }
-    
-    
+
+
     public void close(MouseEvent mouseEvent)
     {
-      // MapPage.closePanel("notification-history");
+        // MapPage.closePanel("notification-history");
     }
 
 }

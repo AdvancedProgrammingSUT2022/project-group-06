@@ -6,12 +6,12 @@ import javafx.scene.layout.AnchorPane;
 import project.civilization.controllers.GameController;
 
 public class Demographic {
-    
+
     @FXML
     private AnchorPane anchorPane;
 
     public void initialize() {
-      
+
         writeInfo();
 
     }
@@ -23,6 +23,6 @@ public class Demographic {
         info.setLayoutX(20);
         info.setLayoutY(100);
         anchorPane.getChildren().add(info);
-        
+
     }
 }

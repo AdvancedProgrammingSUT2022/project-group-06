@@ -43,18 +43,18 @@ public class ProfilePage  extends GameMenus {
     private Label passwordError;
     @FXML
     private ImageView avatarPic;
-    
-    
+
+
 
     public void initialize()
-    {   
+    {
 
         // JFrame frame = new JFrame("Profile Picture");  
         // JPanel panel = new JPanel();  
         // panel.setLayout(new FlowLayout());
-        
+
         // JLabel avatar=new JLabel();
-        
+
         // JButton backButton = new JButton();  
         // JButton selectImage=new JButton();
         // JButton nextImage=new JButton();
@@ -66,7 +66,7 @@ public class ProfilePage  extends GameMenus {
         // JButton changePasswordButton=new JButton();
         // JButton deleteAccount=new JButton();
 
-          
+
         // panel.add(backButton);
         // panel.add(selectImage);
         // panel.add(nextImage);
@@ -80,7 +80,7 @@ public class ProfilePage  extends GameMenus {
         // frame.add(panel);  
         // frame.setSize(400,500);  
         // frame.setLocationRelativeTo(null);  
-          
+
         // frame.setVisible(true);  
 
 
@@ -97,7 +97,7 @@ public class ProfilePage  extends GameMenus {
         int response=imageChooser.showOpenDialog(null);
         if(response==JFileChooser.APPROVE_OPTION)
         {
-           
+
             File file = imageChooser.getSelectedFile();
             // ImageIcon imageTemp=new ImageIcon(fileChooser.getSelectedFile().getAbsolutePath());
             // // Image image=imageTemp.getImage();
@@ -124,7 +124,7 @@ public class ProfilePage  extends GameMenus {
     }
     public void changePassword(MouseEvent mouseEvent)
     {
-        
+
         if(password.getText().equals(""))
         {
             passwordError.setText("Fill all fields");
@@ -157,26 +157,26 @@ public class ProfilePage  extends GameMenus {
         nicknameError.setStyle("-fx-text-fill: #ff0066;");
 
     }
-    
+
     public void deleteAccount(MouseEvent mouseEvent)
     {
         Alert alert = new Alert(AlertType.CONFIRMATION, "Are you sure you want to delete your account?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
 
         if (alert.getResult() == ButtonType.YES) {
-            
+
             UserController.getUsers().remove(UserController.getLoggedInUser().getUsername());
             UserController.getUsersArray().remove(UserController.getLoggedInUser());
 
             UserController.setLoggedInUser(null);
-            
+
             Alert alertFinish=new Alert(AlertType.INFORMATION, "Account deleted successfull\nProceeding to login menu");
             alertFinish.showAndWait();
             CivilizationApplication.changeMenu(Menus.LOGIN);
         }
     }
-   
 
- 
-    
+
+
+
 }

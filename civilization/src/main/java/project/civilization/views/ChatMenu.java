@@ -59,12 +59,12 @@ public class ChatMenu {
         sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-               if(editingMessage == null) {
-                   ChatController.sendMessage(previewMessageTextField.getText(), pane);
-               }
-               else {
-                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
-               }
+                if(editingMessage == null) {
+                    ChatController.sendMessage(previewMessageTextField.getText(), pane);
+                }
+                else {
+                    ChatController.editMessage(editingMessage, previewMessageTextField.getText());
+                }
             }
         });
         vBox.getChildren().add(sendButton);

@@ -1,14 +1,15 @@
 package project.civilization.controllers;
 
 
+import com.google.gson.Gson;
 import project.civilization.CivilizationApplication;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
 import project.civilization.models.Player;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.maprelated.*;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -33,6 +34,7 @@ public class InitializeGameInfo {
     private static final HashMap<String, Color> playerColor = new HashMap<String, Color>();
     private static final ArrayList<Player> players = new ArrayList<Player>();
     private static int numberOFPlayers;
+    private static ArrayList<Building> allBuildings = new ArrayList<>();
 
     private static final Random random = new Random();
     private static World world ;
@@ -81,6 +83,10 @@ public class InitializeGameInfo {
 
     public static World getWorld() {
         return world;
+    }
+
+    public static ArrayList<Building> getAllBuildings() {
+        return allBuildings;
     }
 
     public static void initializeUnitInfo() {
@@ -446,5 +452,47 @@ public class InitializeGameInfo {
         initializeTechnologyInfo();
         initializeHashMap();
         initializeUnitInfo();
+    }
+
+    public static void initializeBuildings() {
+        addBuildingsToList();
+
+        try {
+            saveToFile("buildings.json", new Gson().toJson(allBuildings));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void addBuildingsToList() {
+        ArrayList<String> techs = new ArrayList<String>();
+        techs.add("Bronze working");
+        Building barracks = new Building("Barracks", 75, 1, 2, techs);
+        allBuildings.add(barracks);
+
+        techs = new ArrayList<>();
+        techs.add("Pottery");
+        Building granary = new Building("Granary", 60, 1, 2, techs);
+        allBuildings.add(granary);
+
+        techs = new ArrayList<>();
+        techs.add("Writing");
+        Building library = new Building("Library", 75, 1, 3, techs);
+        allBuildings.add(library);
+    }
+
+    private static void saveToFile(String fileName, String text) throws FileNotFoundException {
+        File file = new File(fileName);
+        PrintWriter printWriter = new PrintWriter(file);
+        printWriter.write(text);
+        printWriter.close();
+    }
+
+    private static String loadFromFile(String fileName) throws IOException {
+        File file = new File(fileName);
+        FileInputStream inputStream = new FileInputStream(file);
+        String text = new String(inputStream.readAllBytes());
+        inputStream.close();
+        return text;
     }
 }

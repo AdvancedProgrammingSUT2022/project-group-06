@@ -17,7 +17,7 @@ import project.civilization.models.maprelated.Hex;
 import project.civilization.models.units.Unit;
 
 public class UnitsPanel {
-    
+
     @FXML
     private AnchorPane anchorPane;
     public void initialize() {
@@ -28,14 +28,14 @@ public class UnitsPanel {
     {
         ScrollPane scrollPane=new ScrollPane();
         Pane demoPane=new Pane();
-        
+
         int startSize=50;
         int height=50;
         int buttonHeight=30;
         int screenWidth=600;
         int screenHeight=400;
 
-     
+
         List<String> Units=Arrays.asList(GameController.unitsPanel().split("\n"));
         for(String temp:Units)
         {
@@ -51,20 +51,20 @@ public class UnitsPanel {
                 @Override
                 public void handle(MouseEvent event) {
                     newUnit.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
-                    
+
                 }
-                
+
             });
             newUnit.setOnMouseExited(new EventHandler<MouseEvent>() {
 
                 @Override
                 public void handle(MouseEvent event) {
                     newUnit.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
-                    
+
                 }
-                
+
             });
-            
+
 
             demoPane.getChildren().add(newUnit);
             demoPane.setPrefHeight(screenHeight);
@@ -72,7 +72,7 @@ public class UnitsPanel {
             startSize+=height;
         }
 
-        
+
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
         scrollPane.setLayoutY(27);

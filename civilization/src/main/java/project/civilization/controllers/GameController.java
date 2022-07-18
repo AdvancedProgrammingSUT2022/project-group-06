@@ -85,7 +85,7 @@ public class GameController {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if(hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")){
-                    UnitController.makeUnit("Worker", hex[i][j], "gold");
+                    UnitController.makeUnit("Settler", hex[i][j], "gold");
                     City newCity = new City(GameController.getCurrentPlayer(), "fuck",
                             hex[i][j]);
 
@@ -455,7 +455,7 @@ public class GameController {
     }
 
     public static String changeTurn() {
-        // TODO: 7/14/2022 : 
+        // TODO: 7/14/2022 :
 /*        String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;*/
         int goldPerTurn = 0;
@@ -470,7 +470,7 @@ public class GameController {
         growCity();
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
-        // TODO: 7/14/2022 : 
+        // TODO: 7/14/2022 :
         //resetOrdersAndOrdered();
         UnitController.changeTurn();
         //hazine tamir O negahdari buldings
@@ -813,7 +813,44 @@ public class GameController {
                 }
             }
         }
+        return economicInfo.toString();
+    }
+    public static String cityScreen(String cityName)
+    {
+        StringBuilder economicInfo = new StringBuilder();
+        int count = 1;
+        for (City temp : currentPlayer.getCities()) {
+            if(!temp.getName().equals(cityName))
+            {
+                continue;
+            }
+            ArrayList<Construction> technologies = new ArrayList<Construction>();
 
+            economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
+            economicInfo.append("\t\tpoplulation: " + temp.getPopulation() + "\n");
+            economicInfo.append("\t\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
+            economicInfo.append("\t\tranged defensive power: " + temp.getRangedCombatStrength() + "\n");
+            economicInfo.append("\t\tfood: " + temp.getFood() + "\n");
+            economicInfo.append("\t\tgold " + temp.getGold() + "\n");
+            economicInfo.append("\t\ttrophy: " + temp.getTrophy() + "\n");
+            economicInfo.append("\t\tproduction: " + temp.getProduction() + "\n");
+
+            for (Construction construction : currentPlayer.getUnfinishedProjects()) {
+                if (!(construction instanceof Technology) && construction.getHex().getCity().getName().equals(temp.getName())) {
+                    economicInfo.append("\t\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
+                }
+                if (construction instanceof Technology) {
+                    technologies.add(construction);
+                }
+
+            }
+
+            if (!technologies.isEmpty()) {
+                for (Construction tech : technologies) {
+                    economicInfo.append("pending technology: " + tech.getName());
+                }
+            }
+        }
 
         return economicInfo.toString();
 
@@ -1457,7 +1494,7 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    return null;
+        return null;
     }
 
     public static ArrayList<String> getAvailableWorks(Unit selectedUnit) {
@@ -1564,7 +1601,7 @@ public class GameController {
         } else if (command.equals("repair")) {
             System.out.println(GameController.repair());
         }
-    } 
+    }
     public static Boolean isAchieved(String name) {
         if (currentPlayer.getAchievedTechnologies().get(name) != null) {
             return currentPlayer.getAchievedTechnologies().get(name);
