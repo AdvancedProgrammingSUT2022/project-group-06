@@ -1,6 +1,8 @@
 package project.civilization.views;
 
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -12,17 +14,21 @@ import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 import project.civilization.models.Player;
 
+import java.util.ArrayList;
+
 public class ChallengePage {
     public BorderPane borderPane;
     public VBox invitationBox;
     public Text error;
     private TextField[] textFields = new TextField[10];
+    private int numberOfPlayers;
     public void back(MouseEvent mouseEvent) {
         CivilizationApplication.changeMenu(Menus.GAMEMenu);
     }
 
     public void initialize() {
-        for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers() - 1; i++) {
+        numberOfPlayers =  InitializeGameInfo.getNumberOFPlayers();
+        for (int i = 0; i < numberOfPlayers - 1; i++) {
             textFields[i] = new TextField();
             textFields[i].setPromptText("enter enemy username");
             invitationBox.getChildren().add(textFields[i]);
@@ -47,16 +53,23 @@ public class ChallengePage {
     }
 
     private void applySendInvitation(MouseEvent mouseEvent) {
-        for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers() - 1; i++) {
-            if(!UserController.getUsers().containsKey(textFields[i].getText())){
+        for (int i = 0; i < numberOfPlayers - 1; i++) {
+            String enemy = textFields[i].getText();
+            if(UserController.isUsernameUnique(enemy)){
                 error.setText("user number"+(i+1)+" is not available");
                 return;
             }
         }
-        for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers() - 1; i++) {
+        ArrayList<String> enemyUsernames = new ArrayList<>();
+        for (int i = 0; i < numberOfPlayers - 1; i++) {
+            String enemy = textFields[i].getText();
+            enemyUsernames.add(enemy);
+        }
+        UserController.sendInvitation(enemyUsernames);
+/*        for (int i = 0; i < numberOfPlayers - 1; i++) {
             Player player = new Player(textFields[i].getText());
         }
         new Player(UserController.loggedInUser.getUsername());
-        CivilizationApplication.changeMenu(Menus.MAPPAGE);
+        CivilizationApplication.changeMenu(Menus.MAPPAGE);*/
     }
 }

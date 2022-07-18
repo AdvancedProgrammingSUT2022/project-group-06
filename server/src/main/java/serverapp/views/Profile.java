@@ -15,6 +15,9 @@ public class Profile {
         if(command.equals(Actions.CHAGEPASSWORD.getCharacter())){
             return UserController.changePassword(jsonObject.getString("UUID"),jsonObject.getString("password"));
         }
+        if(command.equals(Actions.UNIQUEUSERNAME.getCharacter())){
+            return UserController.isUsernameUnique(jsonObject.getString("username"));
+        }
         return "bad request format";
     }
 }

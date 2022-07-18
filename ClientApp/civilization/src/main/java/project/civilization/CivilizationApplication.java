@@ -10,12 +10,17 @@ import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 import project.civilization.views.ChatMenu;
 import project.civilization.views.Music;
+import project.civilization.views.ProcessServerRequests;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 import java.net.URL;
 
 public class CivilizationApplication extends Application {
-    private static Scene scene;
     public static Stage stages;
     @Override
     public void start(Stage stage) throws IOException {
@@ -24,7 +29,6 @@ public class CivilizationApplication extends Application {
         stages = stage;
         assert root != null;
         Scene scene = new Scene(root );
-        CivilizationApplication.scene = scene;
         stage.setTitle("Civilization");
         stage.setScene(scene);
         stage.show();
@@ -42,11 +46,16 @@ public class CivilizationApplication extends Application {
     }
     public static void changeMenu(Menus menuName){
         Parent root = loadFXML(menuName);
-        if (menuName.equals(Menus.CHAT))
-            ChatMenu.setPane((BorderPane) root);
-        CivilizationApplication.scene.setRoot(root);
+
+        assert root != null;
+        Scene scene = new Scene(root );
+
+        stages.setScene(scene);
     }
 
+    public static void showAlert(){
+
+    }
     public static void loadMapForTest(){
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + "map-page" + ".fxml").toExternalForm());

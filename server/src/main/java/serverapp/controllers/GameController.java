@@ -82,6 +82,8 @@ public class GameController {
             }
         }
     }
+
+
     private static void removeOwnerOfHexes() {
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {

@@ -24,7 +24,7 @@ public class GamePage extends GameMenus{
     public BorderPane borderPane;
     public ChoiceBox<String> mapSize;
     public Text error;
-    public VBox invitationBox;
+    public Button invitationBox;
     public ChoiceBox<String> numberOfPlayer;
     public Rectangle fadeRectangle;
     public Button invitationButton;
@@ -104,4 +104,7 @@ public class GamePage extends GameMenus{
 
     }
 
+    public void loadInvitationBox(MouseEvent mouseEvent) {
+        CivilizationApplication.changeMenu(Menus.INVIATIONBOX);
+    }
 }

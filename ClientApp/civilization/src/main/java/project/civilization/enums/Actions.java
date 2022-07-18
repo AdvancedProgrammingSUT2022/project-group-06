@@ -4,8 +4,19 @@ public enum Actions {
     SAVEUSERS("saveUsers"),
     REGISTER("register"),
     LOGOUT("logout"),
-    SCOREBOARD("scoreBoard"), DELETEACOUNT("deleteAcount"),
-    CHAGENICKNAME("changeNickName"), CHAGEPASSWORD("changePassWord");
+    SCOREBOARD("scoreBoard"),
+    DELETEACOUNT("deleteAcount"),
+    CHAGENICKNAME("changeNickName"),
+    CHAGEPASSWORD("changePassWord"),
+    BROADCASTINVITATION("broadCastInvitation"),
+    STARTGAME("startGame"),
+    SENDINITATION("sendInvitation"),
+    INITIALIZEHEARINGSERVERSOCKET("initializeHearingServerSocket"),
+    INVITETOGAME("inviteToGame"),
+    UNIQUEUSERNAME("uniqueUsername"),
+    ACCEPTINVITATION("acceptInvitation"),
+    REJECTINVITATION("REJECTINVITAION"),
+    SENDREJECTION("sendRejection");
     private final String character;
 
     Actions(String color) {

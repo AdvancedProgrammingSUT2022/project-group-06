@@ -12,10 +12,12 @@ import java.util.*;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import javafx.scene.image.Image;
 import org.json.JSONException;
 import org.json.JSONObject;
 import serverapp.CivilizationApplication;
+import serverapp.enums.Actions;
 import serverapp.models.User;
 
 public class UserController {
@@ -23,6 +25,11 @@ public class UserController {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static ArrayList<String> nicknames = new ArrayList<String>();
     private static ArrayList<User> usersArray=new ArrayList<User>();
+
+    public static HashMap<String, User> getUserHashMap() {
+        return userHashMap;
+    }
+
     private static HashMap<String,User> userHashMap = new HashMap<>();
 
     public static void setLoggedInUser(User user)
@@ -46,6 +53,10 @@ public class UserController {
         usersArray.remove(userHashMap.remove(uuid));
         userHashMap.remove(uuid);
         return "deleted successfully";
+    }
+
+    public static User getUserByUserName(String username) {
+        return users.get(username);
     }
 
     public void setUsers(HashMap<String, User> users) {
@@ -76,16 +87,16 @@ public class UserController {
         return true;
     }
 
-    public static boolean isUsernameUnique(String username) {
+    public static String isUsernameUnique(String username) {
         for (User user : usersArray) {
             if (user.getUsername().equals(username)) {
-                return false;
+                return "no";
             }
         }
-        return true;
+        return "yes";
     }
     public static String register(String username, String password, String nickname) {
-        if(!isUsernameUnique(username)) return "This username is taken";
+        if(isUsernameUnique(username).equals("no")) return "This username is taken";
         if (!isNicknameUnique(nickname)) return "This nickname is taken";
         User newUser = new User(username,  password, nickname);
         //Todo: profile
@@ -125,6 +136,7 @@ public class UserController {
 
     public static String logout(String uuid) {
         userHashMap.remove(uuid);
+        NetWorkController.getLoggedInClientsSocket().remove(uuid);
         return "logged out";
     }
     public static String getTopUsers(){

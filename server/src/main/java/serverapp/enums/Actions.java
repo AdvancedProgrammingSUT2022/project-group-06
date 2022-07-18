@@ -8,7 +8,16 @@ public enum Actions {
     SCOREBOARD("scoreBoard"),
     DELETEACOUNT("deleteAcount"),
     CHANGENICKNAME("changeNickName"),
-    CHAGEPASSWORD("changePassWord");;
+    CHAGEPASSWORD("changePassWord"),
+    INVITETOGAME("inviteToGame"),
+    STARTGAME("startGame"),
+    SENDINITATION("sendInvitation"),
+    BROADCASTINVITATION("broadCastInvitation"),
+    INITIALIZEHEARINGSERVERSOCKET("initializeHearingServerSocket"),
+    UNIQUEUSERNAME("uniqueUsername"),
+    ACCEPTINVITATION("acceptInvitation"),
+    REJECTINVITATION("REJECTINVITAION"),
+    SENDREJECTION("sendRejection");
     private final String character;
 
     Actions(String color) {

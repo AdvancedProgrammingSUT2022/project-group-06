@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import javafx.scene.image.Image;
 import org.json.JSONException;
@@ -140,6 +141,68 @@ public class UserController {
         return null;
     }
 
+    public static ArrayList<String> getAllInvitationLetters() {
+/*        ArrayList<String> arrayList = new ArrayList<String>();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GETALLINVITATIONLETTERS.getCharacter());
+            json.put("UUID",User.getUuid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dataOutputStream.writeUTF(json.toString());
+            dataOutputStream.flush();
+            return dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return null;
+        return arrayList;*/
+        return new ArrayList<>();
+    }
+
+    public static void sendInvitation(ArrayList<String> enemyUsername) {
+        Gson gson = new GsonBuilder().create();
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.SENDINITATION.getCharacter());
+            json.put("UUID",User.getUuid());
+            json.put("usernames",gson.toJson(enemyUsername));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dataOutputStream.writeUTF(json.toString());
+            dataOutputStream.flush();
+            dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+    }
+
+    public static void alertSystem(String gameUUID, Actions actions) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", actions.getCharacter());
+            json.put("UUID",User.getUuid());
+            json.put("GameUUID",gameUUID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            dataOutputStream.writeUTF(json.toString());
+            dataOutputStream.flush();
+            dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+    }
+
     public void setUsers(HashMap<String, User> users) {
         UserController.users = users;
     }
@@ -179,12 +242,22 @@ public class UserController {
     }
 
     public static boolean isUsernameUnique(String username) {
-        for (User user : usersArray) {
-            if (user.getUsername().equals(username)) {
-                return false;
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.UNIQUEUSERNAME.getCharacter());
+            json.put("username",username);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return true;
+        try {
+            dataOutputStream.writeUTF(json.toString());
+            dataOutputStream.flush();
+            return dataInputStream.readUTF().equals("yes");
+        } catch (IOException x) {
+            x.printStackTrace();
+            return false;
+        }
     }
 
     public static String login(String username, String password) {
@@ -204,6 +277,8 @@ public class UserController {
             JSONObject obj = new JSONObject(res);
             if(obj.getString("message").equals("logged in")){
                 User.setUuid(obj.getString("UUID"));
+                ClientNetworkController.initializeSocketToServer();
+                ClientNetworkController.initializeNetworkForInvitationProcess();
             }
             return obj.getString("message");
         } catch (IOException x) {
