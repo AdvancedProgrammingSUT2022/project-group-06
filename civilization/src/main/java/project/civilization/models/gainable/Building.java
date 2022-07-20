@@ -24,12 +24,26 @@ public class Building implements Construction {
     private ImageView buildingView;
 
 
+    public Building() {}
+
     public Building(String name, int cost, int maintenance, int leftTurns, String technology) {
         this.name = name;
         this.cost = cost;
         this.maintenance = maintenance;
         this.leftTurns = leftTurns;
         this.technology = technology;
+    }
+
+    public static Building clone(Building building) {
+        Building newBuilding = new Building();
+        newBuilding.cost = building.cost;
+        newBuilding.maintenance = building.maintenance;
+        newBuilding.leftTurns = building.leftTurns;
+        newBuilding.name = building.name;
+        newBuilding.technology = building.technology;
+        newBuilding.buildingView = building.buildingView;
+
+        return newBuilding;
     }
 
     public String toJson() {

@@ -21,8 +21,10 @@ import project.civilization.CivilizationApplication;
 import project.civilization.controllers.*;
 import project.civilization.enums.HexState;
 import project.civilization.enums.UnitState;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
+import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 import project.civilization.models.units.Unit;
@@ -348,6 +350,9 @@ public class MapPage {
                     }
                     if (hexes[i][j].getCity() != null) {
                         initializeCity(hexes[i][j]);
+                        if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
+                         initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
+                        }
                     }
 /*                    if (!hexes[i][j].getImprovement().isEmpty()) {
                         initializeImprovementsView(hexes[i][j]);
@@ -357,6 +362,16 @@ public class MapPage {
                     }
                 }
             }
+        }
+    }
+
+    private void initializeBuildings(City city, Hex hex) {
+        for (int i = 1; i <= city.getBuiltBuildings().size(); i++) {
+            Building building = city.getBuiltBuildings().get(i - 1);
+            ImageView buildingView = building.getBuildingView();
+            buildingView.setX(hex.getTerrain().getTerrainView().getX() + 25);
+            buildingView.setY(hex.getTerrain().getTerrainView().getY() + 20 + (i * 7));
+            pane.getChildren().add(buildingView);
         }
     }
 
@@ -420,6 +435,9 @@ public class MapPage {
         cityView.setY(hex.getTerrain().getTerrainView().getY()+20);
         pane.getChildren().add(cityView);
         pane.getChildren().add(text);
+
+        //TODO
+
     }
 
     private void initializeButtons() {

@@ -98,6 +98,9 @@ public class InitializeGameInfo {
         return allTechnologies;
     }
 
+    public static HashMap<String, Building> getBuildingsInfo() {
+        return buildingsInfo;
+    }
 
     public static void initializeUnitInfo() {
         try {
@@ -589,6 +592,8 @@ public class InitializeGameInfo {
         Building stockExchange = new Building("Stock Exchange", 650, 0, 2, "Electricity");
         allBuildings.add(stockExchange);
 
+        Building palace = new Building("Palace", 1, 0, 0, null);
+        allBuildings.add(palace);
     }
 
 
