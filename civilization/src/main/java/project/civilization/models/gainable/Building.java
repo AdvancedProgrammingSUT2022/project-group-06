@@ -23,9 +23,6 @@ public class Building implements Construction {
 
     private ImageView buildingView;
 
-    public Building() {
-//TODO
-    }
 
     public Building(String name, int cost, int maintenance, int leftTurns, String technology) {
         this.name = name;
@@ -76,8 +73,7 @@ public class Building implements Construction {
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.name;
     }
 
     @Override

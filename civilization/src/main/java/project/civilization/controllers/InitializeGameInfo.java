@@ -474,7 +474,7 @@ public class InitializeGameInfo {
 
         fillBuildingsInfo();
         setPrerequisiteForBuildings();
-//        initializeBuildingsView();
+        initializeBuildingsView();
 //
 //        try {
 //            saveToFile("buildings.json", new Gson().toJson(allBuildings));
@@ -604,25 +604,25 @@ public class InitializeGameInfo {
     }
 
     private static void setPrerequisiteForBuildings() {
-//        buildingsInfo.get("Armory").setPrerequisite(new Building());
-//        buildingsInfo.get("Armory").setPrerequisite(buildingsInfo.get("Barracks"));
-//        buildingsInfo.get("Temple").setPrerequisite(buildingsInfo.get("Monument"));
-//        buildingsInfo.get("Castle").setPrerequisite(buildingsInfo.get("Walls"));
-//        buildingsInfo.get("University").setPrerequisite(buildingsInfo.get("Library"));
-//        buildingsInfo.get("Museum").setPrerequisite(buildingsInfo.get("Opera House"));
-//        buildingsInfo.get("Opera House").setPrerequisite(buildingsInfo.get("Temple"));
-//        buildingsInfo.get("Public School").setPrerequisite(buildingsInfo.get("University"));
-//        buildingsInfo.get("Satrap's Court").setPrerequisite(buildingsInfo.get("Market"));
-//        buildingsInfo.get("Theater").setPrerequisite(buildingsInfo.get("Colosseum"));
-//        buildingsInfo.get("Arsenal").setPrerequisite(buildingsInfo.get("Military Academy"));
-//        buildingsInfo.get("Broadcast Tower").setPrerequisite(buildingsInfo.get("Museum"));
-//        buildingsInfo.get("Military Base").setPrerequisite(buildingsInfo.get("Bank"));
+        buildingsInfo.get("Armory").setPrerequisite(buildingsInfo.get("Barracks"));
+        buildingsInfo.get("Temple").setPrerequisite(buildingsInfo.get("Monument"));
+        buildingsInfo.get("Castle").setPrerequisite(buildingsInfo.get("Walls"));
+        buildingsInfo.get("University").setPrerequisite(buildingsInfo.get("Library"));
+        buildingsInfo.get("Museum").setPrerequisite(buildingsInfo.get("Opera House"));
+        buildingsInfo.get("Opera House").setPrerequisite(buildingsInfo.get("Temple"));
+        buildingsInfo.get("Public School").setPrerequisite(buildingsInfo.get("University"));
+        buildingsInfo.get("Satrap's Court").setPrerequisite(buildingsInfo.get("Market"));
+        buildingsInfo.get("Theater").setPrerequisite(buildingsInfo.get("Colosseum"));
+        buildingsInfo.get("Arsenal").setPrerequisite(buildingsInfo.get("Military Academy"));
+        buildingsInfo.get("Broadcast Tower").setPrerequisite(buildingsInfo.get("Museum"));
+        buildingsInfo.get("Military Base").setPrerequisite(buildingsInfo.get("Bank"));
     }
 
     private static void fillBuildingsInfo() {
         for (Building building : allBuildings) {
             buildingsInfo.put(building.getName(), building);
         }
+
     }
 
     private static void saveToFile(String fileName, String text) throws FileNotFoundException {
