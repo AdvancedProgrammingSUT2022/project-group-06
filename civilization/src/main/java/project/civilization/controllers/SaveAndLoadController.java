@@ -44,17 +44,19 @@ public class SaveAndLoadController {
 
     private static void addToGameNamesFile(String  newName) {
         ArrayList<String> allGameNames = loadSavedGamesNames();
-        allGameNames.add(newName);
-        try {
-            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/GameNames.txt")).toExternalForm());
-            File file = new File(Paths.get(address.toURI()).toString());
-            PrintWriter user = new PrintWriter(file);
-            for (String s:allGameNames) {
-                user.write(s+ "\n");
+        if(!allGameNames.contains(newName)){
+            allGameNames.add(newName);
+            try {
+                URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/GameNames.txt")).toExternalForm());
+                File file = new File(Paths.get(address.toURI()).toString());
+                PrintWriter user = new PrintWriter(file);
+                for (String s:allGameNames) {
+                    user.write(s+ "\n");
+                }
+                user.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            user.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -143,10 +145,11 @@ public class SaveAndLoadController {
 
     public static void AutoSave() {
         if(autoSaveLeftTurns < autoSaveTurns) {
-            saveGameWithJson(String.valueOf(autoSaveLeftTurns));
+            saveGameWithJson(String.valueOf(autoSaveLeftTurns+1));
+            autoSaveLeftTurns++;
         }else {
             autoSaveLeftTurns = 0;
-            saveGameWithJson(String.valueOf(autoSaveLeftTurns));
+            saveGameWithJson(String.valueOf(autoSaveLeftTurns+1));
         }
     }
 
