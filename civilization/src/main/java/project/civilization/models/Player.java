@@ -63,6 +63,7 @@ public class Player {
         this.happiness = 10;
         InitializeGameInfo.getPlayers().add(this);
         this.foodForNewCitizen = 2;
+        setTechnologyForPlayers();
     }
 
     public void increaseTrophies(int amount) {
@@ -115,6 +116,12 @@ public class Player {
         //hexCopy.setImprovements(hex.getImprovement());
     }
 
+    public void setTechnologyForPlayers() {
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            achievedTechnologies.put(technology.getName(), false);
+        }
+        unlockTechnology("Agriculture");
+    }
 
     public void setTrophies(int trophies) {
         this.trophies = trophies;

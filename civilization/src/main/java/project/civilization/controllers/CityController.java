@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import project.civilization.enums.HexState;
 import project.civilization.enums.UnitState;
 import project.civilization.models.Player;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.units.Settler;
@@ -376,5 +377,24 @@ public class CityController {
         cityBanner.append(GameController.getSelectedCity().getName() + " hitpoint: " + GameController.getSelectedCity().getHitPoint());
         GameController.setSelectedCity(null);
         return cityBanner.toString();
+    }
+
+    public static boolean hasBuilding(City city, String buildingName) {
+        for (Building building : city.getBuiltBuildings()) {
+            if (building.getName().toLowerCase().equals(buildingName.toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+
+    public static ArrayList<Building> getAvailableBuildings(City city) {
+        ArrayList<Building> availableBuildings = new ArrayList<>();
+        for (Building building : InitializeGameInfo.getAllBuildings()) {
+            if (building.getTechnology() != null && city.getOwner().getAchievedTechnologies().get(building.getTechnology()))  {
+                if (building.getPrerequisite() != null && hasBuilding(city, building.getName()))
+                    availableBuildings.add(building);
+            }
+        }
+        return availableBuildings;
     }
 }

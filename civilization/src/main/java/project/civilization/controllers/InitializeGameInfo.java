@@ -2,11 +2,14 @@ package project.civilization.controllers;
 
 
 import com.google.gson.Gson;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import project.civilization.CivilizationApplication;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
 import project.civilization.models.Player;
 import project.civilization.models.gainable.Building;
+import project.civilization.models.gainable.Technology;
 import project.civilization.models.maprelated.*;
 
 import java.io.*;
@@ -23,6 +26,8 @@ public class InitializeGameInfo {
     private static final HashMap<String, String> terrainInfo = new HashMap<>();
     private static final HashMap<String, String> featureInfo = new HashMap<>();
     private static final HashMap<String, String> resourceInfo = new HashMap<>();
+    private static final ArrayList<Technology> allTechnologies = new ArrayList<>();
+    private static final HashMap<String, Technology> technologyByName = new HashMap<>();
     private static final HashMap<String, String> technologyInfo = new HashMap<>();
     public static HashMap<String, String> unitInfo = new HashMap<>();
     private static final ArrayList<String> terrainNames = new ArrayList<String>();
@@ -35,6 +40,7 @@ public class InitializeGameInfo {
     private static ArrayList<Player> players = new ArrayList<Player>();
     private static int numberOFPlayers;
     private static ArrayList<Building> allBuildings = new ArrayList<>();
+    private static final HashMap<String, Building> buildingsInfo = new HashMap<>();
 
     private static final Random random = new Random();
     private static World world ;
@@ -87,6 +93,11 @@ public class InitializeGameInfo {
     public static ArrayList<Building> getAllBuildings() {
         return allBuildings;
     }
+
+    public static ArrayList<Technology> getAllTechnologies() {
+        return allTechnologies;
+    }
+
 
     public static void initializeUnitInfo() {
         try {
@@ -173,7 +184,9 @@ public class InitializeGameInfo {
                 String info = read[1];
 
                 technologyInfo.put(name, info);
-                setArray.add(name);
+                Technology technology = new Technology(name, null);
+                technologyByName.put(name, technology);
+                allTechnologies.add(technology);                setArray.add(name);
                 for (Player player : players) {
 
                     if (name.equals("Agriculture")) {
@@ -263,6 +276,7 @@ public class InitializeGameInfo {
         initializeHashMap();
         initializeUnitInfo();
         initializeGameWorld();
+        initializeBuildings();
     }
 
     public static void initializeGameWorld() {
@@ -458,28 +472,157 @@ public class InitializeGameInfo {
     public static void initializeBuildings() {
         addBuildingsToList();
 
-        try {
-            saveToFile("buildings.json", new Gson().toJson(allBuildings));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        fillBuildingsInfo();
+        setPrerequisiteForBuildings();
+//        initializeBuildingsView();
+//
+//        try {
+//            saveToFile("buildings.json", new Gson().toJson(allBuildings));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 
     private static void addBuildingsToList() {
-        ArrayList<String> techs = new ArrayList<String>();
-        techs.add("Bronze working");
-        Building barracks = new Building("Barracks", 75, 1, 2, techs);
+        Building barracks = new Building("Barracks", 80, 1, 2, "Bronze working");
         allBuildings.add(barracks);
 
-        techs = new ArrayList<>();
-        techs.add("Pottery");
-        Building granary = new Building("Granary", 60, 1, 2, techs);
+        Building granary = new Building("Granary", 100, 1, 2, "Pottery");
         allBuildings.add(granary);
 
-        techs = new ArrayList<>();
-        techs.add("Writing");
-        Building library = new Building("Library", 75, 1, 3, techs);
+        Building library = new Building("Library", 80, 1, 3, "Writing");
         allBuildings.add(library);
+
+        Building monument = new Building("Monument", 60, 1, 1, null);
+        allBuildings.add(monument);
+
+        Building walls = new Building("Walls", 100, 1, 2, "Masonry");
+        allBuildings.add(walls);
+
+        Building waterMill = new Building("Watermill", 120, 2, 2, "The Wheel");
+        allBuildings.add(waterMill);
+
+        Building armory = new Building("Armory", 130, 3, 2, "Iron working");
+        allBuildings.add(armory);
+
+        Building burialTomb = new Building("Burial Tomb", 120, 0, 2, "Philosophy");
+        allBuildings.add(burialTomb);
+
+        Building circus = new Building("Circus", 150, 3, 2, "Horseback Riding");
+        allBuildings.add(circus);
+
+        Building colosseum = new Building("Colosseum", 150, 3, 2, "Construction");
+        allBuildings.add(colosseum);
+
+        Building courtHouse = new Building("Court House", 200, 5, 2, "Mathematics");
+        allBuildings.add(courtHouse);
+
+        Building stable = new Building("Stable", 100, 1, 2, "Horseback Riding");
+        allBuildings.add(stable);
+
+        Building temple = new Building("Temple", 120, 2, 2, "Philosophy");
+        allBuildings.add(temple);
+
+        Building castle = new Building("Castle", 200, 3, 2, "Chivalry");
+        allBuildings.add(castle);
+
+        Building forge = new Building("Forge", 150, 2, 2, "metalCasting");
+        allBuildings.add(forge);
+
+        Building garden = new Building("Garden", 120, 2, 2, "Theology");
+        allBuildings.add(garden);
+
+        Building market = new Building("Market", 120, 0, 2, "Currency");
+        allBuildings.add(market);
+
+        Building mint = new Building("Mint", 120, 0, 2, "Currency");
+        allBuildings.add(mint);
+
+        Building monastery = new Building("Monastery", 120, 2, 2, "Theology");
+        allBuildings.add(monastery);
+
+        Building university = new Building("University", 200, 3, 2, "Education");
+        allBuildings.add(university);
+
+        Building workshop = new Building("Workshop", 100, 2, 2, "Metal casting");
+        allBuildings.add(workshop);
+
+        Building bank = new Building("Bank", 220, 0, 2, "Banking");
+        allBuildings.add(bank);
+
+        Building militaryAcademy = new Building("Military Academy", 350, 3, 2, "Military Science");
+        allBuildings.add(militaryAcademy);
+
+        Building museum = new Building("Museum", 350, 3, 2, "Archeology");
+        allBuildings.add(museum);
+
+        Building operaHouse = new Building("Opera House", 220, 3, 2, "Acoustics");
+        allBuildings.add(operaHouse);
+
+        Building publicSchool = new Building("Public School", 350, 3, 2, "Scientific Theory");
+        allBuildings.add(publicSchool);
+
+        Building satrapCourt = new Building("Satrap's Court", 220, 0, 2, "Banking");
+        allBuildings.add(satrapCourt);
+
+        Building theater = new Building("Theater", 300, 5, 2, "Printing Press");
+        allBuildings.add(theater);
+
+        Building windmill = new Building("Windmill", 180, 2, 2, "Economics");
+        allBuildings.add(windmill);
+
+        Building arsenal = new Building("Arsenal", 350, 3, 2, "Railroad");
+        allBuildings.add(arsenal);
+
+        Building broadcastTower = new Building("Broadcast Tower", 600, 3, 2, "Radio");
+        allBuildings.add(broadcastTower);
+
+        Building factory = new Building("Factory", 300, 3, 2, "Steam Power");
+        allBuildings.add(factory);
+
+        Building hospital = new Building("Hospital", 400, 2, 2, "Biology");
+        allBuildings.add(hospital);
+
+        Building militaryBase = new Building("Military Base", 450, 4, 2, "Telegraph");
+        allBuildings.add(militaryBase);
+
+        Building stockExchange = new Building("Stock Exchange", 650, 0, 2, "Electricity");
+        allBuildings.add(stockExchange);
+
+    }
+
+
+    private static void initializeBuildingsView() {
+        Image image;
+        String address;
+        for (Building building : InitializeGameInfo.getAllBuildings()) {
+            address = "pictures/building/" + building.getName().toLowerCase() + ".png";
+            image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+            ImageView imageView = new ImageView(image);
+            building.setBuildingView(imageView);
+        }
+    }
+
+    private static void setPrerequisiteForBuildings() {
+//        buildingsInfo.get("Armory").setPrerequisite(new Building());
+//        buildingsInfo.get("Armory").setPrerequisite(buildingsInfo.get("Barracks"));
+//        buildingsInfo.get("Temple").setPrerequisite(buildingsInfo.get("Monument"));
+//        buildingsInfo.get("Castle").setPrerequisite(buildingsInfo.get("Walls"));
+//        buildingsInfo.get("University").setPrerequisite(buildingsInfo.get("Library"));
+//        buildingsInfo.get("Museum").setPrerequisite(buildingsInfo.get("Opera House"));
+//        buildingsInfo.get("Opera House").setPrerequisite(buildingsInfo.get("Temple"));
+//        buildingsInfo.get("Public School").setPrerequisite(buildingsInfo.get("University"));
+//        buildingsInfo.get("Satrap's Court").setPrerequisite(buildingsInfo.get("Market"));
+//        buildingsInfo.get("Theater").setPrerequisite(buildingsInfo.get("Colosseum"));
+//        buildingsInfo.get("Arsenal").setPrerequisite(buildingsInfo.get("Military Academy"));
+//        buildingsInfo.get("Broadcast Tower").setPrerequisite(buildingsInfo.get("Museum"));
+//        buildingsInfo.get("Military Base").setPrerequisite(buildingsInfo.get("Bank"));
+    }
+
+    private static void fillBuildingsInfo() {
+        for (Building building : allBuildings) {
+            buildingsInfo.put(building.getName(), building);
+        }
     }
 
     private static void saveToFile(String fileName, String text) throws FileNotFoundException {
@@ -495,9 +638,5 @@ public class InitializeGameInfo {
         String text = new String(inputStream.readAllBytes());
         inputStream.close();
         return text;
-    }
-
-    public static void setWorld(World worldd) {
-        world = worldd;
     }
 }
