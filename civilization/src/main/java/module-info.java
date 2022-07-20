@@ -6,8 +6,6 @@ module project.civilization {
     requires gson.extras;
     requires java.desktop;
     requires javafx.swing;
-    requires com.fasterxml.jackson.core;
-    requires com.fasterxml.jackson.databind;
 
     exports  project.civilization;
     exports  project.civilization.views;
@@ -17,13 +15,13 @@ module project.civilization {
     exports  project.civilization.models.twopartyactions;
     exports  project.civilization.enums;
 
-    opens  project.civilization to javafx.fxml, javafx.media, javafx.base , com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
+    opens  project.civilization to javafx.fxml, javafx.media, javafx.base;
     opens  project.civilization.fxml to javafx.media, javafx.base ;
     opens  project.civilization.views to javafx.fxml;
-    opens  project.civilization.models to com.google.gson, com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
-    opens  project.civilization.models.gainable to com.google.gson, com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
-    opens  project.civilization.models.maprelated to com.google.gson, com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
-    opens  project.civilization.models.units to com.google.gson, com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
-    opens  project.civilization.models.twopartyactions to com.google.gson, com.fasterxml.jackson.core, com.fasterxml.jackson.databind;
+    opens  project.civilization.models to com.google.gson;
+    opens  project.civilization.models.gainable to com.google.gson;
+    opens  project.civilization.models.maprelated to com.google.gson;
+    opens  project.civilization.models.units to com.google.gson;
+    opens  project.civilization.models.twopartyactions to com.google.gson;
 
 }

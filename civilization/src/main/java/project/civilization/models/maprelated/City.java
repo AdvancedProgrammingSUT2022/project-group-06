@@ -4,7 +4,7 @@ package project.civilization.models.maprelated;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import project.civilization.controllers.CombatController;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.UnitController;
@@ -33,14 +33,14 @@ public class City implements Combatable {
     private ArrayList<int[]> otherTilesCoordinates = new ArrayList<int[]>();
     private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
 
-    @JsonIgnore
+
     private transient static ArrayList<City> cities = new ArrayList<City>();
-    @JsonIgnore
+
     private transient ArrayList<Hex> hexs = new ArrayList<Hex>();
-    @JsonIgnore
+
     private transient Player owner = null;
 
-    @JsonIgnore
+
     private transient Hex capital;
 
 

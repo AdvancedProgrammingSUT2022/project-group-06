@@ -1,8 +1,4 @@
 package project.civilization.controllers;
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import project.civilization.models.Game;
@@ -20,31 +16,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class SaveAndLoadController {
-    public static String saveGameWithJackson(String gameName) {
-        try {
-            Game game = new Game(gameName, GameController.getWorld(), InitializeGameInfo.getPlayers(),
-                    GameController.getPlayerCount(),GameController.getTurn());
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-            objectMapper.writeValue(new File(gameName+".json"), game);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        loadGameWithJackson(gameName);
-        return null;
-    }
-
-    public static String loadGameWithJackson(String gameName) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-            String json = new String(Files.readAllBytes(Paths.get(gameName+".json")));
-            Game game = objectMapper.readValue(json, Game.class);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
-    }
     public static String saveGameWithJson(String gameName) {
         FileWriter fileWriter;
         try {

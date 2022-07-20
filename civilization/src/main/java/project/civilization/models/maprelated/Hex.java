@@ -1,6 +1,6 @@
 package project.civilization.models.maprelated;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
@@ -31,19 +31,19 @@ public class Hex {
     private String  ownerUserName;
     private HashMap<String , HexState> StateOfHexForEachPlayer = new HashMap<>();
 
-    @JsonIgnore
+
     private transient Military militaryUnit;
-    @JsonIgnore
+
     private transient Civilian civilianUnit;
-    @JsonIgnore
+
     private transient City capital = null;
-    @JsonIgnore
+
     private transient City city = null;
-    @JsonIgnore
+
     private transient Player owner = null;
 
 
-    @JsonIgnore
+
     private transient ArrayList<Improvement> improvements = new ArrayList<Improvement>();
 
     public void setFeature(Feature newFeature) {

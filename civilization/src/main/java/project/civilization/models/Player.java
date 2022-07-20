@@ -3,7 +3,7 @@ package project.civilization.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
@@ -35,7 +35,7 @@ public class Player {
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
     private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
 
-    @JsonIgnore
+
     private ArrayList<Unit> units = new ArrayList<Unit>();
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
@@ -49,9 +49,9 @@ public class Player {
 
 
 
-    @JsonIgnore
+
     private transient ArrayList<Trade> trades = new ArrayList<Trade>();
-    @JsonIgnore
+
     private transient ArrayList<Combat> combats = new ArrayList<Combat>();
 
 

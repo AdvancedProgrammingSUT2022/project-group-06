@@ -1,6 +1,6 @@
 package project.civilization.models.maprelated;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.google.gson.annotations.Expose;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
@@ -14,7 +14,7 @@ public class World {
 
     private transient int worldHeight;
 
-    @JsonIgnore
+
     private transient String[][] string;
 
     private int hexInWidth;

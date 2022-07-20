@@ -1,5 +1,5 @@
 package project.civilization.models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.maprelated.World;
 
@@ -10,7 +10,7 @@ public class Game {
 
     }
     private String name;
-    @JsonIgnore
+
     private  World world;
     private ArrayList<Player> players;
     private int playerCount;

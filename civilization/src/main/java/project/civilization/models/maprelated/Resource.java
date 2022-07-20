@@ -1,6 +1,6 @@
 package project.civilization.models.maprelated;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 

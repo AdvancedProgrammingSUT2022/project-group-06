@@ -2,10 +2,6 @@ package project.civilization.models.units;
 
 import java.util.ArrayList;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.UnitState;
@@ -13,14 +9,6 @@ import project.civilization.models.Player;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.maprelated.Hex;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Military.class, name = "Military"),
-        @JsonSubTypes.Type(value = Civilian.class, name = "Civilian")
-})
 public class Unit implements Combatable, Construction {
     final protected int maxHealth = 10;
     protected int health;
@@ -43,9 +31,9 @@ public class Unit implements Combatable, Construction {
     private int Xhex;
     private int Yhex;
 
-    @JsonIgnore
+
     protected transient Player owner;
-    @JsonIgnore
+
     protected transient Hex currentHex;
     public Unit(){
 
@@ -112,27 +100,27 @@ public class Unit implements Combatable, Construction {
     public int getBackUpMp() {
         return backUpMP;
     }
-    @JsonIgnore
+
     @Override
     public void setLeftTurns(int leftTurns) {
         this.leftTurns = leftTurns;
     }
-    @JsonIgnore
+
     @Override
     public int getLeftTurns() {
         return this.leftTurns;
     }
-    @JsonIgnore
+
     @Override
     public void decreaseLeftTurns() {
         this.leftTurns -= 1;
     }
-    @JsonIgnore
+
     @Override
     public void build(String type) {
     }
 
-    @JsonIgnore
+
     @Override
     public Hex getHex() {
         return currentHex;
@@ -236,22 +224,22 @@ public class Unit implements Combatable, Construction {
     public String getName() {
         return name;
     }
-    @JsonIgnore
+
     @Override
     public String attack(Combatable defender) {
         return null;
     }
-    @JsonIgnore
+
     @Override
     public String defend(Combatable attacker) {
         return null;
     }
-    @JsonIgnore
+
     @Override
     public void healPerTurn() {
         this.health += 1;
     }
-    @JsonIgnore
+
     @Override
     public boolean isInPossibleCombatRange(int x, int y, int seenRange, int attackerX, int attackerY) {
         if (seenRange == (this.getRange() == 0 ? 1 : this.getRange())) return false;
@@ -267,26 +255,26 @@ public class Unit implements Combatable, Construction {
         return res;
     }
 
-    @JsonIgnore
+
     @Override
     public int getX() {
         return this.getCurrentHex().getX();
     }
 
-    @JsonIgnore
+
     @Override
     public int getY() {
         return this.getCurrentHex().getY();
     }
 
-    @JsonIgnore
+
     @Override
     public void zeroMpWorker() {
         // TODO Auto-generated method stub
 
     }
 
-    @JsonIgnore
+
     @Override
     public Unit getWorker() {
         // TODO Auto-generated method stub

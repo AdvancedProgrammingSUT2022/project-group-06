@@ -1,6 +1,6 @@
 package project.civilization.models.maprelated;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
@@ -13,7 +13,7 @@ public class Terrain {
     private int movePoint;
     private int combatModifiersPercentage;
 
-    @JsonIgnore
+
     private transient javafx.scene.image.ImageView terrainView;
 
     public javafx.scene.image.ImageView getTerrainView() {
