@@ -95,7 +95,7 @@ Label{
 Text{
     -fx-font-size: 50;
     -fx-font-weight: bold;
-    -fx-text-fill: #97fa02;
+    -fx-text-fill: #efcf05;
 }
 
 .choiceBox {
@@ -106,4 +106,10 @@ Text{
     -fx-font-family: "Viner Hand ITC";
     -fx-text-fill: #d3bb16;
     -fx-background-color: #2f342f;
+}
+.check-box{
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-font-family: "Viner Hand ITC";
+    -fx-text-fill: #d3bb16;
 }

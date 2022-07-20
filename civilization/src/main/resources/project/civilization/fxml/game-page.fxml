@@ -19,17 +19,18 @@
         <VBox spacing="10" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
             <Text fx:id="error"/>
             <TilePane alignment="CENTER">
-                <Label text="players"/>
+                <Label text="Players"/>
                 <ChoiceBox fx:id="numberOfPlayer"  styleClass="choiceBox"/>
             </TilePane>
             <TilePane alignment="CENTER">
-                <Label text="map size "/>
+                <Label text="Map size "/>
                 <ChoiceBox fx:id="mapSize" styleClass="choiceBox"/>
             </TilePane>
             <VBox fx:id="invitationBox" spacing="10" alignment="CENTER" maxWidth="350">
-                <Button fx:id="invitationButton" text="challenge a friend" onMouseClicked="#changeUsername"/>
+                <Button fx:id="invitationButton" text="Challenge a friend" onMouseClicked="#changeUsername"/>
             </VBox>
-            <Button fx:id="loadGameButton" text="load a game" onMouseClicked="#loadGame"/>
+            <Button fx:id="loadGameButton" text="Load a game" onMouseClicked="#loadGame"/>
+            <Button fx:id="autoSaveSetting" text="Auto save setting" onMouseClicked="#autoSaveSetting"/>
             <Button fx:id="backToMAinButton" text="Back" onMouseClicked="#backToMain"/>
 
         </VBox>

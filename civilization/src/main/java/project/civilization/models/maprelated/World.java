@@ -22,6 +22,7 @@ public class World {
 
     private Hex[][] hex;
 
+    public static HashMap<String, Boolean> autoSave = new HashMap<>();
     public World(int hexInHeight, int hexInWidth) {
         worldWidth = 12 * hexInWidth;
         worldHeight = 7 * hexInHeight;

@@ -101,9 +101,10 @@ public class GamePage extends GameMenus{
     }
 
     public void loadGame(MouseEvent mouseEvent) {
-        SaveAndLoadController.loadGameWithJson("A");
-       // CivilizationApplication.changeMenu(Menus.LOADGAME);
-        CivilizationApplication.changeMenu(Menus.MAPPAGE);
+        CivilizationApplication.changeMenu(Menus.LOADGAME);
     }
 
+    public void autoSaveSetting (MouseEvent mouseEvent) {
+        CivilizationApplication.changeMenu(Menus.AUTOSAVESETTING);
+    }
 }

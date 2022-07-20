@@ -39,7 +39,6 @@ public class InitializeGameInfo {
     private static final Random random = new Random();
     private static World world ;
 
-
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
         return appropriateTerrain;
     }

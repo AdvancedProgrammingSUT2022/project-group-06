@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.civilization.views.AuotSaveSetting"
+            prefHeight="650.0" prefWidth="1200.0"
+            fx:id="borderPane" stylesheets="@../css/style.css" id="menu">
+    <Rectangle opacity="0.7" fill="black" height="430" width="400"  x="400" y="150"/>
+
+    <center>
+        <VBox spacing="5" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
+            <Label text="select auto save periods"/>
+            <CheckBox fx:id="everyTurnCheckBox" styleClass="check-box" text="every turn" onAction="#handelEveryTurnCheckBox"/>
+            <CheckBox fx:id="CheckBox" styleClass="check-box" text="every improvement built"/>
+            <Label text="select auto save numbers"/>
+            <HBox spacing="10" alignment="CENTER">
+            <CheckBox fx:id="twoFile" styleClass="check-box" text="2" />
+            <CheckBox fx:id="threeFile" styleClass="check-box" text="3"/>
+            <CheckBox fx:id="fourFile" styleClass="check-box" text="4"/>
+            <CheckBox styleClass="check-box" text="never"/>
+            </HBox>
+            <Button  text="apply" onMouseClicked="#ApplyAutoSaveAndPeriods"/>
+            <Button text="Back" onMouseClicked="#back"/>
+        </VBox>
+
+    </center>
+
+</BorderPane>

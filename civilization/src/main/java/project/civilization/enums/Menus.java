@@ -17,7 +17,8 @@ public enum Menus {
     CHATNAVIGATION("chat-navigation-page"),
     STARTPRIVATECHAT("start-private-chat-page"),
     CHALLENGEPAGE("challenge-page"),
-    MAPPAGE("map-page");
+    MAPPAGE("map-page"),
+    AUTOSAVESETTING("auto-save-setting");
 
     private final String character;
 

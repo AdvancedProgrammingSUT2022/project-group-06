@@ -496,6 +496,7 @@ public class GameController {
         }
         currentPlayer = players.get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
+        if(World.autoSave.get("turn").equals(true)) SaveAndLoadController.AutoSave();
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 

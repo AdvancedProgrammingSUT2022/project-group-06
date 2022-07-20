@@ -6,6 +6,8 @@ import project.civilization.CivilizationApplication;
 import project.civilization.controllers.SaveAndLoadController;
 import project.civilization.enums.Menus;
 
+import java.util.UUID;
+
 public class PausePanel {
     public void backToMain(MouseEvent mouseEvent) {
         CivilizationApplication.changeMenu(Menus.MAIN);
@@ -19,7 +21,7 @@ public class PausePanel {
     }
 
     public void saveGame(MouseEvent mouseEvent) {
-        SaveAndLoadController.saveGameWithJson("A");
+        SaveAndLoadController.saveGameWithJson(UUID.randomUUID().toString());
     }
 
 }
