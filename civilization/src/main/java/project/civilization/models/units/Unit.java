@@ -2,6 +2,9 @@ package project.civilization.models.units;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
@@ -10,91 +13,47 @@ import project.civilization.models.Player;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.maprelated.Hex;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Military.class, name = "Military"),
+        @JsonSubTypes.Type(value = Civilian.class, name = "Civilian")
+})
 public class Unit implements Combatable, Construction {
     final protected int maxHealth = 10;
-    @Expose
     protected int health;
-    @Expose
     protected int combatStrength;
-    @Expose
     protected int rangedStrength;
-    @Expose
     protected int range;
-    protected Hex currentHex;
-    protected UnitState state;
     protected int MP;
     protected int backUpMP;
     protected String name;
     protected int cost;
     protected String neededTech;
     protected String neededResource;
-    protected Player owner;
     protected int neededProduction = 10;
     protected int defenciveBounes = 0;
     protected boolean ordered = false;
-
-    //todo: set combat type
-    public int getNeededProduction() {
-        return neededProduction;
-    }
-
-    public String getNeededResource() {
-        return neededResource;
-    }
-
-    public String getNeededTech() {
-        return neededTech;
-    }
-
     protected String combatType;
-
     protected boolean isFirstFortify = true;
     int leftTurns;
+    protected UnitState state;
+    private int Xhex;
+    private int Yhex;
 
-
-    public void setMP(int amount) {
-        MP = amount;
-    }
-
-    public boolean isOrdered() {
-        return ordered;
-    }
-
-    public void setOrdered(boolean ordered) {
-        this.ordered = ordered;
-    }
-
-    public int getBackUpMp() {
-        return backUpMP;
-    }
-
-    @Override
-    public void setLeftTurns(int leftTurns) {
-        this.leftTurns = leftTurns;
-    }
-
-    @Override
-    public int getLeftTurns() {
-        return this.leftTurns;
-    }
-
-    @Override
-    public void decreaseLeftTurns() {
-        this.leftTurns -= 1;
-    }
-
-    @Override
-    public void build(String type) {
-
+    @JsonIgnore
+    protected transient Player owner;
+    @JsonIgnore
+    protected transient Hex currentHex;
+    public Unit(){
 
     }
-
-    @Override
-    public Hex getHex() {
-        return currentHex;
-    }
-
     public Unit(String name, Hex hex, Player owner) {
+        this.Xhex = hex.getX();
+        this.Yhex = hex.getY();
+
         this.owner = owner;
         this.name = name;
         this.currentHex = hex;
@@ -123,7 +82,60 @@ public class Unit implements Combatable, Construction {
         } else {
             neededResource = resource;
         }
+    }
 
+    //todo: set combat type
+    public int getNeededProduction() {
+        return neededProduction;
+    }
+
+    public String getNeededResource() {
+        return neededResource;
+    }
+
+    public String getNeededTech() {
+        return neededTech;
+    }
+
+    public void setMP(int amount) {
+        MP = amount;
+    }
+
+    public boolean isOrdered() {
+        return ordered;
+    }
+
+    public void setOrdered(boolean ordered) {
+        this.ordered = ordered;
+    }
+
+    public int getBackUpMp() {
+        return backUpMP;
+    }
+    @JsonIgnore
+    @Override
+    public void setLeftTurns(int leftTurns) {
+        this.leftTurns = leftTurns;
+    }
+    @JsonIgnore
+    @Override
+    public int getLeftTurns() {
+        return this.leftTurns;
+    }
+    @JsonIgnore
+    @Override
+    public void decreaseLeftTurns() {
+        this.leftTurns -= 1;
+    }
+    @JsonIgnore
+    @Override
+    public void build(String type) {
+    }
+
+    @JsonIgnore
+    @Override
+    public Hex getHex() {
+        return currentHex;
     }
 
     public boolean isFirstFortify() {
@@ -213,7 +225,6 @@ public class Unit implements Combatable, Construction {
         MP -= amount;
     }
 
-
     public int getRange() {
         return range;
     }
@@ -225,22 +236,22 @@ public class Unit implements Combatable, Construction {
     public String getName() {
         return name;
     }
-
+    @JsonIgnore
     @Override
     public String attack(Combatable defender) {
         return null;
     }
-
+    @JsonIgnore
     @Override
     public String defend(Combatable attacker) {
         return null;
     }
-
+    @JsonIgnore
     @Override
     public void healPerTurn() {
         this.health += 1;
     }
-
+    @JsonIgnore
     @Override
     public boolean isInPossibleCombatRange(int x, int y, int seenRange, int attackerX, int attackerY) {
         if (seenRange == (this.getRange() == 0 ? 1 : this.getRange())) return false;
@@ -256,22 +267,26 @@ public class Unit implements Combatable, Construction {
         return res;
     }
 
+    @JsonIgnore
     @Override
     public int getX() {
         return this.getCurrentHex().getX();
     }
 
+    @JsonIgnore
     @Override
     public int getY() {
         return this.getCurrentHex().getY();
     }
 
+    @JsonIgnore
     @Override
     public void zeroMpWorker() {
         // TODO Auto-generated method stub
 
     }
 
+    @JsonIgnore
     @Override
     public Unit getWorker() {
         // TODO Auto-generated method stub

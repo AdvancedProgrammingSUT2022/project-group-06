@@ -2,18 +2,23 @@ package project.civilization.models.gainable;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
+import project.civilization.models.maprelated.Terrain;
 import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 public class Technology implements Construction {
+    public Technology(){}
     private String name;
     private int cost;
     private ArrayList<String> neededPreviousTechnologies = new ArrayList<>();
     private int leftTurns;
-    private Player owner;
+
+    @JsonIgnore
+    private transient Player owner;
 
     public Technology(String name, Player owner) {
         this.name = name;

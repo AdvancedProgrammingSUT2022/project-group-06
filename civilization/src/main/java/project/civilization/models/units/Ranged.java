@@ -1,5 +1,7 @@
 package project.civilization.models.units;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import project.civilization.controllers.GameController;
 import project.civilization.enums.HexState;
 import project.civilization.enums.UnitState;
@@ -9,8 +11,17 @@ import project.civilization.models.maprelated.Hex;
 
 import java.util.Objects;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Siege.class, name = "Siege")
+})
 public class Ranged extends Military implements Combatable {
+    public Ranged(){
 
+    }
 
     public Ranged(String name, Hex hex, Player owner) {
         super(name, hex, owner);

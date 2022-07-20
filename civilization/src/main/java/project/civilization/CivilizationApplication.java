@@ -15,16 +15,14 @@ import java.io.IOException;
 import java.net.URL;
 
 public class CivilizationApplication extends Application {
-    private static Scene scene;
     public static Stage stages;
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = loadFXML(Menus.LOGIN);
         //Parent root = loadMapForTest();
-        this.stages = stage;
+        stages = stage;
         assert root != null;
         Scene scene = new Scene(root );
-        CivilizationApplication.scene = scene;
         stage.setTitle("Civilization");
         stage.setScene(scene);
         stage.show();
@@ -41,10 +39,14 @@ public class CivilizationApplication extends Application {
         loginMenu.run(scanner);*/
     }
     public static void changeMenu(Menus menuName){
-        Parent root = loadFXML(menuName);
+            Parent root = loadFXML(menuName);
+            assert root != null;
+            Scene scene = new Scene(root );
+            stages.setScene(scene);
+/*        Parent root = loadFXML(menuName);
         if (menuName.equals(Menus.CHAT))
             ChatMenu.setPane((BorderPane) root);
-        CivilizationApplication.scene.setRoot(root);
+        CivilizationApplication.scene.setRoot(root);*/
     }
 
     public static void loadMapForTest(){

@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
@@ -57,6 +58,8 @@ public class ChallengePage {
             Player player = new Player(textFields[i].getText());
         }
         new Player(UserController.loggedInUser.getUsername());
+        InitializeGameInfo.run();
+        GameController.initializeGameController();
         CivilizationApplication.changeMenu(Menus.MAPPAGE);
     }
 }

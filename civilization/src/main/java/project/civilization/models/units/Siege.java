@@ -6,14 +6,15 @@ import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
 
 public class Siege extends Ranged implements Combatable {
-    @Expose
+    public Siege() {
+
+    }
     private boolean isReadyToAttack = false;
-    @SerializedName("type")
     private String typeName;
+
     public Siege(String name, Hex hex, Player owner) {
         super(name, hex, owner);
         typeName = getClass().getName();
-
     }
 
     public boolean isReadyToAttack() {

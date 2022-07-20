@@ -1,22 +1,19 @@
 package project.civilization.models.maprelated;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
 public class Feature {
-    @Expose
+    public Feature(){}
     private String name;
-    @Expose
     private int food;
-    @Expose
     private int production;
-    @Expose
     private int gold;
-    @Expose
     private int movePoint;
-    @Expose
     private int combatModifiersPercentage;
 
-    private javafx.scene.image.ImageView featureView;
+    @JsonIgnore
+    private transient javafx.scene.image.ImageView featureView;
 
     public javafx.scene.image.ImageView getFeatureView() {
         return featureView;

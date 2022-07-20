@@ -6,11 +6,14 @@ import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 public class Improvement implements Construction {
+    public Improvement(){}
     private int maxTurn;
     private int leftTurns;
     private String name;
-    private Hex hex;
     private Unit worker;
+
+    //ignore
+    private Hex hex;
 
     public Improvement(String name, Unit unit, Hex hex) {
         this.name = name;

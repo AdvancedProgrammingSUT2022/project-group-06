@@ -15,6 +15,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.InitializeGameInfo;
+import project.civilization.controllers.SaveAndLoadController;
 import project.civilization.enums.Menus;
 import project.civilization.models.maprelated.World;
 
@@ -100,8 +101,9 @@ public class GamePage extends GameMenus{
     }
 
     public void loadGame(MouseEvent mouseEvent) {
-        CivilizationApplication.changeMenu(Menus.LOADGAME);
-
+        SaveAndLoadController.loadGameWithJson("A");
+       // CivilizationApplication.changeMenu(Menus.LOADGAME);
+        CivilizationApplication.changeMenu(Menus.MAPPAGE);
     }
 
 }

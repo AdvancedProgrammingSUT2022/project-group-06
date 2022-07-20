@@ -1,25 +1,20 @@
 package project.civilization.models.maprelated;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
 import java.util.ArrayList;
 
 public class Resource {
-    private static ArrayList<Resource> resources = new ArrayList<Resource>();
-    @Expose
+    public Resource(){}
+
     private int food;
-    @Expose
     private int production;
-    @Expose
     private int gold;
-    @Expose
     private String name;
-    @Expose
     private String requiredImprovement;
-    @Expose
     public String requiredTechnology;
-    @Expose
     private String type;
 
     public Resource(String name) {
@@ -32,7 +27,6 @@ public class Resource {
         this.requiredImprovement = splitInfo[4];
         this.requiredTechnology = splitInfo[5];
         this.type = splitInfo[6];
-        resources.add(this);
     }
 
     public String getType() {

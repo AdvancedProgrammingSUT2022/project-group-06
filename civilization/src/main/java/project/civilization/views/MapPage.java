@@ -37,7 +37,6 @@ import javax.swing.*;
 public class MapPage {
     public  Pane pane;
     private static int[] mapBoundaries;
-    public static boolean isANewGame = true;
     private boolean wantToMove = false;
     private boolean wantToAttack = false;
     @FXML
@@ -51,12 +50,6 @@ public class MapPage {
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
-        if (isANewGame) {
-            InitializeGameInfo.run();
-            GameController.initializeGameController();
-        } else {
-            loadGme();
-        }
         World world = InitializeGameInfo.getWorld();
 /*        world.getHex()[0][0].setOwner(GameController.getCurrentPlayer());
         world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
@@ -73,7 +66,6 @@ public class MapPage {
                 }
             }
         }
-        GameController.startGame();
         initializePane();
         Platform.runLater(() -> {
             pane.requestFocus();
@@ -184,9 +176,6 @@ public class MapPage {
     }
     public void technology(MouseEvent mouseEvent) {
         loadPanel("technology-menu-page");
-    }
-    private void loadGme() {
-        InitializeGameInfo.runAsLoadGame();
     }
 
     Boolean ctrl=false;
@@ -721,7 +710,12 @@ public class MapPage {
 
     private void showHexDetails(Hex hex) {
         VBox vBox = new VBox();
-        Label label = new Label(hex.getTerrain().getName());
+        Label label = new Label(hex.getTerrain().getName()+
+                " ,food:" + hex.getTerrain().getFood()+
+                " ,product:" + hex.getTerrain().getProduction()+
+                " ,gold:" +  hex.getTerrain().getGold()+
+                " ,CMP:" + hex.getTerrain().getCombatModifiersPercentage()+
+                " ,MP:" +hex.getTerrain().getMovePoint());
         Popup popup = new Popup();
         addVboxToPopup(label, vBox);
         if (hex.getResource() != null) {
@@ -766,7 +760,7 @@ public class MapPage {
     }
 
     public void saveGame(MouseEvent mouseEvent) {
-        GameController.saveGame("A");
+        SaveAndLoadController.saveGameWithJson("A");
     }
 
     public void nextTurn(MouseEvent mouseEvent) {

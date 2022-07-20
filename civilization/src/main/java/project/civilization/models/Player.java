@@ -3,7 +3,9 @@ package project.civilization.models;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.HexState;
 import project.civilization.models.gainable.Construction;
@@ -17,49 +19,53 @@ import project.civilization.models.units.Military;
 import project.civilization.models.units.Unit;
 
 public class Player {
-    @Expose
-    private int gold = 129;
-    @Expose
-    private int happiness;
-    @Expose
-    private int production;
-    @Expose
-    private int food;
-    @Expose
-    private int trophies;
-    @Expose
-    private int population;
-    @Expose
-    private int foodForNewCitizen;
-    @Expose
+    public Player(){
+
+    }
     private String name;
-    @Expose
+    private int gold;
+    private int happiness;
+    private int production;
+    private int food;
+    private int trophies;
+    private int population;
+    private int foodForNewCitizen;
     private int score;
-    @Expose
     private ArrayList<String> notifications = new ArrayList<String>();
-    @Expose
-    private static ArrayList<String> technologies = new ArrayList<String>();
-    @Expose
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
-    @Expose
     private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
 
+    @JsonIgnore
     private ArrayList<Unit> units = new ArrayList<Unit>();
-    private ArrayList<City> cities = new ArrayList<City>();
-    private ArrayList<Trade> trades = new ArrayList<Trade>();
-    private ArrayList<Combat> combats = new ArrayList<Combat>();
-    private ArrayList<Military> militaries = new ArrayList<Military>();
-    private ArrayList<Civilian> civilians = new ArrayList<Civilian>();
-    private ArrayList<Construction> unfinishedProjects = new ArrayList<Construction>();
-    private ArrayList<Technology> archivedTechnologies = new ArrayList<>();
-    private City mainCity;
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
-    private static HashMap<Hex, Hex> reveledHexes = new HashMap<>();
-    private Technology currentResearch;
 
-    public ArrayList<String> getTechnologies() {
-        return technologies;
+    private transient ArrayList<Military> militaries = new ArrayList<Military>();
+    private transient ArrayList<Civilian> civilians = new ArrayList<Civilian>();
+    private ArrayList<Construction> unfinishedProjects = new ArrayList<Construction>();
+    private  ArrayList<Technology> archivedTechnologies = new ArrayList<>();
+    private  Technology currentResearch;
+    private ArrayList<City> cities = new ArrayList<City>();
+
+
+
+    @JsonIgnore
+    private transient ArrayList<Trade> trades = new ArrayList<Trade>();
+    @JsonIgnore
+    private transient ArrayList<Combat> combats = new ArrayList<Combat>();
+
+
+    public Player(String name) {
+        this.name = name;
+        this.gold = 129;
+        civilians = new ArrayList<Civilian>();
+        militaries = new ArrayList<Military>();
+        //initial happiness
+        //hardcode
+
+        this.happiness = 10;
+        InitializeGameInfo.getPlayers().add(this);
+        this.foodForNewCitizen = 2;
     }
 
     public void increaseTrophies(int amount) {
@@ -87,28 +93,11 @@ public class Player {
     }
 
 
-    public static void addTechnology(String technology) {
-        technologies.add(technology);
+
+    public boolean isMainCity(City city) {
+        return cities.get(0).equals(city);
     }
 
-    public City getMainCity() {
-        return mainCity;
-    }
-
-    public void setMainCity(City mainCity) {
-        this.mainCity = mainCity;
-    }
-
-    public void setTechnologyForPlayers() {
-        for (String temp : technologies) {
-            achievedTechnologies.put(temp, false);
-        }
-    }
-
-    public static void setTechnologies(ArrayList<String> set) {
-
-        technologies = new ArrayList<>(set);
-    }
 
     public void addToRevealedHexes(Hex hex) {
         hex.setState(HexState.Revealed, this);
@@ -127,28 +116,8 @@ public class Player {
         hexCopy.setPillaged(hex.isPillaged());
         hexCopy.setStateOfHexForEachPlayer(hex.getStateOfHexForEachPlayer());
         //hexCopy.setImprovements(hex.getImprovement());
-        reveledHexes.put(hex, hexCopy);
     }
 
-    public void removeFromReveledTiles(Hex hex) {
-        reveledHexes.remove(hex);
-    }
-
-    public HashMap<Hex, Hex> getReveledHexes() {
-        return reveledHexes;
-    }
-
-    public Player(String name) {
-        this.name = name;
-        civilians = new ArrayList<Civilian>();
-        militaries = new ArrayList<Military>();
-        //initial happiness
-        //hardcode
-
-        this.happiness = 10;
-        InitializeGameInfo.getPlayers().add(this);
-        this.foodForNewCitizen = 2;
-    }
 
     public void setTrophies(int trophies) {
         this.trophies = trophies;

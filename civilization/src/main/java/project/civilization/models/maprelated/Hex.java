@@ -1,5 +1,6 @@
 package project.civilization.models.maprelated;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
@@ -16,41 +17,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Hex {
-    @Expose
+    public Hex(){}
     private int x;
-    @Expose
     private int y;
-    @Expose
     private boolean[] hasRiver = new boolean[]{false, false, false, false};
-    @Expose
     private boolean hasCitizen = false;
-    @Expose
     private boolean hasRoad;
-    @Expose
     private boolean hasRailRoad;
-    @Expose
     private boolean isPillaged = false;
-    @Expose
-    private Player owner = null;
-    @Expose
     private Terrain terrain;
-    @Expose
     private Feature feature;
-    @Expose
     private Resource resource;
+    private String  ownerUserName;
+    private HashMap<String , HexState> StateOfHexForEachPlayer = new HashMap<>();
 
-    private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
+    @JsonIgnore
+    private transient Military militaryUnit;
+    @JsonIgnore
+    private transient Civilian civilianUnit;
+    @JsonIgnore
+    private transient City capital = null;
+    @JsonIgnore
+    private transient City city = null;
+    @JsonIgnore
+    private transient Player owner = null;
 
-    private ArrayList<Improvement> improvements = new ArrayList<Improvement>();
-    private Military militaryUnit;
-    private Civilian civilianUnit;
-    private City capital = null;
-    private City city = null;
+
+    @JsonIgnore
+    private transient ArrayList<Improvement> improvements = new ArrayList<Improvement>();
 
     public void setFeature(Feature newFeature) {
         feature = newFeature;
     }
-
     public void setHasCitizen(boolean hasCitizen) {
         this.hasCitizen = hasCitizen;
     }
@@ -63,7 +61,7 @@ public class Hex {
         this.terrain = terrain;
         this.feature = feature;
         for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers(); i++) {
-            this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i), HexState.FogOfWar);
+            this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i).getName(), HexState.FogOfWar);
         }
     }
 
@@ -76,11 +74,11 @@ public class Hex {
         this.hasRiver = hasRiver;
     }
 
-    public HashMap<Player, HexState> getStateOfHexForEachPlayer() {
+    public HashMap<String, HexState> getStateOfHexForEachPlayer() {
         return StateOfHexForEachPlayer;
     }
 
-    public void setStateOfHexForEachPlayer(HashMap<Player, HexState> stateOfHexForEachPlayer) {
+    public void setStateOfHexForEachPlayer(HashMap<String, HexState> stateOfHexForEachPlayer) {
         StateOfHexForEachPlayer = stateOfHexForEachPlayer;
     }
 
@@ -97,11 +95,22 @@ public class Hex {
     }
 
     public void setState(HexState hexState, Player player) {
-        this.StateOfHexForEachPlayer.put(player, hexState);
+        this.StateOfHexForEachPlayer.put(player.getName(), hexState);
     }
 
     public void setOwner(Player owner) {
+        if(owner != null){
+            ownerUserName = owner.getName();
+        }else ownerUserName = null;
         this.owner = owner;
+    }
+
+    public String getOwnerUserName() {
+        return ownerUserName;
+    }
+
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
     }
 
     public int getX() {
@@ -117,7 +126,7 @@ public class Hex {
     }
 
     public HexState getState(Player player) {
-        return StateOfHexForEachPlayer.get(player);
+        return StateOfHexForEachPlayer.get(player.getName());
     }
 
     public Feature getFeature() {

@@ -32,7 +32,7 @@ public class InitializeGameInfo {
     private static final HashMap<String, String[]> terrainPossibleFeature = new HashMap<String, String[]>();
     public static HashMap<String, Color> terrainColors = new HashMap<String, Color>();
     private static final HashMap<String, Color> playerColor = new HashMap<String, Color>();
-    private static final ArrayList<Player> players = new ArrayList<Player>();
+    private static ArrayList<Player> players = new ArrayList<Player>();
     private static int numberOFPlayers;
     private static ArrayList<Building> allBuildings = new ArrayList<>();
 
@@ -445,7 +445,9 @@ public class InitializeGameInfo {
         world = new World(hexInHeight, hexInWidth);
     }
 
-    public static void runAsLoadGame() {
+    public static void runAsLoadGame(World worldd,ArrayList<Player> players1) {
+        players = players1;
+        world = worldd;
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
@@ -494,5 +496,9 @@ public class InitializeGameInfo {
         String text = new String(inputStream.readAllBytes());
         inputStream.close();
         return text;
+    }
+
+    public static void setWorld(World worldd) {
+        world = worldd;
     }
 }

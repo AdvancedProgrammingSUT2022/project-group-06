@@ -22,12 +22,8 @@ Button:hover{
 }
 
 TextField{
-    border: 5px solid rgb(0, 0, 0);
     -fx-max-width: 330;
     -fx-pref-height: 35;
-    -fx-border-radius: 5;
-    -fx-background-color: white;
-    
 }
 
 Label{

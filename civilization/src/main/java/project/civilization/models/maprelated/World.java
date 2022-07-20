@@ -1,5 +1,6 @@
 package project.civilization.models.maprelated;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
@@ -8,17 +9,18 @@ import project.civilization.models.Player;
 import java.util.*;
 
 public class World {
-    @Expose
-    private int worldWidth;
-    @Expose
-    private int worldHeight;
-    @Expose
-    private String[][] string;
-    @Expose
+    public World(){}
+    private transient int worldWidth;
+
+    private transient int worldHeight;
+
+    @JsonIgnore
+    private transient String[][] string;
+
     private int hexInWidth;
-    @Expose
+
     private int hexInHeight;
-    @Expose
+
     private Hex[][] hex;
 
     public World(int hexInHeight, int hexInWidth) {

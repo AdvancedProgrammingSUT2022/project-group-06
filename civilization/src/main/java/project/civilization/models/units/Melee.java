@@ -4,7 +4,7 @@ import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
 
 public class Melee extends Military implements Combatable {
-
+    public Melee(){}
     public Melee(String name, Hex hex, Player owner) {
         super(name, hex, owner);
     }

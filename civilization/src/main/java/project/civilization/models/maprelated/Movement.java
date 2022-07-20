@@ -3,7 +3,7 @@ package project.civilization.models.maprelated;
 import project.civilization.models.units.Unit;
 
 public class Movement {
-
+    public Movement(){}
     private Unit unit;
     private Hex currentHex;
     private Hex destination;

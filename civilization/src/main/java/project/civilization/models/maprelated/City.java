@@ -4,20 +4,16 @@ package project.civilization.models.maprelated;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import project.civilization.controllers.CityController;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import project.civilization.controllers.CombatController;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.UnitController;
-import project.civilization.enums.HexState;
 import project.civilization.models.Player;
 import project.civilization.models.gainable.Building;
-import project.civilization.models.units.Civilian;
 import project.civilization.models.units.Combatable;
-import project.civilization.models.units.Military;
 
 public class City implements Combatable {
-    private static ArrayList<City> cities = new ArrayList<City>();
-
+    public City(){}
     private String name;
     private int population;
     private int rangedCombatStrength = 8;
@@ -27,27 +23,31 @@ public class City implements Combatable {
     private int science;
     private int gold;
     private int production;
-
-    private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
-    private ArrayList<Hex> hexs = new ArrayList<Hex>();
-    private Player owner = null;
-    private int hitPoint = 20;
-    final private int maxHitPoint = 20;
-    private Hex capital;
-    private int trophy = 0;
-
     private int numberOfUnemployedCitizen;
     private int health;
+    private int trophy = 0;
+    final private int maxHitPoint = 20;
+    private int hitPoint = 20;
+    private int beginningX;
+    private  int beginningY;
+    private ArrayList<int[]> otherTilesCoordinates = new ArrayList<int[]>();
+    private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
 
-    public int getTrophy() {
-        return trophy;
-    }
+    @JsonIgnore
+    private transient static ArrayList<City> cities = new ArrayList<City>();
+    @JsonIgnore
+    private transient ArrayList<Hex> hexs = new ArrayList<Hex>();
+    @JsonIgnore
+    private transient Player owner = null;
 
-    public void setTrophy(int amount) {
-        trophy = amount;
-    }
+    @JsonIgnore
+    private transient Hex capital;
+
 
     public City(Player owner, String name, Hex beginingHex) {
+        this.beginningX = beginingHex.getX();
+        this.beginningY = beginingHex.getY();
+
         this.owner = owner;
         this.name = name;
         increasePopulation(1);
@@ -72,6 +72,34 @@ public class City implements Combatable {
             meleeCombatStrength += 3;
             rangedCombatStrength += 3;
         }
+    }
+
+    public ArrayList<int[]> getOtherTilesCoordinates() {
+        return otherTilesCoordinates;
+    }
+
+    public int getBeginningX() {
+        return beginningX;
+    }
+
+    public int getBeginningY() {
+        return beginningY;
+    }
+
+    public void setHexs(ArrayList<Hex> hexs) {
+        this.hexs = hexs;
+    }
+
+    public void setCapital(Hex capital) {
+        this.capital = capital;
+    }
+
+    public int getTrophy() {
+        return trophy;
+    }
+
+    public void setTrophy(int amount) {
+        trophy = amount;
     }
 
     public void setOwner(Player owner) {
@@ -186,6 +214,7 @@ public class City implements Combatable {
     }
 
     public void addHex(Hex hex) {
+        otherTilesCoordinates.add(new int[]{hex.getX(), hex.getY()});
         hex.setOwner(this.owner);
         hex.setCity(this);
         hexs.add(hex);
@@ -195,7 +224,7 @@ public class City implements Combatable {
         if (city.getCapital().getMilitaryUnit() != null) {
             UnitController.deleteMilitaryUnit(city.getCapital().getMilitaryUnit());
         }
-        if (city.getOwner().getMainCity() == city) {
+        if (city.getOwner().getCities().get(0) == city) {
             CombatController.addCityToTerritory(city, GameController.getCurrentPlayer());
             return "this city is the main city of the opp civilization you can not delete this we will add this to your cities";
         }

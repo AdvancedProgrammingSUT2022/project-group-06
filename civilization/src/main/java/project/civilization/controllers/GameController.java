@@ -2,16 +2,8 @@ package project.civilization.controllers;
 
 
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.graph.GraphAdapterBuilder;
-import project.civilization.JsonDeserializerWithInheritance;
 import project.civilization.enums.*;
-import project.civilization.models.Game;
 import project.civilization.models.Player;
-import project.civilization.models.User;
-import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
 import project.civilization.models.gainable.Technology;
@@ -19,10 +11,6 @@ import project.civilization.models.maprelated.*;
 import project.civilization.models.units.*;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class GameController {
@@ -38,7 +26,7 @@ public class GameController {
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
-    private static ArrayList<Game> allGames = new ArrayList<>();
+
     public static int getTurn() {
         return turn;
     }
@@ -70,6 +58,9 @@ public class GameController {
     public static Hex getSelectedHex() {
         return selectedHex;
     }
+    public static int getPlayerCount() {
+        return playerCount;
+    }
 
     public static void initializeGameController() {
         playerCount = 0;
@@ -77,8 +68,19 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        startGame();
         /*hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
         hex[0][0].setState(HexState.Visible,players.get(0));*/
+    }
+    public static void initializeGameControllerForLoadGame(int playerCountt, int turnn) {
+        playerCount = playerCountt;
+        currentPlayer = players.get(playerCount);
+        turn = turnn;
+        for (Player pl :
+                players) {
+           allCivilians.addAll(pl.getCivilians());
+           allMilitaries.addAll(pl.getMilitaries());
+        }
     }
     public static void startGame(){
         for (int i = 0; i < world.getHexInHeight(); i++) {
@@ -86,9 +88,6 @@ public class GameController {
                 if(hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")){
                     UnitController.makeUnit("Settler", hex[i][j], "gold");
-                    City newCity = new City(GameController.getCurrentPlayer(), "fuck",
-                            hex[i][j]);
-
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     return;
                 }
@@ -305,7 +304,8 @@ public class GameController {
                 if (hex[n][m].getState(currentPlayer) == HexState.Visible) drawHex(hex[n][m]);
                 else if (hex[n][m].getState(currentPlayer) == HexState.FogOfWar) drawFogOfWar(hex[n][m]);
                 else {
-                    drawHex(currentPlayer.getReveledHexes().get(hex[n][m]));
+                    drawHex(hex[n][m]);
+                    //drawHex(currentPlayer.getReveledHexes().get(hex[n][m]));
                 }
             }
         }
@@ -1452,7 +1452,7 @@ public class GameController {
 
     }
 
-    public static String saveGame(String gameName) {
+    /*    public static String saveGame(String gameName) {
         Game game = new Game(gameName,hex);
         allGames.add(game);
         FileWriter fileWriter;
@@ -1478,25 +1478,20 @@ public class GameController {
         }
         loadGame("A");
         return "saved successfully";
-    }
+    }*/
+    /*try {
+                GsonBuilder builder = new GsonBuilder();
+                builder.registerTypeAdapter(Military.class, new JsonDeserializerWithInheritance<Military>());
+                Gson gson = builder.excludeFieldsWithoutExposeAnnotation().create();
+                String json = new String(Files.readAllBytes(Paths.get("Units.json")));
+                Siege unit = gson.fromJson(json, Siege.class);
+                if(unit instanceof Unit) System.out.println("heyyyy");
+                if(unit instanceof Siege) System.out.println("heyyyy");
 
-    public static String loadGame(String GameName) {
-        try {
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(Military.class, new JsonDeserializerWithInheritance<Military>());
-            Gson gson = builder.excludeFieldsWithoutExposeAnnotation().create();
-            String json = new String(Files.readAllBytes(Paths.get("Units.json")));
-            Siege unit = gson.fromJson(json, Siege.class);
-            if(unit instanceof Unit) System.out.println("heyyyy");
-            if(unit instanceof Siege) System.out.println("heyyyy");
-
-            return "there is no game with this name";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+                return "there is no game with this name";
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
     public static ArrayList<String> getAvailableWorks(Unit selectedUnit) {
         ArrayList<String> availableWorks = new ArrayList<>();
         if( UnitController.getSelectedUnit().getCurrentHex().getOwner() == null ||

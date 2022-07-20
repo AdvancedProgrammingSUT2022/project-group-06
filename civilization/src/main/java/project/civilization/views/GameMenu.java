@@ -35,9 +35,9 @@ public class GameMenu extends Menu {
             if (command.equals("construction delete")) {
                 System.out.println(GameController.deleteConstruction());
             }else if ((matcher = getMatcher("save game (-n||--name) (?<name>[a-zA-Z]+)", command)) != null) {
-                System.out.println(GameController.saveGame(matcher.group("name")));
+                System.out.println(SaveAndLoadController.saveGameWithJson(matcher.group("name")));
             }else if ((matcher = getMatcher("load game (-n||--name) (?<name>[a-zA-Z]+)", command)) != null) {
-                System.out.println(GameController.loadGame(matcher.group("name")));
+                System.out.println(SaveAndLoadController.loadGameWithJson(matcher.group("name")));
             }else if ((matcher = getMatcher("unit buy ", command)) != null) {
                 System.out.println(GameController.buyUnit(matcher.group("name")));;
             } else if (command.equals("demographic screen")) {
@@ -127,7 +127,7 @@ public class GameMenu extends Menu {
                 validCommand = false;
             }
             if (validCommand && GameController.getTurn() != 1) {
-                System.out.println(GameController.showCity(GameController.getCurrentPlayer().getMainCity().getName()));
+                System.out.println(GameController.showCity(GameController.getCurrentPlayer().getCities().get(0).getName()));
             }
             command = scanner.nextLine();
         }
@@ -202,7 +202,6 @@ public class GameMenu extends Menu {
         UnitController.makeUnit("Settler", GameController.getSelectedHex(), "gold");
         UnitController.setSelectedUnit(GameController.getCiviliansByLocation(GameController.getSelectedHex().getX(), GameController.getSelectedHex().getY()));
         System.out.println(CityController.buildCity(command));
-        GameController.getCurrentPlayer().setMainCity(City.getCityByName(command));
         UnitController.setSelectedUnit(null);
         return false;
     }

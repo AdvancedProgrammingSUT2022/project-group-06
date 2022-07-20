@@ -1,13 +1,24 @@
 package project.civilization.models.units;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.google.gson.annotations.SerializedName;
 import project.civilization.controllers.GameController;
 import project.civilization.enums.UnitType;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
-
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Melee.class, name = "Melee"),
+        @JsonSubTypes.Type(value = Ranged.class, name = "Ranged")
+})
 public class Military extends Unit {
-    @SerializedName("type")
+    public Military(){
+
+    }
     private String typeName;
 
     @Override
@@ -28,7 +39,6 @@ public class Military extends Unit {
         super(name, hex, owner);
         typeName = getClass().getName();
         hex.setMilitaryUnit(this);
-
     }
 
     @Override

@@ -16,7 +16,6 @@
                 <VBox.margin>
                     <Insets top="70.0" />
                 </VBox.margin></Button>
-            <Button onMouseClicked="#loadGame" prefHeight="10.0" text="Load Game" />
             <Button fx:id="profile" onMouseClicked="#profile" prefHeight="39.0" text="Profile" />
             <Button fx:id="setting" onMouseClicked="#setting" prefHeight="10.0" text="Setting" />
             <Button onMouseClicked="#scoreBoard" prefHeight="10.0" text="Score Board" />
