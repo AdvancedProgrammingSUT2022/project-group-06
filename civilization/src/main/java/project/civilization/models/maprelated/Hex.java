@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Hex {
-    public Hex(){}
     private int x;
     private int y;
     private boolean[] hasRiver = new boolean[]{false, false, false, false};

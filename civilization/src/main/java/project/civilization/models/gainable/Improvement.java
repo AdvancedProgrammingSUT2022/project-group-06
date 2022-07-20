@@ -6,7 +6,6 @@ import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 public class Improvement implements Construction {
-    public Improvement(){}
     private int maxTurn;
     private int leftTurns;
     private String name;

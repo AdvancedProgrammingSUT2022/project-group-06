@@ -6,9 +6,7 @@ import project.civilization.models.maprelated.World;
 import java.util.ArrayList;
 
 public class Game {
-    public Game(){
 
-    }
     private String name;
 
     private  World world;

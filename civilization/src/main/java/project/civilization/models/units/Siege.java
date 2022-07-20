@@ -6,9 +6,6 @@ import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
 
 public class Siege extends Ranged implements Combatable {
-    public Siege() {
-
-    }
     private boolean isReadyToAttack = false;
     private String typeName;
 

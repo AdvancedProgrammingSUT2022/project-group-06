@@ -10,10 +10,6 @@ import project.civilization.models.maprelated.Hex;
 import java.util.Objects;
 
 public class Ranged extends Military implements Combatable {
-    public Ranged(){
-
-    }
-
     public Ranged(String name, Hex hex, Player owner) {
         super(name, hex, owner);
     }

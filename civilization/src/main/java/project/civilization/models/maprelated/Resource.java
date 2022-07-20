@@ -7,8 +7,6 @@ import project.civilization.controllers.InitializeGameInfo;
 import java.util.ArrayList;
 
 public class Resource {
-    public Resource(){}
-
     private int food;
     private int production;
     private int gold;

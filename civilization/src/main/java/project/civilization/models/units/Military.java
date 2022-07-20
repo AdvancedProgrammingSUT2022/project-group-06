@@ -4,9 +4,6 @@ import project.civilization.enums.UnitType;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
 public class Military extends Unit {
-    public Military(){
-
-    }
     private String typeName;
 
     @Override

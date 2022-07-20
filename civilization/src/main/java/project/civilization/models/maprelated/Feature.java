@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
 public class Feature {
-    public Feature(){}
     private String name;
     private int food;
     private int production;

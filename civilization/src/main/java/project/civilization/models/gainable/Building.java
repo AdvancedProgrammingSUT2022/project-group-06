@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 
 public class Building implements Construction {
-    public Building(){}
     private String name;
     private int production;
     private int maintenance;

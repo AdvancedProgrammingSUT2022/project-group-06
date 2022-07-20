@@ -5,7 +5,6 @@ import com.google.gson.annotations.Expose;
 import project.civilization.controllers.InitializeGameInfo;
 
 public class Terrain {
-    public Terrain(){}
     private String name;
     private int food;
     private int production;

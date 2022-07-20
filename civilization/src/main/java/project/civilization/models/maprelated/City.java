@@ -13,7 +13,6 @@ import project.civilization.models.gainable.Building;
 import project.civilization.models.units.Combatable;
 
 public class City implements Combatable {
-    public City(){}
     private String name;
     private int population;
     private int rangedCombatStrength = 8;

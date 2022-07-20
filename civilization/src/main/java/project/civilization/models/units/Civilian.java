@@ -7,10 +7,6 @@ import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
 
 public class Civilian extends Unit {
-    public Civilian(){
-
-    }
-
     private static ArrayList<Civilian> civilians = new ArrayList<Civilian>();
 
     private boolean isWorking;

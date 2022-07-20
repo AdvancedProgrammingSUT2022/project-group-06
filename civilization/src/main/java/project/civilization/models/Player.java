@@ -19,9 +19,6 @@ import project.civilization.models.units.Military;
 import project.civilization.models.units.Unit;
 
 public class Player {
-    public Player(){
-
-    }
     private String name;
     private int gold;
     private int happiness;

@@ -11,7 +11,6 @@ import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 public class Technology implements Construction {
-    public Technology(){}
     private String name;
     private int cost;
     private ArrayList<String> neededPreviousTechnologies = new ArrayList<>();

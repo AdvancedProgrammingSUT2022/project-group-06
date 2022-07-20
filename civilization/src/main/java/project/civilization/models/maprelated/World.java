@@ -9,7 +9,6 @@ import project.civilization.models.Player;
 import java.util.*;
 
 public class World {
-    public World(){}
     private transient int worldWidth;
 
     private transient int worldHeight;

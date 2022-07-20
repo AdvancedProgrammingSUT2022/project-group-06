@@ -35,9 +35,7 @@ public class Unit implements Combatable, Construction {
     protected transient Player owner;
 
     protected transient Hex currentHex;
-    public Unit(){
 
-    }
     public Unit(String name, Hex hex, Player owner) {
         this.Xhex = hex.getX();
         this.Yhex = hex.getY();
