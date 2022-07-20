@@ -759,10 +759,6 @@ public class MapPage {
         VBox.getChildren().add(label);
     }
 
-    public void saveGame(MouseEvent mouseEvent) {
-        SaveAndLoadController.saveGameWithJson("A");
-    }
-
     public void nextTurn(MouseEvent mouseEvent) {
         String outPut = GameController.changeTurn();
         if (outPut.startsWith("Turn changed successfully")) {
@@ -777,6 +773,10 @@ public class MapPage {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, outPut);
             alert.showAndWait();
         }
+    }
+
+    public void pause(MouseEvent mouseEvent) {
+        loadPanel("pause-panel");
     }
 }
     /* GameController.setSelectedHex(hex);

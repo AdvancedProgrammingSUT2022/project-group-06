@@ -76,10 +76,9 @@ public class GameController {
         playerCount = playerCountt;
         currentPlayer = players.get(playerCount);
         turn = turnn;
-        for (Player pl :
-                players) {
-           allCivilians.addAll(pl.getCivilians());
-           allMilitaries.addAll(pl.getMilitaries());
+        for (Player pl : players) {
+          if(pl.getCivilians() != null) allCivilians.addAll(pl.getCivilians());
+          if(pl.getMilitaries() != null)  allMilitaries.addAll(pl.getMilitaries());
         }
     }
     public static void startGame(){

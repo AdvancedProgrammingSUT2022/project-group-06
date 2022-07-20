@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.civilization.views.PausePanel"
+            maxWidth="-Infinity" minHeight="-Infinity"
+            minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0"
+            fx:id="borderPane" stylesheets="@../../css/style.css" id="menu">
+
+    <center>
+        <VBox spacing="10" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
+            <Button fx:id="saveGame" text="save game" onMouseClicked="#saveGame"/>
+            <Button fx:id="BackToGameMenu" text="back to Game Menu" onMouseClicked="#backToGameMenu"/>
+            <Button fx:id="backToMAinButton" text="Back to main menu" onMouseClicked="#backToMain"/>
+            <Button fx:id="exit" text="exit to windows" onMouseClicked="#exit"/>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>
+

@@ -28,7 +28,6 @@ public class SaveAndLoadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        loadGameWithJson(gameName);
         return null;
     }
     public static String loadGameWithJson(String gameName) {
