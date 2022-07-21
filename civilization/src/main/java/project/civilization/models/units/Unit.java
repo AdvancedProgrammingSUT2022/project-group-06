@@ -6,11 +6,12 @@ import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.UnitState;
 import project.civilization.models.Player;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.maprelated.Hex;
 
 public class Unit implements Combatable, Construction {
-    final protected int maxHealth = 10;
+    protected int maxHealth = 10;
     protected int health;
     protected int combatStrength;
     protected int rangedStrength;
@@ -26,14 +27,14 @@ public class Unit implements Combatable, Construction {
     protected boolean ordered = false;
     protected String combatType;
     protected boolean isFirstFortify = true;
-    int leftTurns;
+    protected int leftTurns;
     protected UnitState state;
-    private int Xhex;
-    private int Yhex;
-
-
+    protected int Xhex;
+    protected int Yhex;
+    protected boolean isReadyToAttack = false;
+    protected int turn;
+    protected Building building;
     protected transient Player owner;
-
     protected transient Hex currentHex;
 
     public Unit(String name, Hex hex, Player owner) {
@@ -68,6 +69,25 @@ public class Unit implements Combatable, Construction {
         } else {
             neededResource = resource;
         }
+    }
+
+    public Unit() {
+    }
+
+    public void setCurrentHex(Hex currentHex) {
+        this.currentHex = currentHex;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public int getXhex() {
+        return Xhex;
+    }
+
+    public int getYhex() {
+        return Yhex;
     }
 
     //todo: set combat type

@@ -7,9 +7,9 @@ import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
 
 public class Civilian extends Unit {
-    private static ArrayList<Civilian> civilians = new ArrayList<Civilian>();
-
-    private boolean isWorking;
+    public Civilian() {
+        super();
+    }
 
     @Override
     public void build(String type) {
@@ -28,21 +28,12 @@ public class Civilian extends Unit {
 
     public Civilian(String name, Hex hex, Player owner) {
         super(name, hex, owner);
-        this.isWorking = false;
         hex.setCivilianUnit(this);
-        civilians.add(this);
-
     }
 
-    public static ArrayList<Civilian> geiCivilians() {
-        return civilians;
-    }
-
-    public boolean getIsWorking() {
-        return isWorking;
-    }
 
     public Boolean isMovementPossible(Hex destination, Unit source) {
         return false;
     }
+
 }

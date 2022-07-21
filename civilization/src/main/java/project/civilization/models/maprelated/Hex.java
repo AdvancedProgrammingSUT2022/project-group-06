@@ -42,6 +42,10 @@ public class Hex {
     private transient Player owner = null;
 
 
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+    }
+
 
     private transient ArrayList<Improvement> improvements = new ArrayList<Improvement>();
 

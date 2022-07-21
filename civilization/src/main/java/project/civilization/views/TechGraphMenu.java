@@ -222,7 +222,7 @@ public class TechGraphMenu {
         Line line1 = new Line(1130, 60, 1200, 60);
         lines.add(line1);
 
-        Line line2 = new Line(1130, 130, 1200,  130);
+        Line line2 = new Line(1130, 130, 1200, 130);
         lines.add(line2);
 
         Line line3 = new Line(1130, 200, 1200, 130);
@@ -669,7 +669,7 @@ public class TechGraphMenu {
             hBox.setStyle("-fx-border-color:#424242; -fx-border-width:2px");
         } else if (Boolean.TRUE.equals(GameController.isAchieved(name))) {
             hBox.setStyle("-fx-border-color:#111111; -fx-border-width:2px");
-        }
-        hBox.setStyle("-fx-border-color:#555555; -fx-border-width:2px");
+        } else
+            hBox.setStyle("-fx-border-color:#555555; -fx-border-width:2px");
     }
 }

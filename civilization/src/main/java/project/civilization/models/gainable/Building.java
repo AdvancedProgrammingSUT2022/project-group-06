@@ -2,6 +2,7 @@ package project.civilization.models.gainable;
 
 import com.google.gson.Gson;
 import javafx.scene.image.ImageView;
+import project.civilization.controllers.CityController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.units.Unit;
@@ -14,32 +15,37 @@ import java.util.ArrayList;
 
 public class Building implements Construction {
     private String name;
-    private int production;
+    private int cost;
     private int maintenance;
     private int leftTurns;
-    private ArrayList<String> requiredTechnologies;
+    private String technology;
+    private Hex hex;
+    private Building prerequisite;
 
-//    private ImageView buildingView;
+    private ImageView buildingView;
 
-    public Building(String name, int production, int maintenance, int leftTurns, ArrayList<String> requiredTechnologies) {
+
+    public Building() {}
+
+    public Building(String name, int cost, int maintenance, int leftTurns, String technology) {
         this.name = name;
-        this.production = production;
+        this.cost = cost;
         this.maintenance = maintenance;
         this.leftTurns = leftTurns;
-        this.requiredTechnologies = new ArrayList<>(requiredTechnologies);
+        this.technology = technology;
     }
 
-    public Building(String name) {
-        for (Building building : InitializeGameInfo.getAllBuildings()) {
-            if(building.getName().equals(name)) {
-                this.name = building.getName();
-                this.production = building.production;
-                this.maintenance = building.getMaintenance();
-                this.leftTurns = building.getLeftTurns();
-                this.requiredTechnologies = building.requiredTechnologies;
-            }
-        }
-//        Building.fromJson(Files.readString(Path.of(fileName)));//TODO???
+    public static Building clone(Building building, Hex hex) {
+        Building newBuilding = new Building();
+        newBuilding.cost = building.cost;
+        newBuilding.maintenance = building.maintenance;
+        newBuilding.leftTurns = building.leftTurns;
+        newBuilding.name = building.name;
+        newBuilding.technology = building.technology;
+        newBuilding.buildingView = building.buildingView;
+
+        newBuilding.hex = hex;
+        return newBuilding;
     }
 
     public String toJson() {
@@ -52,9 +58,9 @@ public class Building implements Construction {
         return gson.fromJson(json, Building.class);
     }
 
-//    public int getCost() {
-//        return this.cost;
-//    }
+    public int getCost() {
+        return this.cost;
+    }
 
 
     public int getMaintenance() {
@@ -78,24 +84,21 @@ public class Building implements Construction {
 
     @Override
     public void build(String type) {
-
+        this.hex.getCity().getBuiltBuildings().add(this);
     }
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.name;
     }
 
     @Override
     public Hex getHex() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.hex;
     }
 
-    @Override
+    @Override//ignore
     public void zeroMpWorker() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -104,20 +107,27 @@ public class Building implements Construction {
         return null;
     }
 
-
-//    public ImageView getBuildingView() {
-//        return buildingView;
-//    }
-//
-//    public void setBuildingView(ImageView buildingView) {
-//        this.buildingView = buildingView;
-//    }
-
-    public int getProduction() {
-        return production;
+    public void setHex(Hex hex) {
+        this.hex = hex;
     }
 
-    public ArrayList<String> getRequiredTechnologies() {
-        return requiredTechnologies;
+    public String getTechnology() {
+        return technology;
+    }
+
+    public Building getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(Building prerequisite) {
+        this.prerequisite = prerequisite;
+    }
+
+    public ImageView getBuildingView() {
+        return buildingView;
+    }
+
+    public void setBuildingView(ImageView buildingView) {
+        this.buildingView = buildingView;
     }
 }

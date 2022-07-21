@@ -8,12 +8,16 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.GameController;
 import project.civilization.models.gainable.Technology;
 
 import java.io.IOException;
@@ -39,13 +43,14 @@ public class TechnologyMenu {
     }
 
     public void initialize() {
-        lastTechnologyLabel = new Label("Agriculture");
-        lastTechnologyLabel.setLayoutX(300);
+        addBackground();
+        lastTechnologyLabel = new Label(GameController.getLastTechnology());
+        lastTechnologyLabel.setLayoutX(400);
         lastTechnologyLabel.setLayoutY(100);
         pane.getChildren().add(lastTechnologyLabel);
         openTreeButton = new Button();
         openTreeButton.setLayoutY(300);
-        openTreeButton.setLayoutX(250);
+        openTreeButton.setLayoutX(370);
         openTreeButton.setPrefWidth(150);
         openTreeButton.setPrefHeight(10);
         openTreeButton.setText("open technology tree");
@@ -55,9 +60,65 @@ public class TechnologyMenu {
                 loadPanel("technology-tree-page");
             }
         });
-        pane.setStyle("-fx-background-color:black");
         pane.getChildren().add(openTreeButton);
+        showAvailableTechnologies();
     }
+
+    private void addBackground() {
+        String address = "pictures/menu_background/sfd.jpg";
+        Image image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+        ImageView imageView = new ImageView(image);
+        imageView.setX(0);
+        imageView.setY(0);
+        imageView.setFitWidth(screenWidth);
+        imageView.setFitHeight(screenHeight);
+        pane.getChildren().add(imageView);
+    }
+
+    private void showAvailableTechnologies() {
+        ArrayList<String> labels = GameController.getAvailableTechs();
+        VBox vBox = new VBox();
+        VBox imageBox = new VBox();
+        imageBox.setSpacing(10);
+        imageBox.setLayoutX(200);
+        imageBox.setLayoutY(100);
+        imageBox.setPrefWidth(200);
+        imageBox.setPrefHeight(300);
+        vBox.setLayoutX(100);
+        vBox.setLayoutY(100);
+        vBox.setPrefWidth(100);
+        vBox.setPrefHeight(300);
+        vBox.setSpacing(25);
+        Image image;
+
+        for (String name : labels) {
+            initializeLabel(name, vBox);
+            String address = "pictures/technology/" + name.toLowerCase() + ".png";
+            image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+            ImageView imageView = new ImageView(image);
+            imageBox.getChildren().add(imageView);
+        }
+        pane.getChildren().add(vBox);
+        pane.getChildren().add(imageBox);
+    }
+
+    private void initializeLabel(String name, VBox vBox) {
+        Button button = new Button(name);
+        button.setPrefWidth(100);
+        button.setPrefHeight(30);
+        vBox.getChildren().add(button);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        GameController.changeResearch(button.getText());
+                    }
+                }
+            }
+        });
+    }
+
 
     public void openTree(MouseEvent mouseEvent) {
         loadPanel("technology-tree-page");

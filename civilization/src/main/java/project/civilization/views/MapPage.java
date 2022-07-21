@@ -21,13 +21,17 @@ import javafx.stage.Popup;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.*;
 import project.civilization.enums.HexState;
+import project.civilization.enums.Menus;
 import project.civilization.enums.UnitState;
+import project.civilization.models.Player;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
+import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
+import project.civilization.models.maprelated.Terrain;
 import project.civilization.models.maprelated.World;
-import project.civilization.models.units.Unit;
-import project.civilization.models.units.Worker;
+import project.civilization.models.units.*;
 
 import java.io.IOException;
 import java.util.Random;
@@ -48,7 +52,17 @@ public class MapPage {
     @FXML
     private Button technologyMenu;
 
-
+    public static void cityCombatMenu(City city, Player player) {
+        ButtonType delete = new ButtonType("delete");
+        ButtonType add = new ButtonType("add");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "city is death select a number: \n 1.delete it \n 2.add it to your territory", delete, add);
+        alert.showAndWait();
+        if (alert.getResult() == delete) {
+            System.out.println(City.deleteCity(city));
+        }else{
+            System.out.println(CombatController.addCityToTerritory(city, player));
+        }
+    }
 
 
     public void activateRuin(int i,Hex hex)
@@ -118,7 +132,7 @@ public class MapPage {
                 }
                 initializePane();
             }
-            
+
         });
 
         remover.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -139,7 +153,7 @@ public class MapPage {
             }
 
         });
-        
+
     }
 
 
@@ -450,6 +464,9 @@ public class MapPage {
                     }
                     if (hexes[i][j].getCity() != null) {
                         initializeCity(hexes[i][j]);
+                        if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
+                         initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
+                        }
                     }
                     if(hexes[i][j].getHasRuins()!=0)
                     {
@@ -466,6 +483,16 @@ public class MapPage {
         }
     }
 
+    private void initializeBuildings(City city, Hex hex) {
+        for (int i = 1; i <= city.getBuiltBuildings().size(); i++) {
+            Building building = city.getBuiltBuildings().get(i - 1);
+            ImageView buildingView = building.getBuildingView();
+            buildingView.setX(hex.getTerrain().getTerrainView().getX() + 25);
+            buildingView.setY(hex.getTerrain().getTerrainView().getY() + 20 + (i * 7));
+            pane.getChildren().add(buildingView);
+        }
+    }
+
 
     private void initializeRuins(Hex hex)
     {
@@ -473,9 +500,9 @@ public class MapPage {
         ruins.setFitWidth(50);
         ruins.setFitHeight(70);
         ruins.setX(hex.getTerrain().getTerrainView().getX() +60);
-        ruins.setY(hex.getTerrain().getTerrainView().getY() + 50); 
+        ruins.setY(hex.getTerrain().getTerrainView().getY() + 50);
         pane.getChildren().add(ruins);
-            
+
     }
 
 
@@ -539,6 +566,9 @@ public class MapPage {
         cityView.setY(hex.getTerrain().getTerrainView().getY()+20);
         pane.getChildren().add(cityView);
         pane.getChildren().add(text);
+
+        //TODO
+
     }
 
     private void initializeButtons() {

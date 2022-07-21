@@ -7,6 +7,7 @@ import project.civilization.models.units.Combatable;
 import project.civilization.models.units.Ranged;
 import project.civilization.models.units.Siege;
 import project.civilization.views.GameMenu;
+import project.civilization.views.MapPage;
 
 public class CombatController {
     private static final Hex[][] hex = GameController.getWorld().getHex();
@@ -103,11 +104,11 @@ public class CombatController {
         }
         if (city.getHitPoint() <= 0 && UnitController.getSelectedUnit().getHealth() > 0) {
             //todo : move unit to city coordinates
-            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
+            MapPage.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
             return "done";
         }
         if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() <= 0) {
-            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
+            MapPage.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             return "unit and city are death";
         }

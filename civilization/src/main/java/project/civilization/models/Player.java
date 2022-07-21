@@ -32,7 +32,6 @@ public class Player {
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
     private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
 
-
     private ArrayList<Unit> units = new ArrayList<Unit>();
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
@@ -43,8 +42,6 @@ public class Player {
     private  ArrayList<Technology> archivedTechnologies = new ArrayList<>();
     private  Technology currentResearch;
     private ArrayList<City> cities = new ArrayList<City>();
-
-
 
 
     private transient ArrayList<Trade> trades = new ArrayList<Trade>();
@@ -90,6 +87,10 @@ public class Player {
     }
 
 
+    public void setCivilians(ArrayList<Civilian> civilians) {
+        this.civilians = civilians;
+    }
+
 
     public boolean isMainCity(City city) {
         return cities.get(0).equals(city);
@@ -115,6 +116,14 @@ public class Player {
         //hexCopy.setImprovements(hex.getImprovement());
     }
 
+    public void setTechnologyForPlayers() {
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            achievedTechnologies.put(technology.getName(), false);
+        }
+        currentResearch = Technology.clone(InitializeGameInfo.getTechnologyByName().get("Agriculture"), this);
+        unlockTechnology("Agriculture");
+        achievedTechnologies.put("Agriculture", true);
+    }
 
     public void setTrophies(int trophies) {
         this.trophies = trophies;

@@ -29,6 +29,7 @@ public class City implements Combatable {
     private int hitPoint = 20;
     private int beginningX;
     private  int beginningY;
+    private final ArrayList<Building> builtBuildings;
     private ArrayList<int[]> otherTilesCoordinates = new ArrayList<int[]>();
     private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
 
@@ -71,6 +72,7 @@ public class City implements Combatable {
             meleeCombatStrength += 3;
             rangedCombatStrength += 3;
         }
+        builtBuildings = new ArrayList<>();
     }
 
     public ArrayList<int[]> getOtherTilesCoordinates() {
@@ -352,5 +354,9 @@ public class City implements Combatable {
 
     public void decreaseChangingFood(int amount) {
         this.changingFood -= amount;
+    }
+
+    public ArrayList<Building> getBuiltBuildings() {
+        return builtBuildings;
     }
 }
