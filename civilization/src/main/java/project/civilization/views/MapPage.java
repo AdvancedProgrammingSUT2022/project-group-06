@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -29,6 +30,7 @@ import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
 import java.io.IOException;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +47,100 @@ public class MapPage {
     private Button notification;
     @FXML
     private Button technologyMenu;
+
+
+
+
+    public void activateRuin(int i,Hex hex)
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        switch(i)
+        {
+            case 1:
+                GameController.getCurrentPlayer().increasePopulation(1);
+                alert.setContentText("Congratulations!! your population increased 1 person.");
+                break;
+            case 2:
+                int amount=(new Random().nextInt(5)+1)*100;
+                GameController.getCurrentPlayer().increaseGold(amount);
+                alert.setContentText("Congratulations!! you found a box of gold with "+amount+" coins :)");
+                break;
+            case 3:
+                GameController.getCurrentPlayer().increaseGold(89);
+                UnitController.makeUnit("Settler", hex, "gold");
+                alert.setContentText("Congratulations!! you just got a free Settler Unit :)");
+                break;
+            case 4:
+                alert.setContentText("Congratulations!! you now have the abilitiy to remove fog of war from 3 desired tiles.\nA new button will appear on the top of your screen.\nchoose a tile, click the button, and enjoy");
+                createFogOfWarRemoverButton();
+                FOGRemover=3;
+                break;
+            case 5:
+                alert.setContentText("congratulations!! you can unlock a technology now!! :)");
+                technologyPass=true;
+                //free technology
+                break;
+
+        }
+
+        hex.setRuinsValue(0);
+        alert.showAndWait();
+    }
+
+    int FOGRemover=0;
+    boolean technologyPass=false;
+    public void createFogOfWarRemoverButton()
+    {
+        Button remover=new Button();
+        remover.setText("FOG Remover");
+        anchorPane.getChildren().add(remover);
+        remover.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                if(GameController.getSelectedHex()==null)
+                {
+                    Alert alert=new Alert(AlertType.INFORMATION,"choose a tile first");
+                    alert.showAndWait();
+                    return;
+                }
+                if(!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))
+                {
+                    Alert alert=new Alert(AlertType.INFORMATION,"it's not wise to waste this token :)");
+                    alert.showAndWait();
+                    return;
+                }
+                GameController.getSelectedHex().setState(HexState.Revealed, GameController.getCurrentPlayer());
+                FOGRemover--;
+                if(FOGRemover==0)
+                {
+                    anchorPane.getChildren().add(remover);
+                }
+                initializePane();
+            }
+            
+        });
+
+        remover.setOnMouseEntered(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                remover.setStyle("-fx-background-color:white; -fx-text-fill: black");
+
+            }
+
+        });
+        remover.setOnMouseExited(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                remover.setStyle("-fx-background-color:white; -fx-text-fill: black");
+
+            }
+
+        });
+        
+    }
 
 
 
@@ -154,6 +250,11 @@ public class MapPage {
 
     }
 
+
+    public void economic(MouseEvent mouseEvent)
+    {
+        loadPanel("economic-page");
+    }
     public void units(MouseEvent mouseEvent)
     {
         loadPanel("units-panel");
@@ -329,6 +430,7 @@ public class MapPage {
                 } else if (hexes[i][j].getState(GameController.getCurrentPlayer()) == HexState.Revealed) {
                     setTerrainViewCoordinates(i, j, hexes[i][j].getTerrain().getTerrainView());
                     initializeRevealedView(hexes[i][j]);
+                    initializeRuins(hexes[i][j]);
                 } else {
                     setTerrainViewCoordinates(i, j, hexes[i][j].getTerrain().getTerrainView());
                     if (hexes[i][j].getFeature() != null) {
@@ -349,6 +451,10 @@ public class MapPage {
                     if (hexes[i][j].getCity() != null) {
                         initializeCity(hexes[i][j]);
                     }
+                    if(hexes[i][j].getHasRuins()!=0)
+                    {
+                        initializeRuins(hexes[i][j]);
+                    }
 /*                    if (!hexes[i][j].getImprovement().isEmpty()) {
                         initializeImprovementsView(hexes[i][j]);
                     }*/
@@ -359,6 +465,19 @@ public class MapPage {
             }
         }
     }
+
+
+    private void initializeRuins(Hex hex)
+    {
+        ImageView ruins=new ImageView(new Image(CivilizationApplication.class.getResource("pictures/others/ruins.png").toExternalForm()));
+        ruins.setFitWidth(50);
+        ruins.setFitHeight(70);
+        ruins.setX(hex.getTerrain().getTerrainView().getX() +60);
+        ruins.setY(hex.getTerrain().getTerrainView().getY() + 50); 
+        pane.getChildren().add(ruins);
+            
+    }
+
 
     private void initializeWorkingWorkers(Unit unit, ImageView unitView) {
         for (Construction imp: GameController.getCurrentPlayer().getUnfinishedProjects()) {
@@ -704,6 +823,7 @@ public class MapPage {
                 wantToAttack = false;
             } else {
                 showHexDetails(hex);
+                GameController.setSelectedHex(hex);
             }
         });
     }

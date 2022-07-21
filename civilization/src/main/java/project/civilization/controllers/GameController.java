@@ -82,6 +82,7 @@ public class GameController {
         }
     }
     public static void startGame(){
+        createRuinTiles();
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if(hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
@@ -93,6 +94,27 @@ public class GameController {
             }
         }
     }
+
+
+    private static void createRuinTiles()
+    {
+        Random random=new Random();
+        for(int i=1;i<6;i++)
+        {
+            int x=random.nextInt(0,world.getHexInWidth());
+            int y=random.nextInt(0,world.getHexInHeight());
+            System.out.println(hex[x][y].getTerrain().getName());
+            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().equals("Mountain|Ocean"))
+            {
+                i--;
+                continue;
+            }
+
+            hex[x][y].setRuinsValue(i);
+        }
+        
+    }
+
     private static void removeOwnerOfHexes() {
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {

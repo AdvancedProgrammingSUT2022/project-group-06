@@ -1,4 +1,5 @@
 package project.civilization.controllers;
+import project.civilization.CivilizationApplication;
 import project.civilization.enums.FeatureNames;
 import project.civilization.enums.HexState;
 import project.civilization.enums.TerrainNames;
@@ -15,6 +16,7 @@ import project.civilization.models.units.Settler;
 import project.civilization.models.units.Siege;
 import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
+import project.civilization.views.MapPage;
 
 import java.util.ArrayList;
 
@@ -395,9 +397,17 @@ public class UnitController {
         if (unit instanceof Civilian) {
             unit.getCurrentHex().setCivilianUnit(null);
             hex[x][y].setCivilianUnit((Civilian) unit);
+            if(hex[x][y].getHasRuins()!=0)
+            {
+                CivilizationApplication.mapPageController.activateRuin(hex[x][y].getHasRuins(), hex[x][y]);
+            }
         } else {
             unit.getCurrentHex().setMilitaryUnit(null);
             hex[x][y].setMilitaryUnit((Military) unit);
+            if(hex[x][y].getHasRuins()!=0)
+            {
+                CivilizationApplication.mapPageController.activateRuin(hex[x][y].getHasRuins(), hex[x][y]);
+            }
         }
         unit.changeCurrentHex(hex[x][y]);
 

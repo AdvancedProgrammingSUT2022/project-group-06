@@ -29,7 +29,7 @@ public class Hex {
     private Resource resource;
     private String  ownerUserName;
     private HashMap<String , HexState> StateOfHexForEachPlayer = new HashMap<>();
-
+    private int hasRuin=0;
 
     private transient Military militaryUnit;
 
@@ -65,6 +65,15 @@ public class Hex {
     }
 
 
+    public int getHasRuins()
+    {
+        return hasRuin;
+    }
+    public void setRuinsValue(int value)
+    {
+        hasRuin=value;
+    }
+    
     public void setImprovements(ArrayList<Improvement> improvements) {
         this.improvements = improvements;
     }

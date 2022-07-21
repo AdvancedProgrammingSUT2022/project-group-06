@@ -1,5 +1,7 @@
 package project.civilization.views;
 
+import java.util.Map;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -60,6 +62,7 @@ public class ChallengePage {
         new Player(UserController.loggedInUser.getUsername());
         InitializeGameInfo.run();
         GameController.initializeGameController();
+        
         CivilizationApplication.changeMenu(Menus.MAPPAGE);
     }
 }

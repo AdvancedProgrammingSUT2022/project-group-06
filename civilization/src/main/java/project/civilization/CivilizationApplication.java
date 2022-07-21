@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 import project.civilization.views.ChatMenu;
+import project.civilization.views.MapPage;
 import project.civilization.views.Music;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ import java.net.URL;
 
 public class CivilizationApplication extends Application {
     public static Stage stages;
+    public static MapPage mapPageController;
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = loadFXML(Menus.LOGIN);
@@ -39,9 +41,14 @@ public class CivilizationApplication extends Application {
         loginMenu.run(scanner);*/
     }
     public static void changeMenu(Menus menuName){
+
+        
             Parent root = loadFXML(menuName);
             assert root != null;
             Scene scene = new Scene(root );
+
+        
+
             stages.setScene(scene);
 /*        Parent root = loadFXML(menuName);
         if (menuName.equals(Menus.CHAT))
@@ -65,7 +72,14 @@ public class CivilizationApplication extends Application {
         }
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + menuName.getCharacter() + ".fxml").toExternalForm());
-            return FXMLLoader.load(address);
+            FXMLLoader loader = new FXMLLoader(address);
+            if(menuName.equals(Menus.MAPPAGE))
+            {
+                MapPage mapPage=new MapPage();
+                mapPageController=mapPage;
+                loader.setController(mapPage);
+            }
+            return loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }
