@@ -22,7 +22,7 @@ public class Building implements Construction {
     private Hex hex;
     private Building prerequisite;
 
-    private ImageView buildingView;
+    private transient ImageView buildingView;
 
 
     public Building() {}
