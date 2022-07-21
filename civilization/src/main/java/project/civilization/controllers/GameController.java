@@ -1604,4 +1604,33 @@ public class GameController {
         }
         return null;
     }
+
+    public static ArrayList<String> getAvailableTechs() {
+        ArrayList<String> output = new ArrayList<>();
+        boolean flag = true;
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            for (String prerequisite : technology.getNeededPreviousTechnologies()) {
+                if (currentPlayer.getAchievedTechnologies().get(prerequisite) != null &&
+                        !currentPlayer.getAchievedTechnologies().get(prerequisite))
+                    flag = false;
+            }
+            if (flag) output.add(technology.getName());
+            flag = true;
+        }
+        return output;
+    }
+
+    public static void changeResearch(String techName) {
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            if (technology.getName().equals(techName)) {
+                Technology newTech = Technology.clone(technology, currentPlayer);
+                currentPlayer.addUnfinishedProject(newTech);
+            }
+        }
+    }
+
+    public static String getLastTechnology() {
+        return currentPlayer.getCurrentResearch().getName();
+    }
+
 }

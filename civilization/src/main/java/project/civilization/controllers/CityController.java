@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import project.civilization.enums.HexState;
 import project.civilization.enums.UnitState;
 import project.civilization.models.Player;
+import project.civilization.models.gainable.Building;
 import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.units.Settler;
@@ -36,12 +37,9 @@ public class CityController {
 
     }
 
-    public static City getCityWithName(String name)
-    {
-        for(City temp:GameController.getCurrentPlayer().getCities())
-        {
-            if(temp.getName().equals(name))
-            {
+    public static City getCityWithName(String name) {
+        for (City temp : GameController.getCurrentPlayer().getCities()) {
+            if (temp.getName().equals(name)) {
                 return temp;
             }
         }
@@ -210,6 +208,8 @@ public class CityController {
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
         City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
+        if (GameController.getCurrentPlayer().getCities().size() == 0)
+            buildPalace(newCity);
         GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
         if (GameController.getCurrentPlayer().getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
@@ -375,5 +375,33 @@ public class CityController {
         cityBanner.append(GameController.getSelectedCity().getName() + " hitpoint: " + GameController.getSelectedCity().getHitPoint());
         GameController.setSelectedCity(null);
         return cityBanner.toString();
+    }
+
+    public static boolean hasBuilding(City city, String buildingName) {
+        for (Building building : city.getBuiltBuildings()) {
+            if (building.getName().toLowerCase().equals(buildingName.toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+
+    public static ArrayList<Building> getAvailableBuildings(City city) {
+        ArrayList<Building> availableBuildings = new ArrayList<>();
+        for (Building building : InitializeGameInfo.getAllBuildings()) {
+            if (building.getTechnology() != null && city.getOwner().getAchievedTechnologies().get(building.getTechnology())) {
+                if (building.getPrerequisite() != null && hasBuilding(city, building.getName()))
+                    availableBuildings.add(building);
+            }
+        }
+        return availableBuildings;
+    }
+
+    public static void buildABuilding(City city, Building building) {//TODO: should be called when you choose to build a building
+        city.getOwner().addUnfinishedProject(building);
+    }
+
+    public static void buildPalace(City city) {
+        Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"), city.getHexs().get(0));
+        city.getBuiltBuildings().add(palace);
     }
 }

@@ -1,0 +1,37 @@
+
+Button {
+    -fx-font-size: 10;
+    -fx-font-family: "Viner Hand ITC";
+    -fx-text-fill: #d3bb16;
+    -fx-pref-width: 150;
+    -fx-pref-height: 35;
+    -fx-border-radius: 5;
+    -fx-background-color: rgba(1, 1, 1, 0.335);
+}
+Button:hover{
+    -fx-font-size: 10;
+    -fx-font-family: "Viner Hand ITC";
+    -fx-text-fill: #d3bb16;
+    -fx-pref-width: 150;
+    -fx-pref-height: 35;
+    -fx-border-radius: 5;
+    -fx-background-color: rgba(1, 1, 1, 0.845);
+
+}
+
+Label{
+
+
+
+    -fx-font-size: 15;
+    -fx-border-radius: 100;
+    -fx-font-weight: bold;
+    -fx-font-family: "Times New Roman";
+    -fx-text-fill: #CCCCCC;
+
+}
+
+#pane{
+    -fx-background-size: 1200 650;
+    -fx-background-position: center center;
+}

@@ -116,6 +116,14 @@ public class Player {
         //hexCopy.setImprovements(hex.getImprovement());
     }
 
+    public void setTechnologyForPlayers() {
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            achievedTechnologies.put(technology.getName(), false);
+        }
+        currentResearch = Technology.clone(InitializeGameInfo.getTechnologyByName().get("Agriculture"), this);
+        unlockTechnology("Agriculture");
+        achievedTechnologies.put("Agriculture", true);
+    }
 
     public void setTrophies(int trophies) {
         this.trophies = trophies;
