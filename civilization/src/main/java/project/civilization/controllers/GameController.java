@@ -467,6 +467,7 @@ public class GameController {
         addFoodFromTiles();
         feedCitizens();
         growCity();
+
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
         // TODO: 7/14/2022 :

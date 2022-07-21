@@ -6,12 +6,14 @@ import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
 
 public class Siege extends Ranged implements Combatable {
-    private boolean isReadyToAttack = false;
-    private String typeName;
 
     public Siege(String name, Hex hex, Player owner) {
         super(name, hex, owner);
-        typeName = getClass().getName();
+        this.isReadyToAttack = false;
+    }
+
+    public Siege() {
+
     }
 
     public boolean isReadyToAttack() {
@@ -32,4 +34,30 @@ public class Siege extends Ranged implements Combatable {
         return this.combatStrength;
     }
 
+    public Siege CloneASiege(Unit unit){
+        this.Yhex = unit.Yhex;
+        this.Xhex = unit.Xhex;
+        this.state = unit.state;
+        this.leftTurns = unit.leftTurns;
+        this.isFirstFortify = unit.isFirstFortify;
+        this.combatType = unit.combatType;
+        this.ordered = unit.ordered;
+        this.maxHealth = unit.maxHealth;
+        this.health = unit.health;
+        this.combatStrength = unit.combatStrength;
+        this.rangedStrength = unit.rangedStrength;
+        this.range = unit.range;
+        this.MP = unit.MP;
+        this.backUpMP = unit.backUpMP;
+        this.name = unit.name;
+        this.cost = unit.cost;
+        this.neededTech = unit.neededTech;
+        this.neededResource = unit.neededResource;
+        this.neededProduction = unit.neededProduction;
+        this.defenciveBounes = unit.defenciveBounes;
+        this.isReadyToAttack = false;
+        this.turn = unit.turn;
+        this.building = unit.building;
+        return this;
+    }
 }

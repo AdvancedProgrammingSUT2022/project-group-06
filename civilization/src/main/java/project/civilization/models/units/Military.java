@@ -4,7 +4,8 @@ import project.civilization.enums.UnitType;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
 public class Military extends Unit {
-    private String typeName;
+    public Military() {
+    }
 
     @Override
     public void build(String type) {
@@ -22,7 +23,6 @@ public class Military extends Unit {
 
     public Military(String name, Hex hex, Player owner) {
         super(name, hex, owner);
-        typeName = getClass().getName();
         hex.setMilitaryUnit(this);
     }
 

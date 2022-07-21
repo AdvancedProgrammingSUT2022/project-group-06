@@ -20,13 +20,16 @@ import javafx.stage.Popup;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.*;
 import project.civilization.enums.HexState;
+import project.civilization.enums.Menus;
 import project.civilization.enums.UnitState;
+import project.civilization.models.Player;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
+import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
+import project.civilization.models.maprelated.Terrain;
 import project.civilization.models.maprelated.World;
-import project.civilization.models.units.Unit;
-import project.civilization.models.units.Worker;
+import project.civilization.models.units.*;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -46,16 +49,22 @@ public class MapPage {
     @FXML
     private Button technologyMenu;
 
-
+    public static void cityCombatMenu(City city, Player player) {
+        ButtonType delete = new ButtonType("delete");
+        ButtonType add = new ButtonType("add");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "city is death select a number: \n 1.delete it \n 2.add it to your territory", delete, add);
+        alert.showAndWait();
+        if (alert.getResult() == delete) {
+            System.out.println(City.deleteCity(city));
+        }else{
+            System.out.println(CombatController.addCityToTerritory(city, player));
+        }
+    }
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
         World world = InitializeGameInfo.getWorld();
-/*        world.getHex()[0][0].setOwner(GameController.getCurrentPlayer());
-        world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
-        Military military = new Military("Archer", world.getHex()[0][0], GameController.getCurrentPlayer());
-        world.getHex()[0][0].setMilitaryUnit(military);
-        Civilian civilian = new Civilian("Worker", world.getHex()[0][0], GameController.getCurrentPlayer());
+/*        Civilian civilian = new Civilian("Worker", world.getHex()[0][0], GameController.getCurrentPlayer());
         world.getHex()[0][0].setCivilianUnit(civilian);*/
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
@@ -764,7 +773,9 @@ public class MapPage {
         if (outPut.startsWith("Turn changed successfully")) {
             GameController.checkTimeVariantProcesses();
             //GameController.getAvailableWorkOfActiveWorkers
-            if (GameController.getTurn() == 1) GameController.startGame();
+            if (GameController.getTurn() == 1) {
+                GameController.startGame();
+            }
             Platform.runLater(() -> {
                 pane.requestFocus();
             });

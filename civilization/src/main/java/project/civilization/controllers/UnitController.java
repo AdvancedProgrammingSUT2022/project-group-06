@@ -216,7 +216,7 @@ public class UnitController {
     public static String deleteMilitaryUnit(Unit unit) {
         unit.getOwner().removeUnit(unit);
         unit.getCurrentHex().setMilitaryUnit(null);
-        selectedUnit = null;
+        if(selectedUnit == unit) selectedUnit = null;
         return "unit deleted";
     }
 

@@ -193,7 +193,6 @@ public class CityController {
 
 
     public static String buildCity(String name) {
-
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";
         }

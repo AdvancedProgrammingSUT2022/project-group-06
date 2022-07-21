@@ -6,6 +6,7 @@ module project.civilization {
     requires gson.extras;
     requires java.desktop;
     requires javafx.swing;
+    requires commons.beanutils;
 
     exports  project.civilization;
     exports  project.civilization.views;
@@ -21,7 +22,7 @@ module project.civilization {
     opens  project.civilization.models to com.google.gson;
     opens  project.civilization.models.gainable to com.google.gson;
     opens  project.civilization.models.maprelated to com.google.gson;
-    opens  project.civilization.models.units to com.google.gson;
+    opens  project.civilization.models.units to com.google.gson, commons.beanutils;
     opens  project.civilization.models.twopartyactions to com.google.gson;
 
 }
