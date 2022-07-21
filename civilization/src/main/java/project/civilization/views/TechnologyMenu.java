@@ -43,13 +43,14 @@ public class TechnologyMenu {
     }
 
     public void initialize() {
-        lastTechnologyLabel = new Label("Agriculture");
+        addBackground();
+        lastTechnologyLabel = new Label(GameController.getLastTechnology());
         lastTechnologyLabel.setLayoutX(400);
         lastTechnologyLabel.setLayoutY(100);
         pane.getChildren().add(lastTechnologyLabel);
         openTreeButton = new Button();
         openTreeButton.setLayoutY(300);
-        openTreeButton.setLayoutX(350);
+        openTreeButton.setLayoutX(370);
         openTreeButton.setPrefWidth(150);
         openTreeButton.setPrefHeight(10);
         openTreeButton.setText("open technology tree");
@@ -59,9 +60,19 @@ public class TechnologyMenu {
                 loadPanel("technology-tree-page");
             }
         });
-        pane.setStyle("-fx-background-color:black");
         pane.getChildren().add(openTreeButton);
         showAvailableTechnologies();
+    }
+
+    private void addBackground() {
+        String address = "pictures/menu_background/sfd.jpg";
+        Image image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+        ImageView imageView = new ImageView(image);
+        imageView.setX(0);
+        imageView.setY(0);
+        imageView.setFitWidth(screenWidth);
+        imageView.setFitHeight(screenHeight);
+        pane.getChildren().add(imageView);
     }
 
     private void showAvailableTechnologies() {
@@ -77,7 +88,7 @@ public class TechnologyMenu {
         vBox.setLayoutY(100);
         vBox.setPrefWidth(100);
         vBox.setPrefHeight(300);
-        vBox.setSpacing(30);
+        vBox.setSpacing(25);
         Image image;
 
         for (String name : labels) {
@@ -92,16 +103,16 @@ public class TechnologyMenu {
     }
 
     private void initializeLabel(String name, VBox vBox) {
-        Label label = new Label(name);
-        label.setPrefWidth(100);
-        label.setPrefHeight(30);
-        vBox.getChildren().add(label);
-        label.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        Button button = new Button(name);
+        button.setPrefWidth(100);
+        button.setPrefHeight(30);
+        vBox.getChildren().add(button);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        GameController.changeResearch(label.getText());
+                        GameController.changeResearch(button.getText());
                     }
                 }
             }

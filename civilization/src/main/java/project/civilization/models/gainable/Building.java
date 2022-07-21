@@ -2,6 +2,7 @@ package project.civilization.models.gainable;
 
 import com.google.gson.Gson;
 import javafx.scene.image.ImageView;
+import project.civilization.controllers.CityController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.models.maprelated.Hex;
 import project.civilization.models.units.Unit;
@@ -34,7 +35,7 @@ public class Building implements Construction {
         this.technology = technology;
     }
 
-    public static Building clone(Building building) {
+    public static Building clone(Building building, Hex hex) {
         Building newBuilding = new Building();
         newBuilding.cost = building.cost;
         newBuilding.maintenance = building.maintenance;
@@ -43,6 +44,7 @@ public class Building implements Construction {
         newBuilding.technology = building.technology;
         newBuilding.buildingView = building.buildingView;
 
+        newBuilding.hex = hex;
         return newBuilding;
     }
 
@@ -82,7 +84,7 @@ public class Building implements Construction {
 
     @Override
     public void build(String type) {
-
+        this.hex.getCity().getBuiltBuildings().add(this);
     }
 
     @Override
@@ -95,9 +97,8 @@ public class Building implements Construction {
         return this.hex;
     }
 
-    @Override
+    @Override//ignore
     public void zeroMpWorker() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -105,15 +106,6 @@ public class Building implements Construction {
     public Unit getWorker() {
         return null;
     }
-
-
-//    public ImageView getBuildingView() {
-//        return buildingView;
-//    }
-//
-//    public void setBuildingView(ImageView buildingView) {
-//        this.buildingView = buildingView;
-//    }
 
     public void setHex(Hex hex) {
         this.hex = hex;

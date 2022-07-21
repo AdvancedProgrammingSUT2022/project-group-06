@@ -1622,8 +1622,14 @@ public class GameController {
     public static void changeResearch(String techName) {
         for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
             if (technology.getName().equals(techName)) {
-                currentPlayer.unlockTechnology(techName);//TODO: change this method
+                Technology newTech = Technology.clone(technology, currentPlayer);
+                currentPlayer.addUnfinishedProject(newTech);
             }
         }
     }
+
+    public static String getLastTechnology() {
+        return currentPlayer.getCurrentResearch().getName();
+    }
+
 }

@@ -397,12 +397,12 @@ public class CityController {
         return availableBuildings;
     }
 
-    public static void buildABuilding(City city, String buildingName) {
-        //TODO
+    public static void buildABuilding(City city, Building building) {//TODO: should be called when you choose to build a building
+        city.getOwner().addUnfinishedProject(building);
     }
 
     public static void buildPalace(City city) {
-        Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"));
+        Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"), city.getHexs().get(0));
         city.getBuiltBuildings().add(palace);
     }
 }

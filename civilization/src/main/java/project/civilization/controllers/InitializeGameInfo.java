@@ -43,7 +43,7 @@ public class InitializeGameInfo {
     private static final HashMap<String, Building> buildingsInfo = new HashMap<>();
 
     private static final Random random = new Random();
-    private static World world ;
+    private static World world;
 
     public static HashMap<String, ArrayList<String>> getAppropriateTerrain() {
         return appropriateTerrain;
@@ -80,6 +80,10 @@ public class InitializeGameInfo {
 
     public static HashMap<String, String> getTechnologyInfo() {
         return technologyInfo;
+    }
+
+    public static HashMap<String, Technology> getTechnologyByName() {
+        return technologyByName;
     }
 
     public static HashMap<String, Color> getPlayerColor() {
@@ -159,7 +163,7 @@ public class InitializeGameInfo {
     public static void initializeFeatureInfo() {
         try {
             URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/FeatureInfo.txt")).toExternalForm());
-            String readFeatureInfo= new String(Files.readAllBytes(Paths.get(address.toURI())));
+            String readFeatureInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readFeatureInfo.split("\n");
             for (String temp : readInfo) {
                 String[] read = temp.split("#");
@@ -178,7 +182,7 @@ public class InitializeGameInfo {
     public static void initializeTechnologyInfo() {
         try {
             URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/TechnologyInfo.txt")).toExternalForm());
-            String readTechnologyInfo= new String(Files.readAllBytes(Paths.get(address.toURI())));
+            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readTechnologyInfo.split("\n");
             ArrayList<String> setArray = new ArrayList<String>();
             for (String temp : readInfo) {
@@ -189,14 +193,11 @@ public class InitializeGameInfo {
                 technologyInfo.put(name, info);
                 Technology technology = new Technology(name, null);
                 technologyByName.put(name, technology);
-                allTechnologies.add(technology);                setArray.add(name);
+                allTechnologies.add(technology);
+                setArray.add(name);
                 for (Player player : players) {
 
-                    if (name.equals("Agriculture")) {
-                        player.getAchievedTechnologies().put(name, true);
-                    } else {
-                        player.getAchievedTechnologies().put(name, false);
-                    }
+                    player.setTechnologyForPlayers();
 
                 }
             }
@@ -461,7 +462,7 @@ public class InitializeGameInfo {
         world = new World(hexInHeight, hexInWidth);
     }
 
-    public static void runAsLoadGame(World worldd,ArrayList<Player> players1) {
+    public static void runAsLoadGame(World worldd, ArrayList<Player> players1) {
         players = players1;
         world = worldd;
         initializeTerrainInfo();
