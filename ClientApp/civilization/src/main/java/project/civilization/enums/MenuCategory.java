@@ -5,7 +5,8 @@ public enum MenuCategory {
     PROFILE("profile"),
     MAIN("main"),
     GAMEMenu("game"),
-    NETWORK("network");
+    NETWORK("network"),
+    CHEAT("cheat");
 
     private final String character;
 

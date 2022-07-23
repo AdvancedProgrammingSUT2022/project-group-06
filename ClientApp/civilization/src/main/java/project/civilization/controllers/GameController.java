@@ -600,39 +600,118 @@ public class GameController {
     }
 
     public static String cheatCityProduction(int amount, String cityName) {
-        for (City temp : currentPlayer.getCities()) {
-            if (temp.getName().equals(cityName)) {
-                temp.increaseProduction(amount);
-                return "city's production increased successfully";
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatCityProduction.getCharacter());
+            json.put("amount", amount);
+            json.put("cityName", cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return "no city with this name exists";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatGold(int amount) {
-        currentPlayer.increaseGold(amount);
-        return "gold increased successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatGold.getCharacter());
+            json.put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatHappiness(int amount) {
-        currentPlayer.increaseHappiness(amount);
-        return "happiness increased successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatHappiness.getCharacter());
+            json.put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatPopulation(int amount) {
-        currentPlayer.increasePopulation(amount);
-        return "population increased successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatPopulation.getCharacter());
+            json.put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatProduction(int amount) {
-        currentPlayer.increaseProduction(amount);
-        return "production increased successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatProduction.getCharacter());
+            json.put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatScore(int amount) {
-        currentPlayer.increaseScore(amount);
-        return "score increased successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatScore.getCharacter());
+            json.put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     // public static String cheatTurn(int amount) {
@@ -641,80 +720,124 @@ public class GameController {
     //     return "turn increased successfully";
     // }
     public static String cheatMP(int amount, int x, int y, String type) {
-        if (isOutOfBounds(x, y)) {
-            return "invalid x and y";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatMP.getCharacter());
+            json.put("amount", amount);
+            json.put("x",x);
+            json.put("y",y);
+            json.put("type",type);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        if (!type.matches("Civilian||Military")) {
-            return "invalid unit type";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        if (type.equals("Military")) {
-            if (GameController.getWorld().getHex()[x][y].getMilitaryUnit() != null) {
-                GameController.getWorld().getHex()[x][y].getMilitaryUnit().increaseMP(amount);
-                return "move point increased successfully";
-            }
-            return "no military unit exists in this tile";
-        }
-        if (type.equals("Civilian")) {
-            if (GameController.getWorld().getHex()[x][y].getCivilianUnit() != null) {
-                GameController.getWorld().getHex()[x][y].getCivilianUnit().increaseMP(amount);
-                return "move point increased successfully";
-            }
-            return "no civilian unit exists in this tile";
-        }
-
         return "";
-
     }
 
     public static String cheatMeleeCombatStrength(int amount, String cityName) {
-        for (City city : currentPlayer.getCities()) {
-            if (city.getName().equals(cityName)) {
-                city.increaseMeleeDefensivePower(amount);
-                return "Melee combat strength increased successfully";
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatMeleeCombatStrength.getCharacter());
+            json.put("amount", amount);
+            json.put("cityName",cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return "no city with this name exists";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatRangedCombatStrength(int amount, String cityName) {
-        for (City city : currentPlayer.getCities()) {
-            if (city.getName().equals(cityName)) {
-                city.increaseRangedDefencePower(amount);
-                return "Ranged combat strength increased successfully";
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatRangedCombatStrength.getCharacter());
+            json.put("amount", amount);
+            json.put("cityName",cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return "no city with this name exists";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatCityFood(int amount, String cityName) {
-        for (City city : currentPlayer.getCities()) {
-            if (city.getName().equals(cityName)) {
-                city.increaseFood(amount);
-                return "food increased successfully";
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatCityFood.getCharacter());
+            json.put("amount", amount);
+            json.put("cityName",cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return "no city with this name exists";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatCityHitPoint(int amount, String cityName) {
-        for (City city : currentPlayer.getCities()) {
-            if (city.getName().equals(cityName)) {
-                city.increaseHitPoint(amount);
-                return "hit point increased successfully";
-            }
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatCityHitPoint.getCharacter());
+            json.put("amount", amount);
+            json.put("cityName",cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return "no city with this name exists";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String cheatTrophy(int amount) {
-        currentPlayer.increaseTrophies(amount);
-        return "trophy increased successfuly";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.CHEAT.getCharacter());
+            json.put("action", Actions.cheatTrophy.getCharacter());
+            json.put("amount", amount);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String showResearchMenu() {

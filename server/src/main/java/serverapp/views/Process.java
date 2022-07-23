@@ -25,6 +25,8 @@ public class Process {
                 return Profile.run(action, obj);
             }else if(menuName.equals(MenuCategory.NETWORK.getCharacter())){
                 return Network.run(action, obj, socket);
+            } else if(menuName.equals(MenuCategory.CHEAT.getCharacter())){
+                return Cheat.run(action, obj);
             } else return "no menu matched";
         }catch (JSONException e) {
             e.printStackTrace();

@@ -49,7 +49,19 @@ public enum Actions {
     militaryPanel("militaryPanel"),
     demographicScreen("demographicScreen"),
     cityScreen("cityScreen"),
-    getPlayerCitiesNames("getPlayerCitiesNames");
+    getPlayerCitiesNames("getPlayerCitiesNames"),
+    cheatCityProduction("cheatCityProduction"),
+    cheatGold("cheatGold"),
+    cheatHappiness("cheatHappiness"),
+    cheatPopulation("cheatPopulation"),
+    cheatProduction("cheatProduction"),
+    cheatScore("cheatScore"),
+    cheatMP("cheatMP"),
+    cheatRangedCombatStrength("cheatRangedCombatStrength"),
+    cheatMeleeCombatStrength("cheatMeleeCombatStrength"),
+    cheatCityFood("cheatCityFood"),
+    cheatCityHitPoint("cheatCityHitPoint"),
+    cheatTrophy("cheatTrophy");
     private final String character;
 
     Actions(String color) {
