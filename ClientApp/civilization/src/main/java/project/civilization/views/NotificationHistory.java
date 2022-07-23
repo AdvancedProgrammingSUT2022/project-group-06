@@ -70,15 +70,17 @@ public class NotificationHistory {
             
 
             demoPane.getChildren().add(notification);
-            demoPane.setStyle("-fx-background-color: #1a1a1a" );
             startSize+=height;
         }
+        demoPane.setStyle("-fx-background-color:black");
         scrollPane.setMaxHeight(screenHeight);
         scrollPane.setPrefWidth(screenWidth);
         scrollPane.setLayoutY(27);
         scrollPane.setContent(demoPane);
         scrollPane.setPannable(true);
+        scrollPane.setStyle("-fx-background-color:black");
 
+        anchorPane.setStyle("-fx-background-color:black");
         anchorPane.getChildren().add(scrollPane);
     }
     
