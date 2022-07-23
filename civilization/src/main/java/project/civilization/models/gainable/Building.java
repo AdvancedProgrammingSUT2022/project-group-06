@@ -22,8 +22,6 @@ public class Building implements Construction {
     private Hex hex;
     private Building prerequisite;
 
-    private transient ImageView buildingView;
-
 
     public Building() {}
 
@@ -42,7 +40,6 @@ public class Building implements Construction {
         newBuilding.leftTurns = building.leftTurns;
         newBuilding.name = building.name;
         newBuilding.technology = building.technology;
-        newBuilding.buildingView = building.buildingView;
 
         newBuilding.hex = hex;
         return newBuilding;
@@ -123,11 +120,4 @@ public class Building implements Construction {
         this.prerequisite = prerequisite;
     }
 
-    public ImageView getBuildingView() {
-        return buildingView;
-    }
-
-    public void setBuildingView(ImageView buildingView) {
-        this.buildingView = buildingView;
-    }
 }

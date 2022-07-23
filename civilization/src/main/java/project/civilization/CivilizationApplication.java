@@ -8,7 +8,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
-import project.civilization.views.ChatMenu;
 import project.civilization.views.MapPage;
 import project.civilization.views.Music;
 

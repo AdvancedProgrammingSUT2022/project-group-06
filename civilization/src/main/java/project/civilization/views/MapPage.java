@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 
 
 public class MapPage {
-    public  Pane pane;
+    public Pane pane;
     private static int[] mapBoundaries;
     private boolean wantToMove = false;
     private boolean wantToAttack = false;
@@ -51,7 +51,7 @@ public class MapPage {
     @FXML
     private Button technologyMenu;
 
-    public static boolean technologyPass=false;
+    public static boolean technologyPass = false;
 
     public static void cityCombatMenu(City city, Player player) {
         ButtonType delete = new ButtonType("delete");
@@ -60,57 +60,52 @@ public class MapPage {
         alert.showAndWait();
         if (alert.getResult() == delete) {
             System.out.println(City.deleteCity(city));
-        }else{
+        } else {
             System.out.println(CombatController.addCityToTerritory(city, player));
         }
     }
 
 
-    public void activateRuin(int i,Hex hex)
-    {
+    public void activateRuin(int i, Hex hex) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        switch(i)
-        {
+        switch (i) {
             case 1:
                 GameController.getCurrentPlayer().increasePopulation(1);
                 alert.setContentText("Congratulations!! your population increased 1 person.");
                 break;
             case 2:
-                int amount=(new Random().nextInt(5)+1)*100;
+                int amount = (new Random().nextInt(5) + 1) * 100;
                 GameController.getCurrentPlayer().increaseGold(amount);
-                alert.setContentText("Congratulations!! you found a box of gold with "+amount+" coins :)");
+                alert.setContentText("Congratulations!! you found a box of gold with " + amount + " coins :)");
                 break;
             case 3:
                 GameController.getCurrentPlayer().increaseGold(89);
                 UnitController.makeUnit("Settler", hex, "gold");
-                Hex[][] temp=InitializeGameInfo.getWorld().getHex();
-                boolean found=false;
+                Hex[][] temp = InitializeGameInfo.getWorld().getHex();
+                boolean found = false;
                 outer:
-                for (int k = mapBoundaries[0]; k < mapBoundaries[1]; k++) 
-                {
-                    for (int j = mapBoundaries[2]; j < mapBoundaries[3]; j++)
-                    {
-                        if(temp[k][j].getOwner().equals(GameController.getCurrentPlayer())&&temp[k][j].getCivilianUnit()==null)
-                        {
+                for (int k = mapBoundaries[0]; k < mapBoundaries[1]; k++) {
+                    for (int j = mapBoundaries[2]; j < mapBoundaries[3]; j++) {
+                        if (temp[k][j].getOwner().equals(GameController.getCurrentPlayer()) && temp[k][j].getCivilianUnit() == null) {
                             GameController.getCurrentPlayer().increaseGold(89);
                             UnitController.makeUnit("Settler", hex, "gold");
                             alert.setContentText("Congratulations!! you just got a free Settler Unit :)");
-                            found=true;
+                            found = true;
                             break outer;
                         }
                     }
                 }
-                if(!found)
+                if (!found)
                     alert.setContentText("bad luck, the ruin was empty :)");
                 break;
             case 4:
                 alert.setContentText("Congratulations!! you now have the abilitiy to remove fog of war from 3 desired tiles.\nA new button will appear on the top of your screen.\nchoose a tile, click the button, and enjoy");
                 createFogOfWarRemoverButton();
-                FOGRemover=3;
+                FOGRemover = 3;
                 break;
             case 5:
                 alert.setContentText("congratulations!! you can now unlock an -accessible- technology without waiting!! :)");
-                technologyPass=true;
+                technologyPass = true;
                 break;
 
         }
@@ -119,33 +114,29 @@ public class MapPage {
         alert.showAndWait();
     }
 
-    int FOGRemover=0;
-    
-    public void createFogOfWarRemoverButton()
-    {
-        Button remover=new Button();
+    int FOGRemover = 0;
+
+    public void createFogOfWarRemoverButton() {
+        Button remover = new Button();
         remover.setText("FOG Remover");
         anchorPane.getChildren().add(remover);
         remover.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
-                if(GameController.getSelectedHex()==null)
-                {
-                    Alert alert=new Alert(AlertType.INFORMATION,"choose a tile first");
+                if (GameController.getSelectedHex() == null) {
+                    Alert alert = new Alert(AlertType.INFORMATION, "choose a tile first");
                     alert.showAndWait();
                     return;
                 }
-                if(!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))
-                {
-                    Alert alert=new Alert(AlertType.INFORMATION,"it's not wise to waste this token :)");
+                if (!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) {
+                    Alert alert = new Alert(AlertType.INFORMATION, "it's not wise to waste this token :)");
                     alert.showAndWait();
                     return;
                 }
                 GameController.getSelectedHex().setState(HexState.Visible, GameController.getCurrentPlayer());
                 FOGRemover--;
-                if(FOGRemover==0)
-                {
+                if (FOGRemover == 0) {
                     anchorPane.getChildren().remove(remover);
                 }
                 resetPane();
@@ -173,7 +164,6 @@ public class MapPage {
         });
 
     }
-
 
 
     public void initialize() {
@@ -220,22 +210,20 @@ public class MapPage {
     //             e.printStackTrace();
     //         }
     // }
-    public  void loadPanel(String name)
-    {
-        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
+    public void loadPanel(String name) {
+        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/" + name + ".fxml"));
         try {
             // notificationHistory=;
-            if(openPanel!=null)
-            {
+            if (openPanel != null) {
                 return;
             }
-            openPanel= (Node)(loader.load());
+            openPanel = (Node) (loader.load());
             openPanel.setLayoutY(80);
             openPanel.setLayoutX(80);
             pane.getChildren().add(openPanel);
 
 
-            Button closeButton=new Button();
+            Button closeButton = new Button();
             closeButton.setLayoutX(80);
             closeButton.setLayoutY(80);
             closeButton.setPrefSize(60, 15);
@@ -267,7 +255,7 @@ public class MapPage {
                 public void handle(MouseEvent arg0) {
                     pane.getChildren().remove(openPanel);
                     pane.getChildren().remove(closeButton);
-                    openPanel=null;
+                    openPanel = null;
                     Platform.runLater(() -> {
                         pane.requestFocus();
                     });
@@ -283,89 +271,88 @@ public class MapPage {
     }
 
 
-    public void economic(MouseEvent mouseEvent)
-    {
+    public void economic(MouseEvent mouseEvent) {
         loadPanel("economic-page");
     }
-    public void units(MouseEvent mouseEvent)
-    {
+
+    public void units(MouseEvent mouseEvent) {
         loadPanel("units-panel");
     }
-    public void notification(MouseEvent mouseEvent)
-    {
+
+    public void notification(MouseEvent mouseEvent) {
         loadPanel("notification-history");
     }
-    public void demographic(MouseEvent mouseEvent)
-    {
+
+    public void demographic(MouseEvent mouseEvent) {
         loadPanel("demographic");
     }
-    public void military(MouseEvent mouseEvent)
-    {
+
+    public void military(MouseEvent mouseEvent) {
         loadPanel("military-panel");
     }
-    public void citiesPanel(MouseEvent mouseEvent)
-    {
+
+    public void citiesPanel(MouseEvent mouseEvent) {
         loadPanel("city-panel");
     }
+
     public void technology(MouseEvent mouseEvent) {
         loadPanel("technology-menu-page");
     }
 
-    Boolean ctrl=false;
+    Boolean ctrl = false;
+
     private void handleKeyEvent() {
         pane.setOnKeyPressed(e -> {
             int[] directions = new int[]{0, 0, 0, 0};
             switch (e.getCode()) {
                 case RIGHT:
-                    ctrl=false;
+                    ctrl = false;
                     directions[2] = 1;
                     directions[3] = 1;
                     MoveMap(directions);
                     break;
                 case LEFT:
-                    ctrl=false;
+                    ctrl = false;
                     directions[2] = -1;
                     directions[3] = -1;
                     MoveMap(directions);
                     break;
                 case UP:
-                    ctrl=false;
+                    ctrl = false;
                     directions[0] = -1;
                     directions[1] = -1;
                     MoveMap(directions);
                     break;
                 case DOWN:
-                    ctrl=false;
+                    ctrl = false;
                     directions[0] = 1;
                     directions[1] = 1;
                     MoveMap(directions);
                     break;
                 case CONTROL:
-                    ctrl=true;
+                    ctrl = true;
                     break;
                 case C:
-                    if(ctrl)
-                    {
+                    if (ctrl) {
                         cheatMenu();
                     }
                     break;
                 default:
-                    ctrl=false;
-                    ctrl=false;
+                    ctrl = false;
+                    ctrl = false;
                     break;
             }
         });
     }
 
-    private void cheatMenu()
-    {
-        VBox hBox=new VBox();
-        HBox vBox=new HBox();
-        TextField cheat=new TextField();
+    private void cheatMenu() {
+        VBox hBox = new VBox();
+        HBox vBox = new HBox();
+        TextField cheat = new TextField();
         cheat.setStyle("-fx-background-color: black; -fx-text-fill: white");
         cheat.setPrefWidth(300);
-        Button button=new Button();
-        Button close=new Button();
+        Button button = new Button();
+        Button close = new Button();
         button.setStyle("-fx-font-weight: bold; -fx-background-color: white;");
         close.setStyle("-fx-font-weight: bold; -fx-background-color: white;");
         button.setText("Ok");
@@ -374,7 +361,7 @@ public class MapPage {
         vBox.getChildren().add(button);
         hBox.getChildren().add(cheat);
         hBox.getChildren().add(vBox);
-        Label error=new Label();
+        Label error = new Label();
         error.setStyle("-fx-text-fill:red");
         hBox.getChildren().add(error);
         pane.getChildren().add(hBox);
@@ -394,10 +381,9 @@ public class MapPage {
         button.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
 
             @Override
-            public void handle(MouseEvent arg0)
-            {
+            public void handle(MouseEvent arg0) {
                 Matcher matcher;
-                String command=cheat.getText();
+                String command = cheat.getText();
                 if ((matcher = getMatcher("increase (--gold|-g) (?<amount>\\d+)", command)) != null) {
                     error.setText(GameController.cheatGold(Integer.parseInt(matcher.group("amount"))));
                 } else if ((matcher = getMatcher("increase (--cityproduction|-cp) (?<amount>\\d+) (?<cityname>[a-zA-Z_ ]+)", command)) != null) {
@@ -465,28 +451,27 @@ public class MapPage {
                 } else {
                     setTerrainViewCoordinates(i, j, hexes[i][j].getTerrain().getTerrainView());
                     if (hexes[i][j].getFeature() != null) {
-                        setHexDetailsViewCoordinates(i, j, hexes[i][j].getFeature().getFeatureView(),0, 50);
+                        setHexDetailsViewCoordinates(i, j, hexes[i][j].getFeature().getFeatureView(), 0, 50);
                     }
                     if (hexes[i][j].isPillaged()) {
-                        makeImageView("pictures/others/pillage.png",hexes[i][j].getTerrain().getTerrainView().getX()+50,
-                                hexes[i][j].getTerrain().getTerrainView().getY()+50);
+                        makeImageView("pictures/others/pillage.png", hexes[i][j].getTerrain().getTerrainView().getX() + 50,
+                                hexes[i][j].getTerrain().getTerrainView().getY() + 50);
                     }
                     initializeRiverView(hexes[i][j]);
                     if (hexes[i][j].getMilitaryUnit() != null) {
                         initializeMilitaryUnitView(hexes[i][j], hexes[i][j].getMilitaryUnit(), 30, 20);
                     }
-                    if( hexes[i][j].getCivilianUnit() != null){
+                    if (hexes[i][j].getCivilianUnit() != null) {
                         initializeCivilianView(hexes[i][j], hexes[i][j].getCivilianUnit(), 100, 20);
 
                     }
                     if (hexes[i][j].getCity() != null) {
                         initializeCity(hexes[i][j]);
                         if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
-                         initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
+                            initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
                         }
                     }
-                    if(hexes[i][j].getHasRuins()!=0)
-                    {
+                    if (hexes[i][j].getHasRuins() != 0) {
                         initializeRuins(hexes[i][j]);
                     }
 /*                    if (!hexes[i][j].getImprovement().isEmpty()) {
@@ -503,20 +488,29 @@ public class MapPage {
     private void initializeBuildings(City city, Hex hex) {
         for (int i = 1; i <= city.getBuiltBuildings().size(); i++) {
             Building building = city.getBuiltBuildings().get(i - 1);
-            ImageView buildingView = building.getBuildingView();
+            ImageView buildingView = getBuildingView(building.getName());
             buildingView.setX(hex.getTerrain().getTerrainView().getX() + 25);
             buildingView.setY(hex.getTerrain().getTerrainView().getY() + 20 + (i * 7));
             pane.getChildren().add(buildingView);
         }
     }
 
+    private static ImageView getBuildingView(String name) {
+        Image image;
+        String address;
+        address = "pictures/building/" + name.toLowerCase() + ".png";
+        image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+        ImageView imageView = new ImageView(image);
+        return imageView;
 
-    private void initializeRuins(Hex hex)
-    {
-        ImageView ruins=new ImageView(new Image(CivilizationApplication.class.getResource("pictures/others/ruins.png").toExternalForm()));
+    }
+
+
+    private void initializeRuins(Hex hex) {
+        ImageView ruins = new ImageView(new Image(CivilizationApplication.class.getResource("pictures/others/ruins.png").toExternalForm()));
         ruins.setFitWidth(50);
         ruins.setFitHeight(70);
-        ruins.setX(hex.getTerrain().getTerrainView().getX() +60);
+        ruins.setX(hex.getTerrain().getTerrainView().getX() + 60);
         ruins.setY(hex.getTerrain().getTerrainView().getY() + 50);
         pane.getChildren().add(ruins);
 
@@ -524,20 +518,20 @@ public class MapPage {
 
 
     private void initializeWorkingWorkers(Unit unit, ImageView unitView) {
-        for (Construction imp: GameController.getCurrentPlayer().getUnfinishedProjects()) {
-            if(imp instanceof Improvement && imp.getWorker().equals(unit)){
-                Text text = new Text("Building "+imp.getName());
+        for (Construction imp : GameController.getCurrentPlayer().getUnfinishedProjects()) {
+            if (imp instanceof Improvement && imp.getWorker().equals(unit)) {
+                Text text = new Text("Building " + imp.getName());
                 text.setX(unitView.getX());
-                text.setY(unitView.getY()-20);
+                text.setY(unitView.getY() - 20);
                 text.setStyle("    -fx-font-size: 15;\n" +
                         "    -fx-text-fill: black;");
                 ProgressBar makingProgress = new ProgressBar();
-                makingProgress.setLayoutX(unitView.getX()+20);
+                makingProgress.setLayoutX(unitView.getX() + 20);
                 makingProgress.setLayoutY(unitView.getY());
                 makingProgress.setPrefWidth(100);
                 makingProgress.setPrefHeight(20);
                 unitView.setOnMouseEntered(event -> {
-                    makingProgress.setProgress(imp.getLeftTurns()*1.0/((Improvement)imp).getMaxTurn());
+                    makingProgress.setProgress(imp.getLeftTurns() * 1.0 / ((Improvement) imp).getMaxTurn());
                     pane.getChildren().add(makingProgress);
                 });
                 unitView.setOnMouseExited(event -> {
@@ -549,10 +543,10 @@ public class MapPage {
     }
 
     private void initializeImprovementsView(Hex hex) {
-        for (Improvement imp :hex.getImprovement()) {
-            ImageView imageView = makeImageView("pictures/improvements/"+imp.getName()+".png",
-                    hex.getTerrain().getTerrainView().getX()+50,
-                    hex.getTerrain().getTerrainView().getX()+50);
+        for (Improvement imp : hex.getImprovement()) {
+            ImageView imageView = makeImageView("pictures/improvements/" + imp.getName() + ".png",
+                    hex.getTerrain().getTerrainView().getX() + 50,
+                    hex.getTerrain().getTerrainView().getX() + 50);
            /* imageView.setOnMouseClicked(event -> {
 
             });*/
@@ -571,7 +565,7 @@ public class MapPage {
     private void initializeCity(Hex hex) {
         Text text = new Text(hex.getCity().getName());
         text.setX(hex.getTerrain().getTerrainView().getX() + 80);
-        text.setY(hex.getTerrain().getTerrainView().getY()+20);
+        text.setY(hex.getTerrain().getTerrainView().getY() + 20);
         text.setStyle("    -fx-font-size: 15;\n" +
                 "    -fx-text-fill: yellow;");
         text.minWidth(100);
@@ -579,8 +573,8 @@ public class MapPage {
         String unitAddress = "pictures/city/city.png";
         Image cityImage = new Image(CivilizationApplication.class.getResource(unitAddress).toExternalForm());
         ImageView cityView = new ImageView(cityImage);
-        cityView.setX(hex.getTerrain().getTerrainView().getX() +50);
-        cityView.setY(hex.getTerrain().getTerrainView().getY()+20);
+        cityView.setX(hex.getTerrain().getTerrainView().getX() + 50);
+        cityView.setY(hex.getTerrain().getTerrainView().getY() + 20);
         pane.getChildren().add(cityView);
         pane.getChildren().add(text);
 
@@ -604,19 +598,19 @@ public class MapPage {
     }
 
     private void initializeMilitaryUnitView(Hex hex, Unit unit, int alignX, int alignY) {
-        ImageView unitView =  makeView(hex, unit, alignX, alignY);
+        ImageView unitView = makeView(hex, unit, alignX, alignY);
         unitView.setOnMouseClicked(event -> {
             selectMilitaryUnit(hex);
         });
     }
 
     private void initializeCivilianView(Hex hex, Unit unit, int alignX, int alignY) {
-        ImageView unitView =  makeView(hex, unit, alignX, alignY);
+        ImageView unitView = makeView(hex, unit, alignX, alignY);
         initializeWorkingWorkers(unit, unitView);
         unitView.setOnMouseClicked(event -> {
             selectCivilianUnit(hex);
             // TODO: 7/15/2022 : check is ordered
-            if(unit instanceof Worker /*&& !unit.isOrdered()*/){
+            if (unit instanceof Worker /*&& !unit.isOrdered()*/) {
                 loadPanel("worker-action-panel");
             }
         });
@@ -628,17 +622,18 @@ public class MapPage {
         ImageView unitView = new ImageView(UnitImage);
         unitView.setScaleX(2);
         unitView.setScaleY(2);
-        setHexDetailsViewCoordinates(hex.getX(), hex.getY(), unitView ,alignY , alignX);
+        setHexDetailsViewCoordinates(hex.getX(), hex.getY(), unitView, alignY, alignX);
         Text text = new Text(unit.getState().getCharacter());
         text.setX(unitView.getX());
-        text.setY(unitView.getY()-10);
+        text.setY(unitView.getY() - 10);
         text.setStyle("    -fx-font-size: 15;\n" +
                 "    -fx-text-fill: black;");
         pane.getChildren().add(text);
         return unitView;
     }
+
     private void selectCivilianUnit(Hex hex) {
-        if (hex.getCivilianUnit().getOwner() == GameController.getCurrentPlayer()){
+        if (hex.getCivilianUnit().getOwner() == GameController.getCurrentPlayer()) {
             showInformationOfUnit(hex.getCivilianUnit());
             UnitController.setSelectedUnit(hex.getCivilianUnit());
             VBox vBox = new VBox();
@@ -652,9 +647,9 @@ public class MapPage {
             vBox.getChildren().add(foundCity);
             foundCity.setOnMouseClicked(event -> {
                 String res = CityController.buildCity(
-                        UnitController.getSelectedUnit().getOwner().getName()+UnitController.getSelectedUnit().getOwner().getCities().size());
-                if(!res.equals("new city created successfully")){
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION,res);
+                        UnitController.getSelectedUnit().getOwner().getName() + UnitController.getSelectedUnit().getOwner().getCities().size());
+                if (!res.equals("new city created successfully")) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
                     resetPane();
                 }
@@ -669,8 +664,9 @@ public class MapPage {
             pane.getChildren().add(vBox);
         }
     }
+
     private void selectMilitaryUnit(Hex hex) {
-        if (hex.getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()){
+        if (hex.getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()) {
             showInformationOfUnit(hex.getMilitaryUnit());
             UnitController.setSelectedUnit(hex.getMilitaryUnit());
             VBox vBox = new VBox();
@@ -737,10 +733,10 @@ public class MapPage {
             vBox.getChildren().add(setUpRangeAttackView);
             setUpRangeAttackView.setOnMouseClicked(event -> {
                 String res = UnitController.setUpSiegeForRangeAttack();
-                if(!res.equals("siege is ready for the next turn")){
+                if (!res.equals("siege is ready for the next turn")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
-                }else resetPane();
+                } else resetPane();
             });
             ImageView fortifyUntilHeal = createImageView("pictures/unitActionsIcon/fortifyUntilHeal.png");
             vBox.getChildren().add(fortifyUntilHeal);
@@ -789,7 +785,6 @@ public class MapPage {
     }
 
 
-
     private void initializeRevealedView(Hex hex) {
         String revealedAddress = "pictures/terrainTexturs/revealed.png";
         Image revealedImage = new Image(CivilizationApplication.class.getResource(revealedAddress).toExternalForm());
@@ -817,9 +812,11 @@ public class MapPage {
             }
         }
     }
-    int bar=50;
+
+    int bar = 50;
+
     private void setTerrainViewCoordinates(int i, int j, ImageView terrainView) {
-        int align = (j % 2 == 0) ? 0+bar : 100+bar;
+        int align = (j % 2 == 0) ? 0 + bar : 100 + bar;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         terrainView.setX(j * 150);
@@ -827,8 +824,8 @@ public class MapPage {
         pane.getChildren().add(terrainView);
     }
 
-    private void setHexDetailsViewCoordinates(int i, int j, ImageView featureView, int alignY,int alignX) {
-        int align = (j % 2 == 0) ? 100+bar : 200+bar;
+    private void setHexDetailsViewCoordinates(int i, int j, ImageView featureView, int alignY, int alignX) {
+        int align = (j % 2 == 0) ? 100 + bar : 200 + bar;
         j -= mapBoundaries[2];
         i -= mapBoundaries[0];
         featureView.setX(alignX + (j * 150));
@@ -856,15 +853,15 @@ public class MapPage {
 
     private void handelSelectHexEvent(Hex hex, ImageView imageView) {
         imageView.setOnMouseClicked(event -> {
-            if(wantToMove){
-                String res = UnitController.startMovement(hex.getX(),hex.getY());
-                if(!res.equals("unit is on its way")){
+            if (wantToMove) {
+                String res = UnitController.startMovement(hex.getX(), hex.getY());
+                if (!res.equals("unit is on its way")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
                 }
                 wantToMove = false;
-            }else if(wantToAttack){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, CombatController.attackUnit(hex.getX(),hex.getY()));
+            } else if (wantToAttack) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, CombatController.attackUnit(hex.getX(), hex.getY()));
                 alert.showAndWait();
                 resetPane();
                 wantToAttack = false;
@@ -877,12 +874,12 @@ public class MapPage {
 
     private void showHexDetails(Hex hex) {
         VBox vBox = new VBox();
-        Label label = new Label(hex.getTerrain().getName()+
-                " ,food:" + hex.getTerrain().getFood()+
-                " ,product:" + hex.getTerrain().getProduction()+
-                " ,gold:" +  hex.getTerrain().getGold()+
-                " ,CMP:" + hex.getTerrain().getCombatModifiersPercentage()+
-                " ,MP:" +hex.getTerrain().getMovePoint());
+        Label label = new Label(hex.getTerrain().getName() +
+                " ,food:" + hex.getTerrain().getFood() +
+                " ,product:" + hex.getTerrain().getProduction() +
+                " ,gold:" + hex.getTerrain().getGold() +
+                " ,CMP:" + hex.getTerrain().getCombatModifiersPercentage() +
+                " ,MP:" + hex.getTerrain().getMovePoint());
         Popup popup = new Popup();
         addVboxToPopup(label, vBox);
         if (hex.getResource() != null) {
@@ -905,9 +902,9 @@ public class MapPage {
             addVboxToPopup(label1, vBox);
         }
         if (hex.getImprovement() != null) {
-            StringBuilder improvementsName= new StringBuilder();
-            for (Improvement improvement: hex.getImprovement()) {
-                improvementsName.append(improvement.getName()+" ");
+            StringBuilder improvementsName = new StringBuilder();
+            for (Improvement improvement : hex.getImprovement()) {
+                improvementsName.append(improvement.getName() + " ");
             }
             Label label1 = new Label(improvementsName.toString());
             addVboxToPopup(label1, vBox);
@@ -936,7 +933,7 @@ public class MapPage {
                 pane.requestFocus();
             });
             resetPane();
-        }else{
+        } else {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, outPut);
             alert.showAndWait();
         }
