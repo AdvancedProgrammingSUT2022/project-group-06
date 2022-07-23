@@ -1,8 +1,8 @@
 package project.civilization.controllers;
-import project.civilization.enums.FeatureNames;
-import project.civilization.enums.HexState;
-import project.civilization.enums.TerrainNames;
-import project.civilization.enums.UnitState;
+import org.json.JSONException;
+import org.json.JSONObject;
+import project.civilization.CivilizationApplication;
+import project.civilization.enums.*;
 import project.civilization.models.Player;
 import project.civilization.models.gainable.Improvement;
 import project.civilization.models.maprelated.Hex;
@@ -16,6 +16,7 @@ import project.civilization.models.units.Siege;
 import project.civilization.models.units.Unit;
 import project.civilization.models.units.Worker;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.Objects;
@@ -25,8 +26,8 @@ import static project.civilization.controllers.GameController.*;
 public class UnitController {
 
     private static Unit selectedUnit;
-    private static final Hex[][] hex = getWorld().getHex();
-    private static final ArrayList<Movement> unfinishedMovements = new ArrayList<Movement>();
+    private static  Hex[][] hex;
+    private static ArrayList<Movement> unfinishedMovements;
 
     public static ArrayList<Movement> getUnfinishedMovements() {
         return unfinishedMovements;
@@ -468,6 +469,46 @@ public class UnitController {
         for (int i = 0; i < unfinishedMovements.size(); i++) {
             if (unfinishedMovements.get(i).getUnit().getOwner() == getCurrentPlayer())
                 moveUnit(unfinishedMovements.get(i));
+        }
+    }
+    public static String isMyUnit(String type, int i , int j){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.ISMYUNIT.getCharacter());
+            json.put("i", i);
+            json.put("j",j);
+            json.put("type",type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
+    }
+
+    public static void setSelectedUnit(String type, int i, int j) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.SELECTUNIT.getCharacter());
+            json.put("i", i);
+            json.put("j",j);
+            json.put("type",type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
         }
     }
 }

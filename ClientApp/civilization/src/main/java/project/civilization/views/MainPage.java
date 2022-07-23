@@ -36,7 +36,6 @@ public class MainPage extends GameMenus{
 
     public void loadGame(MouseEvent mouseEvent) {
         //CivilizationApplication.changeMenu(Menus.LOADGAME);
-        MapPage.isANewGame = false;
         CivilizationApplication.loadMapForTest();
     }
 

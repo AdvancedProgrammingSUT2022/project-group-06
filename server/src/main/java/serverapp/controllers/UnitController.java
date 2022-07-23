@@ -470,4 +470,12 @@ public class UnitController {
                 moveUnit(unfinishedMovements.get(i));
         }
     }
+
+    public static String selectUnit(int i, int j, String type) {
+        switch (type){
+            case  "military": selectedUnit = hex[i][j].getMilitaryUnit();
+            case "civilian": selectedUnit = hex[i][j].getCivilianUnit();
+        }
+        return " ";
+    }
 }

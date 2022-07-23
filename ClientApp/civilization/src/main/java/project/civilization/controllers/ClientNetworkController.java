@@ -29,13 +29,15 @@ public class ClientNetworkController{
         Thread receiver = new Thread(new Runnable() {
             @Override
             public void run() {
-                try {
-                    String message = invitationDataInputStream.readUTF();
-                    process(message);
-                } catch (SocketException socketException){
+                while (true){
+                    try {
+                        String message = invitationDataInputStream.readUTF();
+                        process(message);
+                    } catch (SocketException socketException){
 
-                } catch (IOException e) {
-                    e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -47,7 +49,9 @@ public class ClientNetworkController{
             String action = obj.getString("action");
             if(action.equals(Actions.INVITETOGAME.getCharacter())){
                 alertInvitation(obj.getString("username"),obj.getString("gameUuid"));
-            }else System.out.println("a fucking thing is wrong");
+            }else if(action.equals(Actions.STARTGAME.getCharacter())){
+                Platform.runLater(() -> CivilizationApplication.changeMenu(Menus.MAPPAGE));
+            }else System.out.println(message+"a fucking thing is wrong");
         }catch (JSONException e) {
             e.printStackTrace();
         }

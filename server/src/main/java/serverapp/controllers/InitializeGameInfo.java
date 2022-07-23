@@ -247,10 +247,6 @@ public class InitializeGameInfo {
     }
 
     public static void run() {
-/*        numberOFPlayers = 3;
-        Player a = new Player("A");
-        Player b = new Player("B");
-        Player c = new Player("C");*/
         initializeTerrainInfo();
         initializeFeatureInfo();
         initializeResourceInfo();
@@ -432,10 +428,7 @@ public class InitializeGameInfo {
     }
 
 
-    public static void setMapSize(String mapSize) {
-        String[] size = mapSize.split("\\*");
-        int hexInHeight = Integer.parseInt(size[0]);
-        int hexInWidth = Integer.parseInt(size[1]);
+    public static void setMapSize(int hexInHeight, int hexInWidth) {
         world = new World(hexInHeight, hexInWidth);
     }
 

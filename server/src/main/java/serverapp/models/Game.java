@@ -1,12 +1,58 @@
 package serverapp.models;
 
 import serverapp.models.maprelated.Hex;
+import serverapp.models.maprelated.World;
+
+import java.util.ArrayList;
+
 
 public class Game {
-    public Game(String name, Hex[][] hexes) {
-        this.name = name;
-        this.hexes = hexes;
-    }
+
     private String name;
-    private Hex[][] hexes;
+
+    private  World world;
+    private ArrayList<Player> players;
+    private int playerCount;
+    private int turn;
+
+
+    public Game(String name, World world, ArrayList<Player> players, int playerCount, int turn) {
+        this.name = name;
+        this.world = world;
+        this.players = players;
+        this.turn = turn;
+        this.playerCount = playerCount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPlayerCount() {
+        return playerCount;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<Player> players) {
+        this.players = players;
+    }
 }

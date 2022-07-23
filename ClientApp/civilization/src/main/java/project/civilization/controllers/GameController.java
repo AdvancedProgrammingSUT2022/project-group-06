@@ -4,14 +4,12 @@ package project.civilization.controllers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.graph.GraphAdapterBuilder;
-import project.civilization.JsonDeserializerWithInheritance;
+import org.json.JSONException;
+import org.json.JSONObject;
+import project.civilization.CivilizationApplication;
 import project.civilization.enums.*;
 import project.civilization.models.Game;
 import project.civilization.models.Player;
-import project.civilization.models.User;
-import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
 import project.civilization.models.gainable.Technology;
@@ -27,18 +25,19 @@ import java.util.*;
 
 public class GameController {
 
-    private static final ArrayList<Player> players = InitializeGameInfo.getPlayers();
+    private static ArrayList<Player> players;
     private static int turn;
-    private static final World world = InitializeGameInfo.getWorld();
+    private static  World world ;
     private static int[] mapBoundaries;
-    private static final Hex[][] hex = world.getHex();
+    private static Hex[][] hex;
     private static Player currentPlayer;
-    private static final ArrayList<Civilian> allCivilians = new ArrayList<Civilian>();
-    private static final ArrayList<Military> allMilitaries = new ArrayList<Military>();
+    private static  ArrayList<Civilian> allCivilians;
+    private static ArrayList<Military> allMilitaries;
     private static Hex selectedHex;
     private static City selectedCity;
     private static int playerCount;
-    private static ArrayList<Game> allGames = new ArrayList<>();
+    private static ArrayList<Game> allGames ;
+
     public static int getTurn() {
         return turn;
     }
@@ -1415,51 +1414,6 @@ public class GameController {
 
     }
 
-    public static String saveGame(String gameName) {
-        Game game = new Game(gameName,hex);
-        allGames.add(game);
-        FileWriter fileWriter;
-        try {
-            fileWriter = new FileWriter("games.json");
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().create();
-            fileWriter.write(gson.toJson(hex));
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            fileWriter = new FileWriter("Units.json");
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(Military.class, new JsonDeserializerWithInheritance<Military>());
-            Gson gson = builder.excludeFieldsWithoutExposeAnnotation().create();
-            Military military = new Siege("Catapult",world.getHex()[0][0],GameController.getCurrentPlayer());
-            fileWriter.write(gson.toJson(military));
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        loadGame("A");
-        return "saved successfully";
-    }
-
-    public static String loadGame(String GameName) {
-        try {
-            GsonBuilder builder = new GsonBuilder();
-            builder.registerTypeAdapter(Military.class, new JsonDeserializerWithInheritance<Military>());
-            Gson gson = builder.excludeFieldsWithoutExposeAnnotation().create();
-            String json = new String(Files.readAllBytes(Paths.get("Units.json")));
-            Siege unit = gson.fromJson(json, Siege.class);
-            if(unit instanceof Unit) System.out.println("heyyyy");
-            if(unit instanceof Siege) System.out.println("heyyyy");
-
-            return "there is no game with this name";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    return null;
-    }
-
     public static ArrayList<String> getAvailableWorks(Unit selectedUnit) {
         ArrayList<String> availableWorks = new ArrayList<>();
         if( UnitController.getSelectedUnit().getCurrentHex().getOwner() == null ||
@@ -1564,5 +1518,138 @@ public class GameController {
         } else if (command.equals("repair")) {
             System.out.println(GameController.repair());
         }
+    }
+
+    public static String getPaneDetails(int mapBoundary0, int mapBoundary1, int mapBoundary2, int mapBoundary3) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GETPANEDETAILS.getCharacter());
+            json.put("mapBoundary0",mapBoundary0);
+            json.put("mapBoundary1",mapBoundary1);
+            json.put("mapBoundary2",mapBoundary2);
+            json.put("mapBoundary3",mapBoundary3);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
+    }
+
+    public static int getHexInHeight() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GETHexInHeight.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return Integer.parseInt(CivilizationApplication.dataInputStream.readUTF());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getHexInWidth() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GETHexInWidth.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return Integer.parseInt(CivilizationApplication.dataInputStream.readUTF());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static String getTerrainNames() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GetTerrainNames.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
+    }
+
+    public static String getHexDetails(int i, int j) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GetHexDetails.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
+    }
+    public static void setSelectedHex(int i, int j) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.SELECTILE.getCharacter());
+            json.put("i", i);
+            json.put("j",j);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+    }
+
+    public static String getUnitInformation(int i, int j,String type) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GETUNITINFORMATION.getCharacter());
+            json.put("i", i);
+            json.put("j",j);
+            json.put("type", type);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
     }
 }

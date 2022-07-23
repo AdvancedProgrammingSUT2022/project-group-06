@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class InvitationController {
     private static ArrayList<Invitation> allInvitations = new ArrayList<>();
-    public static String CreateInvitation(String uuid, String usernames) {
+    public static String CreateInvitation(String uuid, String usernames, String hexInHeight, String hexInWidth) {
         ArrayList<String> inventedUsers = new Gson().fromJson(usernames, new TypeToken<ArrayList<String>>() {
         }.getType());
         HashMap<User,Boolean> temp = new HashMap<>();
@@ -21,7 +21,9 @@ public class InvitationController {
             temp.put(UserController.getUserByUserName(inventedUsers.get(i)), false);
         }
         Invitation invitation =
-                new Invitation(UserController.getUserHashMap().get(uuid),temp, UUID.randomUUID().toString());
+                new Invitation(UserController.getUserHashMap().get(uuid),temp,
+                        UUID.randomUUID().toString(),Integer.parseInt(hexInHeight),
+                        Integer.parseInt(hexInWidth));
         allInvitations.add(invitation);
         for (int i = 0; i < inventedUsers.size(); i++) {
             sendInvitation(uuid, UserController.getUserByUserName(inventedUsers.get(i)), invitation.getGameUuid());
@@ -49,8 +51,17 @@ public class InvitationController {
                 invitation.getStateOfInventedPersons().replace(
                         UserController.getUserHashMap().get(userUuid),true);
                 if(invitation.isAllDone() ){
+                    GameNetworkController.startGame(gameUuid, invitation);
+                    for (User user: invitation.getAllUsers()) {
+                        JSONObject json = new JSONObject();
+                        try {
+                            json.put("action", Actions.STARTGAME.getCharacter());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        NetWorkController.broadCast(user,json.toString());
+                    }
                     allInvitations.remove(invitation);
-                    GameNetworkController.startGame(gameUuid, invitation.getAllUsers());
                 }
             }
         }

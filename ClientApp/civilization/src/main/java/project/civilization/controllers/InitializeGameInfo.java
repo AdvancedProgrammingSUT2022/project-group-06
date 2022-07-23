@@ -431,12 +431,12 @@ public class InitializeGameInfo {
         }
     }
 
-
+    public static int hexInHeight;
+    public static int hexInWidth;
     public static void setMapSize(String mapSize) {
         String[] size = mapSize.split("\\*");
-        int hexInHeight = Integer.parseInt(size[0]);
-        int hexInWidth = Integer.parseInt(size[1]);
-        world = new World(hexInHeight, hexInWidth);
+        hexInHeight = Integer.parseInt(size[0]);
+        hexInWidth = Integer.parseInt(size[1]);
     }
 
     public static void runAsLoadGame() {

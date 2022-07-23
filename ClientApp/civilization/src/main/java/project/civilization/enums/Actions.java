@@ -16,7 +16,16 @@ public enum Actions {
     UNIQUEUSERNAME("uniqueUsername"),
     ACCEPTINVITATION("acceptInvitation"),
     REJECTINVITATION("REJECTINVITAION"),
-    SENDREJECTION("sendRejection");
+    SENDREJECTION("sendRejection"),
+    GETPANEDETAILS("getPaneDetails"),
+    SELECTILE("selectTile"),
+    GETUNITINFORMATION("getUnitInformation"),
+    GetHexDetails("getHexDetails"),
+    GetTerrainNames("getTerrainNames"),
+    GETHexInWidth("getHexInWidth"),
+    GETHexInHeight("getHexInHeight"),
+    SELECTUNIT("selectUnit"),
+    ISMYUNIT("isMyUnit");
     private final String character;
 
     Actions(String color) {

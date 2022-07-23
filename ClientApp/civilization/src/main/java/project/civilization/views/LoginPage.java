@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 
@@ -25,23 +26,25 @@ public class LoginPage extends GameMenus{
     private Button loginButton;
 
 
+
     public void login(MouseEvent mouseEvent) {
         if (username.getText().equals("") || password.getText().equals("")) {
             error.setText("Fill all fields");
-           
+
             // error.setStyle("-fx-text-fill: #ff0066;");
             return;
         }
         String result;
         if (!(result = UserController.login(username.getText(), password.getText())).equals("logged in")) {
             error.setText(result);
-            
+
             // error.setStyle("-fx-text-fill: #ff0066;");
             return;
         }
-       
+
         CivilizationApplication.changeMenu(Menus.MAIN);
     }
+
 
     public void register(MouseEvent mouseEvent) {
         CivilizationApplication.changeMenu(Menus.REGISTER);;

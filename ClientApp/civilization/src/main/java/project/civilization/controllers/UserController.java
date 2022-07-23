@@ -28,19 +28,6 @@ public class UserController {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static ArrayList<String> nicknames = new ArrayList<String>();
     private static ArrayList<User> usersArray = new ArrayList<User>();
-    private static DataInputStream dataInputStream;
-    private static DataOutputStream dataOutputStream;
-
-    //initialize server and stream
-    public static void initializeNetwork() {
-        try {
-            Socket socket = new Socket("localhost", 772);
-            dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException x) {
-            x.printStackTrace();
-        }
-    }
 
     public static void setLoggedInUser(User user) {
         loggedInUser = user;
@@ -70,9 +57,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            return dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
             return "something is wrong";
@@ -89,9 +76,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            return dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
             return "something is wrong";
@@ -107,10 +94,10 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
             try {
-                return new Gson().fromJson(dataInputStream.readUTF(), new TypeToken<List<String>>() {
+                return new Gson().fromJson(CivilizationApplication.dataInputStream.readUTF(), new TypeToken<List<String>>() {
                 }.getType());
 
             } catch (IOException e) {
@@ -132,9 +119,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            return dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -154,7 +141,7 @@ public class UserController {
         try {
             dataOutputStream.writeUTF(json.toString());
             dataOutputStream.flush();
-            return dataInputStream.readUTF();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -172,13 +159,15 @@ public class UserController {
             json.put("action", Actions.SENDINITATION.getCharacter());
             json.put("UUID",User.getUuid());
             json.put("usernames",gson.toJson(enemyUsername));
+            json.put("hexInHeight",String.valueOf(InitializeGameInfo.hexInHeight));
+                json.put("hexInWidth",String.valueOf(InitializeGameInfo.hexInWidth));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -195,9 +184,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -232,9 +221,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            return dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
             return "something is wrong";
@@ -251,9 +240,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            return dataInputStream.readUTF().equals("yes");
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF().equals("yes");
         } catch (IOException x) {
             x.printStackTrace();
             return false;
@@ -271,9 +260,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            String res = dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
             JSONObject obj = new JSONObject(res);
             if(obj.getString("message").equals("logged in")){
                 User.setUuid(obj.getString("UUID"));
@@ -308,9 +297,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -374,9 +363,9 @@ public class UserController {
             e.printStackTrace();
         }
         try {
-            dataOutputStream.writeUTF(json.toString());
-            dataOutputStream.flush();
-            return dataInputStream.readUTF();
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
             return "something is wrong";

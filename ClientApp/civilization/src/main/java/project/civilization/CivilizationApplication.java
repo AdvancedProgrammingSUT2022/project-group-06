@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 import project.civilization.views.ChatMenu;
@@ -22,6 +24,8 @@ import java.net.URL;
 
 public class CivilizationApplication extends Application {
     public static Stage stages;
+    public static DataInputStream dataInputStream;
+    public static DataOutputStream dataOutputStream;
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = loadFXML(Menus.LOGIN);
@@ -35,14 +39,19 @@ public class CivilizationApplication extends Application {
         //Music.addMusic("songs/start.mp3");
     }
 
+    //initialize server and stream
+    public static void initializeNetwork() {
+        try {
+            Socket socket = new Socket("localhost", 772);
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+    }
     public static void main(String[] args) {
-        UserController.initializeNetwork();
+        initializeNetwork();
         launch();
-        /*
-        Scanner scanner = new Scanner(System.in);
-        LoginMenu loginMenu = new LoginMenu();
-        UserController.importSavedUsers();
-        loginMenu.run(scanner);*/
     }
     public static void changeMenu(Menus menuName){
         Parent root = loadFXML(menuName);
@@ -53,9 +62,6 @@ public class CivilizationApplication extends Application {
         stages.setScene(scene);
     }
 
-    public static void showAlert(){
-
-    }
     public static void loadMapForTest(){
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + "map-page" + ".fxml").toExternalForm());

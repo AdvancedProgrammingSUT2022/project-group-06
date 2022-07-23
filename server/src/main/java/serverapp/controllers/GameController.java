@@ -1,6 +1,10 @@
 package serverapp.controllers;
 
 
+import com.google.gson.JsonObject;
+import javafx.scene.image.Image;
+import org.json.JSONException;
+import org.json.JSONObject;
 import serverapp.enums.*;
 import serverapp.models.gainable.Construction;
 import serverapp.models.gainable.Improvement;
@@ -64,6 +68,7 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        startGame();
         /*hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
         hex[0][0].setState(HexState.Visible,players.get(0));*/
     }
@@ -1555,5 +1560,109 @@ public class GameController {
         } else if (command.equals("repair")) {
             System.out.println(GameController.repair());
         }
+    }
+
+    public static int getPlayerCount() {
+        return playerCount;
+    }
+
+    public static String getHexInHeight() {
+        return String.valueOf(GameController.getWorld().getHexInHeight());
+    }
+
+    public static String getHexInWidth() {
+        return String.valueOf(GameController.getWorld().getHexInWidth());
+    }
+
+    public static String GetPaneDetails(JSONObject jsonObject) {
+        int mapBoundary0 = jsonObject.getInt("mapBoundary0");
+        int mapBoundary1 = jsonObject.getInt("mapBoundary1");
+        int mapBoundary2 = jsonObject.getInt("mapBoundary2");
+        int mapBoundary3 = jsonObject.getInt("mapBoundary3");
+        Hex[][] hexes = world.getHex();
+        JSONObject allHexes = new JSONObject();
+        for (int i =  mapBoundary0; i < mapBoundary1 ; i++) {
+            for (int j = mapBoundary2 ; j < mapBoundary3 ; j++) {
+                JSONObject hexDetails = new JSONObject();
+                if (hexes[i][j].getState(GameController.getCurrentPlayer()) == HexState.FogOfWar) {
+                    hexDetails.put("state","FogOfWar");
+                } else if (hexes[i][j].getState(GameController.getCurrentPlayer()) == HexState.Revealed) {
+                    hexDetails.put("state","Revealed");
+                } else {
+                    hexDetails.put("state","Visible");
+                    hexDetails.put("riverSides",initializeRiver(hexes[i][j]));
+                    if (hexes[i][j].getFeature() != null) {
+                        hexDetails.put("featureName",hexes[i][j].getFeature().getName());
+                    }
+                    if (hexes[i][j].isPillaged()) {
+                        hexDetails.put("isPillaged","true");
+                    }
+                    if (hexes[i][j].getMilitaryUnit() != null) {
+                        JSONObject military = new JSONObject();
+                        military.put("name",hexes[i][j].getMilitaryUnit().getName());
+                        military.put("unitState",hexes[i][j].getMilitaryUnit().getState().getCharacter());
+                        military.put("isOwner",hexes[i][j].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer());
+                        hexDetails.put("military",military);
+                    }
+                    if( hexes[i][j].getCivilianUnit() != null){
+                        JSONObject civilian = new JSONObject();
+                        civilian.put("name",hexes[i][j].getCivilianUnit().getName());
+                        civilian.put("unitState",hexes[i][j].getCivilianUnit().getState().getCharacter());
+                        civilian.put("isOwner",hexes[i][j].getCivilianUnit().getOwner() == GameController.getCurrentPlayer());
+                        hexDetails.put("civilian",civilian);
+                    }
+                    if (hexes[i][j].getCity() != null) {
+                        hexDetails.put("city",hexes[i][j].getCity().getName());
+/*                        if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
+                            initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
+                        }*/
+                    }
+/*                    if(hexes[i][j].getHasRuins()!=0)
+                    {
+                        initializeRuins(hexes[i][j]);
+                    }*/
+                    if (hexes[i][j].getOwner() != null) {
+                        hexDetails.put("owner",hexes[i][j].getOwner().getName());
+                    }
+                }
+                allHexes.put("hex"+i+","+j,hexDetails);
+            }
+        }
+        return allHexes.toString();
+    }
+
+    private static String initializeRiver(Hex hex){
+        StringBuilder riverSides = new StringBuilder("");
+        for (int i = 0; i < 4; i++) {
+            if (hex.isRiver(i)) {
+                riverSides.append("true ");
+            }else riverSides.append("false ");
+        }
+        return riverSides.toString();
+
+    }
+    public static String getTerrainNames() {
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < world.getHexInHeight(); i++) {
+            for (int j = 0; j < world.getHexInWidth(); j++) {
+                 stringBuilder.append(world.getHex()[i][j].getTerrain().getName()).append(" ");
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String getUnitInformation() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GETUNITINFORMATION.getCharacter());
+            json.put("name", UnitController.getSelectedUnit().getName());
+            json.put("state",UnitController.getSelectedUnit().getState().getCharacter());
+            json.put("mp", String.valueOf(UnitController.getSelectedUnit().getMP()));
+            json.put("cp", String.valueOf(UnitController.getSelectedUnit().getCombatStrength()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
     }
 }

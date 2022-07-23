@@ -8,6 +8,16 @@ public class Invitation {
     private User inviter;
     private HashMap<User, Boolean> stateOfInventedPersons = new HashMap<>();
 
+    public int getHexInHeight() {
+        return hexInHeight;
+    }
+
+    public int getHexInWidth() {
+        return hexInWidth;
+    }
+
+    private int hexInHeight;
+    private int hexInWidth;
     public User getInviter() {
         return inviter;
     }
@@ -21,10 +31,13 @@ public class Invitation {
     }
 
     private String gameUuid;
-    public Invitation(User inviter, HashMap<User, Boolean> stateOfInventedPersons, String gameUuid ){
+    public Invitation(User inviter, HashMap<User, Boolean> stateOfInventedPersons, String gameUuid ,
+                      int hexInHeight, int hexInWidth){
         this.stateOfInventedPersons = stateOfInventedPersons;
         this.inviter = inviter;
         this.gameUuid = gameUuid;
+        this.hexInHeight = hexInHeight;
+        this.hexInWidth = hexInWidth;
 
     }
     public boolean isAllDone(){
