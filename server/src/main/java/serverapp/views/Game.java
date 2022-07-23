@@ -37,6 +37,8 @@ public class Game {
            // return GameController.selectHex();
         }if(command.equals(Actions.GETPANEDETAILS.getCharacter())){
             return GameController.GetPaneDetails(jsonObject);
+        }if(command.equals(Actions.GETAVAILABLEWORKS.getCharacter())){
+            return GameController.getAvailableWorks();
         }
         return "bad request format";
     }

@@ -25,7 +25,8 @@ public enum Actions {
     GETHexInWidth("getHexInWidth"),
     GETHexInHeight("getHexInHeight"),
     SELECTUNIT("selectUnit"),
-    ISMYUNIT("isMyUnit");
+    ISMYUNIT("isMyUnit"),
+    GETAVAILABLEWORKS("getAvailableWorks");
     private final String character;
 
     Actions(String color) {

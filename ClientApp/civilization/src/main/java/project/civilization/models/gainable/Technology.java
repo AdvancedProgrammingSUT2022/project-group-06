@@ -2,6 +2,7 @@ package project.civilization.models.gainable;
 
 import java.util.ArrayList;
 
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.Hex;
@@ -13,7 +14,9 @@ public class Technology implements Construction {
     private int cost;
     private ArrayList<String> neededPreviousTechnologies = new ArrayList<>();
     private int leftTurns;
-    private Player owner;
+
+
+    private transient Player owner;
 
     public Technology(String name, Player owner) {
         this.name = name;
@@ -26,6 +29,13 @@ public class Technology implements Construction {
             neededPreviousTechnologies.add(temp);
         }
 
+    }
+
+    public static Technology clone(Technology technology, Player owner) {
+        Technology newTechnology = new Technology(technology.getName(), GameController.getCurrentPlayer());
+        newTechnology.leftTurns = 4;
+        newTechnology.owner = owner;
+        return newTechnology;
     }
 
     @Override
@@ -60,21 +70,18 @@ public class Technology implements Construction {
         owner.unlockTechnology(this.name);
     }
 
-    @Override
+    @Override//ignore
     public Hex getHex() {
-        // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
+    @Override//ignore
     public void zeroMpWorker() {
-        // TODO Auto-generated method stub
 
     }
 
-    @Override
+    @Override//ignore
     public Unit getWorker() {
-        // TODO Auto-generated method stub
         return null;
     }
 

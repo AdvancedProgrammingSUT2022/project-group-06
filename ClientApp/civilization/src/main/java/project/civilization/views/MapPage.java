@@ -172,23 +172,6 @@ public class MapPage {
 
 
     private Node openPanel;
-
-    // public static void removeNotificationHistory()
-    // {
-    //     pane.getChildren().remove(notificationHistory);
-    // }
-    // private static Node notificationHistory;
-    // public static void closePanel(String name)
-    // {
-    //     FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/"+name+".fxml"));
-    //         try {
-    //             // notificationHistory=;
-    //             pane.getChildren().remove((Node) loader.load());
-    //         } catch (IOException e) {
-
-    //             e.printStackTrace();
-    //         }
-    // }
     public void loadPanel(String name) {
         FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/" + name + ".fxml"));
         try {
@@ -518,16 +501,6 @@ public class MapPage {
         }
     }
 
-    private void initializeImprovementsView(Hex hex) {
-        for (Improvement imp : hex.getImprovement()) {
-            ImageView imageView = makeImageView("pictures/improvements/" + imp.getName() + ".png",
-                    hex.getTerrain().getTerrainView().getX() + 50,
-                    hex.getTerrain().getTerrainView().getX() + 50);
-           /* imageView.setOnMouseClicked(event -> {
-
-            });*/
-        }
-    }
 
     private ImageView makeImageView(String address, double x, double y) {
         Image image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
@@ -587,7 +560,7 @@ public class MapPage {
             selectCivilianUnit(i, j, isOwner);
             // TODO: 7/15/2022 : check is ordered
             if (isOwner&&Objects.equals(name, "Worker") /*&& !unit.isOrdered()*/) {
-                //todo: loadPanel("worker-action-panel");
+                loadPanel("worker-action-panel");
             }
         });
     }

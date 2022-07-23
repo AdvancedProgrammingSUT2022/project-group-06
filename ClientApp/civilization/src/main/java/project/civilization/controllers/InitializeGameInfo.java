@@ -5,6 +5,7 @@ import project.civilization.CivilizationApplication;
 import project.civilization.enums.Color;
 import project.civilization.enums.HexState;
 import project.civilization.models.Player;
+import project.civilization.models.gainable.Technology;
 import project.civilization.models.maprelated.*;
 
 import java.io.File;
@@ -33,7 +34,8 @@ public class InitializeGameInfo {
     private static final HashMap<String, Color> playerColor = new HashMap<String, Color>();
     private static final ArrayList<Player> players = new ArrayList<Player>();
     private static int numberOFPlayers;
-
+    private static final ArrayList<Technology> allTechnologies = new ArrayList<>();
+    private static final HashMap<String, Technology> technologyByName = new HashMap<>();
     private static final Random random = new Random();
     private static World world ;
 
@@ -156,35 +158,6 @@ public class InitializeGameInfo {
         }
     }
 
-    public static void initializeTechnologyInfo() {
-        try {
-            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/TechnologyInfo.txt")).toExternalForm());
-            String readTechnologyInfo= new String(Files.readAllBytes(Paths.get(address.toURI())));
-            String[] readInfo = readTechnologyInfo.split("\n");
-            ArrayList<String> setArray = new ArrayList<String>();
-            for (String temp : readInfo) {
-                String[] read = temp.split("#");
-                String name = read[0];
-                String info = read[1];
-
-                technologyInfo.put(name, info);
-                setArray.add(name);
-                for (Player player : players) {
-
-                    if (name.equals("Agriculture")) {
-                        player.getAchievedTechnologies().put(name, true);
-                    } else {
-                        player.getAchievedTechnologies().put(name, false);
-                    }
-
-                }
-            }
-
-        } catch (IOException | URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
 
     public static void initializeResourceInfo() {
         try {
@@ -446,5 +419,38 @@ public class InitializeGameInfo {
         initializeTechnologyInfo();
         initializeHashMap();
         initializeUnitInfo();
+    }
+
+    public static ArrayList<Technology> getAllTechnologies() {
+        return allTechnologies;
+    }
+
+    public static void initializeTechnologyInfo() {
+        try {
+            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/TechnologyInfo.txt")).toExternalForm());
+            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
+            String[] readInfo = readTechnologyInfo.split("\n");
+            ArrayList<String> setArray = new ArrayList<String>();
+            for (String temp : readInfo) {
+                String[] read = temp.split("#");
+                String name = read[0];
+                String info = read[1];
+
+                technologyInfo.put(name, info);
+                Technology technology = new Technology(name, null);
+                technologyByName.put(name, technology);
+                allTechnologies.add(technology);
+                setArray.add(name);
+                for (Player player : players) {
+
+                    player.setTechnologyForPlayers();
+
+                }
+            }
+
+        } catch (IOException | URISyntaxException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

@@ -29,7 +29,7 @@ public class WorkerActionPanel {
         int screenWidth = 600;
         int screenHeight = 400;
 
-        ArrayList<String> availableWorks = GameController.getAvailableWorks(UnitController.getSelectedUnit());
+        ArrayList<String> availableWorks = GameController.getAvailableWorks();
         for (String temp : availableWorks) {
             Button newUnit = new Button();
             newUnit.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");

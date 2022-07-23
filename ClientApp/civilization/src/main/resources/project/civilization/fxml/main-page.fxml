@@ -21,7 +21,7 @@
             <Button onMouseClicked="#scoreBoard" prefHeight="10.0" text="Score Board" />
             <Button onMouseClicked="#logout" prefHeight="10.0" text="Logout" />
             <Button onMouseClicked="#exit" prefHeight="0.0" text="Exit" />
-            
+
         </VBox>
 
     </center>

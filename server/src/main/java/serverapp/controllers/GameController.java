@@ -1,6 +1,8 @@
 package serverapp.controllers;
 
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import javafx.scene.image.Image;
 import org.json.JSONException;
@@ -14,6 +16,8 @@ import serverapp.models.units.*;
 import serverapp.models.Game;
 import serverapp.models.Player;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class GameController {
@@ -1456,11 +1460,12 @@ public class GameController {
     }
 */
 
-    public static ArrayList<String> getAvailableWorks(Unit selectedUnit) {
+    public static String getAvailableWorks() {
         ArrayList<String> availableWorks = new ArrayList<>();
         if( UnitController.getSelectedUnit().getCurrentHex().getOwner() == null ||
                 !UnitController.getSelectedUnit().getCurrentHex().getOwner().equals(currentPlayer)){
-            return availableWorks;
+            Gson gson = new GsonBuilder().create();
+            return (gson.toJson(availableWorks));
         }
         if(isConstructionPossible() && !UnitController.getSelectedUnit().getCurrentHex().isPillaged()){
             availableWorks.add("quarry build");
@@ -1480,7 +1485,8 @@ public class GameController {
         if (removeError("Forest") == null) availableWorks.add("remove forest");
         if (removeError("Marsh") == null) availableWorks.add("remove marsh");
         availableWorks.add("remove way");
-        return availableWorks;
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(availableWorks));
     }
     private static boolean canBuildMine(){
         if (UnitController.getSelectedUnit().getCurrentHex().getResource() == null ||
