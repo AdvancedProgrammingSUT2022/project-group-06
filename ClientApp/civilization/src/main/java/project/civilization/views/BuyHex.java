@@ -36,7 +36,7 @@ public class BuyHex {
 
 
         GameController.setSelectedCity(CityController.getCityWithName(cityName));
-        String[] tiles=CityController.presaleTiles().split("\n");
+        String[] tiles = CityController.presaleTiles().split("\n");
         for(String temp:tiles)
         {
             Button button=new Button();

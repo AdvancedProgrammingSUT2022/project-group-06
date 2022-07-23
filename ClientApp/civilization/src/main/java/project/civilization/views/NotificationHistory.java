@@ -1,8 +1,5 @@
 package project.civilization.views;
-
 import java.util.ArrayList;
-
-import javax.swing.BorderFactory;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -38,8 +35,8 @@ public class NotificationHistory {
         //hardcode tor test
         //Player newPlayer=new Player("niki");
         //GameController.setCurrentPlayer(newPlayer);
-        ArrayList<String> notifications =GameController.getCurrentPlayer().getNotifications();
-        ArrayList<Integer> turns= GameController.getCurrentPlayer().getNotificationsTurns();
+        ArrayList<String> notifications = GameController.getNotifications();
+        ArrayList<Integer> turns= GameController.getNotificationsTurns();
 
         ScrollPane scrollPane=new ScrollPane();
         Pane demoPane=new Pane();

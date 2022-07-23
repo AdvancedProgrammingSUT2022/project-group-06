@@ -168,50 +168,93 @@ public class UnitController {
     }
 
     public static String setUpSiegeForRangeAttack() {
-        if (selectedUnit == null) return "you did not select a unit";
-        if (!(selectedUnit instanceof Siege)) return "selected unit is not a siege";
-        selectedUnit.setState(UnitState.setUpForRangeAttack);
-        selectedUnit.setOrdered(true);
-        ((Siege) selectedUnit).setReadyToAttack(true);
-        return "siege is ready for the next turn";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.SETUPFORRANGEATTACK.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String fortify() {
-        if (selectedUnit == null || selectedUnit instanceof Civilian) return "you did not select a military unit";
-        if (Objects.equals(selectedUnit.getCombatType(), "Mounted")) return "a Mounted unit can not fortify";
-        if (Objects.equals(selectedUnit.getCombatType(), "Armored")) return "a Armored unit can not fortify";
-        selectedUnit.setState(UnitState.Fortified);
-        if (selectedUnit.isFirstFortify()) {
-            selectedUnit.increaseBounes((selectedUnit.getCombatStrength() * 125 / 100));
-            selectedUnit.setFirstFortify(false);
-        } else selectedUnit.increaseBounes((selectedUnit.getCombatStrength() * 150 / 100));
-        return "fortified successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.FORTIFY.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String fortifyUtilHeal() {
-        selectedUnit.setState(UnitState.FortifiedUntilHeal);
-        return "fortified successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.FORTIFYUNTILLHEAL.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String garrison() {
-        //todo: move unit to capital city and move errors
-        if (selectedUnit == null || selectedUnit instanceof Civilian) {
-            return "you did not select a military unit";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.GARRISON.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (selectedUnit.getCurrentHex().getCapital() == null) {
-            return "there is no capital";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
         }
-        if (selectedUnit.getCurrentHex().getOwner() != GameController.getCurrentPlayer()) {
-            return ("this is not your city");
-        }
-        selectedUnit.setOrdered(true);
-        selectedUnit.setState(UnitState.Garrisoned);
-        return "garrisoned successfully";
     }
 
     public static String alert() {
-        selectedUnit.setState(UnitState.Alert);
-        return "alerted successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.ALERT.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String deleteMilitaryUnit(Unit unit) {
@@ -221,40 +264,76 @@ public class UnitController {
         return "unit deleted";
     }
 
-    public static String deleteUnitAction(Unit unit) {
-        if (unit instanceof Civilian) unit.getCurrentHex().setCivilianUnit(null);
-        else unit.getCurrentHex().setMilitaryUnit(null);
-        unit.getOwner().removeUnit(unit);
-        selectedUnit = null;
-        GameController.getCurrentPlayer().increaseGold(unit.getCost() / 10);
-        return "unit deleted";
+    public static String deleteUnitAction() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.DELETEUNIT.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String sleepUnit() {
-        if (selectedUnit.getState() == UnitState.Sleep) {
-            return "unit is already sleep";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.SLEEPUNIT.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        selectedUnit.setState(UnitState.Sleep);
-        return "successfully sleep";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String wakeUpUnit() {
-        if (selectedUnit.getState() == UnitState.Sleep || selectedUnit.getState() == UnitState.Alert ||
-                selectedUnit.getState() == UnitState.FortifiedUntilHeal || selectedUnit.getState() == UnitState.Fortified) {
-            selectedUnit.setState(UnitState.Active);
-            return "successfully waked up";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.WAKEDUP.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return "unit is already awake";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String pillage() {
-        if (selectedUnit == null) return "select a military unit first";
-        if (selectedUnit.getCurrentHex().getImprovement().size() == 0) return "there is no improvement";
-        selectedUnit.setState(UnitState.Active);
-        selectedUnit.setOrdered(true);
-        selectedUnit.getCurrentHex().setPillaged(true);
-        if (!selectedUnit.getCurrentHex().getImprovement().isEmpty()) reverseImprovement();
-        return "pillaged successfully";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.PILLAGE.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     private static void reverseImprovement() {
@@ -408,21 +487,24 @@ public class UnitController {
         return "unit is on its way";
     }
 
-    public static String startMovement(int x, int y) {
-        if (selectedUnit == null)
-            return "you have to choose a unit first";
-        else if (isHexOccupied(x, y))
-            return "Destination hex already has a unit of this type";
-        else if (!canMoveThrough(x, y))
-            return "The unit can't go through chosen destination hex(motion/ocean)";
-        else if (selectedUnit instanceof Civilian && hex[x][y].getMilitaryUnit() != null && hex[x][y].getOwner() != getCurrentPlayer())
-            return "a noncombat unit can't move to a tile with enemy military unit";
-        selectedUnit.setState(UnitState.Active);
-        selectedUnit.setOrdered(true);
-        Movement movement = new Movement(selectedUnit, selectedUnit.getCurrentHex(), hex[x][y]);
-        unfinishedMovements.add(movement);
-
-        return moveUnit(movement);
+    public static String startMovement(int i, int j) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.STARTMOVEMENT.getCharacter());
+            json.put("i", i);
+            json.put("j", j);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
     }
 
 

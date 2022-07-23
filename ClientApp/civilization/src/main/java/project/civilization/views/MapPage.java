@@ -589,14 +589,13 @@ public class MapPage {
             ImageView delete = createImageView("pictures/unitActionsIcon/delete.png");
             vBox.getChildren().add(delete);
             delete.setOnMouseClicked(event -> {
-                UnitController.deleteUnitAction(UnitController.getSelectedUnit());
+                UnitController.deleteUnitAction();
                 resetPane();
             });
             ImageView foundCity = createImageView("pictures/unitActionsIcon/foundCity.png");
             vBox.getChildren().add(foundCity);
             foundCity.setOnMouseClicked(event -> {
-                String res = CityController.buildCity(
-                        UnitController.getSelectedUnit().getOwner().getName() + UnitController.getSelectedUnit().getOwner().getCities().size());
+                String res = CityController.buildCity();
                 if (!res.equals("new city created successfully")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
@@ -622,14 +621,17 @@ public class MapPage {
             ImageView delete = createImageView("pictures/unitActionsIcon/delete.png");
             vBox.getChildren().add(delete);
             delete.setOnMouseClicked(event -> {
-                UnitController.deleteUnitAction(UnitController.getSelectedUnit());
+                UnitController.deleteUnitAction();
                 resetPane();
             });
             ImageView pillage = createImageView("pictures/unitActionsIcon/pillage.png");
             vBox.getChildren().add(pillage);
             pillage.setOnMouseClicked(event -> {
-                UnitController.pillage();
-                resetPane();
+                String res = UnitController.pillage();
+                if(!res.equals("pillaged successfully")){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
+                    alert.showAndWait();
+                }else resetPane();
             });
             ImageView alertView = createImageView("pictures/unitActionsIcon/alert.png");
             vBox.getChildren().add(alertView);
@@ -646,8 +648,11 @@ public class MapPage {
             ImageView fortifyView = createImageView("pictures/unitActionsIcon/fortify.png");
             vBox.getChildren().add(fortifyView);
             fortifyView.setOnMouseClicked(event -> {
-                System.out.println(UnitController.fortify());
-                resetPane();
+                String res = (UnitController.fortify());
+                if(!res.equals("fortified successfully")){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
+                    alert.showAndWait();
+                }else resetPane();
             });
             ImageView wake = createImageView("pictures/unitActionsIcon/wake.png");
             vBox.getChildren().add(wake);
@@ -806,6 +811,7 @@ public class MapPage {
         imageView.setOnMouseClicked(event -> {
             if (wantToMove) {
                 String res = UnitController.startMovement(i, j);
+                System.out.println(res);
                 if (!res.equals("unit is on its way")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
@@ -844,7 +850,7 @@ public class MapPage {
             Label label1 = new Label(featureDetails);
             addVboxToPopup(label1, vBox);
         }
-        if (improvementDetails != "") {
+        if (!Objects.equals(improvementDetails, "")) {
             Label label1 = new Label(improvementDetails);
             addVboxToPopup(label1, vBox);
         }

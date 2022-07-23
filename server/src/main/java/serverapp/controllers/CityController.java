@@ -180,7 +180,8 @@ public class CityController {
     }
 
 
-    public static String buildCity(String name) {
+    public static String buildCity() {
+        String name = UnitController.getSelectedUnit().getOwner().getName()+UnitController.getSelectedUnit().getOwner().getCities().size();
 
         if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Settler)) {
             return "choose a settler first";

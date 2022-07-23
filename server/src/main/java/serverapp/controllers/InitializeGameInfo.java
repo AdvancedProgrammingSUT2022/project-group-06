@@ -5,6 +5,7 @@ import serverapp.CivilizationApplication;
 import serverapp.enums.Color;
 import serverapp.enums.HexState;
 import serverapp.models.Player;
+import serverapp.models.gainable.Technology;
 import serverapp.models.maprelated.*;
 
 import java.io.File;
@@ -33,6 +34,8 @@ public class InitializeGameInfo {
     private static final HashMap<String, Color> playerColor = new HashMap<String, Color>();
     private static final ArrayList<Player> players = new ArrayList<Player>();
     private static int numberOFPlayers;
+    private static final ArrayList<Technology> allTechnologies = new ArrayList<>();
+    private static final HashMap<String, Technology> technologyByName = new HashMap<>();
 
     private static final Random random = new Random();
     private static World world ;
@@ -155,11 +158,10 @@ public class InitializeGameInfo {
             e.printStackTrace();
         }
     }
-
     public static void initializeTechnologyInfo() {
         try {
             URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/TechnologyInfo.txt")).toExternalForm());
-            String readTechnologyInfo= new String(Files.readAllBytes(Paths.get(address.toURI())));
+            String readTechnologyInfo = new String(Files.readAllBytes(Paths.get(address.toURI())));
             String[] readInfo = readTechnologyInfo.split("\n");
             ArrayList<String> setArray = new ArrayList<String>();
             for (String temp : readInfo) {
@@ -168,14 +170,13 @@ public class InitializeGameInfo {
                 String info = read[1];
 
                 technologyInfo.put(name, info);
+                Technology technology = new Technology(name, null);
+                technologyByName.put(name, technology);
+                allTechnologies.add(technology);
                 setArray.add(name);
                 for (Player player : players) {
 
-                    if (name.equals("Agriculture")) {
-                        player.getAchievedTechnologies().put(name, true);
-                    } else {
-                        player.getAchievedTechnologies().put(name, false);
-                    }
+                    player.setTechnologyForPlayers();
 
                 }
             }
@@ -439,5 +440,13 @@ public class InitializeGameInfo {
         initializeTechnologyInfo();
         initializeHashMap();
         initializeUnitInfo();
+    }
+
+    public static ArrayList<Technology> getAllTechnologies() {
+        return allTechnologies;
+    }
+
+    public static HashMap<String, Technology> getTechnologyByName() {
+        return technologyByName;
     }
 }

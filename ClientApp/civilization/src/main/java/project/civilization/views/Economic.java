@@ -10,9 +10,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.GameController;
-import project.civilization.models.maprelated.City;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Economic {
 
@@ -31,12 +31,12 @@ public class Economic {
         int screenWidth=600;
         int screenHeight=400;
 
-
-        for(City temp: GameController.getCurrentPlayer().getCities())
+        ArrayList<String> playerCitiesNames = GameController.getPlayerCitiesNames();
+        for(String temp : playerCitiesNames)
         {
 
             Button city=new Button();
-            city.setText(GameController.cityScreen(temp.getName()));
+            city.setText(GameController.cityScreen(temp));
 
 
 
@@ -51,7 +51,7 @@ public class Economic {
 
                 @Override
                 public void handle(MouseEvent event) {
-                    loadPanel(temp.getName());
+                    loadPanel(temp);
                 }
 
             });

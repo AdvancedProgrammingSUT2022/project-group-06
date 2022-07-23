@@ -1,8 +1,6 @@
 package project.civilization.views;
 
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -12,7 +10,6 @@ import project.civilization.CivilizationApplication;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
-import project.civilization.models.Player;
 
 import java.util.ArrayList;
 

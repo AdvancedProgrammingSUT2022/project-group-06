@@ -1,8 +1,0 @@
-Desert#0 0 0 -33 1 
-Grassland#2 0 0 -33 1 
-Hills#0 2 0 25 2 
-Mountain#0 0 0 0 0 
-Ocean#0 0 0 0 0 
-Plain#1 1 0 -33 1 
-Snow#0 0 0 -33 1 
-Tundra#1 0 0 -33 1 

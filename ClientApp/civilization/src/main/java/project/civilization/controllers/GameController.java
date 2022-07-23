@@ -3,7 +3,6 @@ package project.civilization.controllers;
 
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,16 +11,12 @@ import project.civilization.enums.*;
 import project.civilization.models.Game;
 import project.civilization.models.Player;
 import project.civilization.models.gainable.Construction;
-import project.civilization.models.gainable.Improvement;
 import project.civilization.models.gainable.Technology;
 import project.civilization.models.maprelated.*;
 import project.civilization.models.units.*;
 
 
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class GameController {
@@ -740,14 +735,21 @@ public class GameController {
     }
 
     public static String militaryPanel() {
-        StringBuilder militaryList = new StringBuilder();
-        int count = 1;
-        for (Military military : currentPlayer.getMilitaries()) {
-            militaryList.append(count + ") " + military.getName() + " hex: x=" + military.getCurrentHex().getX() + " y=" + military.getHex().getY() + "\n");
-            count++;
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.militaryPanel.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return militaryList.toString();
-
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
     }
 
     public static String citiesPanel() {
@@ -761,13 +763,21 @@ public class GameController {
     }
 
     public static String unitsPanel() {
-        StringBuilder unitsList = new StringBuilder();
-        int count = 1;
-        for (Unit temp : currentPlayer.getUnits()) {
-            unitsList.append(count + ") " + temp.getName() + ": " + "state: " + temp.getState() + " x: " + temp.getX() + " y: " + temp.getY() + "\n");
-            count++;
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.UNITLISTPANEL.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return unitsList.toString();
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
     }
 
     public static String notificationHistory() {
@@ -880,12 +890,21 @@ public class GameController {
     }
 
     public static String demographicScreen() {
-        StringBuilder demographics = new StringBuilder();
-        demographics.append("total wealth: " + currentPlayer.getGold() + "\n");
-        demographics.append("total number of military units: " + currentPlayer.getMilitaries().size() + "\n");
-        demographics.append("total number of civilian units: " + currentPlayer.getCivilians().size() + "\n");
-        demographics.append("population: " + currentPlayer.getPopulation());
-        return demographics.toString();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.demographicScreen.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
     }
 
     public static String deleteConstruction() {
@@ -1039,77 +1058,99 @@ public class GameController {
         return "Unit created successfully";
 
     }
-    public static Boolean isAchieved(String name) {
-        if (currentPlayer.getAchievedTechnologies().get(name) != null) {
-            return currentPlayer.getAchievedTechnologies().get(name);
+    public static String isAchieved(String name) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.ISANACHIVEDTECK.getCharacter());
+            json.put("techName", name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
         }
         return null;
     }
     public static String getLastTechnology() {
-        return currentPlayer.getCurrentResearch().getName();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getLastTechnology.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
     }
     public static ArrayList<String> getAvailableTechs() {
-        ArrayList<String> output = new ArrayList<>();
-        boolean flag = true;
-        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
-            for (String prerequisite : technology.getNeededPreviousTechnologies()) {
-                if (currentPlayer.getAchievedTechnologies().get(prerequisite) != null &&
-                        !currentPlayer.getAchievedTechnologies().get(prerequisite))
-                    flag = false;
-            }
-            if (flag) output.add(technology.getName());
-            flag = true;
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getAvailableTechsArray.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return output;
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return null;
     }
 
-    public static void changeResearch(String techName) {
-        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
-            if (technology.getName().equals(techName)) {
-                Technology newTech = Technology.clone(technology, currentPlayer);
-                currentPlayer.addUnfinishedProject(newTech);
-            }
+    public static String changeResearch(String techName) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.changeResearch.getCharacter());
+            json.put("techName", techName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
     }
 
     public static String cityScreen(String cityName)
     {
-        StringBuilder economicInfo = new StringBuilder();
-        int count = 1;
-        for (City temp : currentPlayer.getCities()) {
-            if(!temp.getName().equals(cityName))
-            {
-                continue;
-            }
-            ArrayList<Construction> technologies = new ArrayList<Construction>();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.cityScreen.getCharacter());
+            json.put("cityName", cityName);
 
-            economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
-            economicInfo.append("\t\tpoplulation: " + temp.getPopulation() + "\n");
-            economicInfo.append("\t\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
-            economicInfo.append("\t\tranged defensive power: " + temp.getRangedCombatStrength() + "\n");
-            economicInfo.append("\t\tfood: " + temp.getFood() + "\n");
-            economicInfo.append("\t\tgold " + temp.getGold() + "\n");
-            economicInfo.append("\t\ttrophy: " + temp.getTrophy() + "\n");
-            economicInfo.append("\t\tproduction: " + temp.getProduction() + "\n");
-
-            for (Construction construction : currentPlayer.getUnfinishedProjects()) {
-                if (!(construction instanceof Technology) && construction.getHex().getCity().getName().equals(temp.getName())) {
-                    economicInfo.append("\t\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
-                }
-                if (construction instanceof Technology) {
-                    technologies.add(construction);
-                }
-
-            }
-
-            if (!technologies.isEmpty()) {
-                for (Construction tech : technologies) {
-                    economicInfo.append("pending technology: " + tech.getName());
-                }
-            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-
-        return economicInfo.toString();
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
 
     }
 
@@ -1216,6 +1257,8 @@ public class GameController {
         try {
             json.put("menu", MenuCategory.GAMEMenu.getCharacter());
             json.put("action", Actions.GetHexDetails.getCharacter());
+            json.put("i", i);
+            json.put("j", j);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1269,5 +1312,63 @@ public class GameController {
     }
 
 
+    public static ArrayList<String> getNotifications() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getNotifications.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
 
+    public static ArrayList<Integer> getNotificationsTurns() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getNotificationsTurns.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ArrayList<String> getPlayerCitiesNames() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getPlayerCitiesNames.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
 }

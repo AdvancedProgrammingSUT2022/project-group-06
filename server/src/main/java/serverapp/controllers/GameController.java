@@ -4,7 +4,9 @@ package serverapp.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 import serverapp.enums.*;
@@ -49,7 +51,10 @@ public class GameController {
     public static void setSelectedHex(Hex newHex) {
         selectedHex = newHex;
     }
-
+    public static String setSelectedHex(int i, int j) {
+        selectedHex = hex[i][j];
+        return " ";
+    }
     public static World getWorld() {
         return world;
     }
@@ -303,7 +308,7 @@ public class GameController {
                 if (hex[n][m].getState(currentPlayer) == HexState.Visible) drawHex(hex[n][m]);
                 else if (hex[n][m].getState(currentPlayer) == HexState.FogOfWar) drawFogOfWar(hex[n][m]);
                 else {
-                    drawHex(currentPlayer.getReveledHexes().get(hex[n][m]));
+                    //drawHex(currentPlayer.getReveledHexes().get(hex[n][m]));
                 }
             }
         }
@@ -1660,8 +1665,6 @@ public class GameController {
     public static String getUnitInformation() {
         JSONObject json = new JSONObject();
         try {
-            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
-            json.put("action", Actions.GETUNITINFORMATION.getCharacter());
             json.put("name", UnitController.getSelectedUnit().getName());
             json.put("state",UnitController.getSelectedUnit().getState().getCharacter());
             json.put("mp", String.valueOf(UnitController.getSelectedUnit().getMP()));
@@ -1670,5 +1673,145 @@ public class GameController {
             e.printStackTrace();
         }
         return json.toString();
+    }
+
+    public static String getHexDetails(int i, int j) {
+        Hex tile = hex[i][j];
+        JSONObject json = new JSONObject();
+        String terrainDetails =tile.getTerrain().getName()+
+                " ,food:" + tile.getTerrain().getFood()+
+                " ,product:" + tile.getTerrain().getProduction()+
+                " ,gold:" +  tile.getTerrain().getGold()+
+                " ,CMP:" + tile.getTerrain().getCombatModifiersPercentage()+
+                " ,MP:" +tile.getTerrain().getMovePoint();
+        String featureDetails ="";
+        String improvementDetails ="";
+        String resourceDetails ="";
+        if (tile.getResource() != null) {
+            json.put("resourceName",tile.getResource().getName());
+            resourceDetails = tile.getResource().getName() +
+                    " ,food:" + tile.getResource().getFood() +
+                    " ,product:" + tile.getResource().getProduction() +
+                    " ,gold:" + tile.getResource().getGold();
+        }
+        if (tile.getFeature() != null) {
+            featureDetails= (tile.getFeature().getName() +
+                    " ,food:" + tile.getFeature().getFood() +
+                    " ,product:" + tile.getFeature().getProduction() +
+                    " ,gold:" + tile.getFeature().getGold() +
+                    " ,CMP:" + tile.getFeature().getCombatModifiersPercentage() +
+                    " ,MP:" + tile.getFeature().getMovePoint());
+        }
+        if (tile.getImprovement() != null) {
+            StringBuilder improvementsName= new StringBuilder();
+            for (Improvement improvement: tile.getImprovement()) {
+                improvementsName.append(improvement.getName()+" ");
+            }
+            improvementDetails = (improvementsName.toString());
+        }
+
+        try {
+            json.put("terrainDetails", terrainDetails);
+            json.put("featureDetails",featureDetails);
+            json.put("improvementDetails", improvementDetails);
+            json.put("resourceDetails", resourceDetails);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
+    }
+    public static String getLastTechnology() {
+        return currentPlayer.getCurrentResearch().getName();
+    }
+    public static String changeResearch(String techName) {
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            if (technology.getName().equals(techName)) {
+                Technology newTech = Technology.clone(technology, currentPlayer);
+                currentPlayer.addUnfinishedProject(newTech);
+            }
+        }
+        return " ";
+    }
+
+    public static String getAvailableTechs() {
+        ArrayList<String> output = new ArrayList<>();
+        boolean flag = true;
+        for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
+            for (String prerequisite : technology.getNeededPreviousTechnologies()) {
+                if (currentPlayer.getAchievedTechnologies().get(prerequisite) != null &&
+                        !currentPlayer.getAchievedTechnologies().get(prerequisite))
+                    flag = false;
+            }
+            if (flag) output.add(technology.getName());
+            flag = true;
+        }
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(output));
+    }
+
+    public static String isAchieved(String name) {
+        if (currentPlayer.getAchievedTechnologies().get(name) != null) {
+           if(currentPlayer.getAchievedTechnologies().get(name))return "true";
+           return "false";
+        }
+        return "null";
+    }
+
+    public static String getNotifications() {
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(currentPlayer.getNotifications()));
+    }
+
+    public static String getNotificationsTurns() {
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(currentPlayer.getNotificationsTurns()));
+    }
+
+    public static String cityScreen(String cityName) {
+        StringBuilder economicInfo = new StringBuilder();
+        int count = 1;
+        for (City temp : currentPlayer.getCities()) {
+            if(!temp.getName().equals(cityName))
+            {
+                continue;
+            }
+            ArrayList<Construction> technologies = new ArrayList<Construction>();
+
+            economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
+            economicInfo.append("\t\tpoplulation: " + temp.getPopulation() + "\n");
+            economicInfo.append("\t\tmelee defensive power: " + temp.getMeleeCombatStrength() + "\n");
+            economicInfo.append("\t\tranged defensive power: " + temp.getRangedCombatStrength() + "\n");
+            economicInfo.append("\t\tfood: " + temp.getFood() + "\n");
+            economicInfo.append("\t\tgold " + temp.getGold() + "\n");
+            economicInfo.append("\t\ttrophy: " + temp.getTrophy() + "\n");
+            economicInfo.append("\t\tproduction: " + temp.getProduction() + "\n");
+
+            for (Construction construction : currentPlayer.getUnfinishedProjects()) {
+                if (!(construction instanceof Technology) && construction.getHex().getCity().getName().equals(temp.getName())) {
+                    economicInfo.append("\t\tpending project: " + construction.getName() + "-> turn left: " + construction.getLeftTurns() + "\n");
+                }
+                if (construction instanceof Technology) {
+                    technologies.add(construction);
+                }
+
+            }
+
+            if (!technologies.isEmpty()) {
+                for (Construction tech : technologies) {
+                    economicInfo.append("pending technology: " + tech.getName());
+                }
+            }
+        }
+
+        return economicInfo.toString();
+    }
+
+    public static String getPlayerCitiesNames() {
+        ArrayList<String> playerCitiesNames = new ArrayList<>();
+        for (City city:currentPlayer.getCities()) {
+            playerCitiesNames.add(city.getName());
+        }
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(playerCitiesNames));
     }
 }

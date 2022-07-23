@@ -1,8 +1,14 @@
 package project.civilization.controllers;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import project.civilization.CivilizationApplication;
+import project.civilization.enums.Actions;
 import project.civilization.enums.HexState;
+import project.civilization.enums.MenuCategory;
 import project.civilization.enums.UnitState;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.City;
@@ -13,7 +19,7 @@ import project.civilization.models.units.Unit;
 
 public class CityController {
     private static final ArrayList<Hex> toBuyTiles = new ArrayList<Hex>();
-    private static final Hex[][] hex = GameController.getWorld().getHex();
+    private static Hex[][] hex;
 
 
     public static ArrayList<Hex> getToBuyTiles() {
@@ -180,31 +186,22 @@ public class CityController {
     }
 
 
-    public static String buildCity(String name) {
-
-        if (UnitController.getSelectedUnit() == null || !(UnitController.getSelectedUnit() instanceof Settler)) {
-            return "choose a settler first";
+    public static String buildCity() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.BUILDCITY.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Ocean||Mountain")) {
-            return "you can not build a city on this tile";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
         }
-        for (City temp : City.getCities()) {
-            if (temp.getHexs().contains(UnitController.getSelectedUnit().getCurrentHex())) {
-                return "this hex is already part of a city";
-            }
-            if (temp.getName().equals(name)) {
-                return "a city with this name already exists";
-            }
-        }
-        UnitController.getSelectedUnit().setState(UnitState.Active);
-        UnitController.getSelectedUnit().setOrdered(true);
-        City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
-        GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
-        if (GameController.getCurrentPlayer().getHappiness() < 0) GameController.unhappinessEffects();
-        City.addCities(newCity);
-        GameController.getCurrentPlayer().addCity(newCity);
-        getCurrentPlayer().decreaseHappiness(2);//happiness decrease as the number of cities grow
-        return "new city created successfully";
     }
 
 

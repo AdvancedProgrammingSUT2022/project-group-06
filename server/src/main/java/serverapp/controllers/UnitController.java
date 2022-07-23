@@ -220,7 +220,8 @@ public class UnitController {
         return "unit deleted";
     }
 
-    public static String deleteUnitAction(Unit unit) {
+    public static String deleteUnitAction() {
+        Unit unit = selectedUnit;
         if (unit instanceof Civilian) unit.getCurrentHex().setCivilianUnit(null);
         else unit.getCurrentHex().setMilitaryUnit(null);
         unit.getOwner().removeUnit(unit);
@@ -420,7 +421,6 @@ public class UnitController {
         selectedUnit.setOrdered(true);
         Movement movement = new Movement(selectedUnit, selectedUnit.getCurrentHex(), hex[x][y]);
         unfinishedMovements.add(movement);
-
         return moveUnit(movement);
     }
 
@@ -473,8 +473,14 @@ public class UnitController {
 
     public static String selectUnit(int i, int j, String type) {
         switch (type){
-            case  "military": selectedUnit = hex[i][j].getMilitaryUnit();
-            case "civilian": selectedUnit = hex[i][j].getCivilianUnit();
+            case  "military":{
+                selectedUnit = hex[i][j].getMilitaryUnit();
+                break;
+            }
+            case "civilian": {
+                selectedUnit = hex[i][j].getCivilianUnit();
+                break;
+            }
         }
         return " ";
     }

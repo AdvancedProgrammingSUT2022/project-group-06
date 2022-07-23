@@ -12,6 +12,7 @@ import javafx.scene.shape.Line;
 import project.civilization.controllers.GameController;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class TechGraphMenu {
 
@@ -664,9 +665,9 @@ public class TechGraphMenu {
 
     private void setBorderColor(HBox hBox) {
         String name = hBox.getChildren().get(0).toString();
-        if (GameController.isAchieved(name) == null) {
+        if (Objects.equals(GameController.isAchieved(name), "null")) {
             hBox.setStyle("-fx-border-color:#424242; -fx-border-width:2px");
-        } else if (Boolean.TRUE.equals(GameController.isAchieved(name))) {
+        } else if (Objects.equals(GameController.isAchieved(name), "true")) {
             hBox.setStyle("-fx-border-color:#111111; -fx-border-width:2px");
         } else
             hBox.setStyle("-fx-border-color:#555555; -fx-border-width:2px");

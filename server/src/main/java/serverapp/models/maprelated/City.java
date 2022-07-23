@@ -195,7 +195,7 @@ public class City implements Combatable {
         if (city.getCapital().getMilitaryUnit() != null) {
             UnitController.deleteMilitaryUnit(city.getCapital().getMilitaryUnit());
         }
-        if (city.getOwner().getMainCity() == city) {
+        if (city.getOwner().getCities().get(0) == city) {
             CombatController.addCityToTerritory(city, GameController.getCurrentPlayer());
             return "this city is the main city of the opp civilization you can not delete this we will add this to your cities";
         }

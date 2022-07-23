@@ -26,7 +26,30 @@ public enum Actions {
     GETHexInHeight("getHexInHeight"),
     SELECTUNIT("selectUnit"),
     ISMYUNIT("isMyUnit"),
-    GETAVAILABLEWORKS("getAvailableWorks");
+    GETAVAILABLEWORKS("getAvailableWorks"),
+    ATTACKUNIT("attackUnit"),
+    STARTMOVEMENT("startMovement"),
+    DELETEUNIT("deletUnit"), 
+    PILLAGE("pillage"),
+    ALERT("alert"),
+    SLEEPUNIT("SLEEPUNIT"),
+    FORTIFY("frtify"),
+    WAKEDUP("wakeUp"),
+    GARRISON("garrison"),
+    SETUPFORRANGEATTACK("setUpSiegeForRangeAttack"),
+    FORTIFYUNTILLHEAL("fortifyUntilHeal"),
+    BUILDCITY("buildCity"),
+    UNITLISTPANEL("unitListPanel"),
+    getLastTechnology("getLastTechnology"),
+    getAvailableTechsArray("getAvailableTechsArray"),
+    changeResearch("changeResearch"),
+    ISANACHIVEDTECK("ISANACHIVEDTECK"),
+    getNotificationsTurns("getNotificationsTurns"),
+    getNotifications("getNotifications"),
+    militaryPanel("militaryPanel"),
+    demographicScreen("demographicScreen"),
+    cityScreen("cityScreen"),
+    getPlayerCitiesNames("getPlayerCitiesNames");
     private final String character;
 
     Actions(String color) {

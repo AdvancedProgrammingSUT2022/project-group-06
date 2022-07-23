@@ -12,9 +12,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import project.civilization.controllers.GameController;
-import project.civilization.models.Player;
-import project.civilization.models.maprelated.Hex;
-import project.civilization.models.units.Unit;
 
 public class UnitsPanel {
     

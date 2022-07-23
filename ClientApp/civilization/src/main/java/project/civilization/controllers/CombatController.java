@@ -1,5 +1,10 @@
 package project.civilization.controllers;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import project.civilization.CivilizationApplication;
+import project.civilization.enums.Actions;
+import project.civilization.enums.MenuCategory;
 import project.civilization.models.Player;
 import project.civilization.models.maprelated.City;
 import project.civilization.models.maprelated.Hex;
@@ -7,8 +12,10 @@ import project.civilization.models.units.Combatable;
 import project.civilization.models.units.Ranged;
 import project.civilization.models.units.Siege;
 
+import java.io.IOException;
+
 public class CombatController {
-    private static final Hex[][] hex = GameController.getWorld().getHex();
+    private static  Hex[][] hex ;
     private static Combatable attacker;
     private static Combatable defender;
 
@@ -38,21 +45,23 @@ public class CombatController {
     }
 
     public static String attackUnit(int x, int y) {
-        City defenderCity = hex[x][y].getCapital();
-        attacker = UnitController.getSelectedUnit();
-        if (defenderCity != null) {
-            defender = defenderCity;
-        } else if (hex[x][y].getMilitaryUnit() != null) {
-            defender = hex[x][y].getMilitaryUnit();
-        } else if (hex[x][y].getCivilianUnit() != null) {
-            defender = hex[x][y].getCivilianUnit();
-        } else
-            return "there is no city or unit to attack";
-        if (defender.getOwner() == attacker.getOwner()) return "you can not attack to your self";
-        if (!attacker.isInPossibleCombatRange(x, y, 0, attacker.getX(), attacker.getY())) {
-            return "out of sight range";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.ATTACKUNIT.getCharacter());
+            json.put("i", x);
+            json.put("j", y);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return handelCombatType(defenderCity, x, y);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     private static String handelCombatType(City defenderCity, int x, int y) {
