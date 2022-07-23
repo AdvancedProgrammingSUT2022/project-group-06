@@ -361,7 +361,7 @@ public class UnitController {
     }
 
     public static String moveUnit(Movement movement) {
-
+        
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement);
         if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != GameController.getCurrentPlayer())) {

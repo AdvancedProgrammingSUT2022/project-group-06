@@ -5,9 +5,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -112,7 +114,16 @@ public class TechnologyMenu {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        GameController.changeResearch(button.getText());
+                        if(MapPage.technologyPass)
+                        {
+                            GameController.getCurrentPlayer().unlockTechnology(button.getText());
+                            Alert alert=new Alert(AlertType.INFORMATION,"Technology achieved");
+                            alert.showAndWait();
+                        }else
+                        {
+                            GameController.changeResearch(button.getText());
+                        }
+                        
                     }
                 }
             }

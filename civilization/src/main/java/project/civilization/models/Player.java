@@ -42,6 +42,7 @@ public class Player {
     private  ArrayList<Technology> archivedTechnologies = new ArrayList<>();
     private  Technology currentResearch;
     private ArrayList<City> cities = new ArrayList<City>();
+    //private boolean createdRuins=false;
 
 
     private transient ArrayList<Trade> trades = new ArrayList<Trade>();
@@ -62,6 +63,14 @@ public class Player {
         this.foodForNewCitizen = 2;
     }
 
+    // public void setCreatedRuins(boolean a)
+    // {
+    //     createdRuins=a;
+    // }
+    // public boolean getCreatedRuins()
+    // {
+    //     return createdRuins;
+    // }
     public void increaseTrophies(int amount) {
         trophies += amount;
     }

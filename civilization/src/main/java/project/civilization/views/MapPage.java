@@ -38,7 +38,6 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.*;
 
 public class MapPage {
     public  Pane pane;
@@ -51,6 +50,8 @@ public class MapPage {
     private Button notification;
     @FXML
     private Button technologyMenu;
+
+    public static boolean technologyPass=false;
 
     public static void cityCombatMenu(City city, Player player) {
         ButtonType delete = new ButtonType("delete");
@@ -82,7 +83,25 @@ public class MapPage {
             case 3:
                 GameController.getCurrentPlayer().increaseGold(89);
                 UnitController.makeUnit("Settler", hex, "gold");
-                alert.setContentText("Congratulations!! you just got a free Settler Unit :)");
+                Hex[][] temp=InitializeGameInfo.getWorld().getHex();
+                boolean found=false;
+                outer:
+                for (int k = mapBoundaries[0]; k < mapBoundaries[1]; k++) 
+                {
+                    for (int j = mapBoundaries[2]; j < mapBoundaries[3]; j++)
+                    {
+                        if(temp[k][j].getOwner().equals(GameController.getCurrentPlayer())&&temp[k][j].getCivilianUnit()==null)
+                        {
+                            GameController.getCurrentPlayer().increaseGold(89);
+                            UnitController.makeUnit("Settler", hex, "gold");
+                            alert.setContentText("Congratulations!! you just got a free Settler Unit :)");
+                            found=true;
+                            break outer;
+                        }
+                    }
+                }
+                if(!found)
+                    alert.setContentText("bad luck, the ruin was empty :)");
                 break;
             case 4:
                 alert.setContentText("Congratulations!! you now have the abilitiy to remove fog of war from 3 desired tiles.\nA new button will appear on the top of your screen.\nchoose a tile, click the button, and enjoy");
@@ -90,9 +109,8 @@ public class MapPage {
                 FOGRemover=3;
                 break;
             case 5:
-                alert.setContentText("congratulations!! you can unlock a technology now!! :)");
+                alert.setContentText("congratulations!! you can now unlock an -accessible- technology without waiting!! :)");
                 technologyPass=true;
-                //free technology
                 break;
 
         }
@@ -102,7 +120,7 @@ public class MapPage {
     }
 
     int FOGRemover=0;
-    boolean technologyPass=false;
+    
     public void createFogOfWarRemoverButton()
     {
         Button remover=new Button();
@@ -124,13 +142,13 @@ public class MapPage {
                     alert.showAndWait();
                     return;
                 }
-                GameController.getSelectedHex().setState(HexState.Revealed, GameController.getCurrentPlayer());
+                GameController.getSelectedHex().setState(HexState.Visible, GameController.getCurrentPlayer());
                 FOGRemover--;
                 if(FOGRemover==0)
                 {
-                    anchorPane.getChildren().add(remover);
+                    anchorPane.getChildren().remove(remover);
                 }
-                initializePane();
+                resetPane();
             }
 
         });
@@ -139,7 +157,7 @@ public class MapPage {
 
             @Override
             public void handle(MouseEvent event) {
-                remover.setStyle("-fx-background-color:white; -fx-text-fill: black");
+                remover.setStyle("-fx-background-color:#bfbfbf; -fx-text-fill: black");
 
             }
 
@@ -444,7 +462,6 @@ public class MapPage {
                 } else if (hexes[i][j].getState(GameController.getCurrentPlayer()) == HexState.Revealed) {
                     setTerrainViewCoordinates(i, j, hexes[i][j].getTerrain().getTerrainView());
                     initializeRevealedView(hexes[i][j]);
-                    initializeRuins(hexes[i][j]);
                 } else {
                     setTerrainViewCoordinates(i, j, hexes[i][j].getTerrain().getTerrainView());
                     if (hexes[i][j].getFeature() != null) {

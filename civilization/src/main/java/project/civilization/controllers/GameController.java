@@ -81,8 +81,14 @@ public class GameController {
           if(pl.getMilitaries() != null)  allMilitaries.addAll(pl.getMilitaries());
         }
     }
+    private static boolean createdRuins=false;
     public static void startGame(){
-        createRuinTiles();
+        if(!createdRuins)
+        {   
+            createRuinTiles();
+            createdRuins=true;
+        }
+        
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if(hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
@@ -103,9 +109,10 @@ public class GameController {
         {
             int x=random.nextInt(0,world.getHexInWidth());
             int y=random.nextInt(0,world.getHexInHeight());
-            System.out.println(hex[x][y].getTerrain().getName());
-            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().equals("Mountain|Ocean"))
-            {
+            
+            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean"))
+            {   
+                
                 i--;
                 continue;
             }
