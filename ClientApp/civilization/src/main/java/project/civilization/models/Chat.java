@@ -1,4 +1,4 @@
-package serverapp.models;
+package project.civilization.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +9,8 @@ public class Chat {
     private static ArrayList<Chat> rooms;
     private static ArrayList<Chat> privateChats;
 
-    private ArrayList<String> participants;
-    private HashMap<String, ArrayList<Message>> usersMessages;
+    private ArrayList<User> participants;
+    private HashMap<User, ArrayList<Message>> usersMessages;
     private ArrayList<Message> allMessages;
 
     public Chat() {
@@ -27,11 +27,11 @@ public class Chat {
         Chat.publicChat = publicChat;
     }
 
-    public ArrayList<String> getParticipants() {
+    public ArrayList<User> getParticipants() {
         return participants;
     }
 
-    public HashMap<String, ArrayList<Message>> getUsersMessages() {
+    public HashMap<User, ArrayList<Message>> getUsersMessages() {
         return usersMessages;
     }
 

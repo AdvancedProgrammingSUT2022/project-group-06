@@ -63,7 +63,11 @@ public enum Actions {
     cheatMeleeCombatStrength("cheatMeleeCombatStrength"),
     cheatCityFood("cheatCityFood"),
     cheatCityHitPoint("cheatCityHitPoint"),
-    cheatTrophy("cheatTrophy");;
+    cheatTrophy("cheatTrophy"),
+    initializePublicChat("initializePublicChat"),
+    sendMessage("sendMessage"),
+    updateMessages("updateMessages");
+
     private final String character;
 
     Actions(String color) {

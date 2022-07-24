@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.ChatController;
 import project.civilization.enums.Menus;
 
 public class ChatMenuNavigation {
@@ -22,6 +23,7 @@ public class ChatMenuNavigation {
 
 
     public void goToPublicChats() {
+        ChatController.initializePublicChat();
         CivilizationApplication.changeMenu(Menus.PUBLICCHAT);
     }
 

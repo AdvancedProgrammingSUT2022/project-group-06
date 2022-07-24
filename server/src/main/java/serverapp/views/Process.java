@@ -2,8 +2,6 @@ package serverapp.views;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import serverapp.controllers.NetWorkController;
-import serverapp.enums.Color;
 import serverapp.enums.MenuCategory;
 
 import java.net.Socket;
@@ -27,7 +25,9 @@ public class Process {
                 return Network.run(action, obj, socket);
             } else if(menuName.equals(MenuCategory.CHEAT.getCharacter())){
                 return Cheat.run(action, obj);
-            } else return "no menu matched";
+            } else if(menuName.equals(MenuCategory.Chat.getCharacter())){
+                return ChatMenu.run(action, obj);
+            }else return "no menu matched";
         }catch (JSONException e) {
             e.printStackTrace();
             return "sth is wrong with json";

@@ -25,6 +25,7 @@ public class UserController {
     private static HashMap<String, User> users = new HashMap<String, User>();
     private static ArrayList<String> nicknames = new ArrayList<String>();
     private static ArrayList<User> usersArray=new ArrayList<User>();
+    private static ArrayList<String> uuids = new ArrayList<>();
 
     public static HashMap<String, User> getUserHashMap() {
         return userHashMap;
@@ -57,6 +58,10 @@ public class UserController {
 
     public static User getUserByUserName(String username) {
         return users.get(username);
+    }
+
+    public static ArrayList<String> getUuids() {
+        return uuids;
     }
 
     public void setUsers(HashMap<String, User> users) {
@@ -113,6 +118,7 @@ public class UserController {
                 if (user.getPassword().equals(password)) {
                     String uuid = UUID.randomUUID().toString();
                     userHashMap.put(uuid,user);
+                    uuids.add(uuid);
                     try {
                         json.put("message", "logged in");
                         json.put("UUID", uuid);

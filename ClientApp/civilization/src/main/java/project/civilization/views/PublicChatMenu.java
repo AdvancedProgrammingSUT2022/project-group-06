@@ -8,9 +8,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import org.xml.sax.HandlerBase;
 import project.civilization.controllers.ChatController;
+import project.civilization.models.Chat;
 import project.civilization.models.Message;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class PublicChatMenu {
 
@@ -60,14 +67,43 @@ public class PublicChatMenu {
         sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-               if(editingMessage == null) {
-                   ChatController.sendMessage(previewMessageTextField.getText(), pane);
-               }
-               else {
-                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
-               }
+                if (editingMessage == null) {
+                    ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), Chat.getPublicChat());
+                    showMessages(messages);
+                } else {
+//                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
+                }
             }
         });
+    }
+
+    private void showMessages(ArrayList<Message> messages) {
+
+        Collections.reverse(messages);
+
+        for (int i = 0; i < messages.size(); i++) {
+            HBox hBox = new HBox();
+            hBox.setLayoutY(540 - (30 * i));
+            hBox.setPrefHeight(40);
+            hBox.setPrefWidth((3 * messages.get(i).getText().length()) + 20);
+            hBox.setLayoutX(1100 - hBox.getPrefWidth());
+            Text text = new Text(messages.get(i).getText());
+            setStyleForMessage(hBox, text);
+            hBox.getChildren().add(text);
+            //todo: time, seen or not, style, if you send it or others
+            pane.getChildren().add(hBox);
+        }
+    }
+
+    private static void setStyleForMessage(HBox hBox, Text text) {
+        text.setStyle("-fx-font-size: 15");
+        text.setStyle("-fx-font-weight: bold");
+        text.setStyle("-fx-background-color: white");
+        text.setStyle("-fx-border-radius: 25px");
+        text.setStyle("-fx-border: 2px solid #FFFFFF");
+        hBox.setStyle("-fx-background-color: white");
+        hBox.setStyle("-fx-border-radius: 25px");
+        hBox.setStyle("-fx-border: 2px solid #FFFFFF");
     }
 
 //    public static void showOptionsBox(Message message1) {
