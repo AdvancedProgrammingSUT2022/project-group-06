@@ -11,7 +11,7 @@
     <Rectangle opacity="0.7" fill="black" height="430" width="400" fx:id="fadeRectangle" x="400" y="150"/>
     <center>
 
-        <VBox alignment="CENTER" maxWidth="480" maxHeight="571" spacing="10" styleClass="menu-bar">
+        <VBox alignment="CENTER" maxWidth="480" maxHeight="571" spacing="8" styleClass="menu-bar">
             <Button onMouseClicked="#newGame" prefHeight="123.0" text="New Game">
             <VBox.margin>
                <Insets top="70.0" />
@@ -19,6 +19,7 @@
             <Button fx:id="profile" onMouseClicked="#profile" prefHeight="39.0" text="Profile" />
             <Button fx:id="setting" onMouseClicked="#setting" prefHeight="10.0" text="Setting" />
             <Button onMouseClicked="#scoreBoard" prefHeight="10.0" text="Score Board" />
+            <Button onMouseClicked="#chat" prefHeight="10.0" text="Chat" />
             <Button onMouseClicked="#logout" prefHeight="10.0" text="Logout" />
             <Button onMouseClicked="#exit" prefHeight="0.0" text="Exit" />
 

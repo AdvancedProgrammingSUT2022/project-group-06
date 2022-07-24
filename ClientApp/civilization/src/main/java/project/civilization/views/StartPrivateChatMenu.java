@@ -16,6 +16,6 @@ public class StartPrivateChatMenu {
     private Button startChatButton;
 
     public void enterChatMenu() {
-        CivilizationApplication.changeMenu(Menus.CHAT);
+//        CivilizationApplication.changeMenu(Menus.PUBLICCHAT);
     }
 }

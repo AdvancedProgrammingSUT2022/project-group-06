@@ -6,9 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import project.civilization.views.ChatMenu;
+import project.civilization.views.PublicChatMenu;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ public class Message extends Node {
     // private Rectangle rectangle;
     private HBox hBox;
     private Text text;
-    private User sender;
     private int hour;
     private int minute;
     private String state;
@@ -29,11 +27,11 @@ public class Message extends Node {
 
     private static final ArrayList<Message> messages = new ArrayList<>();
 
-    public Message(BorderPane pane, String message) {
+    public Message(AnchorPane pane, String message) {
         text = new Text();
         hBox = new HBox();
         text.setText(message);
-        initializeHBox();
+        //initializeHBox();//todo
         date = new Date();
         dateText = new Text(formatter.format(date));
         hBox.getChildren().add(dateText);
@@ -57,7 +55,7 @@ public class Message extends Node {
         hBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                ChatMenu.showOptionsBox(Message.this);
+             //   PublicChatMenu.showOptionsBox(Message.this);
             }
         });
 

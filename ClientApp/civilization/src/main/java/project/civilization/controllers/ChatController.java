@@ -1,26 +1,21 @@
 package project.civilization.controllers;
 
-import javafx.event.EventHandler;
-import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import project.civilization.models.Message;
-import project.civilization.views.ChatMenu;
+import project.civilization.views.PublicChatMenu;
 
 import java.util.ArrayList;
 
 public class ChatController {
-    public static void sendMessage(String text, BorderPane pane) {
+    public static void sendMessage(String text, AnchorPane pane) {
         shiftMessagesUp();
         Message message = new Message(pane, text);
     }
 
     public static void editMessage(Message message, String typedString) {
         message.setText(typedString);
-        ChatMenu.setEditingMessage(null);
+        PublicChatMenu.setEditingMessage(null);
     }
 
     public static void deleteMessage(Message message, BorderPane pane) {
