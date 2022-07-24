@@ -3,6 +3,7 @@ package project.civilization.views;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
@@ -77,8 +78,12 @@ public class PublicChatMenu {
         });
     }
 
-    public static void showMessages(ArrayList<Message> messages, AnchorPane pane) {
+    public static void clearMessages(AnchorPane pane) {
+        pane.getChildren().removeIf(node -> node instanceof HBox);
+    }
 
+    public static void showMessages(ArrayList<Message> messages, AnchorPane pane) {
+        clearMessages(pane);
         Collections.reverse(messages);
 
         for (int i = 0; i < messages.size(); i++) {

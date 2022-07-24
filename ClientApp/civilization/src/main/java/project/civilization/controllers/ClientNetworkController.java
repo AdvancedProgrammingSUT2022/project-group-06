@@ -65,7 +65,7 @@ public class ClientNetworkController{
 
     private static void alert(String inviter, String gameUUid){
         String invitationText = inviter + "wants to play with you!"
-                +"\nwould you accept her request?";
+                +"\nwould you accept their request?";
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, invitationText, ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {
