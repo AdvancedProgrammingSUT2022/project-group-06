@@ -69,7 +69,7 @@ public class PublicChatMenu {
             public void handle(MouseEvent mouseEvent) {
                 if (editingMessage == null) {
                     ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), Chat.getPublicChat());
-                    showMessages(messages);
+//                    showMessages(messages);
                 } else {
 //                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
                 }
@@ -77,7 +77,7 @@ public class PublicChatMenu {
         });
     }
 
-    private void showMessages(ArrayList<Message> messages) {
+    public static void showMessages(ArrayList<Message> messages, AnchorPane pane) {
 
         Collections.reverse(messages);
 

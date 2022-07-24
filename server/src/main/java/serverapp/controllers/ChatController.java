@@ -41,10 +41,9 @@ public class ChatController {
         gson = new Gson();
         gson.toJson(messages);
         jsonObject.put("messages", gson.toJson(messages));
-        //todo:
-//        for (User user : UserController.getUsersArray()) {
-//            NetWorkController.broadCast(user, jsonObject.toString());
-//        }
+        for (User user : UserController.getUsersArray()) {
+            NetWorkController.broadCast(user, jsonObject.toString());
+        }
 
         return jsonObject.toString();
     }

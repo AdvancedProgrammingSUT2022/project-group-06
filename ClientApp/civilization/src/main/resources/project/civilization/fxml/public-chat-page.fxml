@@ -16,7 +16,7 @@
 
     <VBox fx:id="vBox"/>
     <TextField fx:id="previewMessageTextField" prefWidth="1000" prefHeight="30" layoutX="50" layoutY="600"/>
-    <Button fx:id="sendButton" prefWidth="50" prefHeight="30" layoutX="1075" layoutY="600" text="send"/>
+    <Button fx:id="sendButton" prefWidth="30" prefHeight="30" layoutX="1075" layoutY="600" text="send" id="send-button"/>
 
 
 </AnchorPane>

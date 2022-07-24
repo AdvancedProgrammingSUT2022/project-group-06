@@ -46,7 +46,6 @@ public class ChatController {
             CivilizationApplication.dataOutputStream.writeUTF(object.toString());
             CivilizationApplication.dataOutputStream.flush();
             JSONObject jsonObject = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
-            gson = new Gson();
             return new Gson().fromJson((String) jsonObject.get("messages"), new TypeToken<ArrayList<Message>>() {
             }.getType());
         } catch (IOException e) {
@@ -54,14 +53,14 @@ public class ChatController {
             return null;
         }
     }
-//todo:
-//    public static void updateMessages(String messagesJson) {
-//        JSONObject jsonObject = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
-//        Gson gson = new Gson();
-//        ArrayList<Message> messages = new Gson().fromJson(gson.toJson(jsonObject.get("messages")), new TypeToken<ArrayList<Message>>() {
-//        }.getType());
-//
-//    }
+
+    public static void updateMessages(String messagesJson) {
+        JSONObject jsonObject = new JSONObject(messagesJson);
+        ArrayList<Message> messages = new Gson().fromJson((String) jsonObject.get("messages"), new TypeToken<ArrayList<Message>>() {
+        }.getType());
+
+        PublicChatMenu.showMessages(messages, CivilizationApplication.chatPane);
+    }
 
 //    public static void editMessage(Message message, String typedString) {
 //        message.setText(typedString);
