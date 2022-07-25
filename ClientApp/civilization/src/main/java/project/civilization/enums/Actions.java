@@ -73,8 +73,8 @@ public enum Actions {
     orderToWorker("orderToWorker"),
     changeTurn("changeTurn"),
     handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
-    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS");
-
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
+    startPrivateChat("startPrivateChat");
     private final String character;
 
     Actions(String color) {

@@ -32,7 +32,7 @@ public class ChatMenuNavigation {
 
 
     public void goToPublicChats() {
-        ChatController.initializePublicChat();
+        PublicChatMenu.setChat(ChatController.initializePublicChat());
         CivilizationApplication.changeMenu(Menus.PUBLICCHAT);
     }
 
