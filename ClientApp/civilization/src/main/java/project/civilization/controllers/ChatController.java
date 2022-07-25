@@ -19,20 +19,22 @@ import java.util.ArrayList;
 
 public class ChatController {
 
-    public static void initializePublicChat() {
+    public static Integer initializePublicChat() {
         JSONObject object = new JSONObject();
         object.put("action", Actions.initializePublicChat.getCharacter());
         object.put("menu", MenuCategory.Chat.getCharacter());
         try {
             CivilizationApplication.dataOutputStream.writeUTF(object.toString());
             CivilizationApplication.dataOutputStream.flush();
-            CivilizationApplication.dataInputStream.readUTF();
+            JSONObject jsonObject = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
+            return (Integer) jsonObject.get("startedChat");
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
-    public static ArrayList<Message> sendMessage(String text, Chat chat) {
+    public static ArrayList<Message> sendMessage(String text, int chatID) {
         Message message = new Message(text, User.getUuid());
         JSONObject object = new JSONObject();
         object.put("action", Actions.sendMessage.getCharacter());
@@ -41,7 +43,7 @@ public class ChatController {
         String messageString = gson.toJson(message).toString();
         object.put("message", messageString);
         gson = new Gson();
-        object.put("chat", gson.toJson(chat));
+        object.put("chatID", gson.toJson(chatID));
         try {
             CivilizationApplication.dataOutputStream.writeUTF(object.toString());
             CivilizationApplication.dataOutputStream.flush();
@@ -54,11 +56,11 @@ public class ChatController {
         }
     }
 
-
     public static ArrayList<String> getOnlineUsers() {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action", Actions.getOnlineUsers.getCharacter());
         jsonObject.put("menu", MenuCategory.Chat.getCharacter());
+        jsonObject.put("sender", User.getUuid());
         try {
             CivilizationApplication.dataOutputStream.writeUTF(jsonObject.toString());
             CivilizationApplication.dataOutputStream.flush();
@@ -79,6 +81,23 @@ public class ChatController {
         PublicChatMenu.showMessages(messages, CivilizationApplication.chatPane);
     }
 
+    public static Integer startPrivateChat(String username) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.startPrivateChat.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("username", username);
+        object.put("senderUuid", User.getUuid());
+        String input = null;
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            JSONObject jsonObject = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
+            return (Integer) jsonObject.get("startedChat");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 //    public static void editMessage(Message message, String typedString) {
 //        message.setText(typedString);
 //        PublicChatMenu.setEditingMessage(null);

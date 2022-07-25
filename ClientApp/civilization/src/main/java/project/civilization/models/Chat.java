@@ -2,6 +2,7 @@ package project.civilization.models;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class Chat {
 
@@ -12,11 +13,13 @@ public class Chat {
     private ArrayList<User> participants;
     private HashMap<User, ArrayList<Message>> usersMessages;
     private ArrayList<Message> allMessages;
+    private int chatID;
 
     public Chat() {
         participants = new ArrayList<>();
         allMessages = new ArrayList<>();
         usersMessages = new HashMap<>();
+        chatID = new Random().nextInt();
     }
 
     public static Chat getPublicChat() {
@@ -38,4 +41,5 @@ public class Chat {
     public ArrayList<Message> getAllMessages() {
         return allMessages;
     }
+
 }

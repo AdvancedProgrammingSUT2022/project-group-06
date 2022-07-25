@@ -12,7 +12,9 @@ public class ChatMenu {
         else if (command.equals(Actions.sendMessage.getCharacter()))
             return ChatController.sendMessageResponse(object);
         else if (command.equals(Actions.getOnlineUsers.getCharacter()))
-            return ChatController.getOnlineUsers();
+            return ChatController.getOnlineUsers(object);
+        else if (command.equals(Actions.startPrivateChat.getCharacter()))
+            return ChatController.startPrivateChat(object);
         else
             return "invalid command";
     }

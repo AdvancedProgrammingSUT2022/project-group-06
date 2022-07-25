@@ -37,6 +37,16 @@ public class PublicChatMenu {
     private static Button deleteForAllButton;//for all
     private static Message editingMessage;
 
+    private static int chatID;
+
+    public static int getChat() {
+        return chatID;
+    }
+
+    public static void setChat(int chatId) {
+        PublicChatMenu.chatID = chatId;
+    }
+
     public AnchorPane getPane() {
         return pane;
     }
@@ -70,7 +80,7 @@ public class PublicChatMenu {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (editingMessage == null) {
-                    ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), Chat.getPublicChat());
+                    ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), chatID);
 //                    showMessages(messages);
                 } else {
 //                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());

@@ -65,7 +65,8 @@ public enum Actions {
     initializePublicChat("initializePublicChat"),
     sendMessage("sendMessage"),
     updateMessages("updateMessages"),
-    getOnlineUsers("getOnlineUsers");
+    getOnlineUsers("getOnlineUsers"),
+    startPrivateChat("startPrivateChat");
     private final String character;
 
     Actions(String color) {
