@@ -98,55 +98,6 @@ public class UnitController {
         }
     }
 
-    public static String constructRoad(int x, int y) {
-        if (GameController.isOutOfBounds(x, y))
-            return "chosen position is not valid";
-        if (selectedUnit == null)
-            return "you should choose a unit first";
-        if (!selectedUnit.getName().equals("Worker"))
-            return "you should choose a worker unit";
-        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("TheWheel"))
-            return "you don't have required technology for building roads";
-        if (hex[x][y].hasRoad())
-            return "this hex already has road";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
-            return "you can't construct road on mountain";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
-            return "you can't construct road on ocean";
-        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
-            return "you can't build road on ice";
-        UnitController.getSelectedUnit().setOrdered(true);
-        selectedUnit.setState(UnitState.Active);
-
-        Improvement road = new Improvement("Road", selectedUnit, hex[x][y]);
-        road.setLeftTurns(3);
-        GameController.getCurrentPlayer().addUnfinishedProject(road);
-        return "the road will be constructed in 3 turns";
-    }
-
-    public static String constructRailRoad(int x, int y) {
-        if (GameController.isOutOfBounds(x, y))
-            return "chosen position is not valid";
-        if (!selectedUnit.getName().equals("Worker"))
-            return "you should choose a worker unit";
-        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("Road"))
-            return "you don't have required technology for building roads";
-        if (hex[x][y].hasRailRoad())
-            return "this hex already has railroad";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
-            return "you can't construct railroad on mountain";
-        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
-            return "you can't construct railroad on ocean";
-        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
-            return "you can't build railroad on ice";
-        UnitController.getSelectedUnit().setOrdered(true);
-        selectedUnit.setState(UnitState.Active);
-        Improvement railroad = new Improvement("RailRoad", selectedUnit, hex[x][y]);
-        railroad.setLeftTurns(3);
-        GameController.getCurrentPlayer().addUnfinishedProject(railroad);
-        return "the railroad will be constructed in 3 turns";
-    }
-
     public static void makeUnit(String name, Hex hex, String type) {
         String theType = InitializeGameInfo.unitInfo.get(name).split(" ")[7];
         if (theType.equals("Settler")) {

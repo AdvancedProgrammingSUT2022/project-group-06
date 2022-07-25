@@ -441,10 +441,10 @@ public class GameMenu extends Menu {
     }
 
     private static void constructRoadView(int x, int y) {
-        System.out.println(UnitController.constructRoad(x, y));
+        System.out.println(GameController.constructRoad(x, y));
     }
 
     private static void constructRailroadMenu(int x, int y) {
-        System.out.println(UnitController.constructRailRoad(x, y));
+        System.out.println(GameController.constructRailRoad(x, y));
     }
 }

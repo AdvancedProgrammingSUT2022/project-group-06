@@ -9,6 +9,7 @@ import project.civilization.models.gainable.Improvement;
 import project.civilization.models.gainable.Technology;
 import project.civilization.models.maprelated.*;
 import project.civilization.models.units.*;
+import project.civilization.views.GameMenu;
 
 
 import java.util.*;
@@ -104,11 +105,11 @@ public class GameController {
 
     private static void createRuinTiles()
     {
-        Random random=new Random();
+        Random random = new Random();
         for(int i=1;i<6;i++)
         {
-            int x=random.nextInt(0,world.getHexInWidth());
-            int y=random.nextInt(0,world.getHexInHeight());
+            int x= (Math.abs(random.nextInt())) % world.getHexInWidth();
+            int y= (Math.abs(random.nextInt())) % world.getHexInHeight();
             
             if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean"))
             {   
@@ -1545,6 +1546,8 @@ public class GameController {
         if (removeError("Jungle") == null) availableWorks.add("remove jungle");
         if (removeError("Forest") == null) availableWorks.add("remove forest");
         if (removeError("Marsh") == null) availableWorks.add("remove marsh");
+        if(canConstructRailRoad()) availableWorks.add("construct railroad");
+        if(canConstructRoad()) availableWorks.add("construct road");
         availableWorks.add("remove way");
         return availableWorks;
     }
@@ -1591,13 +1594,85 @@ public class GameController {
                                 &&UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain"))
                 );
     }
+    public static boolean canConstructRailRoad(){
+        int x = UnitController.getSelectedUnit().getX();
+        int y = UnitController.getSelectedUnit().getY();
+        if (GameController.isOutOfBounds(x, y))
+            return false;
+        if (!UnitController.getSelectedUnit().getName().equals("Worker"))
+            return false;
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("Railroad"))
+            return false;
+        if (hex[x][y].hasRailRoad())
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
+            return false;
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
+            return false;
+        return true;
+    }
+    public static String constructRailRoad(int x, int y) {
+/*        if (GameController.isOutOfBounds(x, y))
+            return "chosen position is not valid";
+        if (!selectedUnit.getName().equals("Worker"))
+            return "you should choose a worker unit";
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("Road"))
+            return "you don't have required technology for building roads";
+        if (hex[x][y].hasRailRoad())
+            return "this hex already has railroad";
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
+            return "you can't construct railroad on mountain";
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
+            return "you can't construct railroad on ocean";
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
+            return "you can't build railroad on ice";*/
+        UnitController.getSelectedUnit().setOrdered(true);
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        Improvement railroad = new Improvement("RailRoad", UnitController.getSelectedUnit(), hex[x][y]);
+        railroad.setLeftTurns(3);
+        GameController.getCurrentPlayer().addUnfinishedProject(railroad);
+        return "the railroad will be constructed in 3 turns";
+    }
+
+    public static boolean canConstructRoad(){
+        int x = UnitController.getSelectedUnit().getX();
+        int y = UnitController.getSelectedUnit().getY();
+        if (GameController.isOutOfBounds(x, y))
+            return false;
+        if (UnitController.getSelectedUnit() == null)
+            return false;
+        if (!UnitController.getSelectedUnit().getName().equals("Worker"))
+            return false;
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("TheWheel"))
+            return false;
+        if (hex[x][y].hasRoad())
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
+            return false;
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
+            return false;
+        return true;
+    }
+    public static String constructRoad(int x, int y) {
+        UnitController.getSelectedUnit().setOrdered(true);
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+
+        Improvement road = new Improvement("Road", UnitController.getSelectedUnit(), hex[x][y]);
+        road.setLeftTurns(3);
+        GameController.getCurrentPlayer().addUnfinishedProject(road);
+        return "the road will be constructed in 3 turns";
+    }
 
     public static void orderToWorker(String command){
-/*        if (command.equals("construct road")){
-            constructRoadView();
+        if (command.equals("construct road")){
+            System.out.println( constructRoad(UnitController.getSelectedUnit().getX(),UnitController.getSelectedUnit().getY()));
         } else if (command.equals("construct railroad")){
-            constructRailroadMenu();
-        }else*/ if (command.equals("quarry build")) {
+            System.out.println(constructRailRoad(UnitController.getSelectedUnit().getX(),UnitController.getSelectedUnit().getY()));
+        }else if (command.equals("quarry build")) {
             System.out.println(GameController.makeQuarry());
         } else if (command.equals("factory build")) {
             System.out.println(GameController.makeFactory());
