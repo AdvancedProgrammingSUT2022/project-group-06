@@ -76,7 +76,8 @@ public enum Actions {
     orderToWorker("orderToWorker"),
     changeTurn("changeTurn"),
     handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
-    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS");
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
+    deleteMessage("deleteMessage");
 
     private final String character;
 

@@ -15,6 +15,8 @@ public class ChatMenu {
             return ChatController.getOnlineUsers(object);
         else if (command.equals(Actions.startPrivateChat.getCharacter()))
             return ChatController.startPrivateChat(object);
+        else if (command.equals(Actions.deleteMessage.getCharacter()))
+            return ChatController.deleteMessage(object);
         else
             return "invalid command";
     }

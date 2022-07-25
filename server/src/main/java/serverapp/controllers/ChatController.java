@@ -21,8 +21,7 @@ public class ChatController {
                 Chat.getPublicChat().getParticipants().add(uuid);
                 Chat.getPublicChat().getUsersMessages().put(uuid, new ArrayList<>());
             }
-        }
-        else {
+        } else {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("action", Actions.updateMessages.getCharacter());
             Gson gson = new Gson();
@@ -105,16 +104,16 @@ public class ChatController {
         String senderUuid = (String) object.get("senderUuid");
         User invited = UserController.getUserByUserName(username);
         String invitedUuid = null;
-        for(HashMap.Entry<String,User> m : UserController.getUserHashMap().entrySet()){
-            if(m.getValue() == invited){
-               invitedUuid = m.getKey();
+        for (HashMap.Entry<String, User> m : UserController.getUserHashMap().entrySet()) {
+            if (m.getValue() == invited) {
+                invitedUuid = m.getKey();
             }
         }
         Chat chat = null;
         boolean found = false;
         for (Chat chat1 : Chat.getPrivateChats()) {
             if (chat1.getUsersMessages().get(senderUuid) != null
-            && chat1.getUsersMessages().get(invitedUuid) != null) {
+                    && chat1.getUsersMessages().get(invitedUuid) != null) {
                 chat = chat1;
 
                 JSONObject jsonObject = new JSONObject();
@@ -141,6 +140,40 @@ public class ChatController {
         jsonObject.put("action", Actions.startPrivateChat.getCharacter());
         jsonObject.put("startedChat", chat.getChatID());
         return jsonObject.toString();
+    }
+
+    public static String deleteMessage(JSONObject object) {
+        int index = (int) object.get("index");
+        int chatId = (int) object.get("chatID");
+        String senderUuid = (String) object.get("uuid");
+        Chat chat = getChatByID(chatId);
+
+        Message message = chat.getAllMessages().get(index);
+        chat.getAllMessages().remove(message);
+        chat.getUsersMessages().get(senderUuid).remove(message);
+
+        JSONObject respond = new JSONObject();
+        respond.put("action", Actions.updateMessages.getCharacter());
+        respond.put("messages", new Gson().toJson(chat.getAllMessages()));
+
+        for (String participantUuid : chat.getParticipants()) {
+            User user = UserController.getUserHashMap().get(participantUuid);
+            NetWorkController.broadCast(user, respond.toString());
+        }
+        return respond.toString();
+    }
+
+    public static Chat getChatByID(int id) {
+        for (Chat chat : Chat.getPrivateChats()) {
+            if (chat.getChatID() == id)
+                return chat;
+        }
+        for (Chat chat : Chat.getRooms())
+            if (chat.getChatID() == id)
+                return chat;
+        if (Chat.getPublicChat().getChatID() == id)
+            return Chat.getPublicChat();
+        return null;
     }
 
 }

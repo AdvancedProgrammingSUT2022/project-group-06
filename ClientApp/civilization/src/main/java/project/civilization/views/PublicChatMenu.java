@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.xml.sax.HandlerBase;
+import project.civilization.CivilizationApplication;
 import project.civilization.controllers.ChatController;
 import project.civilization.models.Chat;
 import project.civilization.models.Message;
@@ -33,8 +34,7 @@ public class PublicChatMenu {
     @FXML
     private AnchorPane pane;
     private static Button editButton;
-    private static Button deleteButton;//for urself
-    private static Button deleteForAllButton;//for all
+    private static Button deleteButton;
     private static Message editingMessage;
 
     private static int chatID;
@@ -64,15 +64,49 @@ public class PublicChatMenu {
     }
 
     public void initialize() {
-//        vBox.setAlignment(Pos.BOTTOM_CENTER);
         initializeSendButton();
     }
 
-    private void addPreviewTextFieldToScreen(TextField previewMessage, VBox vBox) {
-        previewMessage.setText("Type here...");
-        previewMessage.setPrefHeight(20);
-        previewMessage.setPrefWidth(180);
-        vBox.getChildren().add(previewMessage);
+    private static void initializeOptionsVbox(int messageIndex, HBox hBox) {
+        optionsVBox = new VBox();
+        optionsVBox.setPrefWidth(50);
+        optionsVBox.setPrefHeight(60);
+        optionsVBox.setLayoutX(hBox.getLayoutX() - 40);
+        optionsVBox.setLayoutY(hBox.getLayoutY()- 50);
+
+        initializeDeleteButton(messageIndex);
+        initializeEditButton(messageIndex);
+        CivilizationApplication.chatPane.getChildren().add(optionsVBox);
+    }
+
+    private static void initializeEditButton(int messageIndex) {
+        editButton = new Button("edit");
+        editButton.setPrefWidth(50);
+        editButton.setPrefHeight(30);
+        optionsVBox.getChildren().add(editButton);
+
+        editButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                //todo: chat controller: edit
+                CivilizationApplication.chatPane.getChildren().remove(optionsVBox);
+            }
+        });
+    }
+
+    private static void initializeDeleteButton(int messageIndex) {
+        deleteButton = new Button("delete");
+        deleteButton.setPrefWidth(50);
+        deleteButton.setPrefHeight(30);
+        optionsVBox.getChildren().add(deleteButton);
+
+        deleteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                ChatController.deleteMessage(messageIndex, chatID);
+                CivilizationApplication.chatPane.getChildren().remove(optionsVBox);
+            }
+        });
     }
 
     private void initializeSendButton() {
@@ -81,7 +115,6 @@ public class PublicChatMenu {
             public void handle(MouseEvent mouseEvent) {
                 if (editingMessage == null) {
                     ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), chatID);
-//                    showMessages(messages);
                 } else {
 //                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
                 }
@@ -100,16 +133,24 @@ public class PublicChatMenu {
         for (int i = 0; i < messages.size(); i++) {
             HBox hBox = new HBox();
             Text text = new Text(messages.get(i).getText());
+            text.setX(10);
 
             hBox.getChildren().add(text);
-            text.setStyle("-fx-background-color: #effdde; -fx-padding: 12; -fx-background-radius: 12");
-            hBox.setLayoutY(540 - (30 * i));
-            hBox.setPrefHeight(40);
-            hBox.setPrefWidth((3 * messages.get(i).getText().length()) + 20);
+            hBox.setLayoutY(540 - (35 * i));
+            hBox.setPrefHeight(25);
+            hBox.setPrefWidth((8 * messages.get(i).getText().length()) + 30);
+            hBox.setMinWidth((8 * messages.get(i).getText().length()) + 30);
             if (shouldBeRight(messages.get(i)))
                 hBox.setLayoutX(1100 - hBox.getPrefWidth());
             else
                 hBox.setLayoutX(80);
+            int index = messages.size() - 1 - i;
+            hBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    initializeOptionsVbox(index, hBox);
+                }
+            });
             //todo: time, seen or not, style, if you send it or others
             pane.getChildren().add(hBox);
         }
@@ -119,15 +160,6 @@ public class PublicChatMenu {
         return message.getSenderUUID().equals(User.getUuid());
     }
 
-    private static void setStyleForMessage(HBox hBox, Text text) {
-//        text.setStyle("-fx-font-size: 15");
-//        text.setStyle("-fx-font-weight: bold");
-//        text.setStyle("-fx-background-color: white");
-//        text.setStyle("-fx-border-radius: 25px");
-//        text.setStyle("-fx-border: 2px solid #FFFFFF");
-        text.setStyle("-fx-background-color: #effdde; -fx-padding: 12; -fx-background-radius: 12");
-
-    }
 
 //    public static void showOptionsBox(Message message1) {
 //        double x = message1.getHBox().getLayoutX();
