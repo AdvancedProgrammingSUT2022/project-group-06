@@ -206,107 +206,40 @@ public class CityController {
 
 
     public static String presaleTiles() {
-        toBuyTiles.clear();
-        if (GameController.getSelectedCity() == null) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.presaleTiles.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
             return null;
         }
-
-        StringBuilder availableHexs = new StringBuilder();
-
-        int counter = 0;
-
-        for (Hex temp : GameController.getSelectedCity().getHexs()) {
-
-            Hex[][] hex = GameController.getWorld().getHex();
-            int x = temp.getX();
-            int y = temp.getY();
-            ArrayList<Hex> sixNeighborHexs = new ArrayList<Hex>();
-
-            if (y % 2 != 0) {
-
-                if (x + 1 < 10 && hex[x + 1][y].getOwner() == null && !toBuyTiles.contains(hex[x + 1][y]) && (!hex[x + 1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x + 1][y].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x + 1][y]);
-                }
-
-                if (x - 1 >= 0 && !toBuyTiles.contains(hex[x - 1][y]) && hex[x - 1][y].getOwner() == null && (!hex[x - 1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x - 1][y].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x - 1][y]);
-                }
-                if (y - 1 >= 0 && !toBuyTiles.contains(hex[x][y - 1]) && hex[x][y - 1].getOwner() == null && (!hex[x][y - 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x][y - 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x][y - 1]);
-                }
-                if (x + 1 < 10 && y - 1 >= 0 && !toBuyTiles.contains(hex[x + 1][y - 1]) && hex[x + 1][y - 1].getOwner() == null && (!hex[x + 1][y - 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x + 1][y - 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x + 1][y - 1]);
-                }
-                if (y + 1 < 10 && !toBuyTiles.contains(hex[x][y + 1]) && hex[x][y + 1].getOwner() == null && (!hex[x][y + 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x][y + 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x][y + 1]);
-                }
-                if (x + 1 < 10 && y + 1 < 10 && !toBuyTiles.contains(hex[x + 1][y + 1]) && hex[x + 1][y + 1].getOwner() == null && (!hex[x + 1][y + 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x + 1][y + 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x + 1][y + 1]);
-                }
-            }
-            if (y % 2 == 0) {
-                if (x + 1 < 10 && !toBuyTiles.contains(hex[x + 1][y]) && hex[x + 1][y].getOwner() == null && (!hex[x + 1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x + 1][y].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x + 1][y]);
-                }
-
-                if (x - 1 >= 0 && !toBuyTiles.contains(hex[x - 1][y]) && hex[x - 1][y].getOwner() == null && (!hex[x - 1][y].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x - 1][y].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x - 1][y]);
-                }
-                if (y - 1 >= 0 && !toBuyTiles.contains(hex[x][y - 1]) && hex[x][y - 1].getOwner() == null && (!hex[x][y - 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x][y - 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x][y - 1]);
-                }
-                if (x - 1 >= 0 && y - 1 >= 0 && !toBuyTiles.contains(hex[x - 1][y - 1]) && hex[x - 1][y - 1].getOwner() == null && (!hex[x - 1][y - 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x - 1][y - 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x - 1][y - 1]);
-                }
-                if (y + 1 < 10 && !toBuyTiles.contains(hex[x][y + 1]) && hex[x][y + 1].getOwner() == null && (!hex[x][y + 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x][y + 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x][y + 1]);
-                }
-                if (x - 1 >= 0 && y + 1 < 10 && !toBuyTiles.contains(hex[x - 1][y + 1]) && hex[x - 1][y + 1].getOwner() == null && (!hex[x - 1][y + 1].getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) && (!hex[x - 1][y + 1].getTerrain().getName().matches("Mountain||Ocean"))) {
-                    sixNeighborHexs.add(hex[x - 1][y + 1]);
-                }
-            }
-
-            for (Hex tempHex : sixNeighborHexs) {
-                counter++;
-                toBuyTiles.add(tempHex);
-                availableHexs.append(counter + ")" + " x: " + tempHex.getX() + " y: " + tempHex.getY() + "\n");
-            }
-
-
-        }
-
-        if (availableHexs.length() == 0) {
-            return "there are no tiles around your city";
-        }
-
-
-        return availableHexs.toString();
-
-
     }
 
     public static String buyHex(int count) {
-
-
-        int price = GameController.getSelectedCity().getHexs().size() * 5;
-        if (GameController.getCurrentPlayer().getGold() < price) {
-            return "you don't have enough money";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.buyHex.getCharacter());
+            json.put("count", count);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (toBuyTiles.get(count - 1).getOwner() != null) {
-
-            return "this hex has an owner";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
         }
-
-        GameController.getCurrentPlayer().decreaseGold(price);
-        GameController.getSelectedCity().addHex(toBuyTiles.get(count - 1));
-
-        if (toBuyTiles.get(count - 1).getResource() != null &&
-                toBuyTiles.get(count - 1).getResource().getType().equals("Luxury")) {
-            GameController.happinessDueToLuxuries(toBuyTiles.get(count - 1).getResource().getName());
-        }
-
-
-        return "new hex added to your city successfully";
 
     }
 

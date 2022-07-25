@@ -70,6 +70,12 @@ public enum Actions {
     getOnlineUsers("getOnlineUsers"),
     startPrivateChat("startPrivateChat");
 
+    cheatTrophy("cheatTrophy"),
+    setSelectedCity("setSelectedCity"),
+    presaleTiles("presaleTiles"),
+    buyHex("buyHex"),
+    citiesPanel("citiesPanel");
+
     private final String character;
 
     Actions(String color) {

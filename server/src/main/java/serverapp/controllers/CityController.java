@@ -366,4 +366,12 @@ public class CityController {
         GameController.setSelectedCity(null);
         return cityBanner.toString();
     }
+    public static City getCityWithName(String name) {
+        for (City temp : GameController.getCurrentPlayer().getCities()) {
+            if (temp.getName().equals(name)) {
+                return temp;
+            }
+        }
+        return null;
+    }
 }

@@ -66,6 +66,10 @@ public enum Actions {
     sendMessage("sendMessage"),
     updateMessages("updateMessages"),
     getOnlineUsers("getOnlineUsers"),
+    setSelectedCity("setSelectedCity"),
+    presaleTiles("presaleTiles"),
+    buyHex("buyHex"),
+    citiesPanel("citiesPanel"),
     startPrivateChat("startPrivateChat");
     private final String character;
 

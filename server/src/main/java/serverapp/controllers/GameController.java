@@ -62,8 +62,10 @@ public class GameController {
         return world;
     }
 
-    public static void setSelectedCity(City newCity) {
+    public static String  setSelectedCity(City newCity) {
+        //todo : if(newCity == null) return "city is null"; is this important?
         selectedCity = newCity;
+        return "selected successfully";
     }
 
     public static City getSelectedCity() {
@@ -764,6 +766,7 @@ public class GameController {
             citiesList.append(count + ") " + temp.getName() + "\n");
             count++;
         }
+        System.out.println("h" + citiesList.toString());
         return citiesList.toString();
     }
 
@@ -1638,10 +1641,10 @@ public class GameController {
                             initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
                         }*/
                     }
-/*                    if(hexes[i][j].getHasRuins()!=0)
+                    if(hexes[i][j].getHasRuins()!=0)
                     {
-                        initializeRuins(hexes[i][j]);
-                    }*/
+                        hexDetails.put("ruins",true);
+                    }
                     if (hexes[i][j].getOwner() != null) {
                         hexDetails.put("owner", hexes[i][j].getOwner().getName());
                     }
