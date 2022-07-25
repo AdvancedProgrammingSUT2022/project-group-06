@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import serverapp.enums.HexState;
 import serverapp.enums.UnitState;
 import serverapp.models.Player;
+import serverapp.models.gainable.Building;
+import serverapp.models.gainable.Technology;
 import serverapp.models.maprelated.City;
 import serverapp.models.maprelated.Hex;
 import serverapp.models.units.Settler;
@@ -373,5 +375,35 @@ public class CityController {
             }
         }
         return null;
+    }
+
+
+
+    public static boolean hasBuilding(City city, String buildingName) {
+        for (Building building : city.getBuiltBuildings()) {
+            if (building.getName().toLowerCase().equals(buildingName.toLowerCase()))
+                return true;
+        }
+        return false;
+    }
+
+    public static ArrayList<Building> getAvailableBuildings(City city) {
+        ArrayList<Building> availableBuildings = new ArrayList<>();
+        for (Building building : InitializeGameInfo.getAllBuildings()) {
+            if (building.getTechnology() != null && city.getOwner().getAchievedTechnologies().get(building.getTechnology())) {
+                if (building.getPrerequisite() != null && hasBuilding(city, building.getName()))
+                    availableBuildings.add(building);
+            }
+        }
+        return availableBuildings;
+    }
+
+    public static void buildABuilding(City city, Building building) {//TODO: should be called when you choose to build a building
+        city.getOwner().addUnfinishedProject(building);
+    }
+
+    public static void buildPalace(City city) {
+        Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"), city.getHexs().get(0));
+        city.getBuiltBuildings().add(palace);
     }
 }

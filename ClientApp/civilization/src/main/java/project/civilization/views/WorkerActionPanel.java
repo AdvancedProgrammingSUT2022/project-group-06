@@ -51,8 +51,7 @@ public class WorkerActionPanel {
                 }
             });
             newUnit.setOnMouseClicked(event -> {
-                GameController.orderToWorker(temp);
-
+                System.out.println(GameController.orderToWorker(temp));
             });
             demoPane.getChildren().add(newUnit);
             demoPane.setStyle("-fx-background-color: #1a1a1a");

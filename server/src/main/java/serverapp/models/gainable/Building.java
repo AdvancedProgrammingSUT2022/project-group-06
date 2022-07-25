@@ -1,18 +1,50 @@
 package serverapp.models.gainable;
 
+import com.google.gson.Gson;
 import serverapp.models.maprelated.Hex;
 import serverapp.models.units.Unit;
 import serverapp.models.units.Worker;
 
 public class Building implements Construction {
+    private String name;
     private int cost;
     private int maintenance;
     private int leftTurns;
+    private String technology;
+    private Hex hex;
+    private Building prerequisite;
 
-    public Building(int cost, int maintenance, int leftTurns) {
+
+    public Building() {}
+
+    public Building(String name, int cost, int maintenance, int leftTurns, String technology) {
+        this.name = name;
         this.cost = cost;
         this.maintenance = maintenance;
         this.leftTurns = leftTurns;
+        this.technology = technology;
+    }
+
+    public static Building clone(Building building, Hex hex) {
+        Building newBuilding = new Building();
+        newBuilding.cost = building.cost;
+        newBuilding.maintenance = building.maintenance;
+        newBuilding.leftTurns = building.leftTurns;
+        newBuilding.name = building.name;
+        newBuilding.technology = building.technology;
+
+        newBuilding.hex = hex;
+        return newBuilding;
+    }
+
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static Building fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, Building.class);
     }
 
     public int getCost() {
@@ -41,24 +73,21 @@ public class Building implements Construction {
 
     @Override
     public void build(String type) {
-
+        this.hex.getCity().getBuiltBuildings().add(this);
     }
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.name;
     }
 
     @Override
     public Hex getHex() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.hex;
     }
 
-    @Override
+    @Override//ignore
     public void zeroMpWorker() {
-        // TODO Auto-generated method stub
 
     }
 
@@ -67,5 +96,20 @@ public class Building implements Construction {
         return null;
     }
 
+    public void setHex(Hex hex) {
+        this.hex = hex;
+    }
+
+    public String getTechnology() {
+        return technology;
+    }
+
+    public Building getPrerequisite() {
+        return prerequisite;
+    }
+
+    public void setPrerequisite(Building prerequisite) {
+        this.prerequisite = prerequisite;
+    }
 
 }

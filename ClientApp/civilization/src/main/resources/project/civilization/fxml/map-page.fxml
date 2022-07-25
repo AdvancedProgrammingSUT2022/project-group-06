@@ -6,7 +6,7 @@
 <?import javafx.scene.text.Font?>
 
 <Pane fx:id="pane" prefHeight="650.0" prefWidth="1200.0" styleClass="gamepageButton"
-      stylesheets="@../css/PanelsStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="project.civilization.views.MapPage">
+      stylesheets="@../css/PanelsStyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
     <AnchorPane id="title" fx:id="anchorPane" prefHeight="50.0" prefWidth="1200.0">
         <children>
 

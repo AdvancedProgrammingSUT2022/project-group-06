@@ -69,7 +69,12 @@ public enum Actions {
     setSelectedCity("setSelectedCity"),
     presaleTiles("presaleTiles"),
     buyHex("buyHex"),
-    citiesPanel("citiesPanel");
+    citiesPanel("citiesPanel"),
+    orderToWorker("orderToWorker"),
+    changeTurn("changeTurn"),
+    handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS");
+
     private final String character;
 
     Actions(String color) {

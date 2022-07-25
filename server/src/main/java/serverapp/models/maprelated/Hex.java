@@ -12,6 +12,7 @@ import serverapp.models.units.Unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 public class Hex {
     private int x;
     private int y;

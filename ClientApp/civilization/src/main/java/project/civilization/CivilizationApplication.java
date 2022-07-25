@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import project.civilization.enums.Menus;
+import project.civilization.views.MapPage;
 import project.civilization.views.Music;
 
 import java.io.DataInputStream;
@@ -20,6 +21,7 @@ public class CivilizationApplication extends Application {
     public static DataInputStream dataInputStream;
     public static DataOutputStream dataOutputStream;
     public static AnchorPane chatPane;
+    public static MapPage mapPageController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -70,13 +72,20 @@ public class CivilizationApplication extends Application {
     }
 
 
-    private static Parent loadFXML(Menus menuName) {
-        if (menuName == Menus.GAME) {
+    private static Parent loadFXML(Menus menuName){
+        if(menuName == Menus.GAME){
             Music.addMusic("songs/MUS_Genie_A.wav");
         }
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + menuName.getCharacter() + ".fxml").toExternalForm());
-            return FXMLLoader.load(address);
+            FXMLLoader loader = new FXMLLoader(address);
+            if(menuName.equals(Menus.MAPPAGE))
+            {
+                MapPage mapPage=new MapPage();
+                mapPageController=mapPage;
+                loader.setController(mapPage);
+            }
+            return loader.load();
         } catch (IOException e) {
             e.printStackTrace();
         }

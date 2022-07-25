@@ -3,9 +3,6 @@ package project.civilization.controllers;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Popup;
 import org.json.JSONException;
 import org.json.JSONObject;
 import project.civilization.CivilizationApplication;
@@ -14,7 +11,6 @@ import project.civilization.enums.MenuCategory;
 import project.civilization.enums.Menus;
 import project.civilization.models.User;
 
-import javax.swing.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -53,6 +49,8 @@ public class ClientNetworkController{
                 Platform.runLater(() -> CivilizationApplication.changeMenu(Menus.MAPPAGE));
             }else if (action.equals(Actions.updateMessages.getCharacter())) {
                 Platform.runLater(()->ChatController.updateMessages(obj.toString()));
+            }else if(action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())){
+                Platform.runLater(() -> CivilizationApplication.mapPageController.changeTurnForOthers());
             }else System.out.println(message+"a fucking thing is wrong");
         }catch (JSONException e) {
             e.printStackTrace();

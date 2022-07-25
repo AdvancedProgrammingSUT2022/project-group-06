@@ -67,13 +67,15 @@ public enum Actions {
     initializePublicChat("initializePublicChat"),
     sendMessage("sendMessage"),
     updateMessages("updateMessages"),
-    getOnlineUsers("getOnlineUsers");
-
-    cheatTrophy("cheatTrophy"),
+    getOnlineUsers("getOnlineUsers"),
     setSelectedCity("setSelectedCity"),
     presaleTiles("presaleTiles"),
     buyHex("buyHex"),
-    citiesPanel("citiesPanel");
+    citiesPanel("citiesPanel"),
+    orderToWorker("orderToWorker"),
+    changeTurn("changeTurn"),
+    handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS");
 
     private final String character;
 

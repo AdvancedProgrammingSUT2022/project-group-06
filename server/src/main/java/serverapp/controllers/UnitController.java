@@ -1,4 +1,6 @@
 package serverapp.controllers;
+import javafx.scene.control.Alert;
+import org.json.JSONObject;
 import serverapp.enums.FeatureNames;
 import serverapp.enums.HexState;
 import serverapp.enums.TerrainNames;
@@ -19,6 +21,7 @@ import serverapp.models.units.Worker;
 import java.util.ArrayList;
 
 import java.util.Objects;
+import java.util.Random;
 
 import static serverapp.controllers.GameController.*;
 
@@ -359,13 +362,16 @@ public class UnitController {
         return false;
     }
 
+
     public static String moveUnit(Movement movement) {
+        JSONObject jsonObject = new JSONObject();
 
         Unit unit = movement.getUnit();
         Hex nextHex = getNextHex(movement);
         if (nextHex == null || (nextHex.getOwner() != null && nextHex.getOwner() != GameController.getCurrentPlayer())) {
             forceEndMovement(movement);
-            return "the unit can't go further";
+           jsonObject.put("movement result","the unit can't go further");
+            return jsonObject.toString();
         }
         int x = nextHex.getX();
         int y = nextHex.getY();
@@ -382,7 +388,8 @@ public class UnitController {
             unit.decreaseMP(hex[x][y].getTerrain().getMovePoint());
         else {
             unfinishedMovements.remove(movement);
-            return "the unit doesn't have enough move points";
+            jsonObject.put("movement result","the unit doesn't have enough move points");
+            return jsonObject.toString();
         }
 
         setRevealedTiles();
@@ -396,17 +403,71 @@ public class UnitController {
         if (unit instanceof Civilian) {
             unit.getCurrentHex().setCivilianUnit(null);
             hex[x][y].setCivilianUnit((Civilian) unit);
+            if(hex[x][y].getHasRuins()!=0)
+            {
+                activateRuin(hex[x][y].getHasRuins(), hex[x][y],jsonObject);
+                jsonObject.put("had ruins",hex[x][y].getHasRuins());
+                return jsonObject.toString();
+            }
         } else {
             unit.getCurrentHex().setMilitaryUnit(null);
             hex[x][y].setMilitaryUnit((Military) unit);
+            if(hex[x][y].getHasRuins()!=0)
+            {
+                activateRuin(hex[x][y].getHasRuins(), hex[x][y],jsonObject);
+                jsonObject.put("had ruins",hex[x][y].getHasRuins());
+                return jsonObject.toString();
+            }
         }
         unit.changeCurrentHex(hex[x][y]);
 
         if (nextHex.getX() == movement.getDestination().getX() && nextHex.getY() == movement.getDestination().getY())
             unfinishedMovements.remove(movement);
 
-        return "unit is on its way";
+        jsonObject.put("movement result","unit is on its way");
+        return jsonObject.toString();
     }
+
+    public static void activateRuin(int i, Hex hex, JSONObject jsonObject)
+    {
+        switch(i)
+        {
+            case 1:
+                GameController.getCurrentPlayer().increasePopulation(1);
+                break;
+            case 2:
+                int amount=(new Random().nextInt(5)+1)*100;
+                jsonObject.put("amount2", amount);
+                GameController.getCurrentPlayer().increaseGold(amount);
+                break;
+            case 3:
+                GameController.getCurrentPlayer().increaseGold(89);
+                UnitController.makeUnit("Settler", hex, "gold");
+                Hex[][] temp=InitializeGameInfo.getWorld().getHex();
+                boolean found=false;
+                outer:
+                for (int k = 0; k < getWorld().getHexInHeight(); k++)
+                {
+                    for (int j = 0; j < getWorld().getHexInWidth(); j++)
+                    {
+                        if(temp[k][j].getOwner().equals(GameController.getCurrentPlayer())&&temp[k][j].getCivilianUnit()==null)
+                        {
+                            GameController.getCurrentPlayer().increaseGold(89);
+                            UnitController.makeUnit("Settler", hex, "gold");
+                            found=true;
+                            break outer;
+                        }
+                    }
+                }
+                if(!found)
+                break;
+            default:
+                break;
+        }
+
+        hex.setRuinsValue(0);
+    }
+
 
     public static String startMovement(int x, int y) {
         if (selectedUnit == null)

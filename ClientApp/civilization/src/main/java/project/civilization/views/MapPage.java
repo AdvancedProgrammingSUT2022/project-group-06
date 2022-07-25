@@ -1,6 +1,7 @@
 package project.civilization.views;
 
-import com.google.gson.JsonObject;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,25 +17,17 @@ import javafx.stage.Popup;
 import org.json.JSONObject;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.*;
-import project.civilization.enums.HexState;
-import project.civilization.enums.UnitState;
 import project.civilization.models.Player;
-import project.civilization.models.gainable.Building;
 import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Improvement;
 import project.civilization.models.maprelated.City;
-import project.civilization.models.maprelated.Hex;
-import project.civilization.models.maprelated.World;
 import project.civilization.models.units.Unit;
-import project.civilization.models.units.Worker;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.swing.*;
 
 public class MapPage {
     public Pane pane;
@@ -60,23 +53,17 @@ public class MapPage {
         }
     }
 
-/*todo:
 
-    public void activateRuin(int i, Hex hex) {
+    public void activateRuin(int i,JSONObject jsonObject) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         switch (i) {
             case 1:
-                GameController.getCurrentPlayer().increasePopulation(1);
                 alert.setContentText("Congratulations!! your population increased 1 person.");
                 break;
             case 2:
-                int amount = (new Random().nextInt(5) + 1) * 100;
-                GameController.getCurrentPlayer().increaseGold(amount);
-                alert.setContentText("Congratulations!! you found a box of gold with " + amount + " coins :)");
+                alert.setContentText("Congratulations!! you found a box of gold with " + jsonObject.getInt("amount2") + " coins :)");
                 break;
             case 3:
-                GameController.getCurrentPlayer().increaseGold(89);
-                UnitController.makeUnit("Settler", hex, "gold");
                 alert.setContentText("Congratulations!! you just got a free Settler Unit :)");
                 break;
             case 4:
@@ -91,11 +78,8 @@ public class MapPage {
                 break;
 
         }
-
-        hex.setRuinsValue(0);
         alert.showAndWait();
     }
-*/
 
     int FOGRemover = 0;
     boolean technologyPass = false;
@@ -108,17 +92,18 @@ public class MapPage {
 
             @Override
             public void handle(MouseEvent event) {
-                if (GameController.getSelectedHex() == null) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "choose a tile first");
+                String res = GameController.handelFogOfWarRemoverButton();
+                //todo:
+                if(res.equals("choose a tile first")) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION,res );
                     alert.showAndWait();
                     return;
                 }
-                if (!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)) {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "it's not wise to waste this token :)");
+                if (res.equals("it's not wise to waste this token :)")) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
                     return;
                 }
-                GameController.getSelectedHex().setState(HexState.Revealed, GameController.getCurrentPlayer());
                 FOGRemover--;
                 if (FOGRemover == 0) {
                     anchorPane.getChildren().add(remover);
@@ -437,9 +422,9 @@ public class MapPage {
                             JSONObject cityDetails = details.getJSONObject("cityDetails");
 
                         }
-/*                     todo:   if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
-                            initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
-                        }*/
+                        if (details.has("building")) {
+                            initializeBuildings(details.getString("building"),i,j);
+                        }
                     }
                     if (details.has("ruins")) {
                         initializeRuins(i, j);
@@ -452,18 +437,26 @@ public class MapPage {
         }
     }
 
-/*todo:
-    private void initializeBuildings(City city, Hex hex) {
-        for (int i = 1; i <= city.getBuiltBuildings().size(); i++) {
-            Building building = city.getBuiltBuildings().get(i - 1);
-            ImageView buildingView = building.getBuildingView();
-            buildingView.setX(hex.getTerrain().getTerrainView().getX() + 25);
-            buildingView.setY(hex.getTerrain().getTerrainView().getY() + 20 + (i * 7));
+
+    private void initializeBuildings(String buildingsNames, int i, int j) {
+        ArrayList<String> names =
+                new Gson().fromJson(buildingsNames, new TypeToken<ArrayList<String>>() {}.getType());
+        for (String name:names) {
+            ImageView buildingView = getBuildingView(name);
+            buildingView.setX(tilesImageViews[i][j].getX() + 25);
+            buildingView.setY(tilesImageViews[i][j].getY() + 20 + (i * 7));
             pane.getChildren().add(buildingView);
         }
     }
-*/
+    private static ImageView getBuildingView(String name) {
+        Image image;
+        String address;
+        address = "pictures/building/" + name.toLowerCase() + ".png";
+        image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
+        ImageView imageView = new ImageView(image);
+        return imageView;
 
+    }
 
     private void initializeRuins(int i, int j) {
         ImageView ruins = new ImageView(new Image(CivilizationApplication.class.getResource("pictures/others/ruins.png").toExternalForm()));
@@ -815,7 +808,7 @@ public class MapPage {
                 if (!res.equals("unit is on its way")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
-                }
+                }else resetPane();
                 wantToMove = false;
             } else if (wantToAttack) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, CombatController.attackUnit(i, j));
@@ -871,9 +864,6 @@ public class MapPage {
     public void nextTurn(MouseEvent mouseEvent) {
         String outPut = GameController.changeTurn();
         if (outPut.startsWith("Turn changed successfully")) {
-            GameController.checkTimeVariantProcesses();
-            //GameController.getAvailableWorkOfActiveWorkers
-            if (GameController.getTurn() == 1) GameController.startGame();
             Platform.runLater(() -> {
                 pane.requestFocus();
             });
@@ -886,5 +876,9 @@ public class MapPage {
 
     public void pause(MouseEvent mouseEvent) {
         loadPanel("pause-panel");
+    }
+
+    public void changeTurnForOthers() {
+        resetPane();
     }
 }

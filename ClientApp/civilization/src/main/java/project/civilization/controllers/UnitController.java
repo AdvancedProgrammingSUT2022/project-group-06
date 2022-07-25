@@ -500,7 +500,13 @@ public class UnitController {
         try {
             CivilizationApplication.dataOutputStream.writeUTF(json.toString());
             CivilizationApplication.dataOutputStream.flush();
-            return CivilizationApplication.dataInputStream.readUTF();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            JSONObject jsonObject = new JSONObject(res);
+            if(jsonObject.has("had ruins")){
+                CivilizationApplication.mapPageController.activateRuin(
+                        jsonObject.getInt("had ruins"),jsonObject);
+            }
+            return jsonObject.getString("movement result");
         } catch (IOException x) {
             x.printStackTrace();
             return "something is wrong";

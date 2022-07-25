@@ -115,7 +115,7 @@ public class Player {
 
     public void setTechnologyForPlayers() {
         for (Technology technology : InitializeGameInfo.getAllTechnologies()) {
-            achievedTechnologies.put(technology.getName(), false);
+            achievedTechnologies.put(technology.getName(), true);
         }
         currentResearch = Technology.clone(InitializeGameInfo.getTechnologyByName().get("Agriculture"), this);
         unlockTechnology("Agriculture");

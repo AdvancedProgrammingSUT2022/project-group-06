@@ -4,12 +4,15 @@ package serverapp.controllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 import serverapp.enums.*;
+import serverapp.models.User;
 import serverapp.models.gainable.Construction;
 import serverapp.models.gainable.Improvement;
 import serverapp.models.gainable.Technology;
@@ -464,7 +467,7 @@ public class GameController {
     }
 
     public static String changeTurn() {
-        // TODO: 7/14/2022 : 
+        // TODO: 7/14/2022 :
 /*        String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;*/
         int goldPerTurn = 0;
@@ -506,6 +509,12 @@ public class GameController {
         }
         currentPlayer = players.get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action",Actions.CHANGETURNOFOTHEROLAYERS.getCharacter());
+        for (Player player:InitializeGameInfo.getPlayers()) {
+            NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
+                    ,jsonObject.toString());
+        }
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
@@ -1497,6 +1506,8 @@ public class GameController {
         if (removeError("Forest") == null) availableWorks.add("remove forest");
         if (removeError("Marsh") == null) availableWorks.add("remove marsh");
         availableWorks.add("remove way");
+        if(canConstructRailRoad()) availableWorks.add("construct railroad");
+        if(canConstructRoad()) availableWorks.add("construct road");
         Gson gson = new GsonBuilder().create();
         return (gson.toJson(availableWorks));
     }
@@ -1548,42 +1559,113 @@ public class GameController {
                                 && UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain"))
                 );
     }
+    public static boolean canConstructRailRoad(){
+        int x = UnitController.getSelectedUnit().getX();
+        int y = UnitController.getSelectedUnit().getY();
+        if (GameController.isOutOfBounds(x, y))
+            return false;
+        if (!UnitController.getSelectedUnit().getName().equals("Worker"))
+            return false;
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("Railroad"))
+            return false;
+        if (hex[x][y].hasRailRoad())
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
+            return false;
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
+            return false;
+        return true;
+    }
+    public static String constructRailRoad(int x, int y) {
+/*        if (GameController.isOutOfBounds(x, y))
+            return "chosen position is not valid";
+        if (!selectedUnit.getName().equals("Worker"))
+            return "you should choose a worker unit";
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("Road"))
+            return "you don't have required technology for building roads";
+        if (hex[x][y].hasRailRoad())
+            return "this hex already has railroad";
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
+            return "you can't construct railroad on mountain";
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
+            return "you can't construct railroad on ocean";
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
+            return "you can't build railroad on ice";*/
+        UnitController.getSelectedUnit().setOrdered(true);
+        UnitController.getSelectedUnit().setState(UnitState.Active);
+        Improvement railroad = new Improvement("RailRoad", UnitController.getSelectedUnit(), hex[x][y]);
+        railroad.setLeftTurns(3);
+        GameController.getCurrentPlayer().addUnfinishedProject(railroad);
+        return "the railroad will be constructed in 3 turns";
+    }
+    public static boolean canConstructRoad(){
+        int x = UnitController.getSelectedUnit().getX();
+        int y = UnitController.getSelectedUnit().getY();
+        if (GameController.isOutOfBounds(x, y))
+            return false;
+        if (UnitController.getSelectedUnit() == null)
+            return false;
+        if (!UnitController.getSelectedUnit().getName().equals("Worker"))
+            return false;
+        if (!GameController.getCurrentPlayer().getAchievedTechnologies().get("TheWheel"))
+            return false;
+        if (hex[x][y].hasRoad())
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Mountain.getCharacter()))
+            return false;
+        if (hex[x][y].getTerrain().getName().equals(TerrainNames.Ocean.getCharacter()))
+            return false;
+        if (hex[x][y].getFeature() != null && hex[x][y].getFeature().getName().equals(FeatureNames.Ice.getCharacter()))
+            return false;
+        return true;
+    }
+    public static String constructRoad(int x, int y) {
+        UnitController.getSelectedUnit().setOrdered(true);
+        UnitController.getSelectedUnit().setState(UnitState.Active);
 
-    public static void orderToWorker(String command) {
-/*        if (command.equals("construct road")){
-            constructRoadView();
-        } else if (command.equals("construct railroad")){
-            constructRailroadMenu();
-        }else*/
-        if (command.equals("quarry build")) {
-            System.out.println(GameController.makeQuarry());
+        Improvement road = new Improvement("Road", UnitController.getSelectedUnit(), hex[x][y]);
+        road.setLeftTurns(3);
+        GameController.getCurrentPlayer().addUnfinishedProject(road);
+        return "the road will be constructed in 3 turns";
+    }
+
+    public static String orderToWorker(String command) {
+        if (command.equals("construct road")){
+            return constructRoad(UnitController.getSelectedUnit().getX(),UnitController.getSelectedUnit().getY());
+        }else if (command.equals("construct railroad")){
+            return constructRailRoad(UnitController.getSelectedUnit().getX(),UnitController.getSelectedUnit().getY());
+        }else if (command.equals("quarry build")) {
+            return (GameController.makeQuarry());
         } else if (command.equals("factory build")) {
-            System.out.println(GameController.makeFactory());
+            return(GameController.makeFactory());
         } else if (command.equals("plantation build")) {
-            System.out.println(GameController.makePlantation());
+            return(GameController.makePlantation());
         } else if (command.equals("camp build")) {
-            System.out.println(GameController.makingCamp());
+            return(GameController.makingCamp());
         } else if (command.equals("pasture build")) {
-            System.out.println(GameController.makingPasture());
+            return(GameController.makingPasture());
         } else if (command.equals("lumber mill build")) {
-            System.out.println(GameController.makingLumberMill());
+            return(GameController.makingLumberMill());
         } else if (command.equals("post build")) {
-            System.out.println(GameController.startMakeingTradingPost());
+            return(GameController.startMakeingTradingPost());
         } else if (command.equals("farm build")) {
-            System.out.println(GameController.startBuildFarm());
+            return(GameController.startBuildFarm());
         } else if (command.equals("mine build")) {
-            System.out.println(GameController.startBuildMine());
+            return(GameController.startBuildMine());
         } else if (command.equals("remove jungle")) {
-            System.out.println(GameController.removeJungle());
+            return(GameController.removeJungle());
         } else if (command.equals("remove forest")) {
-            System.out.println(GameController.removeForest());
+            return(GameController.removeForest());
         } else if (command.equals("remove marsh")) {
-            System.out.println(GameController.removeMarsh());
+            return(GameController.removeMarsh());
         } else if (command.equals("remove way")) {
-            System.out.println(GameController.removeRailRoad());
+            return(GameController.removeRailRoad());
         } else if (command.equals("repair")) {
-            System.out.println(GameController.repair());
+            return(GameController.repair());
         }
+        return "invalid order";
     }
 
     public static int getPlayerCount() {
@@ -1637,9 +1719,9 @@ public class GameController {
                     }
                     if (hexes[i][j].getCity() != null) {
                         hexDetails.put("city", hexes[i][j].getCity().getName());
-/*                        if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
-                            initializeBuildings(hexes[i][j].getCity(), hexes[i][j]);
-                        }*/
+                        if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
+                            jsonObject.put("building",initializeBuildings(hexes[i][j].getCity()));
+                        }
                     }
                     if(hexes[i][j].getHasRuins()!=0)
                     {
@@ -1653,6 +1735,15 @@ public class GameController {
             }
         }
         return allHexes.toString();
+    }
+
+    private static String initializeBuildings( City city) {
+        ArrayList<String> names = new ArrayList<>();
+        for (int i = 1; i <= city.getBuiltBuildings().size(); i++) {
+            names.add(city.getBuiltBuildings().get(i - 1).getName());
+        }
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(names));
     }
 
     private static String initializeRiver(Hex hex) {
@@ -1832,4 +1923,23 @@ public class GameController {
         Gson gson = new GsonBuilder().create();
         return (gson.toJson(playerCitiesNames));
     }
+
+    public static String changeTurnAction() {
+        String outPut = GameController.changeTurn();
+        if (outPut.startsWith("Turn changed successfully")) {
+            GameController.checkTimeVariantProcesses();
+            //GameController.getAvailableWorkOfActiveWorkers
+            if (GameController.getTurn() == 1) GameController.startGame();
+        }
+        return outPut;
+    }
+
+    public static String handelFogOfWarRemoverButton() {
+        if(GameController.getSelectedHex()==null) return "choose a tile first";
+        if(!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))
+        return "it's not wise to waste this token :)";
+        GameController.getSelectedHex().setState(HexState.Visible, GameController.getCurrentPlayer());
+        return "successfully";
+    }
+
 }

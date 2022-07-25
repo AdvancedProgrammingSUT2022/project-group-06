@@ -15,9 +15,8 @@ import serverapp.models.units.Civilian;
 import serverapp.models.units.Combatable;
 import serverapp.models.units.Military;
 
-public class City implements Combatable {
-    private static ArrayList<City> cities = new ArrayList<City>();
 
+public class City implements Combatable {
     private String name;
     private int population;
     private int rangedCombatStrength = 8;
@@ -27,27 +26,32 @@ public class City implements Combatable {
     private int science;
     private int gold;
     private int production;
-
-    private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
-    private ArrayList<Hex> hexs = new ArrayList<Hex>();
-    private Player owner = null;
-    private int hitPoint = 20;
-    final private int maxHitPoint = 20;
-    private Hex capital;
-    private int trophy = 0;
-
     private int numberOfUnemployedCitizen;
     private int health;
+    private int trophy = 0;
+    final private int maxHitPoint = 20;
+    private int hitPoint = 20;
+    private int beginningX;
+    private  int beginningY;
+    private final ArrayList<Building> builtBuildings;
+    private ArrayList<int[]> otherTilesCoordinates = new ArrayList<int[]>();
+    private ArrayList<Building> constructingBuldings = new ArrayList<Building>();
 
-    public int getTrophy() {
-        return trophy;
-    }
 
-    public void setTrophy(int amount) {
-        trophy = amount;
-    }
+    private transient static ArrayList<City> cities = new ArrayList<City>();
+
+    private transient ArrayList<Hex> hexs = new ArrayList<Hex>();
+
+    private transient Player owner = null;
+
+
+    private transient Hex capital;
+
 
     public City(Player owner, String name, Hex beginingHex) {
+        this.beginningX = beginingHex.getX();
+        this.beginningY = beginingHex.getY();
+
         this.owner = owner;
         this.name = name;
         increasePopulation(1);
@@ -72,6 +76,35 @@ public class City implements Combatable {
             meleeCombatStrength += 3;
             rangedCombatStrength += 3;
         }
+        builtBuildings = new ArrayList<>();
+    }
+
+    public ArrayList<int[]> getOtherTilesCoordinates() {
+        return otherTilesCoordinates;
+    }
+
+    public int getBeginningX() {
+        return beginningX;
+    }
+
+    public int getBeginningY() {
+        return beginningY;
+    }
+
+    public void setHexs(ArrayList<Hex> hexs) {
+        this.hexs = hexs;
+    }
+
+    public void setCapital(Hex capital) {
+        this.capital = capital;
+    }
+
+    public int getTrophy() {
+        return trophy;
+    }
+
+    public void setTrophy(int amount) {
+        trophy = amount;
     }
 
     public void setOwner(Player owner) {
@@ -186,6 +219,7 @@ public class City implements Combatable {
     }
 
     public void addHex(Hex hex) {
+        otherTilesCoordinates.add(new int[]{hex.getX(), hex.getY()});
         hex.setOwner(this.owner);
         hex.setCity(this);
         hexs.add(hex);
@@ -324,5 +358,9 @@ public class City implements Combatable {
 
     public void decreaseChangingFood(int amount) {
         this.changingFood -= amount;
+    }
+
+    public ArrayList<Building> getBuiltBuildings() {
+        return builtBuildings;
     }
 }

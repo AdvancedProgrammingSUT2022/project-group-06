@@ -465,49 +465,21 @@ public class GameController {
     }
 
     public static String changeTurn() {
-        // TODO: 7/14/2022 : 
-/*        String unitOrders = unitActions();
-        if (unitOrders != null) return unitOrders;*/
-        int goldPerTurn = 0;
-        for (City temp : GameController.getCurrentPlayer().getCities()) {
-            goldPerTurn += temp.getGold();
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.changeTurn.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        currentPlayer.increaseGold(goldPerTurn);
-        goldFromTerrains();
-        productionFromTerrains();
-        addFoodFromTiles();
-        feedCitizens();
-        growCity();
-        //healUnits and cities(1hit point)//handel tarmim asib
-        heal();
-        // TODO: 7/14/2022 : 
-        //resetOrdersAndOrdered();
-        UnitController.changeTurn();
-        //hazine tamir O negahdari buldings
-        currentPlayer.decreaseHappiness(1);//happiness decrease as the population grows
-        if (currentPlayer.getHappiness() < 0) unhappinessEffects();
-        for (int i = 0; i < currentPlayer.getCities().size(); i++) {
-            for (int j = 0; j < currentPlayer.getCities().get(i).getHexs().size(); j++) {
-                if (currentPlayer.getCities().get(j).getHexs().get(j).hasRoad())
-                    currentPlayer.decreaseGold(2);//gold to maintain roads
-                if (currentPlayer.getCities().get(j).getHexs().get(j).hasRailRoad())
-                    currentPlayer.decreaseGold(3);//gold to maintain railroads
-            }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
         }
-        addGoldFromWorkersActivities();
-        //improvements
-        for (Player player : players)
-            player.setTrophies(player.getTrophies() + player.getPopulation() + 3); //one trophy for each citizen & 3 for capital
-        resetMovePoints();
-        if (playerCount == players.size() - 1) {
-            playerCount = 0;
-            turn++;
-        } else {
-            playerCount++;
-        }
-        currentPlayer = players.get(playerCount);
-        UnitController.setCurrentPlayer(currentPlayer);
-        return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
 
     public static void addFoodFromTiles() {
@@ -1319,7 +1291,23 @@ public class GameController {
             return null;
         }
     }
-    public static void orderToWorker(String temp) {
+    public static String  orderToWorker(String temp) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.orderToWorker.getCharacter());
+            json.put("order", temp);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
     }
 
     public static String getPaneDetails(int mapBoundary0, int mapBoundary1, int mapBoundary2, int mapBoundary3) {
@@ -1512,6 +1500,24 @@ public class GameController {
             String res = CivilizationApplication.dataInputStream.readUTF();
             return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
             }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String handelFogOfWarRemoverButton() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.handelFogOfWarRemoverButton.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
             return null;

@@ -90,6 +90,12 @@ public class Game {
             return CityController.buyHex(jsonObject.getInt("count"));
         }if(command.equals(Actions.citiesPanel.getCharacter())){
             return GameController.citiesPanel();
+        }if(command.equals(Actions.orderToWorker.getCharacter())){
+            return GameController.orderToWorker(jsonObject.getString("order"));
+        }if(command.equals(Actions.handelFogOfWarRemoverButton.getCharacter())){
+            return GameController.handelFogOfWarRemoverButton();
+        }if(command.equals(Actions.changeTurn.getCharacter())){
+            return GameController.changeTurn();
         }
         return "bad request format";
     }
