@@ -11,6 +11,8 @@ public class ChatMenu {
             return ChatController.initializePublicChat();
         else if (command.equals(Actions.sendMessage.getCharacter()))
             return ChatController.sendMessageResponse(object);
+        else if (command.equals(Actions.getOnlineUsers.getCharacter()))
+            return ChatController.getOnlineUsers();
         else
             return "invalid command";
     }

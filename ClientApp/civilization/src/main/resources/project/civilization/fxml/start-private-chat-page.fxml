@@ -7,17 +7,20 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.text.Text?>
-<BorderPane xmlns="http://javafx.com/javafx"
+<AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="project.civilization.views.StartPrivateChatMenu"
-            prefHeight="400.0" prefWidth="600.0">
+            prefHeight="650.0" prefWidth="1200.0"
+            stylesheets="@../css/loginregisterstyle.css"
+            fx:id="pane"
+            id="chat-navigation-page">
 
-    <center>
-        <VBox alignment="CENTER" prefWidth="200">
-            <Text fx:id="text" text="enter your friend username"/>
-            <TextField fx:id="searchTextField"/>
-            <Button fx:id="startChatButton" onMouseClicked="#enterChatMenu" text="start chat"/>
-        </VBox>
-    </center>
+<!--    <center>-->
+<!--        <VBox alignment="CENTER" prefWidth="200">-->
+<!--            <Text fx:id="text" text="enter your friend username"/>-->
+<!--            <TextField fx:id="searchTextField"/>-->
+<!--            <Button fx:id="startChatButton" onMouseClicked="#enterChatMenu" text="start chat"/>-->
+<!--        </VBox>-->
+<!--    </center>-->
 
-</BorderPane>
+</AnchorPane>

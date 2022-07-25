@@ -45,4 +45,7 @@ public class Message {
         this.state = state;
     }
 
+    public String getSenderUUID() {
+        return senderUUID;
+    }
 }

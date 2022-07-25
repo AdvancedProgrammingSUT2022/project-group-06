@@ -16,6 +16,7 @@ import org.xml.sax.HandlerBase;
 import project.civilization.controllers.ChatController;
 import project.civilization.models.Chat;
 import project.civilization.models.Message;
+import project.civilization.models.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,27 +89,34 @@ public class PublicChatMenu {
 
         for (int i = 0; i < messages.size(); i++) {
             HBox hBox = new HBox();
+            Text text = new Text(messages.get(i).getText());
+
+            hBox.getChildren().add(text);
+            text.setStyle("-fx-background-color: #effdde; -fx-padding: 12; -fx-background-radius: 12");
             hBox.setLayoutY(540 - (30 * i));
             hBox.setPrefHeight(40);
             hBox.setPrefWidth((3 * messages.get(i).getText().length()) + 20);
-            hBox.setLayoutX(1100 - hBox.getPrefWidth());
-            Text text = new Text(messages.get(i).getText());
-            setStyleForMessage(hBox, text);
-            hBox.getChildren().add(text);
+            if (shouldBeRight(messages.get(i)))
+                hBox.setLayoutX(1100 - hBox.getPrefWidth());
+            else
+                hBox.setLayoutX(80);
             //todo: time, seen or not, style, if you send it or others
             pane.getChildren().add(hBox);
         }
     }
 
+    public static boolean shouldBeRight(Message message) {
+        return message.getSenderUUID().equals(User.getUuid());
+    }
+
     private static void setStyleForMessage(HBox hBox, Text text) {
-        text.setStyle("-fx-font-size: 15");
-        text.setStyle("-fx-font-weight: bold");
-        text.setStyle("-fx-background-color: white");
-        text.setStyle("-fx-border-radius: 25px");
-        text.setStyle("-fx-border: 2px solid #FFFFFF");
-        hBox.setStyle("-fx-background-color: white");
-        hBox.setStyle("-fx-border-radius: 25px");
-        hBox.setStyle("-fx-border: 2px solid #FFFFFF");
+//        text.setStyle("-fx-font-size: 15");
+//        text.setStyle("-fx-font-weight: bold");
+//        text.setStyle("-fx-background-color: white");
+//        text.setStyle("-fx-border-radius: 25px");
+//        text.setStyle("-fx-border: 2px solid #FFFFFF");
+        text.setStyle("-fx-background-color: #effdde; -fx-padding: 12; -fx-background-radius: 12");
+
     }
 
 //    public static void showOptionsBox(Message message1) {

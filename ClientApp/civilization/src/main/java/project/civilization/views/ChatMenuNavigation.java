@@ -8,6 +8,9 @@ import javafx.scene.layout.BorderPane;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.ChatController;
 import project.civilization.enums.Menus;
+import project.civilization.models.User;
+
+import java.util.ArrayList;
 
 public class ChatMenuNavigation {
 
@@ -17,6 +20,12 @@ public class ChatMenuNavigation {
     private Button privateChatsButton;
     @FXML
     private Button roomsButton;
+
+    private static ArrayList<String> onlineUsers;
+
+    public static ArrayList<String> getOnlineUsers() {
+        return onlineUsers;
+    }
 
     public void initialize() {
     }
@@ -28,6 +37,7 @@ public class ChatMenuNavigation {
     }
 
     public void goToPrivateChats() {
+        onlineUsers = ChatController.getOnlineUsers();
         CivilizationApplication.changeMenu(Menus.STARTPRIVATECHAT);
     }
 

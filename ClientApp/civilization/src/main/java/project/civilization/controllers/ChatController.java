@@ -54,6 +54,23 @@ public class ChatController {
         }
     }
 
+
+    public static ArrayList<String> getOnlineUsers() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action", Actions.getOnlineUsers.getCharacter());
+        jsonObject.put("menu", MenuCategory.Chat.getCharacter());
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(jsonObject.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            JSONObject object = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
+            return new Gson().fromJson((String) object.get("users"), new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void updateMessages(String messagesJson) {
         JSONObject jsonObject = new JSONObject(messagesJson);
         ArrayList<Message> messages = new Gson().fromJson((String) jsonObject.get("messages"), new TypeToken<ArrayList<Message>>() {

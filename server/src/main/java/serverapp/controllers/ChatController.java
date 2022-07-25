@@ -48,4 +48,16 @@ public class ChatController {
         return jsonObject.toString();
     }
 
+    public static String getOnlineUsers() {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.getOnlineUsers.getCharacter());
+        Gson gson = new Gson();
+        ArrayList<String> usersName = new ArrayList<>();
+        for (User user : UserController.getUsersArray()) {
+            usersName.add(user.getUsername());
+        }
+        object.put("users", gson.toJson(usersName));
+        return object.toString();
+    }
+
 }

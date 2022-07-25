@@ -64,7 +64,8 @@ public enum Actions {
     cheatTrophy("cheatTrophy"),
     initializePublicChat("initializePublicChat"),
     sendMessage("sendMessage"),
-    updateMessages("updateMessages");
+    updateMessages("updateMessages"),
+    getOnlineUsers("getOnlineUsers");
     private final String character;
 
     Actions(String color) {
