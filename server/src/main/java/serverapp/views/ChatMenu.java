@@ -17,6 +17,10 @@ public class ChatMenu {
             return ChatController.startPrivateChat(object);
         else if (command.equals(Actions.deleteMessage.getCharacter()))
             return ChatController.deleteMessage(object);
+        else if (command.equals(Actions.editMessageButton.getCharacter()))
+            return ChatController.editMessagePrimary(object);
+        else if (command.equals(Actions.editMessageFinal.getCharacter()))
+            return ChatController.editMessageFinal(object);
         else
             return "invalid command";
     }

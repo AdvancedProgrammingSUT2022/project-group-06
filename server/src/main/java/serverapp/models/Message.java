@@ -26,4 +26,12 @@ public class Message {
     public void setSenderUUID(String senderUUID) {
         this.senderUUID = senderUUID;
     }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
 }

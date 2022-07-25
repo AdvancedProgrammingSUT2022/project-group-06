@@ -19,6 +19,7 @@ import project.civilization.models.Chat;
 import project.civilization.models.Message;
 import project.civilization.models.User;
 
+import java.awt.desktop.AppReopenedEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -35,7 +36,7 @@ public class PublicChatMenu {
     private AnchorPane pane;
     private static Button editButton;
     private static Button deleteButton;
-    private static Message editingMessage;
+    public static boolean isEditing;
 
     private static int chatID;
 
@@ -55,15 +56,8 @@ public class PublicChatMenu {
 //        PublicChatMenu.pane = pane1;
 //    }
 
-    public static Message getEditingMessage() {
-        return editingMessage;
-    }
-
-    public static void setEditingMessage(Message editingMessage) {
-        PublicChatMenu.editingMessage = editingMessage;
-    }
-
     public void initialize() {
+        isEditing = false;
         initializeSendButton();
     }
 
@@ -88,7 +82,8 @@ public class PublicChatMenu {
         editButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                //todo: chat controller: edit
+                isEditing = true;
+                ChatController.editMessage(messageIndex, chatID);
                 CivilizationApplication.chatPane.getChildren().remove(optionsVBox);
             }
         });
@@ -113,10 +108,12 @@ public class PublicChatMenu {
         sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (editingMessage == null) {
+                if (!isEditing) {
                     ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), chatID);
+                    previewMessageTextField.setText("");
                 } else {
-//                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
+                    ChatController.editMessageFinal(previewMessageTextField.getText());
+                    isEditing = false;
                 }
             }
         });

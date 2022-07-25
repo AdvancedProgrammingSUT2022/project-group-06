@@ -75,7 +75,9 @@ public enum Actions {
     handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
     CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
     startPrivateChat("startPrivateChat"),
-    deleteMessage("deleteMessage");
+    deleteMessage("deleteMessage"),
+    editMessageButton("editMessage"),
+    editMessageFinal("editMessageFinal");
     private final String character;
 
     Actions(String color) {

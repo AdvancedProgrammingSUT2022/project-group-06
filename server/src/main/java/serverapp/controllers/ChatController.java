@@ -14,6 +14,10 @@ import java.util.HashMap;
 
 public class ChatController {
 
+    private static int editingIndex;
+    private static int editingChatID;
+    private static String editingUuid;
+
     public static String initializePublicChat() {
         if (Chat.getPublicChat() == null) {
             Chat.setPublicChat(new Chat());
@@ -174,6 +178,30 @@ public class ChatController {
         if (Chat.getPublicChat().getChatID() == id)
             return Chat.getPublicChat();
         return null;
+    }
+
+    public static String editMessagePrimary(JSONObject object) {
+        editingIndex = (int) object.get("index");
+        editingChatID = (int) object.get("chatID");
+        editingUuid = (String) object.get("uuid");
+        return "";
+    }
+
+    public static String editMessageFinal(JSONObject object) {
+        String messageText = (String) object.get("message");
+        Chat chat = getChatByID(editingChatID);
+        Message message = chat.getAllMessages().get(editingIndex);
+        message.setText(messageText);
+
+        JSONObject respond = new JSONObject();
+        respond.put("action", Actions.updateMessages.getCharacter());
+        respond.put("messages", new Gson().toJson(chat.getAllMessages()));
+
+        for (String participantUuid : chat.getParticipants()) {
+            User user = UserController.getUserHashMap().get(participantUuid);
+            NetWorkController.broadCast(user, respond.toString());
+        }
+        return respond.toString();
     }
 
 }

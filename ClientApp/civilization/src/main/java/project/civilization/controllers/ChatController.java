@@ -113,4 +113,34 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+
+    public static void editMessage(Integer index, Integer chatId) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.editMessageButton.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("index", index);
+        object.put("chatID", chatId);
+        object.put("uuid", User.getUuid());
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editMessageFinal(String message) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.editMessageFinal.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("message", message);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

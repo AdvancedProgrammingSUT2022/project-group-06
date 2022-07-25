@@ -77,7 +77,9 @@ public enum Actions {
     changeTurn("changeTurn"),
     handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
     CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
-    deleteMessage("deleteMessage");
+    deleteMessage("deleteMessage"),
+    editMessageButton("editMessage"),
+    editMessageFinal("editMessageFinal");
 
     private final String character;
 
