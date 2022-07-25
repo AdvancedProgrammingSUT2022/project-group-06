@@ -135,10 +135,12 @@ public class PublicChatMenu {
             HBox hBox = new HBox();
             Text text = new Text(messages.get(i).getText());
             text.setX(10);
+            Text username = new Text(messages.get(i).getSenderUsername() + ":");
+            VBox vBox = new VBox(username,text, new Text(messages.get(i).getDateString()));
+            hBox.getChildren().add(vBox);
 
-            hBox.getChildren().add(text);
-            hBox.setLayoutY(540 - (35 * i));
-            hBox.setPrefHeight(25);
+            hBox.setLayoutY(540 - (45 * i));
+            hBox.setPrefHeight(35);
             hBox.setPrefWidth((8 * messages.get(i).getText().length()) + 30);
             hBox.setMinWidth((8 * messages.get(i).getText().length()) + 30);
             if (shouldBeRight(messages.get(i)))
@@ -152,7 +154,6 @@ public class PublicChatMenu {
                     initializeOptionsVbox(index, hBox);
                 }
             });
-            //todo: time, seen or not, style, if you send it or others
             pane.getChildren().add(hBox);
         }
     }

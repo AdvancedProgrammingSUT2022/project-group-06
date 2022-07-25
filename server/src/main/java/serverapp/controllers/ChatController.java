@@ -68,6 +68,7 @@ public class ChatController {
         gson = new Gson();
         json = String.valueOf(object.get("message"));
         Message message = gson.fromJson(json, Message.class);
+        message.setSenderUsername(UserController.getUserHashMap().get(message.getSenderUUID()).getUsername());
         chat.getAllMessages().add(message);
 //        chat.getUsersMessages().get(message.getSenderUUID()).add(message);
 

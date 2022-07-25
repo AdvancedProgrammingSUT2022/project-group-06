@@ -10,6 +10,7 @@ public class Message {
     private String dateString;
     private int state;//1 = sent, 2 = seen
     private String senderUUID;
+    private String senderUsername;
 
     public Message(String text, String uuid) {
         this.text = text;
@@ -33,5 +34,13 @@ public class Message {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getSenderUsername() {
+        return senderUsername;
+    }
+
+    public void setSenderUsername(String senderUsername) {
+        this.senderUsername = senderUsername;
     }
 }
