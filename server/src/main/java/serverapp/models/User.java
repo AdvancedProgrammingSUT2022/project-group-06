@@ -2,6 +2,8 @@ package serverapp.models;
 
 import javafx.scene.image.Image;
 
+import java.util.ArrayList;
+
 public class User implements Comparable{
     private String username;
     private String password;
@@ -9,7 +11,33 @@ public class User implements Comparable{
     private int score;
     private Image avatarPic;
     private int picNum;
+    private String url;
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public ArrayList<Request> getAllFriendShipRequests() {
+        return allFriendShipRequests;
+    }
+
+    private ArrayList<Request> allFriendShipRequests = new ArrayList<>();
+
+    public ArrayList<Request> getAllSentRequests() {
+        return allSentRequests;
+    }
+
+    private ArrayList<Request> allSentRequests = new ArrayList<>();
+
+    public ArrayList<String> getFriendsUsernames() {
+        return friendsUsernames;
+    }
+
+    private ArrayList<String> friendsUsernames = new ArrayList<>();
     // @Override
     // public String toString()
     // {

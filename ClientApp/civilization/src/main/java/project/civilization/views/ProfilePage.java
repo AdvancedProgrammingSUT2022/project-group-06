@@ -1,10 +1,15 @@
 package project.civilization.views;
 
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.ByteBuffer;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import javafx.fxml.FXML;
@@ -15,12 +20,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javax.swing.JFileChooser;
 
 import javafx.scene.input.MouseEvent;
 
 
+import javafx.scene.paint.ImagePattern;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.GameController;
 import project.civilization.controllers.UserController;
 import project.civilization.enums.Menus;
 
@@ -40,50 +46,45 @@ public class ProfilePage  extends GameMenus {
     private Label passwordError;
     @FXML
     private ImageView avatarPic;
-    
-    
+
+    // JFrame frame = new JFrame("Profile Picture");
+    // JPanel panel = new JPanel();
+    // panel.setLayout(new FlowLayout());
+
+    // JLabel avatar=new JLabel();
+
+    // JButton backButton = new JButton();
+    // JButton selectImage=new JButton();
+    // JButton nextImage=new JButton();
+    // JLabel changeNickname=new JLabel();
+    // JTextField newNickname=new JTextField();
+    // JButton changeNicknameButton=new JButton();
+    // JLabel changePassword=new JLabel();
+    // JTextField newPassword=new JTextField();
+    // JButton changePasswordButton=new JButton();
+    // JButton deleteAccount=new JButton();
+
+
+    // panel.add(backButton);
+    // panel.add(selectImage);
+    // panel.add(nextImage);
+    // panel.add(changeNickname);
+    // panel.add(newNickname);
+    // panel.add(changeNicknameButton);
+    // panel.add(changePassword);
+    // panel.add(newPassword);
+    // panel.add(changePasswordButton);
+    // panel.add(deleteAccount);
+    // frame.add(panel);
+    // frame.setSize(400,500);
+    // frame.setLocationRelativeTo(null);
+
+    // frame.setVisible(true);
 
     public void initialize()
-    {   
-
-        // JFrame frame = new JFrame("Profile Picture");  
-        // JPanel panel = new JPanel();  
-        // panel.setLayout(new FlowLayout());
-        
-        // JLabel avatar=new JLabel();
-        
-        // JButton backButton = new JButton();  
-        // JButton selectImage=new JButton();
-        // JButton nextImage=new JButton();
-        // JLabel changeNickname=new JLabel();
-        // JTextField newNickname=new JTextField();
-        // JButton changeNicknameButton=new JButton();
-        // JLabel changePassword=new JLabel();
-        // JTextField newPassword=new JTextField();
-        // JButton changePasswordButton=new JButton();
-        // JButton deleteAccount=new JButton();
-
-          
-        // panel.add(backButton);
-        // panel.add(selectImage);
-        // panel.add(nextImage);
-        // panel.add(changeNickname);
-        // panel.add(newNickname);
-        // panel.add(changeNicknameButton);
-        // panel.add(changePassword);
-        // panel.add(newPassword);
-        // panel.add(changePasswordButton);
-        // panel.add(deleteAccount);       
-        // frame.add(panel);  
-        // frame.setSize(400,500);  
-        // frame.setLocationRelativeTo(null);  
-          
-        // frame.setVisible(true);  
-
-
-//todo: profile:
-/*        avatarPic.setImage(UserController.getLoggedInUser().getAvatarPic());
-        currentPic=UserController.getLoggedInUser().getPicNum();*/
+    {   String s = UserController.getPicUrl();
+        avatarPic.setImage(new Image (s));
+       // currentPic=UserController.getLoggedInUser().getPicNum();
     }
     public void selectImage(MouseEvent mouseEvent) throws IOException
     {
@@ -162,8 +163,13 @@ public class ProfilePage  extends GameMenus {
             CivilizationApplication.changeMenu(Menus.LOGIN);
         }
     }
-   
 
- 
-    
+
+    public void friendsList(MouseEvent mouseEvent) {
+        CivilizationApplication.changeMenu(Menus.SEEALLFRIENDS);
+    }
+
+    public void friendsRequests(MouseEvent mouseEvent) {
+        CivilizationApplication.changeMenu(Menus.FRIENDSHIPREQUESTS);
+    }
 }

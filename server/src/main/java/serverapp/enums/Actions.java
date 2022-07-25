@@ -76,7 +76,11 @@ public enum Actions {
     orderToWorker("orderToWorker"),
     changeTurn("changeTurn"),
     handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
-    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS");
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
+    getAllFreinShipRequests("getAllFreinShipRequests"),
+    getAllFriendsNames("getAllFriendsNames"),
+    sendFriendShipRequest("sendFriendShipRequest"),
+    getPicUrl("getPicUrl");
 
     private final String character;
 

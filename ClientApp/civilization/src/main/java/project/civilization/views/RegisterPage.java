@@ -56,7 +56,7 @@ public class RegisterPage extends GameMenus{
             error.setStyle("-fx-text-fill: #ff0066;");
             return;
         }
-        String res = UserController.register(username.getText(), password.getText(),nickname.getText());
+        String res = UserController.register(username.getText(), password.getText(),nickname.getText(),"pictures/avatar/" + avatarPicCount + ".png");
         if(res.equals("This username is taken")){
             error.setText("This username is taken");
             error.setStyle("-fx-text-fill: #ff0066;");

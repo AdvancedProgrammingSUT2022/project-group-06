@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="project.civilization.views.FriendsList"
+            prefHeight="650.0" prefWidth="1200.0"
+            stylesheets="@../css/style.css" id="menu">
+
+    <Rectangle opacity="0.7" fill="black" height="430" width="400" fx:id="fadeRectangle" x="400" y="150"/>
+
+    <center>
+        <VBox fx:id="vbox" spacing="10" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
+            <VBox fx:id="search">
+            <Label id="error" fx:id="error" alignment="CENTER" prefHeight="55.0" prefWidth="438.0" text="" textAlignment="CENTER" />
+            <TextField layoutX="400" alignment="CENTER" fx:id="username" promptText="search username" />
+            <Button layoutX="400" alignment="CENTER"  fx:id="searchButton" onMouseClicked="#searchUser" text="search" />
+            </VBox>
+            <Button onMouseClicked="#back" prefHeight="0.0" text="back" />
+            <VBox fx:id="friendsVbox" />
+        </VBox>
+
+    </center>
+
+</BorderPane>
