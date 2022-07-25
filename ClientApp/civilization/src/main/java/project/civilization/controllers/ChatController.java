@@ -87,7 +87,6 @@ public class ChatController {
         object.put("menu", MenuCategory.Chat.getCharacter());
         object.put("username", username);
         object.put("senderUuid", User.getUuid());
-        String input = null;
         try {
             CivilizationApplication.dataOutputStream.writeUTF(object.toString());
             CivilizationApplication.dataOutputStream.flush();
@@ -98,35 +97,67 @@ public class ChatController {
             return null;
         }
     }
-//    public static void editMessage(Message message, String typedString) {
-//        message.setText(typedString);
-//        PublicChatMenu.setEditingMessage(null);
-//    }
-//
-//    public static void deleteMessage(Message message, BorderPane pane) {
-//        shiftMessagesDown(message);
-//        pane.getChildren().remove(message.getHBox());
-//        Message.getMessages().remove(message);
-//    }
-//
-//    public static void shiftMessagesUp() {
-//        ArrayList<Message> messages = Message.getMessages();
-//        for (Message message : messages) {
-//            message.getHBox().setLayoutY(message.getHBox().getLayoutY() - 20);
-//        }
-//    }
-//
-//    public static void shiftMessagesDown(Message deleted) {
-//        int index = 0;
-//        ArrayList<Message> messages = Message.getMessages();
-//        for (int i = 0; i < messages.size(); i++) {
-//            if (messages.get(i).getHBox().getLayoutY() == deleted.getHBox().getLayoutY()) {
-//                index = i;
-//                break;
-//            }
-//        }
-//        for (int i = 0; i < index; i++) {
-//            messages.get(i).getHBox().setLayoutY(messages.get(i).getHBox().getLayoutY() + 20);
-//        }
-//    }
+
+    public static void deleteMessage(Integer index, Integer chatId) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.deleteMessage.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("index", index);
+        object.put("chatID", chatId);
+        object.put("uuid", User.getUuid());
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editMessage(Integer index, Integer chatId) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.editMessageButton.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("index", index);
+        object.put("chatID", chatId);
+        object.put("uuid", User.getUuid());
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void editMessageFinal(String message) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.editMessageFinal.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("message", message);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Integer startRoom(ArrayList<String> usernames) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.startRoom.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("senderUuid", User.getUuid());
+        object.put("usernames", usernames);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            JSONObject jsonObject = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
+            return (Integer) jsonObject.get("chatID");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

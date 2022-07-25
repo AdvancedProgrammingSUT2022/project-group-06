@@ -77,6 +77,11 @@ public enum Actions {
     changeTurn("changeTurn"),
     handelFogOfWarRemoverButton("handelFogOfWarRemoverButton"),
     CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
+    deleteMessage("deleteMessage"),
+    editMessageButton("editMessage"),
+    editMessageFinal("editMessageFinal"),
+    startRoom("startRoom");
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
     getAllFreinShipRequests("getAllFreinShipRequests"),
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),

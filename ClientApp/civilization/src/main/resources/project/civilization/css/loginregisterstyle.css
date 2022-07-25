@@ -79,6 +79,10 @@ Label{
     -fx-background-image: url("../pictures/menu_background/thinking_man.jpg");
     -fx-background-size: 1200 650;
 }
+#start-rooms-page{
+-fx-background-image: url("../pictures/menu_background/thinking_man.jpg");
+    -fx-background-size: 1200 650;
+}
 .menu-bar{
     -fx-background-color:transparent;
     -fx-background-image: url("../pictures/menu_background/menuBarBackground.png");

@@ -8,9 +8,9 @@
 }
 HBox {
     -fx-background-color: #57d5b8;
-    -fx-background-radius: 12;
+    -fx-background-radius: 18;
 }
 
 Text{
-    -fx-font-size: 20;
+    -fx-font-size: 15;
 }

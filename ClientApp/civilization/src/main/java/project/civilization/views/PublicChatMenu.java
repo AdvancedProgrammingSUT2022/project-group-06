@@ -13,11 +13,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import org.xml.sax.HandlerBase;
+import project.civilization.CivilizationApplication;
 import project.civilization.controllers.ChatController;
+import project.civilization.enums.Menus;
 import project.civilization.models.Chat;
 import project.civilization.models.Message;
 import project.civilization.models.User;
 
+import java.awt.desktop.AppReopenedEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -32,10 +35,12 @@ public class PublicChatMenu {
     private static VBox optionsVBox;
     @FXML
     private AnchorPane pane;
+    @FXML
+    private Button backButton;
+
     private static Button editButton;
-    private static Button deleteButton;//for urself
-    private static Button deleteForAllButton;//for all
-    private static Message editingMessage;
+    private static Button deleteButton;
+    public static boolean isEditing;
 
     private static int chatID;
 
@@ -55,35 +60,64 @@ public class PublicChatMenu {
 //        PublicChatMenu.pane = pane1;
 //    }
 
-    public static Message getEditingMessage() {
-        return editingMessage;
-    }
-
-    public static void setEditingMessage(Message editingMessage) {
-        PublicChatMenu.editingMessage = editingMessage;
-    }
-
     public void initialize() {
-//        vBox.setAlignment(Pos.BOTTOM_CENTER);
+        isEditing = false;
         initializeSendButton();
     }
 
-    private void addPreviewTextFieldToScreen(TextField previewMessage, VBox vBox) {
-        previewMessage.setText("Type here...");
-        previewMessage.setPrefHeight(20);
-        previewMessage.setPrefWidth(180);
-        vBox.getChildren().add(previewMessage);
+    private static void initializeOptionsVbox(int messageIndex, HBox hBox) {
+        optionsVBox = new VBox();
+        optionsVBox.setPrefWidth(50);
+        optionsVBox.setPrefHeight(60);
+        optionsVBox.setLayoutX(hBox.getLayoutX() - 40);
+        optionsVBox.setLayoutY(hBox.getLayoutY()- 50);
+
+        initializeDeleteButton(messageIndex);
+        initializeEditButton(messageIndex);
+        CivilizationApplication.chatPane.getChildren().add(optionsVBox);
+    }
+
+    private static void initializeEditButton(int messageIndex) {
+        editButton = new Button("edit");
+        editButton.setPrefWidth(50);
+        editButton.setPrefHeight(30);
+        optionsVBox.getChildren().add(editButton);
+
+        editButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                isEditing = true;
+                ChatController.editMessage(messageIndex, chatID);
+                CivilizationApplication.chatPane.getChildren().remove(optionsVBox);
+            }
+        });
+    }
+
+    private static void initializeDeleteButton(int messageIndex) {
+        deleteButton = new Button("delete");
+        deleteButton.setPrefWidth(50);
+        deleteButton.setPrefHeight(30);
+        optionsVBox.getChildren().add(deleteButton);
+
+        deleteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                ChatController.deleteMessage(messageIndex, chatID);
+                CivilizationApplication.chatPane.getChildren().remove(optionsVBox);
+            }
+        });
     }
 
     private void initializeSendButton() {
         sendButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if (editingMessage == null) {
+                if (!isEditing) {
                     ArrayList<Message> messages = ChatController.sendMessage(previewMessageTextField.getText(), chatID);
-//                    showMessages(messages);
+                    previewMessageTextField.setText("");
                 } else {
-//                   ChatController.editMessage(editingMessage, previewMessageTextField.getText());
+                    ChatController.editMessageFinal(previewMessageTextField.getText());
+                    isEditing = false;
                 }
             }
         });
@@ -100,17 +134,26 @@ public class PublicChatMenu {
         for (int i = 0; i < messages.size(); i++) {
             HBox hBox = new HBox();
             Text text = new Text(messages.get(i).getText());
+            text.setX(10);
+            Text username = new Text(messages.get(i).getSenderUsername() + ":");
+            VBox vBox = new VBox(username,text, new Text(messages.get(i).getDateString()));
+            hBox.getChildren().add(vBox);
 
-            hBox.getChildren().add(text);
-            text.setStyle("-fx-background-color: #effdde; -fx-padding: 12; -fx-background-radius: 12");
-            hBox.setLayoutY(540 - (30 * i));
-            hBox.setPrefHeight(40);
-            hBox.setPrefWidth((3 * messages.get(i).getText().length()) + 20);
+            hBox.setLayoutY(540 - (45 * i));
+            hBox.setPrefHeight(35);
+            hBox.setPrefWidth((8 * messages.get(i).getText().length()) + 30);
+            hBox.setMinWidth((8 * messages.get(i).getText().length()) + 30);
             if (shouldBeRight(messages.get(i)))
                 hBox.setLayoutX(1100 - hBox.getPrefWidth());
             else
                 hBox.setLayoutX(80);
-            //todo: time, seen or not, style, if you send it or others
+            int index = messages.size() - 1 - i;
+            hBox.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    initializeOptionsVbox(index, hBox);
+                }
+            });
             pane.getChildren().add(hBox);
         }
     }
@@ -119,55 +162,7 @@ public class PublicChatMenu {
         return message.getSenderUUID().equals(User.getUuid());
     }
 
-    private static void setStyleForMessage(HBox hBox, Text text) {
-//        text.setStyle("-fx-font-size: 15");
-//        text.setStyle("-fx-font-weight: bold");
-//        text.setStyle("-fx-background-color: white");
-//        text.setStyle("-fx-border-radius: 25px");
-//        text.setStyle("-fx-border: 2px solid #FFFFFF");
-        text.setStyle("-fx-background-color: #effdde; -fx-padding: 12; -fx-background-radius: 12");
-
+    public void back() {
+        CivilizationApplication.changeMenu(Menus.CHATNAVIGATION);
     }
-
-//    public static void showOptionsBox(Message message1) {
-//        double x = message1.getHBox().getLayoutX();
-//        double y = message1.getHBox().getLayoutY();
-//        optionsVBox = new VBox();
-//        editButton = new Button("edit");
-//        editButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                editMessageView(message1);
-//                pane.getChildren().remove(optionsVBox);
-//            }
-//        });
-//        deleteButton = new Button("delete for yourself");
-//        deleteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                ChatController.deleteMessage(message1, pane);
-//                pane.getChildren().remove(optionsVBox);
-//            }
-//        });
-//        deleteForAllButton = new Button("delete for all");
-//        deleteForAllButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                ChatController.deleteMessage(message1, pane);
-//                pane.getChildren().remove(optionsVBox);
-//            }
-//        });
-//        optionsVBox.setLayoutX(x - 30);
-//        optionsVBox.setLayoutY(y - 20);
-//        optionsVBox.getChildren().add(editButton);
-//        optionsVBox.getChildren().add(deleteButton);
-//        optionsVBox.getChildren().add(deleteForAllButton);
-//        pane.getChildren().add(optionsVBox);
-//    }
-//
-//    public static void editMessageView(Message message) {
-//        previewMessageTextField.setText(message.getText());
-//        editingMessage = message;
-//    }
-
 }

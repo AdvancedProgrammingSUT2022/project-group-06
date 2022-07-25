@@ -14,6 +14,7 @@
             stylesheets="@../css/chatstyle.css"
             id="public-chat">
 
+    <Button fx:id="backButton" prefHeight="15" prefWidth="80" layoutX="20" layoutY="20" onMouseClicked="#back" text="back"/>
     <VBox fx:id="vBox"/>
     <TextField fx:id="previewMessageTextField" prefWidth="1000" prefHeight="30" layoutX="50" layoutY="600"/>
     <Button fx:id="sendButton" prefWidth="30" prefHeight="30" layoutX="1075" layoutY="600" text="send" id="send-button"/>

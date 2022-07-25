@@ -20,6 +20,8 @@ public class ChatMenuNavigation {
     private Button privateChatsButton;
     @FXML
     private Button roomsButton;
+    @FXML
+    private Button backButton;
 
     private static ArrayList<String> onlineUsers;
 
@@ -42,7 +44,11 @@ public class ChatMenuNavigation {
     }
 
     public void goToRooms() {
-
+        onlineUsers = ChatController.getOnlineUsers();
+        CivilizationApplication.changeMenu(Menus.STARTROOMS);
     }
 
+    public void back() {
+        CivilizationApplication.changeMenu(Menus.MAIN);
+    }
 }
