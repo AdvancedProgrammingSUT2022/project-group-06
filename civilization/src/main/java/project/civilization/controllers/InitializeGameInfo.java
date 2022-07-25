@@ -478,7 +478,6 @@ public class InitializeGameInfo {
 
         fillBuildingsInfo();
         setPrerequisiteForBuildings();
-        initializeBuildingsView();
 //
 //        try {
 //            saveToFile("buildings.json", new Gson().toJson(allBuildings));
@@ -595,18 +594,6 @@ public class InitializeGameInfo {
 
         Building palace = new Building("Palace", 1, 0, 0, null);
         allBuildings.add(palace);
-    }
-
-
-    private static void initializeBuildingsView() {
-        Image image;
-        String address;
-        for (Building building : InitializeGameInfo.getAllBuildings()) {
-            address = "pictures/building/" + building.getName().toLowerCase() + ".png";
-            image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
-            ImageView imageView = new ImageView(image);
-            building.setBuildingView(imageView);
-        }
     }
 
     private static void setPrerequisiteForBuildings() {
