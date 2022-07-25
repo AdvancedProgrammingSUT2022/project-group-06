@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import org.xml.sax.HandlerBase;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.ChatController;
+import project.civilization.enums.Menus;
 import project.civilization.models.Chat;
 import project.civilization.models.Message;
 import project.civilization.models.User;
@@ -34,6 +35,9 @@ public class PublicChatMenu {
     private static VBox optionsVBox;
     @FXML
     private AnchorPane pane;
+    @FXML
+    private Button backButton;
+
     private static Button editButton;
     private static Button deleteButton;
     public static boolean isEditing;
@@ -157,46 +161,7 @@ public class PublicChatMenu {
         return message.getSenderUUID().equals(User.getUuid());
     }
 
-
-//    public static void showOptionsBox(Message message1) {
-//        double x = message1.getHBox().getLayoutX();
-//        double y = message1.getHBox().getLayoutY();
-//        optionsVBox = new VBox();
-//        editButton = new Button("edit");
-//        editButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                editMessageView(message1);
-//                pane.getChildren().remove(optionsVBox);
-//            }
-//        });
-//        deleteButton = new Button("delete for yourself");
-//        deleteButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                ChatController.deleteMessage(message1, pane);
-//                pane.getChildren().remove(optionsVBox);
-//            }
-//        });
-//        deleteForAllButton = new Button("delete for all");
-//        deleteForAllButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent mouseEvent) {
-//                ChatController.deleteMessage(message1, pane);
-//                pane.getChildren().remove(optionsVBox);
-//            }
-//        });
-//        optionsVBox.setLayoutX(x - 30);
-//        optionsVBox.setLayoutY(y - 20);
-//        optionsVBox.getChildren().add(editButton);
-//        optionsVBox.getChildren().add(deleteButton);
-//        optionsVBox.getChildren().add(deleteForAllButton);
-//        pane.getChildren().add(optionsVBox);
-//    }
-//
-//    public static void editMessageView(Message message) {
-//        previewMessageTextField.setText(message.getText());
-//        editingMessage = message;
-//    }
-
+    public void back() {
+        CivilizationApplication.changeMenu(Menus.CHATNAVIGATION);
+    }
 }

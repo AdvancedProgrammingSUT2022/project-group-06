@@ -21,6 +21,8 @@ public class ChatMenu {
             return ChatController.editMessagePrimary(object);
         else if (command.equals(Actions.editMessageFinal.getCharacter()))
             return ChatController.editMessageFinal(object);
+        else if (command.equals(Actions.startRoom.getCharacter()))
+            return ChatController.startRoom(object);
         else
             return "invalid command";
     }

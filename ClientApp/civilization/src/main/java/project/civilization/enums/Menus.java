@@ -14,6 +14,7 @@ public enum Menus {
     PUBLICCHAT("public-chat-page"),
     CHATNAVIGATION("chat-navigation-page"),
     STARTPRIVATECHAT("start-private-chat-page"),
+    STARTROOMS("start-rooms-page"),
     CHALLENGEPAGE("challenge-page"),
     MAPPAGE("map-page"),
     INVIATIONBOX("invitation-box");

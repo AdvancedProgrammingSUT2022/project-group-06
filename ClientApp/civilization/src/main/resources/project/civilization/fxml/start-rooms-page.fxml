@@ -9,7 +9,9 @@
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="project.civilization.views.startRoomsPage"
-            prefHeight="400.0" prefWidth="600.0"
-            fx:id="pane">
+            prefHeight="650.0" prefWidth="1200.0"
+            stylesheets="@../css/loginregisterstyle.css"
+            fx:id="pane"
+id="start-rooms-page">
 
 </AnchorPane>

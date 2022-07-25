@@ -77,7 +77,8 @@ public enum Actions {
     startPrivateChat("startPrivateChat"),
     deleteMessage("deleteMessage"),
     editMessageButton("editMessage"),
-    editMessageFinal("editMessageFinal");
+    editMessageFinal("editMessageFinal"),
+    startRoom("startRoom");
     private final String character;
 
     Actions(String color) {

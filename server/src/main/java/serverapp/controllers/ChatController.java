@@ -1,6 +1,7 @@
 package serverapp.controllers;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.json.JSONObject;
 import serverapp.enums.Actions;
 import serverapp.models.Chat;
@@ -60,16 +61,15 @@ public class ChatController {
                 found = true;
             }
         }
-        if (!found && chatID == Chat.getPublicChat().getChatID()) {
+        if (!found && Chat.getPublicChat() != null && chatID == Chat.getPublicChat().getChatID()) {
             chat = Chat.getPublicChat();
         }
 
         gson = new Gson();
         json = String.valueOf(object.get("message"));
         Message message = gson.fromJson(json, Message.class);
-
         chat.getAllMessages().add(message);
-        chat.getUsersMessages().get(message.getSenderUUID()).add(message);
+//        chat.getUsersMessages().get(message.getSenderUUID()).add(message);
 
         ArrayList<Message> messages = chat.getAllMessages();
 
@@ -144,6 +144,57 @@ public class ChatController {
         jsonObject.put("action", Actions.startPrivateChat.getCharacter());
         jsonObject.put("startedChat", chat.getChatID());
         return jsonObject.toString();
+    }
+
+    public static String startRoom(JSONObject object) {
+        ArrayList<String> usernames = new Gson().fromJson(String.valueOf(object.get("usernames")), new TypeToken<ArrayList<String>>() {
+        }.getType());
+        ArrayList<String> uuids = new ArrayList<>();
+        for (String username : usernames) {
+            User user = UserController.getUserByUserName(username);
+            for (HashMap.Entry<String, User> m : UserController.getUserHashMap().entrySet()) {
+                if (m.getValue() == user) {
+                    uuids.add(m.getKey());
+                }
+            }
+        }
+        uuids.add((String) object.get("senderUuid"));
+        Chat chat = null;
+        if (getRoom(uuids) == null) {
+            chat = new Chat();
+            chat.getParticipants().addAll(uuids);
+            for (String participantUuid : chat.getParticipants()) {
+                chat.getUsersMessages().put(participantUuid, new ArrayList<>());
+            }
+            Chat.getRooms().add(chat);
+        } else {
+            chat = getRoom(uuids);
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action", Actions.updateMessages.getCharacter());
+        Gson gson = new Gson();
+        ArrayList<Message> messages = chat.getAllMessages();
+        gson.toJson(messages);
+        jsonObject.put("messages", gson.toJson(messages));
+
+        for (String participantUuid : chat.getParticipants()) {
+            User user = UserController.getUserHashMap().get(participantUuid);
+            NetWorkController.broadCast(user, jsonObject.toString());
+        }
+
+        JSONObject respond = new JSONObject();
+        respond.put("chatID", chat.getChatID());
+        respond.put("action", Actions.startRoom.getCharacter());
+        return respond.toString();
+    }
+
+    private static Chat getRoom(ArrayList<String> uuids) {
+        for (Chat chat : Chat.getRooms()) {
+            if (chat.getParticipants().equals(uuids))
+                return chat;
+        }
+        return null;
     }
 
     public static String deleteMessage(JSONObject object) {

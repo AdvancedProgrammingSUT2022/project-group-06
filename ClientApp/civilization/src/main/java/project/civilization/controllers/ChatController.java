@@ -143,4 +143,21 @@ public class ChatController {
             e.printStackTrace();
         }
     }
+
+    public static Integer startRoom(ArrayList<String> usernames) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.startRoom.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("senderUuid", User.getUuid());
+        object.put("usernames", usernames);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            JSONObject jsonObject = new JSONObject(CivilizationApplication.dataInputStream.readUTF());
+            return (Integer) jsonObject.get("chatID");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

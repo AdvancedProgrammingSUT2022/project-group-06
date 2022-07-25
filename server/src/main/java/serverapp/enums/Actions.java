@@ -79,7 +79,8 @@ public enum Actions {
     CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
     deleteMessage("deleteMessage"),
     editMessageButton("editMessage"),
-    editMessageFinal("editMessageFinal");
+    editMessageFinal("editMessageFinal"),
+    startRoom("startRoom");
 
     private final String character;
 

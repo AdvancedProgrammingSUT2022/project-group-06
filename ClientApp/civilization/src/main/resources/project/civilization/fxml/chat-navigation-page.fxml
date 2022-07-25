@@ -20,6 +20,7 @@
             <Button fx:id="publicChatButton" onMouseClicked="#goToPublicChats" text="public chat"/>
             <Button fx:id="privateChatsButton" onMouseClicked="#goToPrivateChats" text="private chats"/>
             <Button fx:id="roomsButton" onMouseClicked="#goToRooms" text="rooms"/>
+            <Button fx:id="backButton" onMouseClicked="#back" text="back"/>
         </VBox>
     </center>
 </BorderPane>
