@@ -27,7 +27,7 @@ public class CivilizationApplication {
                         while (true) {
                             String input = dataInputStream.readUTF();
                             String result = Process.run(input, socket);
-                            if (result.equals("")) break;
+                            if (result.equals("oooooooooooooooooo")) break;
                             dataOutputStream.writeUTF(result);
                             dataOutputStream.flush();
                         }

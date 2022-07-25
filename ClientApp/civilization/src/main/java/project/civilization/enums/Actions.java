@@ -61,7 +61,11 @@ public enum Actions {
     cheatMeleeCombatStrength("cheatMeleeCombatStrength"),
     cheatCityFood("cheatCityFood"),
     cheatCityHitPoint("cheatCityHitPoint"),
-    cheatTrophy("cheatTrophy");
+    cheatTrophy("cheatTrophy"), 
+    setSelectedCity("setSelectedCity"),
+    presaleTiles("presaleTiles"),
+    buyHex("buyHex"),
+    citiesPanel("citiesPanel");
     private final String character;
 
     Actions(String color) {

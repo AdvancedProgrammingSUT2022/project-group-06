@@ -12,7 +12,6 @@ import serverapp.models.units.Unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 public class Hex {
     private int x;
     private int y;
@@ -21,23 +20,34 @@ public class Hex {
     private boolean hasRoad;
     private boolean hasRailRoad;
     private boolean isPillaged = false;
-    private Player owner = null;
     private Terrain terrain;
     private Feature feature;
     private Resource resource;
+    private String  ownerUserName;
+    private HashMap<String , HexState> StateOfHexForEachPlayer = new HashMap<>();
+    private int hasRuin=0;
 
-    private HashMap<Player, HexState> StateOfHexForEachPlayer = new HashMap<>();
+    private transient Military militaryUnit;
 
-    private ArrayList<Improvement> improvements = new ArrayList<Improvement>();
-    private Military militaryUnit;
-    private Civilian civilianUnit;
-    private City capital = null;
-    private City city = null;
+    private transient Civilian civilianUnit;
+
+    private transient City capital = null;
+
+    private transient City city = null;
+
+    private transient Player owner = null;
+
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
+    }
+
+
+    private transient ArrayList<Improvement> improvements = new ArrayList<Improvement>();
 
     public void setFeature(Feature newFeature) {
         feature = newFeature;
     }
-
     public void setHasCitizen(boolean hasCitizen) {
         this.hasCitizen = hasCitizen;
     }
@@ -50,10 +60,19 @@ public class Hex {
         this.terrain = terrain;
         this.feature = feature;
         for (int i = 0; i < InitializeGameInfo.getNumberOFPlayers(); i++) {
-            this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i), HexState.FogOfWar);
+            this.StateOfHexForEachPlayer.put(InitializeGameInfo.getPlayers().get(i).getName(), HexState.FogOfWar);
         }
     }
 
+
+    public int getHasRuins()
+    {
+        return hasRuin;
+    }
+    public void setRuinsValue(int value)
+    {
+        hasRuin=value;
+    }
 
     public void setImprovements(ArrayList<Improvement> improvements) {
         this.improvements = improvements;
@@ -63,11 +82,11 @@ public class Hex {
         this.hasRiver = hasRiver;
     }
 
-    public HashMap<Player, HexState> getStateOfHexForEachPlayer() {
+    public HashMap<String, HexState> getStateOfHexForEachPlayer() {
         return StateOfHexForEachPlayer;
     }
 
-    public void setStateOfHexForEachPlayer(HashMap<Player, HexState> stateOfHexForEachPlayer) {
+    public void setStateOfHexForEachPlayer(HashMap<String, HexState> stateOfHexForEachPlayer) {
         StateOfHexForEachPlayer = stateOfHexForEachPlayer;
     }
 
@@ -84,11 +103,22 @@ public class Hex {
     }
 
     public void setState(HexState hexState, Player player) {
-        this.StateOfHexForEachPlayer.put(player, hexState);
+        this.StateOfHexForEachPlayer.put(player.getName(), hexState);
     }
 
     public void setOwner(Player owner) {
+        if(owner != null){
+            ownerUserName = owner.getName();
+        }else ownerUserName = null;
         this.owner = owner;
+    }
+
+    public String getOwnerUserName() {
+        return ownerUserName;
+    }
+
+    public void setOwnerUserName(String ownerUserName) {
+        this.ownerUserName = ownerUserName;
     }
 
     public int getX() {
@@ -104,7 +134,7 @@ public class Hex {
     }
 
     public HexState getState(Player player) {
-        return StateOfHexForEachPlayer.get(player);
+        return StateOfHexForEachPlayer.get(player.getName());
     }
 
     public Feature getFeature() {

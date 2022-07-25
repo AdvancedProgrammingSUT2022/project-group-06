@@ -82,6 +82,14 @@ public class Game {
             return GameController.cityScreen(jsonObject.getString("cityName"));
         }if(command.equals(Actions.getPlayerCitiesNames.getCharacter())){
             return GameController.getPlayerCitiesNames();
+        }if(command.equals(Actions.setSelectedCity.getCharacter())){
+            return GameController.setSelectedCity(CityController.getCityWithName(jsonObject.getString("cityName")));
+        }if(command.equals(Actions.presaleTiles.getCharacter())){
+            return CityController.presaleTiles();
+        }if(command.equals(Actions.buyHex.getCharacter())){
+            return CityController.buyHex(jsonObject.getInt("count"));
+        }if(command.equals(Actions.citiesPanel.getCharacter())){
+            return GameController.citiesPanel();
         }
         return "bad request format";
     }

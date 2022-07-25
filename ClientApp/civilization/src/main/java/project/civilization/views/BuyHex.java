@@ -12,6 +12,7 @@ import javafx.scene.layout.Pane;
 import project.civilization.controllers.CityController;
 import project.civilization.controllers.GameController;
 
+
 public class BuyHex {
     private String cityName;
     @FXML
@@ -35,7 +36,7 @@ public class BuyHex {
         int screenHeight=400;
 
 
-        GameController.setSelectedCity(CityController.getCityWithName(cityName));
+        GameController.setSelectedCityByName(cityName);
         String[] tiles = CityController.presaleTiles().split("\n");
         for(String temp:tiles)
         {

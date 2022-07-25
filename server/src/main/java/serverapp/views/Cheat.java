@@ -1,9 +1,11 @@
 package serverapp.views;
 
 import org.json.JSONObject;
+import serverapp.controllers.CityController;
 import serverapp.controllers.GameController;
 import serverapp.controllers.UserController;
 import serverapp.enums.Actions;
+import serverapp.models.maprelated.City;
 
 public class Cheat {
     public static String run(String command, JSONObject jsonObject) {
