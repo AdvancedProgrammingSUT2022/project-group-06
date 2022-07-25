@@ -68,9 +68,7 @@ public enum Actions {
     sendMessage("sendMessage"),
     updateMessages("updateMessages"),
     getOnlineUsers("getOnlineUsers"),
-    startPrivateChat("startPrivateChat");
-
-    cheatTrophy("cheatTrophy"),
+    startPrivateChat("startPrivateChat"),
     setSelectedCity("setSelectedCity"),
     presaleTiles("presaleTiles"),
     buyHex("buyHex"),
