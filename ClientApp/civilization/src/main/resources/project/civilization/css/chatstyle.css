@@ -7,5 +7,10 @@
     -fx-background-size: 30 30;
 }
 HBox {
+    -fx-background-color: #57d5b8;
+    -fx-background-radius: 12;
+}
 
+Text{
+    -fx-font-size: 20;
 }
