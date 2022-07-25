@@ -64,6 +64,12 @@ public enum Actions {
     cheatCityFood("cheatCityFood"),
     cheatCityHitPoint("cheatCityHitPoint"),
     cheatTrophy("cheatTrophy"),
+    initializePublicChat("initializePublicChat"),
+    sendMessage("sendMessage"),
+    updateMessages("updateMessages"),
+    getOnlineUsers("getOnlineUsers");
+
+    cheatTrophy("cheatTrophy"),
     setSelectedCity("setSelectedCity"),
     presaleTiles("presaleTiles"),
     buyHex("buyHex"),

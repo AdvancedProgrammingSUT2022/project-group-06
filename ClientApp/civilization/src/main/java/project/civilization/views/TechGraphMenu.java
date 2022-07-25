@@ -664,11 +664,13 @@ public class TechGraphMenu {
     }
 
     private void setBorderColor(HBox hBox) {
-        String name = hBox.getChildren().get(0).toString();
+        Label label = (Label) hBox.getChildren().get(0);
+        String name = label.getText();
+
         if (Objects.equals(GameController.isAchieved(name), "null")) {
-            hBox.setStyle("-fx-border-color:#424242; -fx-border-width:2px");
+            hBox.setStyle("-fx-border-color:#FF0000; -fx-border-width:2px");
         } else if (Objects.equals(GameController.isAchieved(name), "true")) {
-            hBox.setStyle("-fx-border-color:#111111; -fx-border-width:2px");
+            hBox.setStyle("-fx-border-color:#00FF00; -fx-border-width:2px");
         } else
             hBox.setStyle("-fx-border-color:#555555; -fx-border-width:2px");
     }

@@ -57,6 +57,10 @@ public class MainPage extends GameMenus{
         CivilizationApplication.changeMenu(Menus.SETTING);
     }
 
+    public void chat(MouseEvent mouseEvent) {
+        CivilizationApplication.changeMenu(Menus.CHATNAVIGATION);
+    }
+
     public void logout(MouseEvent mouseEvent)
     {
      

@@ -26,7 +26,6 @@ public class TechnologyMenu {
     private Label lastTechnologyLabel;//showing the last studied technology
     @FXML
     private Button openTreeButton; //open technology tree
-    //name of technologies you can start researching//TODO
 
     private ArrayList<HBox> techBoxes;
     int screenWidth=600;

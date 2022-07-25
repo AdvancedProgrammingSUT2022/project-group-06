@@ -1,7 +1,5 @@
 package project.civilization.enums;
 
-import project.civilization.views.ChatMenu;
-
 public enum Menus {
     SCORE("score-page"),
     LOGIN("login-page"),
@@ -13,7 +11,7 @@ public enum Menus {
     GAMEOVER(""),
     REGISTER("register-page"),
     LOADGAME("load-game-page"),
-    CHAT("chat-page"),
+    PUBLICCHAT("public-chat-page"),
     CHATNAVIGATION("chat-navigation-page"),
     STARTPRIVATECHAT("start-private-chat-page"),
     CHALLENGEPAGE("challenge-page"),

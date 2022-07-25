@@ -51,6 +51,8 @@ public class ClientNetworkController{
                 alertInvitation(obj.getString("username"),obj.getString("gameUuid"));
             }else if(action.equals(Actions.STARTGAME.getCharacter())){
                 Platform.runLater(() -> CivilizationApplication.changeMenu(Menus.MAPPAGE));
+            }else if (action.equals(Actions.updateMessages.getCharacter())) {
+                Platform.runLater(()->ChatController.updateMessages(obj.toString()));
             }else System.out.println(message+"a fucking thing is wrong");
         }catch (JSONException e) {
             e.printStackTrace();
@@ -63,7 +65,7 @@ public class ClientNetworkController{
 
     private static void alert(String inviter, String gameUUid){
         String invitationText = inviter + "wants to play with you!"
-                +"\nwould you accept her request?";
+                +"\nwould you accept their request?";
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, invitationText, ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {

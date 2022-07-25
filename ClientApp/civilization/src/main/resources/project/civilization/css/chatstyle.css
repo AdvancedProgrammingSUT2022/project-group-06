@@ -1,0 +1,11 @@
+#public-chat{
+    -fx-background-image: url("../pictures/menu_background/chat_background.jpg");
+    -fx-background-size: 1200 650;
+}
+#send-button{
+ -fx-background-image: url("../pictures/chat/send_button.png");
+    -fx-background-size: 30 30;
+}
+HBox {
+
+}
