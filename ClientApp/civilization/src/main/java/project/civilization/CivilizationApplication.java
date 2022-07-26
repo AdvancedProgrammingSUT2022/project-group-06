@@ -43,7 +43,7 @@ public class CivilizationApplication extends Application {
         stage.setTitle("Civilization");
         stage.setScene(scene);
         stage.show();
-        //Music.addMusic("songs/start.mp3");
+        Music.addMusic("songs/menus.mp3");
     }
 
     //initialize server and stream
@@ -89,7 +89,7 @@ public class CivilizationApplication extends Application {
 
     private static Parent loadFXML(Menus menuName) {
         if (menuName == Menus.GAME) {
-            Music.addMusic("songs/MUS_Genie_A.wav");
+            Music.addMusic("songs/game.mp3");
         }
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + menuName.getCharacter() + ".fxml").toExternalForm());
