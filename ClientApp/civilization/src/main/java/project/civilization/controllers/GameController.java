@@ -1212,6 +1212,25 @@ public class GameController {
         }
         return "";
     }
+    public static String getPlayerMainInfo()
+    {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.playerMainInfo.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
+    }
+
     public static ArrayList<String> getAvailableTechs() {
         JSONObject json = new JSONObject();
         try {

@@ -110,6 +110,8 @@ public class Game {
             return CityController.buildABuilding(jsonObject);
         }if(command.equals(Actions.makeUnit.getCharacter())){
             return CityController.startMakingUnit(jsonObject.getString("name"));
+        }if(command.equals(Actions.playerMainInfo.getCharacter())){
+            return GameController.getPlayerMainInfo();
         }
         return "bad request format";
     }

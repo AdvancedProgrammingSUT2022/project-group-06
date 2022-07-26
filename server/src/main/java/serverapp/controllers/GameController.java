@@ -105,6 +105,11 @@ public class GameController {
         }
     }
 
+    public static String getPlayerMainInfo()
+    {
+        return currentPlayer.getGold()+" "+currentPlayer.getHappiness()+" "+currentPlayer.getProduction()+" "+currentPlayer.getPopulation()+" "+currentPlayer.getTrophies();
+    }
+
 
     private static void removeOwnerOfHexes() {
         for (int i = 0; i < world.getHexInHeight(); i++) {
