@@ -42,8 +42,9 @@ public class Economic {
         Label production=new Label("production: "+mainInfo[2]+"  ");
         Label population=new Label("population: "+mainInfo[3]+"  ");
         Label trophies=new Label("Trophies: "+mainInfo[4]+"  ");
+        Label year=new Label("Year: "+mainInfo[5]);
 
-        HBox hbox=new HBox(gold,happiness,production,population,trophies);
+        HBox hbox=new HBox(year,gold,happiness,production,population,trophies);
         demoPane.getChildren().add(hbox);
         
         for(String temp : playerCitiesNames)

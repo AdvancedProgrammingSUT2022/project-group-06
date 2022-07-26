@@ -414,8 +414,8 @@ public class UnitController {
             hex[x][y].setMilitaryUnit((Military) unit);
             if(hex[x][y].getHasRuins()!=0)
             {
-                activateRuin(hex[x][y].getHasRuins(), hex[x][y],jsonObject);
                 jsonObject.put("had ruins",hex[x][y].getHasRuins());
+                activateRuin(hex[x][y].getHasRuins(), hex[x][y],jsonObject);
                 return jsonObject.toString();
             }
         }

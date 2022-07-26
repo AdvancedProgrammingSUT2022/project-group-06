@@ -49,6 +49,14 @@ public class ScorePage extends GameMenus {
             hBox.getChildren().add(userLabel);
             //list.getChildren().add(userLabel);
 
+
+            if(!temp[3].equals("A"))
+            {
+                Label time=new Label("  "+temp[3]);
+                time.setStyle("-fx-font-size: 20;-fx-border-radius: 100;-fx-font-weight: bold; -fx-text-fill: #f99c02 ;");
+                hBox.getChildren().add(time);
+            }
+
             
             vBox.getChildren().add(hBox);
 

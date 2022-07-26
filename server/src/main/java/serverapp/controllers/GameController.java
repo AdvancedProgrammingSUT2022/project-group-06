@@ -23,6 +23,7 @@ import serverapp.models.Player;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GameController {
@@ -97,8 +98,34 @@ public class GameController {
         /*hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
         hex[0][0].setState(HexState.Visible,players.get(0));*/
     }
+    private static boolean createdRuins=false;
+    
+    private static void createRuinTiles()
+    {
+        Random random=new Random();
+        for(int i=1;i<6;i++)
+        {
+            int x=random.nextInt(0,world.getHexInWidth());
+            int y=random.nextInt(0,world.getHexInHeight());
+            
+            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean"))
+            {   
+                
+                i--;
+                continue;
+            }
+
+            hex[x][y].setRuinsValue(i);
+        }
+        
+    }
 
     public static void startGame() {
+        if(!createdRuins)
+        {   
+            createRuinTiles();
+            createdRuins=true;
+        }
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
@@ -134,7 +161,7 @@ public class GameController {
     }
     public static String getPlayerMainInfo()
     {
-        return currentPlayer.getGold()+" "+currentPlayer.getHappiness()+" "+currentPlayer.getProduction()+" "+currentPlayer.getPopulation()+" "+currentPlayer.getTrophies();
+        return currentPlayer.getGold()+" "+currentPlayer.getHappiness()+" "+currentPlayer.getProduction()+" "+currentPlayer.getPopulation()+" "+currentPlayer.getTrophies()+" "+year;
     }
 
 
@@ -542,7 +569,9 @@ public class GameController {
 
             if(capitalWinner!=null)
             {   
-                winners.append(capitalWinner.getName()+" "+capitalWinner.getScore()+"\n");
+                winners.append(capitalWinner.getName()+" "+capitalWinner.getScore()+"\n"); 
+                Date date = new Date();  
+                UserController.getUserByUserName(capitalWinner.getName()).setWinTime(date);
                 return winners.toString();
             }
 
@@ -2026,7 +2055,7 @@ public class GameController {
 
     public static String handelFogOfWarRemoverButton() {
         if(GameController.getSelectedHex()==null) return "choose a tile first";
-        if(!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))
+        if(!(GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)))
         return "it's not wise to waste this token :)";
         GameController.getSelectedHex().setState(HexState.Visible, GameController.getCurrentPlayer());
         return "successfully";
