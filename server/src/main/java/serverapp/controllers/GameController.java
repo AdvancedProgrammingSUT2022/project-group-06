@@ -146,6 +146,7 @@ public class GameController {
         Melee military3 = new Melee("Spearman", world.getHex()[0][1], InitializeGameInfo.getPlayers().get(1));
         world.getHex()[0][1].setMilitaryUnit(military3);
 }*/
+    }
     private static boolean createdRuins=false;
     
     private static void createRuinTiles()
@@ -2175,5 +2176,6 @@ public class GameController {
         output.append(", cost: " + building.getCost());
         output.append(", maintenance: " + building.getMaintenance());
         return output.toString();
+    
     }
 }
