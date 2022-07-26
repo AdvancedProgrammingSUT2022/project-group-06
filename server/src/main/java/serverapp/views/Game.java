@@ -106,8 +106,11 @@ public class Game {
             return  GameController.getCurrentPlayer().unlockTechnology(jsonObject.getString("tecName"));
         }if (command.equals(Actions.getAvailableBuildings.getCharacter()))
             return CityController.getAvailableBuildings(jsonObject);
-        if (command.equals(Actions.buildBuilding.getCharacter()))
+        if (command.equals(Actions.buildBuilding.getCharacter())){
             return CityController.buildABuilding(jsonObject);
+        }if(command.equals(Actions.makeUnit.getCharacter())){
+            return CityController.startMakingUnit(jsonObject.getString("name"));
+        }
         return "bad request format";
     }
 }

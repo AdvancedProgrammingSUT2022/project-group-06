@@ -96,7 +96,7 @@ public class GameController {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if(hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")){
-                    UnitController.makeUnit("Worker", hex[i][j], "gold");
+                    UnitController.makeUnit("Settler", hex[i][j], "gold");
                     City newCity = new City(GameController.getCurrentPlayer(), "fuck",
                             hex[i][j]);
 
@@ -1424,6 +1424,26 @@ public class GameController {
             x.printStackTrace();
         }
         return "";
+    }
+    public static String unitMake(String name)
+    {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.makeUnit.getCharacter());
+            json.put("name", name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
+   
     }
     public static void setSelectedHex(int i, int j) {
         JSONObject json = new JSONObject();

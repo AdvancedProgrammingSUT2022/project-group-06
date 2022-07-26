@@ -88,11 +88,11 @@ public enum Actions {
     DELETECITY("DLETECITY"),
     ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
     unlockTechnology("unlockTechnology"),
-    startRoom("startRoom"),
     getAvailableBuildings("getAvailableBuildings"),
-    buildBuilding("buildBuilding");
+    buildBuilding("buildBuilding"),
     setPicUrl("setPicUrl"),
-    buyUnit("buyUnit");
+    buyUnit("buyUnit"),
+    makeUnit("makeUnit");
 
     private final String character;
 

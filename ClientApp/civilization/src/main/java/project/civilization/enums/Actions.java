@@ -89,7 +89,8 @@ public enum Actions {
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding"),
     setPicUrl("setPicUrl"),
-    buyUnit("buyUnit");
+    buyUnit("buyUnit"),
+    makeUnit("makeUnit");
     private final String character;
 
     Actions(String color) {

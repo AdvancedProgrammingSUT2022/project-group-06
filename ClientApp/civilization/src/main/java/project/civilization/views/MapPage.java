@@ -849,10 +849,33 @@ public class MapPage {
         button.setLayoutY(550);
         TextField textField=new TextField();
         textField.setPromptText("enter unit name");
-        textField.setLayoutY(500);
+        textField.setLayoutY(450);
         Button exit=new Button();
         exit.setText("exit");
         exit.setLayoutY(600);
+        Button makeUnit=new Button();
+        makeUnit.setText("Make Unit");
+        makeUnit.setLayoutY(500);
+
+
+        makeUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                
+                Alert alert;
+                if(textField.getText().equals(""))
+                {
+                    alert=new Alert(AlertType.INFORMATION,"Enter Unit's Name");
+                    alert.showAndWait();
+                    return;
+                }
+                alert=new Alert(AlertType.INFORMATION,GameController.unitMake(textField.getText()));
+                alert.showAndWait();
+                resetPane();
+            }
+            
+        });
         exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
@@ -877,6 +900,7 @@ public class MapPage {
                 }
                 alert=new Alert(AlertType.INFORMATION,GameController.unitBuy(textField.getText()));
                 alert.showAndWait();
+                resetPane();
 
             }
             
