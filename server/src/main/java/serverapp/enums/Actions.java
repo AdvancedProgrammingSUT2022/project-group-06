@@ -87,10 +87,7 @@ public enum Actions {
     getPicUrl("getPicUrl"),
     DELETECITY("DLETECITY"),
     ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
-    unlockTechnology("unlockTechnology");
-
-    getPicUrl("getPicUrl");
-    startRoom("startRoom"),
+    unlockTechnology("unlockTechnology"),
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding");
 
