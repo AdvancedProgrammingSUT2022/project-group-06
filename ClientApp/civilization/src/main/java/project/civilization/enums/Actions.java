@@ -99,8 +99,7 @@ public enum Actions {
     playerMainInfo("playerMainInfo"),
     gameOver("gameOver"),
     acceptFriendship("acceptFriendship"),
-    rejectFriendship("rejectFriendship");
-    gameOver("gameOver"),
+    rejectFriendship("rejectFriendship"),
     updateScoreBoard("updateScoreBoard"),
     exit("exit");
     private final String character;
