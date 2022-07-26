@@ -1,5 +1,6 @@
 package project.civilization.views;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -41,12 +42,17 @@ public class FriendsList {
             String address = "pictures/avatar/1.png";
             Image image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
             ImageView view = new ImageView(image);
-            view.setFitWidth(30);
-            view.setFitHeight(30);
+            view.setFitWidth(60);
+            view.setFitHeight(40);
             hBox.getChildren().add(view);
             search.getChildren().add(hBox);
             Button button = new Button("send");
-            button.setOnMouseClicked(this::sendFriendshipRequest);
+            button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    sendFriendshipRequest(mouseEvent);
+                }
+            });
             hBox.getChildren().add(button);
         }else{
             error.setText("username does not exist");

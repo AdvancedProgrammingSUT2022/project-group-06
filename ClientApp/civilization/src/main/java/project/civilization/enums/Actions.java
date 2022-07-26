@@ -94,7 +94,9 @@ public enum Actions {
     makeUnit("makeUnit"),
     getTechnologyInfo("getTechnologyInfo"),
     getBuildingInfo("getBuildingInfo"),
-    getImprovementNameOfWoorker("getImprovementNameOfWoorker");
+    getImprovementNameOfWoorker("getImprovementNameOfWoorker"),
+    acceptFriendship("acceptFriendship"),
+    rejectFriendship("rejectFriendship");
     private final String character;
 
     Actions(String color) {

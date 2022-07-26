@@ -255,6 +255,7 @@ public class UserController {
 
     public static String getAllFriendsNames(String uuid) {
         Gson gson = new GsonBuilder().create();
+        System.out.println(userHashMap.get(uuid).getFriendsUsernames().size());//todo???
         return (gson.toJson(userHashMap.get(uuid).getFriendsUsernames()));
     }
 

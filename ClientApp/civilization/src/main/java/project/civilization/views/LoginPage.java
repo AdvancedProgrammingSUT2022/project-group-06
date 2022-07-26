@@ -1,5 +1,6 @@
 package project.civilization.views;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +25,6 @@ public class LoginPage extends GameMenus{
     private Label error;
     @FXML
     private Button loginButton;
-
 
 
     public void login(MouseEvent mouseEvent) {
