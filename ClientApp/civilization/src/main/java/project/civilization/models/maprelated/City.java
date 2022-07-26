@@ -1,14 +1,20 @@
 package project.civilization.models.maprelated;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import project.civilization.CivilizationApplication;
 import project.civilization.controllers.CityController;
 import project.civilization.controllers.CombatController;
 import project.civilization.controllers.GameController;
 import project.civilization.controllers.UnitController;
+import project.civilization.enums.Actions;
 import project.civilization.enums.HexState;
+import project.civilization.enums.MenuCategory;
 import project.civilization.models.Player;
 import project.civilization.models.gainable.Building;
 import project.civilization.models.units.Civilian;
@@ -191,21 +197,23 @@ public class City implements Combatable {
         hexs.add(hex);
     }
 
-    public static String deleteCity(City city) {
-        if (city.getCapital().getMilitaryUnit() != null) {
-            UnitController.deleteMilitaryUnit(city.getCapital().getMilitaryUnit());
+    public static String deleteCity(String city) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.DELETECITY.getCharacter());
+            json.put("cityName", city);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (city.getOwner().getMainCity() == city) {
-            CombatController.addCityToTerritory(city, GameController.getCurrentPlayer());
-            return "this city is the main city of the opp civilization you can not delete this we will add this to your cities";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "something is wrong";
         }
-        city.getCapital().setCapital(null);
-        for (Hex hex : city.hexs) {
-            hex.setOwner(null);
-            hex.setCity(null);
-            cities.remove(city);
-        }
-        return "deleted";
     }
 
     public int getPopulation() {

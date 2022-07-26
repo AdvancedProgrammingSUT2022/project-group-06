@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<BorderPane id="menu" prefHeight="600.0" prefWidth="800.0" stylesheets="@../css/loginregisterstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.civilization.views.ScorePage">
+<BorderPane id="menu" prefHeight="650.0" prefWidth="1200.0" stylesheets="@../css/loginregisterstyle.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="project.civilization.views.ScorePage">
     <center>
 
         <VBox fx:id="list" alignment="CENTER" maxWidth="350" spacing="10">

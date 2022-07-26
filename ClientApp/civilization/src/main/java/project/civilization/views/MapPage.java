@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -40,16 +41,18 @@ public class MapPage {
     private Button notification;
     @FXML
     private Button technologyMenu;
+    int FOGRemover = 0;
+    public static boolean technologyPass = false;
 
-    public static void cityCombatMenu(City city, Player player) {
+    public static void cityCombatMenu(String cityName, String playerName) {
         ButtonType delete = new ButtonType("delete");
         ButtonType add = new ButtonType("add");
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "city is death select a number: \n 1.delete it \n 2.add it to your territory", delete, add);
         alert.showAndWait();
         if (alert.getResult() == delete) {
-            System.out.println(City.deleteCity(city));
+            System.out.println(City.deleteCity(cityName));
         } else {
-            System.out.println(CombatController.addCityToTerritory(city, player));
+            System.out.println(CombatController.addCityToTerritory(cityName, playerName));
         }
     }
 
@@ -81,8 +84,6 @@ public class MapPage {
         alert.showAndWait();
     }
 
-    int FOGRemover = 0;
-    boolean technologyPass = false;
 
     public void createFogOfWarRemoverButton() {
         Button remover = new Button();
@@ -809,15 +810,114 @@ public class MapPage {
                 }else resetPane();
                 wantToMove = false;
             } else if (wantToAttack) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, CombatController.attackUnit(i, j));
+                JSONObject res =  new JSONObject(CombatController.attackUnit(i, j));
+                String alertresult =(res.has("result")) ?res.getString("result"): res.toString();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, alertresult);
                 alert.showAndWait();
+                attackResultView(res);
                 resetPane();
                 wantToAttack = false;
             } else {
                 showHexDetails(i, j);
                 GameController.setSelectedHex(i, j);
+                createUnit();
             }
         });
+    }
+    private void createUnit()
+    {
+        Button button=new Button();
+        button.setText("Create Unit");
+        button.setLayoutY(600);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                pane.getChildren().remove(button);
+                showBuyUnitOption();
+            }
+            
+        });
+        pane.getChildren().add(button);
+        
+    }
+    private void showBuyUnitOption()
+    {
+        Button button=new Button();
+        button.setText("Buy Unit");
+        button.setLayoutY(550);
+        TextField textField=new TextField();
+        textField.setPromptText("enter unit name");
+        textField.setLayoutY(450);
+        Button exit=new Button();
+        exit.setText("exit");
+        exit.setLayoutY(600);
+        Button makeUnit=new Button();
+        makeUnit.setText("Make Unit");
+        makeUnit.setLayoutY(500);
+
+
+        makeUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                
+                Alert alert;
+                if(textField.getText().equals(""))
+                {
+                    alert=new Alert(AlertType.INFORMATION,"Enter Unit's Name");
+                    alert.showAndWait();
+                    return;
+                }
+                alert=new Alert(AlertType.INFORMATION,GameController.unitMake(textField.getText()));
+                alert.showAndWait();
+                resetPane();
+            }
+            
+        });
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                Platform.runLater(() -> {
+                    pane.requestFocus();
+                });
+                resetPane(); 
+            }
+            
+        });
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                Alert alert;
+                if(textField.getText().equals(""))
+                {
+                    alert=new Alert(AlertType.INFORMATION,"Enter Unit's Name");
+                    alert.showAndWait();
+                    return;
+                }
+                alert=new Alert(AlertType.INFORMATION,GameController.unitBuy(textField.getText()));
+                alert.showAndWait();
+                resetPane();
+
+            }
+            
+        });
+        pane.getChildren().add(button);
+        pane.getChildren().add(textField);
+        pane.getChildren().add(exit);
+    }
+
+    private void attackResultView(JSONObject res) {
+        if(res.getString("combatType").equals("meleeToCity")){
+            if(res.getString("result").equals("in melee to city combat city is death")){
+                cityCombatMenu( res.getString("cityName"), res.getString("playerName"));
+            }else if(res.getString("result").equals("in melee to city combat unit and city are death")){
+                cityCombatMenu( res.getString("cityName"), res.getString("playerName"));
+            }
+        } else if(res.getString("combatType").equals("meleeToCity")){
+        }
     }
 
     private void showHexDetails(int i, int j) {

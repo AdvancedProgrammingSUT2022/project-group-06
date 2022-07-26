@@ -83,9 +83,16 @@ public enum Actions {
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),
     getPicUrl("getPicUrl"),
+    DELETECITY("DLETECITY"),
+    ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
+    unlockTechnology("unlockTechnology"),
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding"),
-    showHappiness("showHappiness");
+    showHappiness("showHappiness"),
+    buildBuilding("buildBuilding"),
+    setPicUrl("setPicUrl"),
+    buyUnit("buyUnit"),
+    makeUnit("makeUnit");
     private final String character;
 
     Actions(String color) {

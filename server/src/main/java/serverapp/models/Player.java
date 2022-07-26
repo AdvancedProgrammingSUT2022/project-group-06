@@ -191,8 +191,9 @@ public class Player {
     }
 
 
-    public void unlockTechnology(String technology) {
+    public String unlockTechnology(String technology) {
         achievedTechnologies.put(technology, true);
+        return "unlocked";
     }
 
     public ArrayList<Unit> getUnits() {

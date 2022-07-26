@@ -82,7 +82,8 @@ public class ProfilePage  extends GameMenus {
     // frame.setVisible(true);
 
     public void initialize()
-    {   String s = UserController.getPicUrl();
+    {   
+       String s = UserController.getPicUrl();
         avatarPic.setImage(new Image (s));
        // currentPic=UserController.getLoggedInUser().getPicNum();
     }
@@ -102,9 +103,11 @@ public class ProfilePage  extends GameMenus {
             // BufferedImage picture = ImageIO.read(file);
             // Image image = SwingFXUtils.toFXImage(picture, null);
             Image selectedImage=new Image(file.getAbsolutePath());
+            
             avatarPic.setImage(selectedImage);
             currentPic=1;
-            UserController.getLoggedInUser().setAvatarPic(selectedImage, 0);
+            UserController.setPicUrl(file.getAbsolutePath());
+            //UserController.getLoggedInUser().setAvatarPic(selectedImage, 0);
 
         }
     }
@@ -118,7 +121,8 @@ public class ProfilePage  extends GameMenus {
         }
         Image nextImage = new Image(CivilizationApplication.class.getResource("pictures/avatar/" + currentPic + ".png").toExternalForm());
         avatarPic.setImage(nextImage);
-        UserController.getLoggedInUser().setAvatarPic(nextImage, currentPic);
+        UserController.setPicUrl(nextImage.getUrl());
+        //UserController.getLoggedInUser().setAvatarPic(nextImage, currentPic);
     }
     public void changePassword(MouseEvent mouseEvent)
     {

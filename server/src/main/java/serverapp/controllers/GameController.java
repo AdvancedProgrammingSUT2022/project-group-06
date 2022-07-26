@@ -96,8 +96,7 @@ public class GameController {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")) {
                     UnitController.makeUnit("Settler", hex[i][j], "gold");
-//                    City newCity = new City(GameController.getCurrentPlayer(), "fuck",
-//                            hex[i][j]);
+//                    City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
 
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     return;
