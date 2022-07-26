@@ -80,15 +80,14 @@ public enum Actions {
     deleteMessage("deleteMessage"),
     editMessageButton("editMessage"),
     editMessageFinal("editMessageFinal"),
-    startRoom("startRoom");
-    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
+    startRoom("startRoom"),
     getAllFreinShipRequests("getAllFreinShipRequests"),
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),
-    getPicUrl("getPicUrl");
-    startRoom("startRoom"),
+    getPicUrl("getPicUrl"),
     getAvailableBuildings("getAvailableBuildings"),
-    buildBuilding("buildBuilding");
+    buildBuilding("buildBuilding"),
+    showHappiness("showHappiness");
 
     private final String character;
 

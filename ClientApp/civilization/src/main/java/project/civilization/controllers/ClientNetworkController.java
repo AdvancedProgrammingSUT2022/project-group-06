@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class ClientNetworkController{
+public class ClientNetworkController {
     private static DataInputStream invitationDataInputStream;
     private static DataOutputStream invitationDataOutputStream;
 
@@ -25,11 +25,11 @@ public class ClientNetworkController{
         Thread receiver = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true){
+                while (true) {
                     try {
                         String message = invitationDataInputStream.readUTF();
                         process(message);
-                    } catch (SocketException socketException){
+                    } catch (SocketException socketException) {
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -39,42 +39,42 @@ public class ClientNetworkController{
         });
         receiver.start();
     }
+
     public static void process(String message) {
-        try{
+        try {
             JSONObject obj = new JSONObject(message);
             String action = obj.getString("action");
-            if(action.equals(Actions.INVITETOGAME.getCharacter())){
-                alertInvitation(obj.getString("username"),obj.getString("gameUuid"));
-            }else if(action.equals(Actions.STARTGAME.getCharacter())){
+            if (action.equals(Actions.INVITETOGAME.getCharacter())) {
+                alertInvitation(obj.getString("username"), obj.getString("gameUuid"));
+            } else if (action.equals(Actions.STARTGAME.getCharacter())) {
                 Platform.runLater(() -> CivilizationApplication.changeMenu(Menus.MAPPAGE));
-            }else if (action.equals(Actions.updateMessages.getCharacter())) {
-                Platform.runLater(()->ChatController.updateMessages(obj.toString()));
-            }else if(action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())){
+            } else if (action.equals(Actions.updateMessages.getCharacter())) {
+                Platform.runLater(() -> ChatController.updateMessages(obj.toString()));
+            } else if (action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())) {
                 Platform.runLater(() -> CivilizationApplication.mapPageController.changeTurnForOthers());
-            }else System.out.println(message+"a fucking thing is wrong");
-        }catch (JSONException e) {
+            } else System.out.println(message + "a fucking thing is wrong");
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     private static void alertInvitation(String inviter, String gameUUid) {
-        Platform.runLater(() -> alert(inviter,gameUUid));
+        Platform.runLater(() -> alert(inviter, gameUUid));
     }
 
-    private static void alert(String inviter, String gameUUid){
+    private static void alert(String inviter, String gameUUid) {
         String invitationText = inviter + "wants to play with you!"
-                +"\nwould you accept their request?";
+                + "\nwould you accept their request?";
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, invitationText, ButtonType.YES, ButtonType.NO);
         alert.showAndWait();
         if (alert.getResult() == ButtonType.YES) {
             UserController.alertSystem(gameUUid, Actions.ACCEPTINVITATION);
-            Alert alertFinish=new Alert(Alert.AlertType.INFORMATION, "please wait to other enemies accept their requests");
+            Alert alertFinish = new Alert(Alert.AlertType.INFORMATION, "please wait to other enemies accept their requests");
             alertFinish.showAndWait();
-        }else{
+        } else {
             UserController.alertSystem(gameUUid, Actions.REJECTINVITATION);
         }
     }
-
 
 
     public static void initializeNetwork() {

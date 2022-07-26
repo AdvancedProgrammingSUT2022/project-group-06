@@ -84,7 +84,8 @@ public enum Actions {
     sendFriendShipRequest("sendFriendShipRequest"),
     getPicUrl("getPicUrl"),
     getAvailableBuildings("getAvailableBuildings"),
-    buildBuilding("buildBuilding");
+    buildBuilding("buildBuilding"),
+    showHappiness("showHappiness");
     private final String character;
 
     Actions(String color) {

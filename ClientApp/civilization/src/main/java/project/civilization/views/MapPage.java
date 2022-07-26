@@ -155,7 +155,6 @@ public class MapPage {
         handleKeyEvent();
     }
 
-
     private Node openPanel;
     public void loadPanel(String name) {
         FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/" + name + ".fxml"));

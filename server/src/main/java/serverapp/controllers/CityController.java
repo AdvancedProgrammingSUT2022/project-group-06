@@ -437,4 +437,84 @@ public class CityController {
         Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"), city.getHexs().get(0));
         city.getBuiltBuildings().add(palace);
     }
+
+    public static void effectOfDifferentBuildingsEachTurn(City city) {
+        for (Building building : city.getBuiltBuildings()) {
+            switch (building.getName()) {
+                case "Barracks":
+                case "Armory":
+                    barracksEffect(city);
+                    break;
+                case "Granary":
+                case "Watermill":
+                    city.increaseFood(2);
+                    break;
+                case "Burial Tomb":
+                    city.getOwner().increaseHappiness(2);
+                    break;
+                case "Circus":
+                    city.getOwner().increaseHappiness(3);
+                    break;
+                case "Colosseum":
+                case "Theater":
+                    city.getOwner().increaseHappiness(4);
+                    break;
+                case "Courthouse":
+                    city.getOwner().decreaseHappiness(city.getOwner().getHappiness());
+                    break;
+                case "Stable":
+                    stableEffect(city);
+                    break;
+                //TODO: forge, garden
+                case "Market":
+                case "Bank":
+                    city.increaseGold((int) (city.getGold() * 0.25));
+                    break;
+                case "Mint":
+                    mintEffect(city);
+                    break;
+                case "University":
+                    universityEffect(city);
+                    break;
+                case "Public School":
+                    city.increaseScience((int) (city.getSince() * 0.5));
+                    break;
+                case "Satrap's Court":
+                    city.increaseGold((int) (city.getGold() * 0.25));
+                    city.getOwner().increaseHappiness(2);
+                    break;
+                case "Stock Exchange":
+                    city.increaseGold((int) (city.getGold() * 0.33));
+                    break;
+                case "Library":
+                    libraryEffect(city);
+                    break;
+            }
+        }
+    }
+
+    private static void libraryEffect(City city) {
+        city.getOwner().increaseTrophies(city.getPopulation() / 2);
+        city.setTrophy(city.getTrophy() + city.getPopulation() / 2);
+    }
+
+    private static void barracksEffect(City city) {
+        for (Unit unit : city.getOwner().getUnits()) {
+            unit.increaseMP(15);
+        }
+    }
+
+    private static void stableEffect(City city) {
+        //todo
+    }
+
+    private static void mintEffect(City city) {
+        city.increaseGold(3);
+    }
+
+    private static void universityEffect(City city) {
+        int amount = city.getTrophy() / 2;
+        city.setTrophy(city.getTrophy() + amount);
+        city.getOwner().increaseTrophies(amount);
+    }
 }

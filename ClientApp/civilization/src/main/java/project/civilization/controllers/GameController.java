@@ -14,6 +14,7 @@ import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Technology;
 import project.civilization.models.maprelated.*;
 import project.civilization.models.units.*;
+import project.civilization.views.MapPage;
 
 
 import java.io.IOException;

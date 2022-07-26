@@ -480,6 +480,11 @@ public class GameController {
         addFoodFromTiles();
         feedCitizens();
         growCity();
+        for (Player player : players) {
+            for (City city : player.getCities()) {
+                CityController.effectOfDifferentBuildingsEachTurn(city);
+            }
+        }
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
         // TODO: 7/14/2022 : 
@@ -509,6 +514,7 @@ public class GameController {
         }
         currentPlayer = players.get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("action",Actions.CHANGETURNOFOTHEROLAYERS.getCharacter());
         for (Player player:InitializeGameInfo.getPlayers()) {
@@ -1940,6 +1946,15 @@ public class GameController {
         return "it's not wise to waste this token :)";
         GameController.getSelectedHex().setState(HexState.Visible, GameController.getCurrentPlayer());
         return "successfully";
+    }
+
+    public static void broadcastHappiness() {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.showHappiness);
+        object.put("happiness", currentPlayer.getHappiness());
+        for (User user : UserController.getUsersArray()) {
+            NetWorkController.broadCast(user, object.toString());
+        }
     }
 
 }
