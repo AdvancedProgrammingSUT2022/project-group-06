@@ -90,9 +90,12 @@ public enum Actions {
     unlockTechnology("unlockTechnology"),
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding"),
+    showHappiness("showHappiness"),
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit"),
     makeUnit("makeUnit"),
+    getTechnologyInfo("getTechnologyInfo"),
+    getBuildingInfo("getBuildingInfo"),
     getImprovementNameOfWoorker("getImprovementNameOfWoorker");
 
     private final String character;

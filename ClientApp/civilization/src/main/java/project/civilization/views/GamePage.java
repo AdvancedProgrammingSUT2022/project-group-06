@@ -45,7 +45,7 @@ public class GamePage extends GameMenus{
         invitationButton.setTooltip(tooltip1);
         Image image = new Image(CivilizationApplication.class.getResource("pictures/menu_background/sendInvitation.png").toExternalForm());
         tooltip1.setGraphic(new ImageView(image));
-        backToMAinButton.setTooltip(new Tooltip("stupid it is clear that you can back to main by this button"));
+        backToMAinButton.setTooltip(new Tooltip("stupid it is clear that you can go back to main by this button"));
         loadGameButton.setTooltip(new Tooltip("you can load your saved games and continue them"));
     }
 

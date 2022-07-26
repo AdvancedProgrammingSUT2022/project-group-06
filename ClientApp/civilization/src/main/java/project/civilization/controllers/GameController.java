@@ -14,6 +14,7 @@ import project.civilization.models.gainable.Construction;
 import project.civilization.models.gainable.Technology;
 import project.civilization.models.maprelated.*;
 import project.civilization.models.units.*;
+import project.civilization.views.MapPage;
 
 
 import java.io.IOException;
@@ -1230,6 +1231,36 @@ public class GameController {
             x.printStackTrace();
         }
         return null;
+    }
+
+    public static String getTechInfo(String name) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getTechnologyInfo.getCharacter());
+            json.put("name", name);
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String getBuildingInfo(String name) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getBuildingInfo.getCharacter());
+            json.put("name", name);
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (JSONException | IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static String changeResearch(String techName) {
