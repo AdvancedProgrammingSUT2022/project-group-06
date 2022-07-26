@@ -21,6 +21,8 @@ public class User implements Comparable{
     }
 
     private static String uuid;
+
+
     // @Override
     // public String toString()
     // {

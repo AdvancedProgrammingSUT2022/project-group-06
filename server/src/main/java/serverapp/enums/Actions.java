@@ -80,6 +80,12 @@ public enum Actions {
     deleteMessage("deleteMessage"),
     editMessageButton("editMessage"),
     editMessageFinal("editMessageFinal"),
+    startRoom("startRoom");
+    CHANGETURNOFOTHEROLAYERS("CHANGETURNOFOTHEROLAYERS"),
+    getAllFreinShipRequests("getAllFreinShipRequests"),
+    getAllFriendsNames("getAllFriendsNames"),
+    sendFriendShipRequest("sendFriendShipRequest"),
+    getPicUrl("getPicUrl");
     startRoom("startRoom"),
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding");

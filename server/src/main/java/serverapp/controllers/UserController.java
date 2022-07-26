@@ -1,6 +1,7 @@
 package serverapp.controllers;
 
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import serverapp.CivilizationApplication;
 import serverapp.enums.Actions;
+import serverapp.models.Request;
 import serverapp.models.User;
 
 public class UserController {
@@ -64,6 +66,10 @@ public class UserController {
         return uuids;
     }
 
+    public static String getPicUrl(String uuid) {
+        return userHashMap.get(uuid).getUrl();
+    }
+
     public void setUsers(HashMap<String, User> users) {
         UserController.users = users;
     }
@@ -100,12 +106,11 @@ public class UserController {
         }
         return "yes";
     }
-    public static String register(String username, String password, String nickname) {
+    public static String register(String username, String password, String nickname,String url) {
         if(isUsernameUnique(username).equals("no")) return "This username is taken";
         if (!isNicknameUnique(nickname)) return "This nickname is taken";
         User newUser = new User(username,  password, nickname);
-        //Todo: profile
-        //newUser.setAvatarPic(avatarPic.getImage(), currentPic);
+        newUser.setUrl(url);
         users.put(username, newUser);
         usersArray.add(newUser);
         return "registered";
@@ -201,12 +206,9 @@ public class UserController {
                 String Password = read[1];
                 String Nickname = read[2];
                 int score=Integer.parseInt(read[3]);
-                int picNum=Integer.parseInt(read[4]);
-
-       
+                //todo:int picNum=Integer.parseInt(read[4]);
                 User addUser = new User(Username, Password, Nickname);
-                
-                addUser.setAvatarPic(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".png").toExternalForm()), picNum);
+               //addUser.setAvatarPic(image, picNum);
                 addUser.increaseScore(score);
                 users.put(Username, addUser);
                 usersArray.add(addUser);
@@ -243,6 +245,46 @@ public class UserController {
     public static String changePassword(String uuid, String newPass) {
         userHashMap.get(uuid).setPassword(newPass);
         return "password changed successfully";
+    }
+
+
+    public static String getAllFriendsNames(String uuid) {
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(userHashMap.get(uuid).getFriendsUsernames()));
+    }
+
+    public static String getAllFreinShipRequests(String uuid) {
+        ArrayList<String> allRequestNames = new ArrayList<>();
+        for (Request r: userHashMap.get(uuid).getAllFriendShipRequests()) {
+            allRequestNames.add(r.getSenderName());
+        }
+        Gson gson = new GsonBuilder().create();
+        return (gson.toJson(allRequestNames));
+    }
+
+    public static String sendFriendShipRequest(String uuid, String anotherUsername) {
+        User friend = UserController.getUserByUserName(anotherUsername);
+        Request request = new Request(userHashMap.get(uuid).getUsername(),anotherUsername);
+        friend.getAllFriendShipRequests().add(request);
+        userHashMap.get(uuid).getAllSentRequests().add(request);
+        return "sent successfully";
+    }
+    public static String acceptFriendShipRequest(String uuid, String senderName) {
+/*        ArrayList<Request> t= userHashMap.get(uuid).getAllFriendShipRequests();
+        for (int i = 0; i < t.size(); i++) {
+            if(t.get(i).getSenderName().equals(senderName)){
+
+            }
+        }
+        User friend = UserController.getUserByUserName(anotherUsername);
+        Request request = new Request(,anotherUsername);
+        friend.getAllFriendShipRequests().add(request);*/
+        return "accepted";
+    }
+
+    public static String rejectFriendship(String uuid, String anotherUsername) {
+
+        return "rejected successfully";
     }
 }
 

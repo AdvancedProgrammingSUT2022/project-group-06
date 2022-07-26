@@ -45,7 +45,7 @@ public class UserController {
         return users;
     }
 
-    public static String register(String username, String password, String nickname) {
+    public static String register(String username, String password, String nickname,String url) {
         JSONObject json = new JSONObject();
         try {
             json.put("menu", MenuCategory.LOGIN.getCharacter());
@@ -53,6 +53,7 @@ public class UserController {
             json.put("username", username);
             json.put("password", password);
             json.put("nickname", nickname);
+            json.put("url", url);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -191,6 +192,26 @@ public class UserController {
             x.printStackTrace();
         }
     }
+
+    public static String getPicUrl() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.getPicUrl);
+            json.put("UUID", User.getUuid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+           return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return null;
+    }
+
 
     public void setUsers(HashMap<String, User> users) {
         UserController.users = users;
@@ -371,5 +392,69 @@ public class UserController {
             return "something is wrong";
         }
     }
+
+    public static ArrayList<String> getAllFreinShipRequests() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.getAllFreinShipRequests.getCharacter());
+            json.put("UUID",User.getUuid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String sendFriendShipRequest(String text) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.sendFriendShipRequest.getCharacter());
+            json.put("UUID",User.getUuid());
+            json.put("anotherUsername",text);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
+    public static ArrayList<String> getAllFriendsNames() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.getAllFriendsNames.getCharacter());
+            json.put("UUID",User.getUuid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
+
 }
 

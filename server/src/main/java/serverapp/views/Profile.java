@@ -18,6 +18,18 @@ public class Profile {
         if(command.equals(Actions.UNIQUEUSERNAME.getCharacter())){
             return UserController.isUsernameUnique(jsonObject.getString("username"));
         }
+        if(command.equals(Actions.getAllFreinShipRequests.getCharacter())){
+            return UserController.getAllFreinShipRequests(jsonObject.getString("UUID"));
+        }
+        if(command.equals(Actions.getAllFriendsNames.getCharacter())){
+            return UserController.getAllFriendsNames(jsonObject.getString("UUID"));
+        }
+        if(command.equals(Actions.sendFriendShipRequest.getCharacter())){
+            return UserController.sendFriendShipRequest(jsonObject.getString("UUID"), jsonObject.getString("anotherUsername"));
+        }
+        if(command.equals(Actions.getPicUrl.getCharacter())){
+            return UserController.getPicUrl(jsonObject.getString("UUID"));
+        }
         return "bad request format";
     }
 }

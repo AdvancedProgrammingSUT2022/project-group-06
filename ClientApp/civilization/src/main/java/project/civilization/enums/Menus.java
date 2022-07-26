@@ -17,7 +17,9 @@ public enum Menus {
     STARTROOMS("start-rooms-page"),
     CHALLENGEPAGE("challenge-page"),
     MAPPAGE("map-page"),
-    INVIATIONBOX("invitation-box");
+    INVIATIONBOX("invitation-box"),
+    FRIENDSHIPREQUESTS("friends-requests"),
+    SEEALLFRIENDS("friends-list");
 
     private final String character;
 

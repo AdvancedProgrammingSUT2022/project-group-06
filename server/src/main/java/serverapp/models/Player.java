@@ -29,6 +29,7 @@ public class Player {
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
     private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
 
+
     private ArrayList<Unit> units = new ArrayList<Unit>();
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled
@@ -42,9 +43,7 @@ public class Player {
 
 
     private transient ArrayList<Trade> trades = new ArrayList<Trade>();
-
     private transient ArrayList<Combat> combats = new ArrayList<Combat>();
-
 
     public Player(String name) {
         this.name = name;

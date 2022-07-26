@@ -24,7 +24,9 @@
             <TextField fx:id="password" maxWidth="-Infinity" prefWidth="300.0" promptText="new password" />
 
             <Button onMouseClicked="#changePassword" prefHeight="10.0" text="Change Password" />
-          
+            <Button onMouseClicked="#friendsList" prefHeight="10.0" text="see your friends" />
+            <Button onMouseClicked="#friendsRequests" prefHeight="10.0" text="see friendship requests" />
+
             <Button onMouseClicked="#deleteAccount" prefHeight="10.0" text="Delete your account" />
             <Label fx:id="nicknameError" text="" />
             <Label fx:id="passwordError" text="" />
