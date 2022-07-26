@@ -96,7 +96,11 @@ public enum Actions {
     makeUnit("makeUnit"),
     getTechnologyInfo("getTechnologyInfo"),
     getBuildingInfo("getBuildingInfo"),
-    getImprovementNameOfWoorker("getImprovementNameOfWoorker");
+    getImprovementNameOfWoorker("getImprovementNameOfWoorker"),
+    LOCKINGCITIZENTOTILE("LOCKINGCITIZENTOTILE"),
+    REMOVECITIZENFROMWORK("REMOVECITIZENFROMWORK"),
+    showUnEmployedCitizen("showUnEmployedCitizen"),
+    CITYATTACKTOUNIT("CITYATTACKTOUNIT");
 
     private final String character;
 

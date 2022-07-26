@@ -116,8 +116,8 @@ public class CityScreen {
         handleCitizenButton(lock,release,x,y);
         handleButtonUsage(buyHex);
 
-        VBox buyBox = new VBox(buyHex, buyBuilding,fields,buttons);
-        
+        Label UnEmployedCitizen = new Label("UnEmployedCitizens: "+CityController.showUnEmployedCitizen());
+        VBox buyBox = new VBox(buyHex, buyBuilding,fields,buttons,UnEmployedCitizen);
         demoPane.getChildren().add(buyBox);
 
         demoPane.setStyle("-fx-background-color:black");
@@ -149,8 +149,8 @@ public class CityScreen {
                 }
                 int x=Integer.parseInt(x_field.getText());
                 int y=Integer.parseInt(y_Field.getText());
-
-               
+                Alert alert=new Alert(AlertType.INFORMATION,CityController.lockCitizenTo(x, y));
+                alert.showAndWait();
                 
             }
             
@@ -169,7 +169,8 @@ public class CityScreen {
                 }
                 int x=Integer.parseInt(x_field.getText());
                 int y=Integer.parseInt(y_Field.getText());
-   
+                Alert alert=new Alert(AlertType.INFORMATION,CityController.removeCitizenFromWork(x, y));
+                alert.showAndWait();
             }
             
         });

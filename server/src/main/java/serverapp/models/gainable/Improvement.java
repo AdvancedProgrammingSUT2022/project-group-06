@@ -86,11 +86,18 @@ public class Improvement implements Construction {
                 break;
             case "Factory":
                 makeFactory();
-                ;
                 break;
-
+            case "Road":
+                makeRoad();
+                break;
+            case  "RailRoad" :
+                makeRailRoad();
         }
 
+    }
+
+    private void makeRailRoad() {
+        hex.setHasRailRoad(true);
     }
 
     public static void reverseCamp(Hex hex) {

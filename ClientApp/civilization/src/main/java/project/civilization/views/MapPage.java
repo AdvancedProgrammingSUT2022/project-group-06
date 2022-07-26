@@ -35,6 +35,7 @@ public class MapPage {
     private static int[] mapBoundaries;
     private boolean wantToMove = false;
     private boolean wantToAttack = false;
+    private boolean cityWantToattack = false;
     @FXML
     private AnchorPane anchorPane;
     @FXML
@@ -516,6 +517,17 @@ public class MapPage {
         String address = "pictures/city/city.png";
         Image cityImage = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
         ImageView cityView = new ImageView(cityImage);
+        cityView.setOnMouseClicked(event1 -> {
+            GameController.setSelectedCityByName(name);
+            VBox vBox = new VBox();
+            ImageView delete = createImageView("pictures/city/rangeAttack.png");
+            vBox.getChildren().add(delete);
+            delete.setOnMouseClicked(event2 -> {
+                cityWantToattack = true;
+            });
+            vBox.setLayoutY(100);
+            pane.getChildren().add(vBox);
+        });
         cityView.setX(tilesImageViews[i][j].getX() + 50);
         cityView.setY(tilesImageViews[i][j].getY() + 20);
         pane.getChildren().add(cityView);
@@ -818,6 +830,11 @@ public class MapPage {
                 attackResultView(res);
                 resetPane();
                 wantToAttack = false;
+            } else if (cityWantToattack) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION, CombatController.attackCity(i, j));
+                alert.showAndWait();
+                resetPane();
+                cityWantToattack = false;
             } else {
                 showHexDetails(i, j);
                 GameController.setSelectedHex(i, j);
@@ -944,6 +961,14 @@ public class MapPage {
         }
         if (!Objects.equals(improvementDetails, "")) {
             Label label1 = new Label(improvementDetails);
+            addVboxToPopup(label1, vBox);
+        }
+        if(obj.has("railroad")){
+            Label label1 = new Label("has railRoad");
+            addVboxToPopup(label1, vBox);
+        }
+        if(obj.has("road")){
+            Label label1 = new Label("has road");
             addVboxToPopup(label1, vBox);
         }
         popup.getContent().add(vBox);

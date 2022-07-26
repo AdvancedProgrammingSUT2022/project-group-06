@@ -1875,6 +1875,8 @@ public class GameController {
             json.put("featureDetails", featureDetails);
             json.put("improvementDetails", improvementDetails);
             json.put("resourceDetails", resourceDetails);
+            if(tile.hasRailRoad()) json.put("railroad",true);
+            if(tile.hasRoad()) json.put("road", true);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1939,6 +1941,7 @@ public class GameController {
             if (!temp.getName().equals(cityName)) {
                 continue;
             }
+            GameController.setSelectedCity(temp);
             ArrayList<Construction> technologies = new ArrayList<Construction>();
 
             economicInfo.append(count + ") cityname: " + temp.getName() + "\n");

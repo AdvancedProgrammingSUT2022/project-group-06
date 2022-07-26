@@ -93,18 +93,6 @@ public class CityController {
     }
 
 
-    public static String selectCity(String name) {
-        for (City temp : City.getCities()) {
-            if (temp.getName().equals(name)) {
-                GameController.setSelectedCity(temp);
-                return "city selected successfully";
-            }
-        }
-
-        return "no city with this name exists";
-    }
-
-
     public static String startMakingUnit(String name) {
         if (GameController.getSelectedHex() == null) {
             return "select a tile first";
@@ -247,44 +235,61 @@ public class CityController {
 
 
     public static String removeCitizenFromWork(int x, int y) {
-        if (GameController.isOutOfBounds(x, y)) {
-            return "out of bounds";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.REMOVECITIZENFROMWORK.getCharacter());
+            json.put("i",x);
+            json.put("j",y);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
-            return "this tile is not yours";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e ){
+            e.printStackTrace();
+            return "something is wrong";
         }
-        if (!hex[x][y].getHasCitizen()) return "there is no citizen";
-        City city = hex[x][y].getCity();
-        city.decreaseFood(hex[x][y].getTerrain().getFood());
-        city.decreaseGold(hex[x][y].getTerrain().getGold());
-        city.decreaseProduction(hex[x][y].getTerrain().getProduction());
-        hex[x][y].setHasCitizen(false);
-        GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
-        return "citizen removed successfully";
     }
 
     public static String lockCitizenTo(int x, int y) {
-        if (GameController.isOutOfBounds(x, y)) {
-            return "out of bounds";
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.LOCKINGCITIZENTOTILE.getCharacter());
+            json.put("i",x);
+            json.put("j",y);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (hex[x][y].getOwner() != GameController.getCurrentPlayer()) {
-            return "this tile is not yours";
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "something is wrong";
         }
-        if (hex[x][y].getHasCitizen()) return "there is already a citizen";
-        if (GameController.getSelectedCity().getNumberOfUnemployedCitizen() > 0) {
-            GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
-            City city = hex[x][y].getCity();
-            city.increaseFood(hex[x][y].getTerrain().getFood());
-            city.increaseGold(hex[x][y].getTerrain().getGold());
-            city.increaseProduction(hex[x][y].getTerrain().getProduction());
-            hex[x][y].setHasCitizen(true);
-            return "citizen locked";
-        } else return "unemployed a citizen first";
     }
 
-    public static String showUnEmployedCitizen() {
-        if (GameController.getSelectedCity() == null) return "please select a city first";
-        return String.valueOf(GameController.getSelectedCity().getNumberOfUnemployedCitizen());
+    public static String  showUnEmployedCitizen() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.showUnEmployedCitizen.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "something is wrong";
+        }
     }
 
     public static String cityBanner() {

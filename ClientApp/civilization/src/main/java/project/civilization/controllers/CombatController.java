@@ -24,24 +24,23 @@ public class CombatController {
     }
 
     public static String attackCity(int x, int y) {
-        if (GameController.getSelectedCity() == null) return "first select a city";
-        if (hex[x][y].getMilitaryUnit() == null) {
-            return ("there is not a military unit");
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.CITYATTACKTOUNIT.getCharacter());
+            json.put("i", x);
+            json.put("j", y);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        if (hex[x][y].getMilitaryUnit().getOwner() == GameController.getCurrentPlayer()) {
-            return ("am i joke to you? attack our self?");
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "something is wrong";
         }
-        if (!GameController.getSelectedCity().isInPossibleCombatRange(x, y, 0, GameController.getSelectedCity().getX(), GameController.getSelectedCity().getY())) {
-            return "out of range";
-        }
-        int temp = GameController.getSelectedCity().getRangedCombatStrength();
-        temp -= hex[x][y].getMilitaryUnit().getDefenciveBounes();
-        hex[x][y].getMilitaryUnit().decreaseHealth(temp);
-        if (hex[x][y].getMilitaryUnit().getHealth() <= 0) {
-            UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
-            return "city win";
-        }
-        return "attacked successfully";
     }
 
     public static String attackUnit(int x, int y) {

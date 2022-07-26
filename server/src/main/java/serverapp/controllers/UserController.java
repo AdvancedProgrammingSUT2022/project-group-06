@@ -274,6 +274,7 @@ public class UserController {
         userHashMap.get(uuid).getAllSentRequests().add(request);
         return "sent successfully";
     }
+
     public static String acceptFriendShipRequest(String uuid, String senderName) {
 /*        ArrayList<Request> t= userHashMap.get(uuid).getAllFriendShipRequests();
         for (int i = 0; i < t.size(); i++) {

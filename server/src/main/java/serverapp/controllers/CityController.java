@@ -352,7 +352,7 @@ public class CityController {
         }
         if (hex[x][y].getHasCitizen()) return "there is already a citizen";
         if (GameController.getSelectedCity().getNumberOfUnemployedCitizen() > 0) {
-            GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(1);
+            GameController.getSelectedCity().increaseNumberOfUnemployedCitizen(-1);
             City city = hex[x][y].getCity();
             city.increaseFood(hex[x][y].getTerrain().getFood());
             city.increaseGold(hex[x][y].getTerrain().getGold());
