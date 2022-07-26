@@ -15,7 +15,7 @@ import serverapp.models.units.Military;
 import serverapp.models.units.Unit;
 
 
-public class Player {
+public class Player implements Comparable{
     private String name;
     private int gold;
     private int happiness;
@@ -30,6 +30,17 @@ public class Player {
     private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
 
 
+    @Override
+    public int compareTo(Object o) {
+        if(Integer.compare(((Player)o).getScore(),this.score )==0)
+        {
+            return this.name.compareTo(((Player)o).getName());
+        }
+        return Integer.compare(((Player)o).getScore(),this.score );
+    }
+
+
+    
     private ArrayList<Unit> units = new ArrayList<Unit>();
     //private ArrayList<TimeVariantProcess> timeVariantProcesses = new ArrayList<TimeVariantProcess>();
     //todo: handel city tile in reveled

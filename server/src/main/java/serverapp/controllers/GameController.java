@@ -39,7 +39,15 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Game> allGames = new ArrayList<>();
-
+    private static int year=2040;
+    private static ArrayList<City> capitals=new ArrayList<City>();
+    private static ArrayList<Player> origialOwners=new ArrayList<Player>();
+    private static Player capitalWinner=null;
+    public static void addCapital(City city)
+    {
+        capitals.add(city);
+        origialOwners.add(currentPlayer);
+    }
     public static int getTurn() {
         return turn;
     }
@@ -105,6 +113,25 @@ public class GameController {
         }
     }
 
+    private static int calculateScore()
+    {
+        int score=0;
+        score+=currentPlayer.getPopulation()*2;
+        score+=currentPlayer.getCities().size()*2;
+        for (int i = 0; i < world.getHexInHeight(); i++) {
+            for (int j = 0; j < world.getHexInWidth(); j++) {
+                if(hex[i][j].getOwner().equals(currentPlayer)){
+                    score++;
+                }
+            }
+        }
+        for(City city:currentPlayer.getCities())
+        {
+            score+=3*city.getBuiltBuildings().size();
+        }
+
+        return score;
+    }
     public static String getPlayerMainInfo()
     {
         return currentPlayer.getGold()+" "+currentPlayer.getHappiness()+" "+currentPlayer.getProduction()+" "+currentPlayer.getPopulation()+" "+currentPlayer.getTrophies();
@@ -469,11 +496,69 @@ public class GameController {
             currentPlayer.increaseGold(city.getGold());
         }
     }
+    private static boolean winByCapital()
+    {
+        int stillHaveCapitals=0;
+        for(int i=0;i<capitals.size();i++)
+        {
+            if(capitals.get(i).getOwner().equals(origialOwners.get(i)))
+            {
+                stillHaveCapitals++;
+            }
+        }
 
+        if(stillHaveCapitals==1)
+        {
+            return true;
+        }
+        return false;
+        
+    }
+    private static boolean gameOver()
+    {
+        if(year<2050)
+        {
+            return false;
+        }
+        if(!winByCapital())
+        {
+            return false;
+        }
+       
+        return true;
+    }
     public static String changeTurn() {
         // TODO: 7/14/2022 :
 /*        String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;*/
+
+
+        if(gameOver())
+        {
+            calculateScore(); 
+
+            StringBuilder winners=new StringBuilder();
+            winners.append("game over\n");
+
+            if(capitalWinner!=null)
+            {   
+                winners.append(capitalWinner.getName()+" "+capitalWinner.getScore()+"\n");
+                return winners.toString();
+            }
+
+            Collections.sort(players);
+            
+            winners.append(players.get(0).getName()+" "+players.get(0).getScore()+"\n");
+            for(int i=1;i<players.size()&&(players.get(i).getScore()==players.get(0).getScore());i++)
+            {
+                winners.append(players.get(i).getName()+" "+players.get(i).getScore()+"\n");
+            }
+            return winners.toString();
+        }
+
+
+
+
         int goldPerTurn = 0;
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
@@ -507,6 +592,7 @@ public class GameController {
         resetMovePoints();
         if (playerCount == players.size() - 1) {
             playerCount = 0;
+            year++;
             turn++;
         } else {
             playerCount++;
