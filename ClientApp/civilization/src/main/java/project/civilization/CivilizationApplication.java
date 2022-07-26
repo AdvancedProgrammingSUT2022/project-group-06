@@ -5,11 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import project.civilization.enums.Menus;
 import project.civilization.views.MapPage;
 import project.civilization.views.Music;
 
+import java.awt.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class CivilizationApplication extends Application {
     public static DataInputStream dataInputStream;
     public static DataOutputStream dataOutputStream;
     public static AnchorPane chatPane;
+    public static Pane mapPane;
     public static MapPage mapPageController;
 
     @Override
@@ -58,6 +61,8 @@ public class CivilizationApplication extends Application {
         Scene scene = new Scene(root);
         if (menuName.equals(Menus.PUBLICCHAT)) {
             chatPane = (AnchorPane) root;
+        } else if (menuName.equals(Menus.MAPPAGE)) {
+            mapPane = (Pane) root;
         }
         stages.setScene(scene);
     }
@@ -72,17 +77,16 @@ public class CivilizationApplication extends Application {
     }
 
 
-    private static Parent loadFXML(Menus menuName){
-        if(menuName == Menus.GAME){
+    private static Parent loadFXML(Menus menuName) {
+        if (menuName == Menus.GAME) {
             Music.addMusic("songs/MUS_Genie_A.wav");
         }
         try {
             URL address = new URL(CivilizationApplication.class.getResource("fxml/" + menuName.getCharacter() + ".fxml").toExternalForm());
             FXMLLoader loader = new FXMLLoader(address);
-            if(menuName.equals(Menus.MAPPAGE))
-            {
-                MapPage mapPage=new MapPage();
-                mapPageController=mapPage;
+            if (menuName.equals(Menus.MAPPAGE)) {
+                MapPage mapPage = new MapPage();
+                mapPageController = mapPage;
                 loader.setController(mapPage);
             }
             return loader.load();

@@ -470,14 +470,23 @@ public class UnitController {
 
 
     public static String startMovement(int x, int y) {
-        if (selectedUnit == null)
-            return "you have to choose a unit first";
-        else if (isHexOccupied(x, y))
-            return "Destination hex already has a unit of this type";
-        else if (!canMoveThrough(x, y))
-            return "The unit can't go through chosen destination hex(motion/ocean)";
+        JSONObject jsonObject = new JSONObject();
+        if (selectedUnit == null){
+            jsonObject.put("movement result","you have to choose a unit first");
+            return jsonObject.toString();
+        }
+        else if (isHexOccupied(x, y)){
+            jsonObject.put("movement result","Destination hex already has a unit of this type");
+            return jsonObject.toString();
+        }
+        else if (!canMoveThrough(x, y)){
+            jsonObject.put("movement result","The unit can't go through chosen destination hex(motion/ocean)");
+            return jsonObject.toString();
+        }
         else if (selectedUnit instanceof Civilian && hex[x][y].getMilitaryUnit() != null && hex[x][y].getOwner() != getCurrentPlayer())
-            return "a noncombat unit can't move to a tile with enemy military unit";
+        {   jsonObject.put("movement result","a noncombat unit can't move to a tile with enemy military unit");
+            return jsonObject.toString();
+        }
         selectedUnit.setState(UnitState.Active);
         selectedUnit.setOrdered(true);
         Movement movement = new Movement(selectedUnit, selectedUnit.getCurrentHex(), hex[x][y]);

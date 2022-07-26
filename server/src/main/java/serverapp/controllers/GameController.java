@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import serverapp.enums.*;
 import serverapp.models.User;
+import serverapp.models.gainable.Building;
 import serverapp.models.gainable.Construction;
 import serverapp.models.gainable.Improvement;
 import serverapp.models.gainable.Technology;
@@ -74,7 +75,7 @@ public class GameController {
         return world;
     }
 
-    public static String  setSelectedCity(City newCity) {
+    public static String setSelectedCity(City newCity) {
         //todo : if(newCity == null) return "city is null"; is this important?
         selectedCity = newCity;
         return "selected successfully";
@@ -94,10 +95,57 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        justForTest();
         startGame();
         /*hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
         hex[0][0].setState(HexState.Visible,players.get(0));*/
     }
+    private static void justForTest() {
+        //hex[0][0].setPillaged(true);
+/*
+        ArrayList<Improvement> improvements = new ArrayList<>();
+        improvements.add(new Improvement("Farm",null,hex[1][0]));
+        hex[1][0].setImprovements(improvements);
+
+        world.getHex()[1][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[1][0].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[1][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[1][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Ranged military2 = new Ranged("Archer", world.getHex()[1][0], InitializeGameInfo.getPlayers().get(1));
+        InitializeGameInfo.getPlayers().get(1).addUnit(military2);
+        world.getHex()[1][0].setMilitaryUnit(military2);
+        military2.setOwner(InitializeGameInfo.getPlayers().get(1));
+*/
+
+/*        world.getHex()[0][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[0][0].setOwner(GameController.getCurrentPlayer());
+        world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[0][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Ranged military = new Ranged("Archer", world.getHex()[0][0], GameController.getCurrentPlayer());
+        GameController.getCurrentPlayer().addUnit(military);
+        world.getHex()[0][0].setMilitaryUnit(military);
+        military.setOwner(GameController.getCurrentPlayer());
+
+        Settler civilian = new Settler("Settler", world.getHex()[0][0], GameController.getCurrentPlayer());
+        world.getHex()[0][0].setCivilianUnit(civilian);
+        GameController.getCurrentPlayer().addUnit(civilian);
+        civilian.setOwner(GameController.getCurrentPlayer());
+        world.getHex()[1][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[1][0].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[1][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[1][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Ranged military2 = new Ranged("Archer", world.getHex()[1][0], InitializeGameInfo.getPlayers().get(1));
+        InitializeGameInfo.getPlayers().get(1).addUnit(military2);
+        world.getHex()[1][0].setMilitaryUnit(military2);
+        military2.setOwner(InitializeGameInfo.getPlayers().get(1));
+
+        world.getHex()[0][1].setTerrain(new Terrain("Hills"));
+        world.getHex()[0][1].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[0][1].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[0][1].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Melee military3 = new Melee("Spearman", world.getHex()[0][1], InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[0][1].setMilitaryUnit(military3);
+}*/
     private static boolean createdRuins=false;
     
     private static void createRuinTiles()
@@ -120,9 +168,10 @@ public class GameController {
         
     }
 
+
     public static void startGame() {
         if(!createdRuins)
-        {   
+        {
             createRuinTiles();
             createdRuins=true;
         }
@@ -131,8 +180,7 @@ public class GameController {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")) {
                     UnitController.makeUnit("Settler", hex[i][j], "gold");
-//                    City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
-
+                    //City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     return;
                 }
@@ -152,7 +200,7 @@ public class GameController {
                     if(hex[i][j].getOwner().equals(currentPlayer)){
                         score++;
                     }
-                }    
+                }
             }
         }
         for(City city:currentPlayer.getCities())
@@ -542,7 +590,7 @@ public class GameController {
             return true;
         }
         return false;
-        
+
     }
     private static boolean gameOver()
     {
@@ -554,7 +602,7 @@ public class GameController {
         {
             return false;
         }
-       
+
         return true;
     }
     public static String changeTurn() {
@@ -565,27 +613,27 @@ public class GameController {
 
         if(gameOver())
         {
-            calculateScore(); 
+            calculateScore();
 
             StringBuilder winners=new StringBuilder();
             winners.append("game over\n");
 
             if(capitalWinner!=null)
-            {   
-                winners.append(capitalWinner.getName()+" "+capitalWinner.getScore()+"\n"); 
-                Date date = new Date();  
+            {
+                winners.append(capitalWinner.getName()+" "+capitalWinner.getScore()+"\n");
+                Date date = new Date();
                 UserController.getUserByUserName(capitalWinner.getName()).setWinTime(date);
                 return winners.toString();
             }
 
             Collections.sort(players);
-            
+
             winners.append(players.get(0).getName()+" "+players.get(0).getScore()+"\n");
             for(int i=1;i<players.size()&&(players.get(i).getScore()==players.get(0).getScore());i++)
             {
                 winners.append(players.get(i).getName()+" "+players.get(i).getScore()+"\n");
             }
-            
+
             return winners.toString();
         }
 
@@ -602,6 +650,11 @@ public class GameController {
         addFoodFromTiles();
         feedCitizens();
         growCity();
+        for (Player player : players) {
+            for (City city : player.getCities()) {
+                CityController.effectOfDifferentBuildingsEachTurn(city);
+            }
+        }
         //healUnits and cities(1hit point)//handel tarmim asib
         heal();
         // TODO: 7/14/2022 : 
@@ -632,11 +685,12 @@ public class GameController {
         }
         currentPlayer = players.get(playerCount);
         UnitController.setCurrentPlayer(currentPlayer);
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("action",Actions.CHANGETURNOFOTHEROLAYERS.getCharacter());
-        for (Player player:InitializeGameInfo.getPlayers()) {
+        jsonObject.put("action", Actions.CHANGETURNOFOTHEROLAYERS.getCharacter());
+        for (Player player : InitializeGameInfo.getPlayers()) {
             NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
-                    ,jsonObject.toString());
+                    , jsonObject.toString());
         }
         return "Turn changed successfully \n player:" + currentPlayer.getName();
     }
@@ -1357,7 +1411,7 @@ public class GameController {
                     continue;
                 }
 
-                if (!(process instanceof Technology))
+                if (!(process instanceof Technology) && !(process instanceof Building))
                     process.getWorker().setOrdered(false);
 
                 String temp;
@@ -1538,7 +1592,7 @@ public class GameController {
 
         boolean check = false;
         for (Hex hex : GameController.getSelectedHex().getCity().getHexs()) {
-            if (newUnit.getNeededResource() != null && hex.getResource().getName().equals(newUnit.getNeededResource())) {
+            if (newUnit.getNeededResource() != null &&  hex.getResource() != null && hex.getResource().getName().equals(newUnit.getNeededResource())) {
                 check = true;
             }
         }
@@ -1629,8 +1683,8 @@ public class GameController {
         if (removeError("Forest") == null) availableWorks.add("remove forest");
         if (removeError("Marsh") == null) availableWorks.add("remove marsh");
         availableWorks.add("remove way");
-        if(canConstructRailRoad()) availableWorks.add("construct railroad");
-        if(canConstructRoad()) availableWorks.add("construct road");
+        if (canConstructRailRoad()) availableWorks.add("construct railroad");
+        if (canConstructRoad()) availableWorks.add("construct road");
         Gson gson = new GsonBuilder().create();
         return (gson.toJson(availableWorks));
     }
@@ -1682,7 +1736,8 @@ public class GameController {
                                 && UnitController.getSelectedUnit().getCurrentHex().getTerrain().getName().matches("Tundra||Hills||Plain"))
                 );
     }
-    public static boolean canConstructRailRoad(){
+
+    public static boolean canConstructRailRoad() {
         int x = UnitController.getSelectedUnit().getX();
         int y = UnitController.getSelectedUnit().getY();
         if (GameController.isOutOfBounds(x, y))
@@ -1701,6 +1756,7 @@ public class GameController {
             return false;
         return true;
     }
+
     public static String constructRailRoad(int x, int y) {
 /*        if (GameController.isOutOfBounds(x, y))
             return "chosen position is not valid";
@@ -1723,7 +1779,8 @@ public class GameController {
         GameController.getCurrentPlayer().addUnfinishedProject(railroad);
         return "the railroad will be constructed in 3 turns";
     }
-    public static boolean canConstructRoad(){
+
+    public static boolean canConstructRoad() {
         int x = UnitController.getSelectedUnit().getX();
         int y = UnitController.getSelectedUnit().getY();
         if (GameController.isOutOfBounds(x, y))
@@ -1744,6 +1801,7 @@ public class GameController {
             return false;
         return true;
     }
+
     public static String constructRoad(int x, int y) {
         UnitController.getSelectedUnit().setOrdered(true);
         UnitController.getSelectedUnit().setState(UnitState.Active);
@@ -1755,38 +1813,38 @@ public class GameController {
     }
 
     public static String orderToWorker(String command) {
-        if (command.equals("construct road")){
-            return constructRoad(UnitController.getSelectedUnit().getX(),UnitController.getSelectedUnit().getY());
-        }else if (command.equals("construct railroad")){
-            return constructRailRoad(UnitController.getSelectedUnit().getX(),UnitController.getSelectedUnit().getY());
-        }else if (command.equals("quarry build")) {
+        if (command.equals("construct road")) {
+            return constructRoad(UnitController.getSelectedUnit().getX(), UnitController.getSelectedUnit().getY());
+        } else if (command.equals("construct railroad")) {
+            return constructRailRoad(UnitController.getSelectedUnit().getX(), UnitController.getSelectedUnit().getY());
+        } else if (command.equals("quarry build")) {
             return (GameController.makeQuarry());
         } else if (command.equals("factory build")) {
-            return(GameController.makeFactory());
+            return (GameController.makeFactory());
         } else if (command.equals("plantation build")) {
-            return(GameController.makePlantation());
+            return (GameController.makePlantation());
         } else if (command.equals("camp build")) {
-            return(GameController.makingCamp());
+            return (GameController.makingCamp());
         } else if (command.equals("pasture build")) {
-            return(GameController.makingPasture());
+            return (GameController.makingPasture());
         } else if (command.equals("lumber mill build")) {
-            return(GameController.makingLumberMill());
+            return (GameController.makingLumberMill());
         } else if (command.equals("post build")) {
-            return(GameController.startMakeingTradingPost());
+            return (GameController.startMakeingTradingPost());
         } else if (command.equals("farm build")) {
-            return(GameController.startBuildFarm());
+            return (GameController.startBuildFarm());
         } else if (command.equals("mine build")) {
-            return(GameController.startBuildMine());
+            return (GameController.startBuildMine());
         } else if (command.equals("remove jungle")) {
-            return(GameController.removeJungle());
+            return (GameController.removeJungle());
         } else if (command.equals("remove forest")) {
-            return(GameController.removeForest());
+            return (GameController.removeForest());
         } else if (command.equals("remove marsh")) {
-            return(GameController.removeMarsh());
+            return (GameController.removeMarsh());
         } else if (command.equals("remove way")) {
-            return(GameController.removeRailRoad());
+            return (GameController.removeRailRoad());
         } else if (command.equals("repair")) {
-            return(GameController.repair());
+            return (GameController.repair());
         }
         return "invalid order";
     }
@@ -1843,12 +1901,11 @@ public class GameController {
                     if (hexes[i][j].getCity() != null) {
                         hexDetails.put("city", hexes[i][j].getCity().getName());
                         if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
-                            hexDetails.put("building",initializeBuildings(hexes[i][j].getCity()));
+                            hexDetails.put("building", initializeBuildings(hexes[i][j].getCity()));
                         }
                     }
-                    if(hexes[i][j].getHasRuins()!=0)
-                    {
-                        hexDetails.put("ruins",true);
+                    if (hexes[i][j].getHasRuins() != 0) {
+                        hexDetails.put("ruins", true);
                     }
                     if (hexes[i][j].getOwner() != null) {
                         hexDetails.put("owner", hexes[i][j].getOwner().getName());
@@ -1860,7 +1917,7 @@ public class GameController {
         return allHexes.toString();
     }
 
-    private static String initializeBuildings( City city) {
+    private static String initializeBuildings(City city) {
         ArrayList<String> names = new ArrayList<>();
         for (int i = 1; i <= city.getBuiltBuildings().size(); i++) {
             names.add(city.getBuiltBuildings().get(i - 1).getName());
@@ -2001,7 +2058,7 @@ public class GameController {
     }
 
     public static String cityScreen(String cityName) {
-        
+
         StringBuilder economicInfo = new StringBuilder();
         int count = 1;
         for (City temp : currentPlayer.getCities()) {
@@ -2065,7 +2122,7 @@ public class GameController {
             for (Player player:players) {
                 NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
                         ,jsonObject.toString());
-            }   
+            }
         }
         return outPut;
     }
@@ -2078,4 +2135,45 @@ public class GameController {
         return "successfully";
     }
 
+    public static void broadcastHappiness() {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.showHappiness);
+        object.put("happiness", currentPlayer.getHappiness());
+        for (User user : UserController.getUsersArray()) {
+            NetWorkController.broadCast(user, object.toString());
+        }
+    }
+
+    public static String getTechnologyInfo(JSONObject object) {
+        String techName = (String) object.get("name");
+        Technology technology = null;
+        for (Technology technology1 : InitializeGameInfo.getAllTechnologies()) {
+            if (technology1.getName().equals(techName))
+                technology = technology1;
+        }
+        StringBuilder output = new StringBuilder();
+        output.append("prerequisite technology: ");
+        if (technology.getName() != null) {
+            for (String technology1 : technology.getNeededPreviousTechnologies()) {
+                output.append(technology1 + ", ");
+            }
+        }
+        output.append("cost: " + technology.getCost());
+        return output.toString();
+    }
+
+    public static String getBuildingInfo(JSONObject object) {
+        String buildingName = (String) object.get("name");
+        Building building = null;
+        for (Building building1 : InitializeGameInfo.getAllBuildings()) {
+            if (building1.getName().equals(buildingName))
+                building = building1;
+        }
+        StringBuilder output = new StringBuilder();
+        if (building.getTechnology() != null)
+            output.append("Technology required: " + building.getTechnology());
+        output.append(", cost: " + building.getCost());
+        output.append(", maintenance: " + building.getMaintenance());
+        return output.toString();
+    }
 }

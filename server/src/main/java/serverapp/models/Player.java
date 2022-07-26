@@ -204,6 +204,7 @@ public class Player implements Comparable{
 
     public String unlockTechnology(String technology) {
         achievedTechnologies.put(technology, true);
+        currentResearch = InitializeGameInfo.getTechnologyByName().get(technology);
         return "unlocked";
     }
 

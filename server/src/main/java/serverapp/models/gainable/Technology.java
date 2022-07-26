@@ -1,6 +1,7 @@
 package serverapp.models.gainable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import serverapp.controllers.GameController;
 import serverapp.controllers.InitializeGameInfo;
@@ -25,9 +26,7 @@ public class Technology implements Construction {
         this.cost = Integer.parseInt(info[0]);
 
         String[] neededTechnologies = info[1].split(",");
-        for (String temp : neededTechnologies) {
-            neededPreviousTechnologies.add(temp);
-        }
+        neededPreviousTechnologies.addAll(Arrays.asList(neededTechnologies));
 
     }
 

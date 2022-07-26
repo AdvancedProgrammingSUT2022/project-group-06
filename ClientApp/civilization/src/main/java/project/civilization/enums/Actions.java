@@ -88,8 +88,13 @@ public enum Actions {
     unlockTechnology("unlockTechnology"),
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding"),
+    showHappiness("showHappiness"),
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit"),
+    makeUnit("makeUnit"),
+    getTechnologyInfo("getTechnologyInfo"),
+    getBuildingInfo("getBuildingInfo"),
+    getImprovementNameOfWoorker("getImprovementNameOfWoorker");
     makeUnit("makeUnit"),
     playerMainInfo("playerMainInfo"),
     gameOver("gameOver");

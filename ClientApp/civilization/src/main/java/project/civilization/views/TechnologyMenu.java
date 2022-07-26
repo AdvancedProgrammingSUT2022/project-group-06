@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -89,6 +90,7 @@ public class TechnologyMenu {
 
         for (String name : labels) {
             initializeLabel(name, vBox);
+            name.trim();
             String address = "pictures/technology/" + name.toLowerCase() + ".png";
             image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
             ImageView imageView = new ImageView(image);
@@ -102,6 +104,8 @@ public class TechnologyMenu {
         Button button = new Button(name);
         button.setPrefWidth(100);
         button.setPrefHeight(30);
+        String tooltipString = GameController.getTechInfo(name);
+        button.setTooltip(new Tooltip(tooltipString));
         vBox.getChildren().add(button);
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

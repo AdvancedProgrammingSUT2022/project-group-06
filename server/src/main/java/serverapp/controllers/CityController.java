@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 
 import com.google.gson.Gson;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.text.Text;
 import org.json.JSONObject;
 import serverapp.enums.HexState;
 import serverapp.enums.UnitState;
 import serverapp.models.Player;
 import serverapp.models.gainable.Building;
+import serverapp.models.gainable.Construction;
+import serverapp.models.gainable.Improvement;
 import serverapp.models.gainable.Technology;
 import serverapp.models.maprelated.City;
 import serverapp.models.maprelated.Hex;
@@ -440,5 +444,90 @@ public class CityController {
     public static void buildPalace(City city) {
         Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"), city.getHexs().get(0));
         city.getBuiltBuildings().add(palace);
+    }
+
+    public static void effectOfDifferentBuildingsEachTurn(City city) {
+        for (Building building : city.getBuiltBuildings()) {
+            switch (building.getName()) {
+                case "Barracks":
+                case "Armory":
+                    barracksEffect(city);
+                    break;
+                case "Granary":
+                case "Watermill":
+                    city.increaseFood(2);
+                    break;
+                case "Burial Tomb":
+                    city.getOwner().increaseHappiness(2);
+                    break;
+                case "Circus":
+                    city.getOwner().increaseHappiness(3);
+                    break;
+                case "Colosseum":
+                case "Theater":
+                    city.getOwner().increaseHappiness(4);
+                    break;
+                case "Courthouse":
+                    city.getOwner().decreaseHappiness(city.getOwner().getHappiness());
+                    break;
+                case "Market":
+                case "Bank":
+                    city.increaseGold((int) (city.getGold() * 0.25));
+                    break;
+                case "Mint":
+                    mintEffect(city);
+                    break;
+                case "University":
+                    universityEffect(city);
+                    break;
+                case "Public School":
+                    city.increaseScience((int) (city.getSince() * 0.5));
+                    break;
+                case "Satrap's Court":
+                    city.increaseGold((int) (city.getGold() * 0.25));
+                    city.getOwner().increaseHappiness(2);
+                    break;
+                case "Stock Exchange":
+                    city.increaseGold((int) (city.getGold() * 0.33));
+                    break;
+                case "Library":
+                    libraryEffect(city);
+                    break;
+            }
+        }
+    }
+
+    private static void libraryEffect(City city) {
+        city.getOwner().increaseTrophies(city.getPopulation() / 2);
+        city.setTrophy(city.getTrophy() + city.getPopulation() / 2);
+    }
+
+    private static void barracksEffect(City city) {
+        for (Unit unit : city.getOwner().getUnits()) {
+            unit.increaseMP(15);
+        }
+    }
+
+    private static void mintEffect(City city) {
+        city.increaseGold(3);
+    }
+
+    private static void universityEffect(City city) {
+        int amount = city.getTrophy() / 2;
+        city.setTrophy(city.getTrophy() + amount);
+        city.getOwner().increaseTrophies(amount);
+    }
+
+    public static String getImprovementNameOfWoorker(int i, int j) {
+        JSONObject jsonObject = new JSONObject();
+        Unit unit = hex[i][j].getCivilianUnit();
+        for (Construction imp : GameController.getCurrentPlayer().getUnfinishedProjects()) {
+            if (imp instanceof Improvement && imp.getWorker().equals(unit)) {
+                jsonObject.put("progress",imp.getLeftTurns() * 1.0 / ((Improvement) imp).getMaxTurn());
+                jsonObject.put("impName",imp.getName());
+            }
+        }
+
+        return jsonObject.toString();
     }
 }

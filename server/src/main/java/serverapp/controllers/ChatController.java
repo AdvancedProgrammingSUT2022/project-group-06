@@ -11,6 +11,7 @@ import serverapp.models.User;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class ChatController {
@@ -170,6 +171,14 @@ public class ChatController {
             Chat.getRooms().add(chat);
         } else {
             chat = getRoom(uuids);
+            for (String uuid : chat.getParticipants()) {
+                User user = UserController.getUserHashMap().get(uuid);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("action", Actions.updateMessages.getCharacter());
+                Gson gson = new Gson();
+                jsonObject.put("messages", gson.toJson(chat.getAllMessages()));
+                NetWorkController.broadCast(user, jsonObject.toString());
+            }
         }
 
         JSONObject jsonObject = new JSONObject();
@@ -192,7 +201,7 @@ public class ChatController {
 
     private static Chat getRoom(ArrayList<String> uuids) {
         for (Chat chat : Chat.getRooms()) {
-            if (chat.getParticipants().equals(uuids))
+            if (chat.getParticipants().containsAll(uuids))
                 return chat;
         }
         return null;

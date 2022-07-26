@@ -40,6 +40,7 @@ public class CombatController {
     }
 
     public static String attackUnit(int x, int y) {
+        JSONObject jsonObject = new JSONObject();
         City defenderCity = hex[x][y].getCapital();
         attacker = UnitController.getSelectedUnit();
         if (defenderCity != null) {
@@ -48,19 +49,29 @@ public class CombatController {
             defender = hex[x][y].getMilitaryUnit();
         } else if (hex[x][y].getCivilianUnit() != null) {
             defender = hex[x][y].getCivilianUnit();
-        } else
-            return "there is no city or unit to attack";
-        if (defender.getOwner() == attacker.getOwner()) return "you can not attack to your self";
+        } else{
+            jsonObject.put("result","there is no city or unit to attack");
+            return jsonObject.toString();
+        }
+        if (defender.getOwner() == attacker.getOwner()){
+            jsonObject.put("result","you can not attack to your self");
+            return jsonObject.toString();
+        }
         if (!attacker.isInPossibleCombatRange(x, y, 0, attacker.getX(), attacker.getY())) {
-            return "out of sight range";
+            jsonObject.put("result","out of sight range");
+            return jsonObject.toString();
         }
         return handelCombatType(defenderCity, x, y);
     }
 
     private static String handelCombatType(City defenderCity, int x, int y) {
+        JSONObject jsonObject = new JSONObject();
         if (UnitController.getSelectedUnit() instanceof Ranged) {
             if (UnitController.getSelectedUnit() instanceof Siege) {
-                if (!((Siege) UnitController.getSelectedUnit()).isReadyToAttack()) return "siege unit is not ready";
+                if (!((Siege) UnitController.getSelectedUnit()).isReadyToAttack()) {
+                    jsonObject.put("result","siege unit is not ready");
+                    return jsonObject.toString();
+                }
             }
             if (defenderCity != null) {
                 return rangedCityCombat(defenderCity);
@@ -90,6 +101,7 @@ public class CombatController {
     }
 
     private static String meleeCityCombat(City city) {
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("combatType","meleeToCity");
         int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
@@ -103,18 +115,22 @@ public class CombatController {
         if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() > 0) {
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
              jsonObject.put("result","in melee to city combat you lose the battle unit is death");
+            return jsonObject.toString();
         }
         if (city.getHitPoint() <= 0 && UnitController.getSelectedUnit().getHealth() > 0) {
             //todo : move unit to city coordinates
             jsonObject.put("cityName",city.getName());
             jsonObject.put("playerName",UnitController.getSelectedUnit().getOwner().getName());
             jsonObject.put("result","in melee to city combat city is death");
+            return jsonObject.toString();
         }
-        if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() <= 0) {
+        if (UnitController.getSelectedUnit().getHealth() <= 0
+                && city.getHitPoint() <= 0) {
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             jsonObject.put("cityName",city.getName());
             jsonObject.put("playerName",UnitController.getSelectedUnit().getOwner().getName());
             jsonObject.put("result","in melee to city combat unit and city are death");
+            return jsonObject.toString();
         }
         UnitController.getSelectedUnit().setMP(0);
         jsonObject.put("result","in melee to city combat  is done");
@@ -123,6 +139,7 @@ public class CombatController {
 
     private static String rangedCityCombat(City city) {
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("combatType","rangedCityCombat");
         if (city.getHitPoint() == 1) {
             jsonObject.put("result","you can not attack to this city hit point is 1");
             return jsonObject.toString();

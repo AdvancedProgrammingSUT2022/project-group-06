@@ -156,7 +156,6 @@ public class MapPage {
         handleKeyEvent();
     }
 
-
     private Node openPanel;
     public void loadPanel(String name) {
         FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/" + name + ".fxml"));
@@ -441,10 +440,11 @@ public class MapPage {
 
     private void initializeBuildings(String buildingsNames, int i, int j) {
         ArrayList<String> names = new Gson().fromJson(buildingsNames, new TypeToken<ArrayList<String>>() {}.getType());
-        for (String name:names) {
+        for (int k = 0; k < names.size(); k++) {
+            String name = names.get(k);
             ImageView buildingView = getBuildingView(name);
             buildingView.setX(tilesImageViews[i][j].getX() + 25);
-            buildingView.setY(tilesImageViews[i][j].getY() + 20 + (i * 7));
+            buildingView.setY(tilesImageViews[i][j].getY() + 20 + (k * 50));
             pane.getChildren().add(buildingView);
         }
     }
@@ -469,28 +469,29 @@ public class MapPage {
     }
 
 
-    private void initializeWorkingWorkers(Unit unit, ImageView unitView) {
-        for (Construction imp : GameController.getCurrentPlayer().getUnfinishedProjects()) {
-            if (imp instanceof Improvement && imp.getWorker().equals(unit)) {
-                Text text = new Text("Building " + imp.getName());
-                text.setX(unitView.getX());
-                text.setY(unitView.getY() - 20);
-                text.setStyle("    -fx-font-size: 15;\n" +
-                        "    -fx-text-fill: black;");
-                ProgressBar makingProgress = new ProgressBar();
-                makingProgress.setLayoutX(unitView.getX() + 20);
-                makingProgress.setLayoutY(unitView.getY());
-                makingProgress.setPrefWidth(100);
-                makingProgress.setPrefHeight(20);
-                unitView.setOnMouseEntered(event -> {
-                    makingProgress.setProgress(imp.getLeftTurns() * 1.0 / ((Improvement) imp).getMaxTurn());
-                    pane.getChildren().add(makingProgress);
-                });
-                unitView.setOnMouseExited(event -> {
-                    pane.getChildren().remove(makingProgress);
-                });
-                pane.getChildren().add(text);
-            }
+    private void initializeWorkingWorkers(int i, int j ,ImageView unitView) {
+        JSONObject jsonObject = new JSONObject(GameController.getImprovementNameOfWoorker(i,j));
+        if(jsonObject.has("impName")){
+            String impName = jsonObject.getString("impName");
+            double progress = jsonObject.getDouble("progress");
+            Text text = new Text("Building " + impName);
+            text.setX(unitView.getX());
+            text.setY(unitView.getY() - 20);
+            text.setStyle("    -fx-font-size: 15;\n" +
+                    "    -fx-text-fill: black;");
+            ProgressBar makingProgress = new ProgressBar();
+            makingProgress.setLayoutX(unitView.getX() + 20);
+            makingProgress.setLayoutY(unitView.getY());
+            makingProgress.setPrefWidth(100);
+            makingProgress.setPrefHeight(20);
+            unitView.setOnMouseEntered(event -> {
+                makingProgress.setProgress(progress);
+                pane.getChildren().add(makingProgress);
+            });
+            unitView.setOnMouseExited(event -> {
+                pane.getChildren().remove(makingProgress);
+            });
+            pane.getChildren().add(text);
         }
     }
 
@@ -548,7 +549,7 @@ public class MapPage {
     private void initializeCivilianView(int i, int j,String name ,boolean isOwner,
                                         String state, int alignX, int alignY) {
         ImageView unitView = makeView(i,j,name, state, alignX, alignY);
-        //todo : initializeWorkingWorkers(unit, unitView);
+        initializeWorkingWorkers(i, j, unitView);
         unitView.setOnMouseClicked(event -> {
             selectCivilianUnit(i, j, isOwner);
             // TODO: 7/15/2022 : check is ordered
@@ -592,9 +593,7 @@ public class MapPage {
                 if (!res.equals("new city created successfully")) {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, res);
                     alert.showAndWait();
-                    resetPane();
-                }
-
+                } else resetPane();
             });
             ImageView moveView = createImageView("pictures/unitActionsIcon/move.png");
             vBox.getChildren().add(moveView);
@@ -662,7 +661,8 @@ public class MapPage {
             ImageView garrison = createImageView("pictures/unitActionsIcon/garrison.png");
             vBox.getChildren().add(garrison);
             garrison.setOnMouseClicked(event -> {
-                UnitController.garrison();
+                System.out.println(UnitController.garrison());
+                resetPane();
             });
 
             ImageView attack = createImageView("pictures/unitActionsIcon/attack.png");
