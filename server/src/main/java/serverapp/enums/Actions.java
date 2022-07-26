@@ -85,6 +85,12 @@ public enum Actions {
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),
     getPicUrl("getPicUrl"),
+    DELETECITY("DLETECITY"),
+    ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
+    unlockTechnology("unlockTechnology"),
+    startRoom("startRoom"),
+    getAvailableBuildings("getAvailableBuildings"),
+    buildBuilding("buildBuilding");
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit");
 

@@ -1,6 +1,7 @@
 package project.civilization.views;
 
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import project.civilization.CivilizationApplication;
+import project.civilization.controllers.CityController;
 import project.civilization.controllers.GameController;
 
 import java.io.IOException;
@@ -81,10 +83,15 @@ public class CityScreen {
         buyHex.setText("Buy Hex");
         buyHex.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
 
+        Button buyBuilding = new Button();
+        buyBuilding.setText("Buildings");
+        handleBuyBuildingButton(buyBuilding);
+        buyBuilding.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
 
         handleButtonUsage(buyHex);
 
-        demoPane.getChildren().add(buyHex);
+        VBox buyBox = new VBox(buyHex, buyBuilding);
+        demoPane.getChildren().add(buyBox);
 
         demoPane.setStyle("-fx-background-color:black");
         scrollPane.setMaxHeight(screenHeight);
@@ -97,6 +104,33 @@ public class CityScreen {
         anchorPane.setStyle("-fx-background-color:black");
         anchorPane.getChildren().add(scrollPane);
 
+    }
+
+    private void handleBuyBuildingButton(Button button) {
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                loadPanelForBuildings();
+            }
+        });
+        button.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                button.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
+
+            }
+
+        });
+        button.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                button.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+
+            }
+
+        });
     }
 
     private void handleButtonUsage(Button button)
@@ -190,6 +224,64 @@ public class CityScreen {
             e.printStackTrace();
         }
 
+    }
+
+    public void loadPanelForBuildings() {
+        FXMLLoader loader = new FXMLLoader(CivilizationApplication.class.getResource("fxml/panels/building-page.fxml"));
+        try {
+            // notificationHistory=;
+            if(openPanel!=null)
+            {
+                return;
+            }
+            BuildingMenu buildingMenu = new BuildingMenu(cityName);
+            loader.setController(buildingMenu);
+            openPanel= (Node)(loader.load());
+            openPanel.setLayoutY(80);
+            openPanel.setLayoutX(80);
+            anchorPane.getChildren().add(openPanel);
+
+
+            Button closeButton=new Button();
+            closeButton.setLayoutX(80);
+            closeButton.setLayoutY(80);
+            closeButton.setPrefSize(60, 15);
+            closeButton.setText("Close");
+            closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+            anchorPane.getChildren().add(closeButton);
+            closeButton.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    closeButton.setStyle("-fx-background-color:#3a3a3a; -fx-text-fill: goldenrod");
+
+                }
+
+            });
+            closeButton.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    closeButton.setStyle("-fx-background-color:black; -fx-text-fill: goldenrod");
+
+                }
+
+            });
+            closeButton.setOnMouseClicked(new javafx.event.EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent arg0) {
+                    anchorPane.getChildren().remove(openPanel);
+                    anchorPane.getChildren().remove(closeButton);
+                    openPanel=null;
+                }
+
+            });
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
     }
 
 

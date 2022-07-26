@@ -62,6 +62,7 @@ public class GameController {
         try {
             json.put("menu", MenuCategory.GAMEMenu.getCharacter());
             json.put("action", Actions.setSelectedCity.getCharacter());
+            json.put("cityName",cityName);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -1540,6 +1541,24 @@ public class GameController {
         } catch (IOException x) {
             x.printStackTrace();
             return null;
+        }
+    }
+
+    public static void unlockTechnology(String tecName) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.unlockTechnology.getCharacter());
+            json.put("tecName", tecName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+             CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
         }
     }
 }

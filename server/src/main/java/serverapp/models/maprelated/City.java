@@ -363,4 +363,5 @@ public class City implements Combatable {
     public ArrayList<Building> getBuiltBuildings() {
         return builtBuildings;
     }
+
 }

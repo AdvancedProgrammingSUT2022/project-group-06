@@ -64,97 +64,23 @@ public class CombatController {
         }
     }
 
-    private static String handelCombatType(City defenderCity, int x, int y) {
-        if (UnitController.getSelectedUnit() instanceof Ranged) {
-            if (UnitController.getSelectedUnit() instanceof Siege) {
-                if (!((Siege) UnitController.getSelectedUnit()).isReadyToAttack()) return "siege unit is not ready";
-            }
-            if (defenderCity != null) {
-                return rangedCityCombat(defenderCity);
-            } else if (hex[x][y].getMilitaryUnit() != null) {
-                return rangedUnitCombat(x, y);
-            } else if (hex[x][y].getCivilianUnit() != null) {
-                return RangedToCivilianCombat(x, y);
-            }
-        } else {
-            if (defenderCity != null) {
-                return meleeCityCombat(defenderCity);
-            } else if (hex[x][y].getMilitaryUnit() != null) {
-                return meleeUnitCombat(x, y);
-            } else if (hex[x][y].getCivilianUnit() != null) {
-                return meleeCivilianCombat(x, y);
-            }
+    public static String addCityToTerritory(String cityName, String playerName ){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.ADDCITYTOTERRITORY.getCharacter());
+            json.put("player",playerName );
+            json.put("city", cityName);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        return null;
-    }
-
-    private static String meleeCivilianCombat(int x, int y) {
-        return null;
-    }
-
-    private static String RangedToCivilianCombat(int x, int y) {
-        return null;
-    }
-
-    private static String meleeCityCombat(City city) {
-        int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
-        int cityStrength = city.getMeleeCombatStrength();
-        //todo : saze defaie divar
-        if (city.getCapital().getMilitaryUnit() != null) {
-            cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "something is wrong";
         }
-        city.decreaseHitPoint(unitStrength);
-        UnitController.getSelectedUnit().decreaseHealth(cityStrength);
-        if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() > 0) {
-            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
-            return "you lose the battle unit is death";
-        }
-/*        if (city.getHitPoint() <= 0 && UnitController.getSelectedUnit().getHealth() > 0) {
-            //todo : move unit to city coordinates
-            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
-            return "done";
-        }
-        if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() <= 0) {
-            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
-            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
-            return "unit and city are death";
-        }*/
-        UnitController.getSelectedUnit().setMP(0);
-        return "attack is done";
-    }
-
-    private static String rangedCityCombat(City city) {
-        if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
-        int unitStrength = ((Ranged) UnitController.getSelectedUnit()).calculateRangedAttackStrength();
-        //todo :saze defaie divar
-        city.decreaseHitPoint(unitStrength);
-        if (city.getHitPoint() < 1) {
-            city.setHitPoint(1);
-        }
-        UnitController.getSelectedUnit().setMP(0);
-        return "attack is done";
-    }
-
-    private static String meleeUnitCombat(int x, int y) {
-        return "";
-    }
-
-    private static String rangedUnitCombat(int x, int y) {
-        return "";
-    }
-
-    public static String addCityToTerritory(City city, Player player) {
-        //todo: check correction : yanni nemikad dige kar dige ba azafe kardan be teritory kard?
-        Player looser = city.getOwner();
-        city.getCapital().setOwner(player);
-        for (Hex hex : city.getHexs()) {
-            hex.setOwner(player);
-        }
-        city.setOwner(player);
-        looser.removeCity(city);
-        player.addCity(city);
-        city.setHitPoint(0);
-        GameController.getCurrentPlayer().decreaseHappiness(3);//happiness decreases due to annexed cities
-        return "added successfully";
     }
 }
