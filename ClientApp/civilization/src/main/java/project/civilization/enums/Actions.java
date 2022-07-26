@@ -87,7 +87,10 @@ public enum Actions {
     ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
     unlockTechnology("unlockTechnology"),
     getAvailableBuildings("getAvailableBuildings"),
-    buildBuilding("buildBuilding");
+    buildBuilding("buildBuilding"),
+    setPicUrl("setPicUrl"),
+    buyUnit("buyUnit"),
+    makeUnit("makeUnit");
     private final String character;
 
     Actions(String color) {

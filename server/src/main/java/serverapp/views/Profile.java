@@ -30,6 +30,9 @@ public class Profile {
         if(command.equals(Actions.getPicUrl.getCharacter())){
             return UserController.getPicUrl(jsonObject.getString("UUID"));
         }
+        if(command.equals(Actions.setPicUrl.getCharacter())){
+            UserController.setPicUrl(jsonObject.getString("UUID"), jsonObject.getString("url"));
+        }
         return "bad request format";
     }
 }

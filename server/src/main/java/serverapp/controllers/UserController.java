@@ -69,7 +69,10 @@ public class UserController {
     public static String getPicUrl(String uuid) {
         return userHashMap.get(uuid).getUrl();
     }
-
+    public static void setPicUrl(String uuid,String url)
+    {
+        userHashMap.get(uuid).setUrl(url);
+    }
     public void setUsers(HashMap<String, User> users) {
         UserController.users = users;
     }
@@ -155,7 +158,8 @@ public class UserController {
         ArrayList<String> topUsers = new ArrayList<>();
         for (int i = 0; i< UserController.getUsersArray().size()&& i < 8; i++) {
             topUsers.add(UserController.getUsersArray().get(i).getUsername() +
-                    " "+ UserController.getUsersArray().get(i).getScore());
+                    " "+ UserController.getUsersArray().get(i).getScore()+
+                    " "+UserController.getUsersArray().get(i).getUrl());
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(topUsers);
@@ -179,7 +183,7 @@ public class UserController {
                        
             users.forEach((key, value) -> {
             
-                user.write(key + " " + value.getPassword() + " " + value.getNickName() +" "+value.getScore()+" "+value.getPicNum()+ "\n");
+                user.write(key + " " + value.getPassword() + " " + value.getNickName() +" "+value.getScore()+" "+value.getUrl()+ "\n");
 
             });
             
@@ -206,10 +210,11 @@ public class UserController {
                 String Password = read[1];
                 String Nickname = read[2];
                 int score=Integer.parseInt(read[3]);
-                //todo:int picNum=Integer.parseInt(read[4]);
+                String url=read[4];
                 User addUser = new User(Username, Password, Nickname);
                //addUser.setAvatarPic(image, picNum);
                 addUser.increaseScore(score);
+                addUser.setUrl(url);
                 users.put(Username, addUser);
                 usersArray.add(addUser);
                 nicknames.add(Nickname);

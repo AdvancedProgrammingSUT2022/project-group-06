@@ -45,6 +45,10 @@ public class User implements Comparable{
     // }
     @Override
     public int compareTo(Object o) {
+        if(Integer.compare(((User)o).getScore(),this.score )==0)
+        {
+            return this.username.compareTo(((User)o).getUsername());
+        }
         return Integer.compare(((User)o).getScore(),this.score );
     }
 

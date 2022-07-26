@@ -96,6 +96,8 @@ public class Game {
             return GameController.handelFogOfWarRemoverButton();
         }if(command.equals(Actions.changeTurn.getCharacter())){
             return GameController.changeTurn();
+        }if(command.equals(Actions.buyUnit.getCharacter())) {
+            return GameController.buyUnit(jsonObject.getString("name"));
         }if(command.equals(Actions.DELETECITY.getCharacter())){
             return CombatController.deleteCity(jsonObject.getString("cityName"));
         }if(command.equals(Actions.ADDCITYTOTERRITORY.getCharacter())){
@@ -104,8 +106,11 @@ public class Game {
             return  GameController.getCurrentPlayer().unlockTechnology(jsonObject.getString("tecName"));
         }if (command.equals(Actions.getAvailableBuildings.getCharacter()))
             return CityController.getAvailableBuildings(jsonObject);
-        if (command.equals(Actions.buildBuilding.getCharacter()))
+        if (command.equals(Actions.buildBuilding.getCharacter())){
             return CityController.buildABuilding(jsonObject);
+        }if(command.equals(Actions.makeUnit.getCharacter())){
+            return CityController.startMakingUnit(jsonObject.getString("name"));
+        }
         return "bad request format";
     }
 }

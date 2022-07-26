@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -820,8 +821,93 @@ public class MapPage {
             } else {
                 showHexDetails(i, j);
                 GameController.setSelectedHex(i, j);
+                createUnit();
             }
         });
+    }
+    private void createUnit()
+    {
+        Button button=new Button();
+        button.setText("Create Unit");
+        button.setLayoutY(600);
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                pane.getChildren().remove(button);
+                showBuyUnitOption();
+            }
+            
+        });
+        pane.getChildren().add(button);
+        
+    }
+    private void showBuyUnitOption()
+    {
+        Button button=new Button();
+        button.setText("Buy Unit");
+        button.setLayoutY(550);
+        TextField textField=new TextField();
+        textField.setPromptText("enter unit name");
+        textField.setLayoutY(450);
+        Button exit=new Button();
+        exit.setText("exit");
+        exit.setLayoutY(600);
+        Button makeUnit=new Button();
+        makeUnit.setText("Make Unit");
+        makeUnit.setLayoutY(500);
+
+
+        makeUnit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                
+                Alert alert;
+                if(textField.getText().equals(""))
+                {
+                    alert=new Alert(AlertType.INFORMATION,"Enter Unit's Name");
+                    alert.showAndWait();
+                    return;
+                }
+                alert=new Alert(AlertType.INFORMATION,GameController.unitMake(textField.getText()));
+                alert.showAndWait();
+                resetPane();
+            }
+            
+        });
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                Platform.runLater(() -> {
+                    pane.requestFocus();
+                });
+                resetPane(); 
+            }
+            
+        });
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                Alert alert;
+                if(textField.getText().equals(""))
+                {
+                    alert=new Alert(AlertType.INFORMATION,"Enter Unit's Name");
+                    alert.showAndWait();
+                    return;
+                }
+                alert=new Alert(AlertType.INFORMATION,GameController.unitBuy(textField.getText()));
+                alert.showAndWait();
+                resetPane();
+
+            }
+            
+        });
+        pane.getChildren().add(button);
+        pane.getChildren().add(textField);
+        pane.getChildren().add(exit);
     }
 
     private void attackResultView(JSONObject res) {
