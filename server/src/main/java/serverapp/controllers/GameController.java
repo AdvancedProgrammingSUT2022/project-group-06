@@ -154,8 +154,8 @@ public class GameController {
         Random random=new Random();
         for(int i=1;i<6;i++)
         {
-            int x=random.nextInt(0,world.getHexInWidth());
-            int y=random.nextInt(0,world.getHexInHeight());
+            int x= (Math.abs(random.nextInt())) % world.getHexInWidth();
+            int y= (Math.abs(random.nextInt())) % world.getHexInHeight();
 
             if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean")||(hex[x][y].getMilitaryUnit()!=null)||(hex[x][y].getCivilianUnit()!=null))
             {

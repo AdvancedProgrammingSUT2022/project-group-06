@@ -16,7 +16,7 @@
     <Rectangle opacity="0.7" fill="black" height="430" width="400" fx:id="fadeRectangle" x="400" y="150"/>
 
     <center>
-        <VBox spacing="10" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
+        <VBox spacing="5" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
             <Text fx:id="error"/>
             <TilePane alignment="CENTER">
                 <Label text="players"/>
@@ -29,6 +29,7 @@
              <Button fx:id="invitationButton" text="challenge a friend" onMouseClicked="#changeUsername"/>
             <Button fx:id="invitationBox" text="invitation box" onMouseClicked="#loadInvitationBox"/>
             <Button fx:id="loadGameButton" text="load a game" onMouseClicked="#loadGame"/>
+            <Button  text="television" onMouseClicked="#television"/>
             <Button fx:id="backToMAinButton" text="Back" onMouseClicked="#backToMain"/>
 
         </VBox>

@@ -107,4 +107,8 @@ public class GamePage extends GameMenus{
     public void loadInvitationBox(MouseEvent mouseEvent) {
         CivilizationApplication.changeMenu(Menus.INVIATIONBOX);
     }
+
+    public void television(MouseEvent mouseEvent) {
+        CivilizationApplication.changeMenu(Menus.TELEVISION);
+    }
 }

@@ -19,7 +19,8 @@ public enum Menus {
     MAPPAGE("map-page"),
     INVIATIONBOX("invitation-box"),
     FRIENDSHIPREQUESTS("friends-requests"),
-    SEEALLFRIENDS("friends-list");
+    SEEALLFRIENDS("friends-list"),
+    TELEVISION("television");
 
     private final String character;
 

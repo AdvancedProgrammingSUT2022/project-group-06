@@ -20,7 +20,7 @@ public class Music {
             music = new AudioClip(url.toExternalForm());
             music.setCycleCount(INDEFINITE);
             music.play();
-            //music.setVolume(20);
+            music.setVolume(3);
         }
     }
 
