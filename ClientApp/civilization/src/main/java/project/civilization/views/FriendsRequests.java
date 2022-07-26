@@ -22,6 +22,7 @@ public class FriendsRequests {
 
     public void initialize(){
         ArrayList<String> allRequests = UserController.getAllFreinShipRequests();
+        ArrayList<String> rejects = UserController.getRejectedOnes();
         for (String r:allRequests) {
             Text text = new Text(r);
             vbox.getChildren().add(text);
@@ -43,6 +44,10 @@ public class FriendsRequests {
             });
             vbox.getChildren().add(accept);
             vbox.getChildren().add(reject);
+        }
+        vbox.getChildren().add(new Text("rejected:"));
+        for (String rejected : rejects) {
+            vbox.getChildren().add(new Text(rejected));
         }
     }
 

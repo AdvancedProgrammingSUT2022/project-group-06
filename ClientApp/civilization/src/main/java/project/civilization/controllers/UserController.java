@@ -434,6 +434,27 @@ public class UserController {
         }
     }
 
+    public static ArrayList<String> getRejectedOnes() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.getRejectedRequests.getCharacter());
+            json.put("UUID",User.getUuid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String res = CivilizationApplication.dataInputStream.readUTF();
+            return new Gson().fromJson(res, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
+
     public static String sendFriendShipRequest(String text) {
         JSONObject json = new JSONObject();
         try {

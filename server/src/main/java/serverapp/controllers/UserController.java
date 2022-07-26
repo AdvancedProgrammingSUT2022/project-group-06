@@ -284,6 +284,10 @@ public class UserController {
         return (gson.toJson(allRequestNames));
     }
 
+    public static String getRejectedRequests(String uuid) {
+        return new Gson().toJson(userHashMap.get(uuid).getRejectedInviters());
+    }
+
     public static String sendFriendShipRequest(String uuid, String anotherUsername) {
         User friend = UserController.getUserByUserName(anotherUsername);
         Request request = new Request(userHashMap.get(uuid).getUsername(),anotherUsername);

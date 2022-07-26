@@ -80,6 +80,7 @@ public enum Actions {
     editMessageFinal("editMessageFinal"),
     startRoom("startRoom"),
     getAllFreinShipRequests("getAllFreinShipRequests"),
+    getRejectedRequests("getRejectedRequests"),
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),
     getPicUrl("getPicUrl"),

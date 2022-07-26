@@ -286,6 +286,7 @@ public class ChatController {
         User invited = UserController.getUserHashMap().get(invitedUuid);
         Request request = getRequestByParticipants(inviterUsername, invited);
         invited.getAllFriendShipRequests().remove(request);
+        invited.getRejectedInviters().add(inviterUsername);
         return "rejected";
     }
 
