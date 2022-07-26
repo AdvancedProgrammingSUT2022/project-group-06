@@ -181,7 +181,9 @@ public class Unit implements Combatable, Construction {
     public void changeCurrentHex(Hex currentHex) {
         this.currentHex = currentHex;
     }
-
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
     public UnitState getState() {
         return this.state;
     }

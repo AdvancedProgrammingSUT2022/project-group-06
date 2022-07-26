@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.jar.JarEntry;
 
 import com.google.gson.Gson;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.text.Text;
 import org.json.JSONObject;
 import serverapp.enums.HexState;
 import serverapp.enums.UnitState;
 import serverapp.models.Player;
 import serverapp.models.gainable.Building;
+import serverapp.models.gainable.Construction;
+import serverapp.models.gainable.Improvement;
 import serverapp.models.gainable.Technology;
 import serverapp.models.maprelated.City;
 import serverapp.models.maprelated.Hex;
@@ -436,5 +440,18 @@ public class CityController {
     public static void buildPalace(City city) {
         Building palace = Building.clone(InitializeGameInfo.getBuildingsInfo().get("Palace"), city.getHexs().get(0));
         city.getBuiltBuildings().add(palace);
+    }
+
+    public static String getImprovementNameOfWoorker(int i, int j) {
+        JSONObject jsonObject = new JSONObject();
+        Unit unit = hex[i][j].getCivilianUnit();
+        for (Construction imp : GameController.getCurrentPlayer().getUnfinishedProjects()) {
+            if (imp instanceof Improvement && imp.getWorker().equals(unit)) {
+                jsonObject.put("progress",imp.getLeftTurns() * 1.0 / ((Improvement) imp).getMaxTurn());
+                jsonObject.put("impName",imp.getName());
+            }
+        }
+
+        return jsonObject.toString();
     }
 }

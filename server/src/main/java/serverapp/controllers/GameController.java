@@ -85,18 +85,65 @@ public class GameController {
         turn = 1;
         mapBoundaries = new int[]{0, 3, 0, 6};
         removeOwnerOfHexes();
+        justForTest();
         startGame();
         /*hex[0][0] = new Hex(0,0,new Terrain("Plain"),null);
         hex[0][0].setState(HexState.Visible,players.get(0));*/
     }
+    private static void justForTest() {
+        //hex[0][0].setPillaged(true);
+/*
+        ArrayList<Improvement> improvements = new ArrayList<>();
+        improvements.add(new Improvement("Farm",null,hex[1][0]));
+        hex[1][0].setImprovements(improvements);
 
+        world.getHex()[1][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[1][0].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[1][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[1][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Ranged military2 = new Ranged("Archer", world.getHex()[1][0], InitializeGameInfo.getPlayers().get(1));
+        InitializeGameInfo.getPlayers().get(1).addUnit(military2);
+        world.getHex()[1][0].setMilitaryUnit(military2);
+        military2.setOwner(InitializeGameInfo.getPlayers().get(1));
+*/
+
+/*        world.getHex()[0][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[0][0].setOwner(GameController.getCurrentPlayer());
+        world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[0][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Ranged military = new Ranged("Archer", world.getHex()[0][0], GameController.getCurrentPlayer());
+        GameController.getCurrentPlayer().addUnit(military);
+        world.getHex()[0][0].setMilitaryUnit(military);
+        military.setOwner(GameController.getCurrentPlayer());
+
+        Settler civilian = new Settler("Settler", world.getHex()[0][0], GameController.getCurrentPlayer());
+        world.getHex()[0][0].setCivilianUnit(civilian);
+        GameController.getCurrentPlayer().addUnit(civilian);
+        civilian.setOwner(GameController.getCurrentPlayer());
+
+        world.getHex()[1][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[1][0].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[1][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[1][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Ranged military2 = new Ranged("Archer", world.getHex()[1][0], InitializeGameInfo.getPlayers().get(1));
+        InitializeGameInfo.getPlayers().get(1).addUnit(military2);
+        world.getHex()[1][0].setMilitaryUnit(military2);
+        military2.setOwner(InitializeGameInfo.getPlayers().get(1));
+
+        world.getHex()[0][1].setTerrain(new Terrain("Hills"));
+        world.getHex()[0][1].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[0][1].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[0][1].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+        Melee military3 = new Melee("Spearman", world.getHex()[0][1], InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[0][1].setMilitaryUnit(military3);*/
+    }
     public static void startGame() {
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")) {
-                    UnitController.makeUnit("Worker", hex[i][j], "gold");
-                    City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
+                    UnitController.makeUnit("Settler", hex[i][j], "gold");
+                    //City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     return;
                 }
@@ -1413,7 +1460,7 @@ public class GameController {
 
         boolean check = false;
         for (Hex hex : GameController.getSelectedHex().getCity().getHexs()) {
-            if (newUnit.getNeededResource() != null && hex.getResource().getName().equals(newUnit.getNeededResource())) {
+            if (newUnit.getNeededResource() != null &&  hex.getResource() != null && hex.getResource().getName().equals(newUnit.getNeededResource())) {
                 check = true;
             }
         }

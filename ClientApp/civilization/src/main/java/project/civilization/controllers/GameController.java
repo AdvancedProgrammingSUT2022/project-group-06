@@ -1581,4 +1581,24 @@ public class GameController {
             x.printStackTrace();
         }
     }
+
+    public static String getImprovementNameOfWoorker(int i, int j) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getImprovementNameOfWoorker.getCharacter());
+            json.put("i", i);
+            json.put("j",j);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return null;
+    }
 }

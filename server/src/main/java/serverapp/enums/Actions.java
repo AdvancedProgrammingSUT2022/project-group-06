@@ -92,7 +92,8 @@ public enum Actions {
     buildBuilding("buildBuilding"),
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit"),
-    makeUnit("makeUnit");
+    makeUnit("makeUnit"),
+    getImprovementNameOfWoorker("getImprovementNameOfWoorker");
 
     private final String character;
 
