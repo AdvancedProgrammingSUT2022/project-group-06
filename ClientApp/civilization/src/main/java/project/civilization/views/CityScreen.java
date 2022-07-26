@@ -5,13 +5,17 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import project.civilization.CivilizationApplication;
@@ -41,7 +45,7 @@ public class CityScreen {
         ScrollPane scrollPane=new ScrollPane();
         Pane demoPane=new Pane();
 
-        int startSize=50;
+        int startSize=150;
         int height=50;
         int vBoxHeight=30;
         int screenWidth=600;
@@ -88,9 +92,32 @@ public class CityScreen {
         handleBuyBuildingButton(buyBuilding);
         buyBuilding.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
 
+
+        HBox fields=new HBox();
+        TextField x=new TextField();
+        TextField y=new TextField();
+        x.setPromptText("enter x");
+        y.setPromptText("enter y");
+
+        fields.getChildren().add(x);
+        fields.getChildren().add(y);
+
+        HBox buttons=new HBox();
+        Button lock=new Button();
+        Button release=new Button();
+        lock.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+        release.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+        lock.setText("lock citizen");
+        release.setText("release citizen");
+
+        buttons.getChildren().add(lock);
+        buttons.getChildren().add(release);
+
+        handleCitizenButton(lock,release,x,y);
         handleButtonUsage(buyHex);
 
-        VBox buyBox = new VBox(buyHex, buyBuilding);
+        VBox buyBox = new VBox(buyHex, buyBuilding,fields,buttons);
+        
         demoPane.getChildren().add(buyBox);
 
         demoPane.setStyle("-fx-background-color:black");
@@ -106,6 +133,93 @@ public class CityScreen {
 
     }
 
+   
+    private void handleCitizenButton(Button lock,Button release,TextField x_field,TextField y_Field)
+    {   
+
+        lock.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                if(x_field.getText().equals("")||y_Field.getText().equals(""))
+                {
+                    Alert alert=new Alert(AlertType.INFORMATION,"fill all fields");
+                    alert.showAndWait();
+                    return;
+                }
+                int x=Integer.parseInt(x_field.getText());
+                int y=Integer.parseInt(y_Field.getText());
+
+               
+                
+            }
+            
+        });
+
+
+        release.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                if(x_field.getText().equals("")||y_Field.getText().equals(""))
+                {
+                    Alert alert=new Alert(AlertType.INFORMATION,"fill all fields");
+                    alert.showAndWait();
+                    return;
+                }
+                int x=Integer.parseInt(x_field.getText());
+                int y=Integer.parseInt(y_Field.getText());
+   
+            }
+            
+        });
+        
+
+
+
+
+
+
+
+
+
+        lock.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                lock.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
+
+            }
+
+        });
+        lock.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                lock.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+
+            }
+
+        });
+        release.setOnMouseEntered(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                release.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#000000");
+
+            }
+
+        });
+        release.setOnMouseExited(new javafx.event.EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                release.setStyle("-fx-text-fill: goldenrod; -fx-background-color:#2f2f2f");
+
+            }
+
+        });
+    }
     private void handleBuyBuildingButton(Button button) {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override

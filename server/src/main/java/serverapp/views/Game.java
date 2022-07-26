@@ -95,7 +95,7 @@ public class Game {
         }if(command.equals(Actions.handelFogOfWarRemoverButton.getCharacter())){
             return GameController.handelFogOfWarRemoverButton();
         }if(command.equals(Actions.changeTurn.getCharacter())){
-            return GameController.changeTurn();
+            return GameController.changeTurnAction();
         }if(command.equals(Actions.buyUnit.getCharacter())) {
             return GameController.buyUnit(jsonObject.getString("name"));
         }if(command.equals(Actions.DELETECITY.getCharacter())){
