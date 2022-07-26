@@ -158,7 +158,8 @@ public class UserController {
         ArrayList<String> topUsers = new ArrayList<>();
         for (int i = 0; i< UserController.getUsersArray().size()&& i < 8; i++) {
             topUsers.add(UserController.getUsersArray().get(i).getUsername() +
-                    " "+ UserController.getUsersArray().get(i).getScore());
+                    " "+ UserController.getUsersArray().get(i).getScore()+
+                    " "+UserController.getUsersArray().get(i).getUrl());
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(topUsers);
