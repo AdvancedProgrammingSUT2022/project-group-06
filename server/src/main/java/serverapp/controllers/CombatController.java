@@ -1,5 +1,6 @@
 package serverapp.controllers;
 
+import org.json.JSONObject;
 import serverapp.models.Player;
 import serverapp.models.maprelated.City;
 import serverapp.models.maprelated.Hex;
@@ -89,6 +90,8 @@ public class CombatController {
     }
 
     private static String meleeCityCombat(City city) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("combatType","meleeToCity");
         int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
         int cityStrength = city.getMeleeCombatStrength();
         //todo : saze defaie divar
@@ -99,24 +102,31 @@ public class CombatController {
         UnitController.getSelectedUnit().decreaseHealth(cityStrength);
         if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() > 0) {
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
-            return "you lose the battle unit is death";
+             jsonObject.put("result","in melee to city combat you lose the battle unit is death");
         }
-/*        if (city.getHitPoint() <= 0 && UnitController.getSelectedUnit().getHealth() > 0) {
+        if (city.getHitPoint() <= 0 && UnitController.getSelectedUnit().getHealth() > 0) {
             //todo : move unit to city coordinates
-            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
-            return "done";
+            jsonObject.put("cityName",city.getName());
+            jsonObject.put("playerName",UnitController.getSelectedUnit().getOwner().getName());
+            jsonObject.put("result","in melee to city combat city is death");
         }
         if (UnitController.getSelectedUnit().getHealth() <= 0 && city.getHitPoint() <= 0) {
-            GameMenu.cityCombatMenu(city, UnitController.getSelectedUnit().getOwner());
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
-            return "unit and city are death";
-        }*/
+            jsonObject.put("cityName",city.getName());
+            jsonObject.put("playerName",UnitController.getSelectedUnit().getOwner().getName());
+            jsonObject.put("result","in melee to city combat unit and city are death");
+        }
         UnitController.getSelectedUnit().setMP(0);
-        return "attack is done";
+        jsonObject.put("result","in melee to city combat  is done");
+        return jsonObject.toString();
     }
 
     private static String rangedCityCombat(City city) {
-        if (city.getHitPoint() == 1) return "you can not attack to this city hit point is 1";
+        JSONObject jsonObject = new JSONObject();
+        if (city.getHitPoint() == 1) {
+            jsonObject.put("result","you can not attack to this city hit point is 1");
+            return jsonObject.toString();
+        }
         int unitStrength = ((Ranged) UnitController.getSelectedUnit()).calculateRangedAttackStrength();
         //todo :saze defaie divar
         city.decreaseHitPoint(unitStrength);
@@ -124,7 +134,8 @@ public class CombatController {
             city.setHitPoint(1);
         }
         UnitController.getSelectedUnit().setMP(0);
-        return "attack is done";
+        jsonObject.put("result","attack is done");
+        return jsonObject.toString();
     }
 
     private static String meleeUnitCombat(int x, int y) {
@@ -149,4 +160,16 @@ public class CombatController {
         GameController.getCurrentPlayer().decreaseHappiness(3);//happiness decreases due to annexed cities
         return "added successfully";
     }
+
+    public static String addCityToTerritoryByName(String player, String city) {
+        return addCityToTerritory(CityController.getCityWithName(city),
+                InitializeGameInfo.getPlayerByName(player));
+    }
+
+    public static String deleteCity(String cityName) {
+        City city = CityController.getCityWithName(cityName);
+        assert city != null;
+        return City.deleteCity(city);
+    }
+
 }

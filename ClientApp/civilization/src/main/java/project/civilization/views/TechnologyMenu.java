@@ -3,6 +3,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -26,6 +27,7 @@ public class TechnologyMenu {
     private Label lastTechnologyLabel;//showing the last studied technology
     @FXML
     private Button openTreeButton; //open technology tree
+    //name of technologies you can start researching//TODO
 
     private ArrayList<HBox> techBoxes;
     int screenWidth=600;
@@ -106,7 +108,16 @@ public class TechnologyMenu {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        GameController.changeResearch(button.getText());
+                        if(MapPage.technologyPass)
+                        {
+                            GameController.unlockTechnology(button.getText());
+                            Alert alert=new Alert(Alert.AlertType.INFORMATION,"Technology achieved");
+                            alert.showAndWait();
+                        }else
+                        {
+                            GameController.changeResearch(button.getText());
+                        }
+
                     }
                 }
             }

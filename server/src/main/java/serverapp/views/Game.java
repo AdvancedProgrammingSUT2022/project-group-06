@@ -96,6 +96,12 @@ public class Game {
             return GameController.handelFogOfWarRemoverButton();
         }if(command.equals(Actions.changeTurn.getCharacter())){
             return GameController.changeTurn();
+        }if(command.equals(Actions.DELETECITY.getCharacter())){
+            return CombatController.deleteCity(jsonObject.getString("cityName"));
+        }if(command.equals(Actions.ADDCITYTOTERRITORY.getCharacter())){
+            return CombatController.addCityToTerritoryByName(jsonObject.getString("player"),jsonObject.getString("city"));
+        }if(command.equals(Actions.unlockTechnology.getCharacter())){
+            return  GameController.getCurrentPlayer().unlockTechnology(jsonObject.getString("tecName"));
         }
         return "bad request format";
     }
