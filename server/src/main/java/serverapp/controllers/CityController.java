@@ -1,7 +1,10 @@
 package serverapp.controllers;
 
 import java.util.ArrayList;
+import java.util.jar.JarEntry;
 
+import com.google.gson.Gson;
+import org.json.JSONObject;
 import serverapp.enums.HexState;
 import serverapp.enums.UnitState;
 import serverapp.models.Player;
@@ -202,6 +205,8 @@ public class CityController {
         UnitController.getSelectedUnit().setState(UnitState.Active);
         UnitController.getSelectedUnit().setOrdered(true);
         City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
+        if (GameController.getCurrentPlayer().getCities().size() == 0)
+            buildPalace(newCity);
         GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
         if (GameController.getCurrentPlayer().getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
@@ -387,19 +392,45 @@ public class CityController {
         return false;
     }
 
-    public static ArrayList<Building> getAvailableBuildings(City city) {
+    public static String getAvailableBuildings(JSONObject object) {
+        String cityName = (String) object.get("cityName");
+        City city = null;
+        for (City city1 : GameController.getCurrentPlayer().getCities()) {
+            if (city1.getName().equals(cityName))
+                city = city1;
+        }
         ArrayList<Building> availableBuildings = new ArrayList<>();
         for (Building building : InitializeGameInfo.getAllBuildings()) {
-            if (building.getTechnology() != null && city.getOwner().getAchievedTechnologies().get(building.getTechnology())) {
-                if (building.getPrerequisite() != null && hasBuilding(city, building.getName()))
+            if (building.getTechnology() != null
+                    && city.getOwner().getAchievedTechnologies().get(building.getTechnology()) != null
+                    && city.getOwner().getAchievedTechnologies().get(building.getTechnology())) {
+                if (building.getPrerequisite() == null || hasBuilding(city, building.getName()))
                     availableBuildings.add(building);
             }
+            if (building.getTechnology() == null)
+                availableBuildings.add(building);
         }
-        return availableBuildings;
+        ArrayList<String> buildingNames = new ArrayList<>();
+        for (Building building : availableBuildings)
+            buildingNames.add(building.getName());
+        return new Gson().toJson(buildingNames);
     }
 
-    public static void buildABuilding(City city, Building building) {//TODO: should be called when you choose to build a building
+    public static String buildABuilding(JSONObject object) {
+        String cityName = (String) object.get("cityName");
+        String buildingName = (String) object.get("buildingName");
+        City city = null;
+        for (City city1 : GameController.getCurrentPlayer().getCities()) {
+            if (city1.getName().equals(cityName))
+                city = city1;
+        }
+        Building building = null;
+        for (Building building1 : InitializeGameInfo.getAllBuildings()) {
+            if (building1.getName().equals(buildingName))
+                building = Building.clone(building1, city.getHexs().get(city.getHexs().size() - 1));
+        }
         city.getOwner().addUnfinishedProject(building);
+        return "started to build";
     }
 
     public static void buildPalace(City city) {

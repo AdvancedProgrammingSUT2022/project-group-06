@@ -89,6 +89,10 @@ public enum Actions {
     ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
     unlockTechnology("unlockTechnology");
 
+    getPicUrl("getPicUrl");
+    startRoom("startRoom"),
+    getAvailableBuildings("getAvailableBuildings"),
+    buildBuilding("buildBuilding");
 
     private final String character;
 

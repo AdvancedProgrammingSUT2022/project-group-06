@@ -96,6 +96,8 @@ public class GameController {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")) {
                     UnitController.makeUnit("Settler", hex[i][j], "gold");
+//                    City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
+
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     return;
                 }
@@ -1717,7 +1719,7 @@ public class GameController {
                     if (hexes[i][j].getCity() != null) {
                         hexDetails.put("city", hexes[i][j].getCity().getName());
                         if (hexes[i][j].getCity().getBuiltBuildings().size() != 0) {
-                            jsonObject.put("building",initializeBuildings(hexes[i][j].getCity()));
+                            hexDetails.put("building",initializeBuildings(hexes[i][j].getCity()));
                         }
                     }
                     if(hexes[i][j].getHasRuins()!=0)

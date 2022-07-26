@@ -85,7 +85,9 @@ public enum Actions {
     getPicUrl("getPicUrl"),
     DELETECITY("DLETECITY"),
     ADDCITYTOTERRITORY("ADDCITYTOTERRITORY"),
-    unlockTechnology("unlockTechnology");
+    unlockTechnology("unlockTechnology"),
+    getAvailableBuildings("getAvailableBuildings"),
+    buildBuilding("buildBuilding");
     private final String character;
 
     Actions(String color) {

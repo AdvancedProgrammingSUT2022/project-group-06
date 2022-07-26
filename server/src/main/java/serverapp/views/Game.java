@@ -102,7 +102,10 @@ public class Game {
             return CombatController.addCityToTerritoryByName(jsonObject.getString("player"),jsonObject.getString("city"));
         }if(command.equals(Actions.unlockTechnology.getCharacter())){
             return  GameController.getCurrentPlayer().unlockTechnology(jsonObject.getString("tecName"));
-        }
+        }if (command.equals(Actions.getAvailableBuildings.getCharacter()))
+            return CityController.getAvailableBuildings(jsonObject);
+        if (command.equals(Actions.buildBuilding.getCharacter()))
+            return CityController.buildABuilding(jsonObject);
         return "bad request format";
     }
 }

@@ -439,8 +439,7 @@ public class MapPage {
 
 
     private void initializeBuildings(String buildingsNames, int i, int j) {
-        ArrayList<String> names =
-                new Gson().fromJson(buildingsNames, new TypeToken<ArrayList<String>>() {}.getType());
+        ArrayList<String> names = new Gson().fromJson(buildingsNames, new TypeToken<ArrayList<String>>() {}.getType());
         for (String name:names) {
             ImageView buildingView = getBuildingView(name);
             buildingView.setX(tilesImageViews[i][j].getX() + 25);
