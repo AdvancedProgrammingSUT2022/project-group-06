@@ -94,8 +94,7 @@ public enum Actions {
     makeUnit("makeUnit"),
     getTechnologyInfo("getTechnologyInfo"),
     getBuildingInfo("getBuildingInfo"),
-    getImprovementNameOfWoorker("getImprovementNameOfWoorker");
-    makeUnit("makeUnit"),
+    getImprovementNameOfWoorker("getImprovementNameOfWoorker"),
     playerMainInfo("playerMainInfo"),
     gameOver("gameOver");
     private final String character;
