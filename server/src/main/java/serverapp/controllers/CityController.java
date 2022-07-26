@@ -462,10 +462,6 @@ public class CityController {
                 case "Courthouse":
                     city.getOwner().decreaseHappiness(city.getOwner().getHappiness());
                     break;
-                case "Stable":
-                    stableEffect(city);
-                    break;
-                //TODO: forge, garden
                 case "Market":
                 case "Bank":
                     city.increaseGold((int) (city.getGold() * 0.25));
@@ -502,10 +498,6 @@ public class CityController {
         for (Unit unit : city.getOwner().getUnits()) {
             unit.increaseMP(15);
         }
-    }
-
-    private static void stableEffect(City city) {
-        //todo
     }
 
     private static void mintEffect(City city) {

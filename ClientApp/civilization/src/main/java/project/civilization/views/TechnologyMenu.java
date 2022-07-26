@@ -90,6 +90,7 @@ public class TechnologyMenu {
 
         for (String name : labels) {
             initializeLabel(name, vBox);
+            name.trim();
             String address = "pictures/technology/" + name.toLowerCase() + ".png";
             image = new Image(CivilizationApplication.class.getResource(address).toExternalForm());
             ImageView imageView = new ImageView(image);

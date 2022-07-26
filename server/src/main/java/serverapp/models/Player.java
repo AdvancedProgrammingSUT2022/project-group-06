@@ -193,6 +193,7 @@ public class Player {
 
     public String unlockTechnology(String technology) {
         achievedTechnologies.put(technology, true);
+        currentResearch = InitializeGameInfo.getTechnologyByName().get(technology);
         return "unlocked";
     }
 

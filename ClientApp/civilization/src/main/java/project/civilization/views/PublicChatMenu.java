@@ -139,8 +139,8 @@ public class PublicChatMenu {
             VBox vBox = new VBox(username,text, new Text(messages.get(i).getDateString()));
             hBox.getChildren().add(vBox);
 
-            hBox.setLayoutY(540 - (45 * i));
-            hBox.setPrefHeight(35);
+            hBox.setLayoutY(520 - (55 * i));
+            hBox.setPrefHeight(40);
             hBox.setPrefWidth((8 * messages.get(i).getText().length()) + 30);
             hBox.setMinWidth((8 * messages.get(i).getText().length()) + 30);
             if (shouldBeRight(messages.get(i)))
