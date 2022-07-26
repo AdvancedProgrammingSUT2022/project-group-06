@@ -112,7 +112,7 @@ public class Game {
             return CityController.startMakingUnit(jsonObject.getString("name"));
         }if (command.equals(Actions.getTechnologyInfo.getCharacter()))
             return GameController.getTechnologyInfo(jsonObject);
-        if (command.equals(Actions.getBuildingInfo.getCharacter()))
+        if (command.equals(Actions.getBuildingInfo.getCharacter())){
             return GameController.getBuildingInfo(jsonObject);
         }if(command.equals(Actions.getImprovementNameOfWoorker.getCharacter())){
             return CityController.getImprovementNameOfWoorker(jsonObject.getInt("i"), jsonObject.getInt("j"));
