@@ -9,6 +9,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.google.gson.Gson;
@@ -127,6 +129,7 @@ public class UserController {
                     String uuid = UUID.randomUUID().toString();
                     userHashMap.put(uuid,user);
                     uuids.add(uuid);
+                    user.setLoginTime(new Date());
                     try {
                         json.put("message", "logged in");
                         json.put("UUID", uuid);
@@ -159,7 +162,9 @@ public class UserController {
         for (int i = 0; i< UserController.getUsersArray().size()&& i < 8; i++) {
             topUsers.add(UserController.getUsersArray().get(i).getUsername() +
                     " "+ UserController.getUsersArray().get(i).getScore()+
-                    " "+UserController.getUsersArray().get(i).getUrl());
+                    " "+UserController.getUsersArray().get(i).getUrl()+
+                    " "+User.getDateString(UserController.getUsersArray().get(i).getLoginTime())+
+                    " "+User.getDateString(UserController.getUsersArray().get(i).getWinTime()));
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(topUsers);
@@ -183,7 +188,7 @@ public class UserController {
                        
             users.forEach((key, value) -> {
             
-                user.write(key + " " + value.getPassword() + " " + value.getNickName() +" "+value.getScore()+" "+value.getUrl()+ "\n");
+                user.write(key + " " + value.getPassword() + " " + value.getNickName() +" "+value.getScore()+" "+value.getUrl()+" "+User.getDateString(value.getLoginTime())+" "+User.getDateString(value.getWinTime()) +"\n");
 
             });
             
@@ -196,7 +201,7 @@ public class UserController {
 
     }
 
-    public static void importSavedUsers() {
+    public static void importSavedUsers() throws ParseException {
         try {
             URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UserInfo.txt")).toExternalForm());
             String user = new String(Files.readAllBytes(Paths.get(address.toURI())));
@@ -218,6 +223,17 @@ public class UserController {
                 users.put(Username, addUser);
                 usersArray.add(addUser);
                 nicknames.add(Nickname);
+
+
+                if(!read[5].equals("A"))
+                {
+                    addUser.setLoginTime(new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss").parse(read[5]));
+                }
+                if(!read[6].equals("A"))
+                {
+                    addUser.setWinTime(new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss").parse(read[6]));
+                }
+                
             }
 
         } catch (IOException | URISyntaxException e) {

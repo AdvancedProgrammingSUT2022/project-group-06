@@ -2,7 +2,9 @@ package serverapp.models;
 
 import javafx.scene.image.Image;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class User implements Comparable{
     private String username;
@@ -12,6 +14,51 @@ public class User implements Comparable{
     private Image avatarPic;
     private int picNum;
     private String url;
+    private Date winTime=null;
+    private Date loginTime=null;
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+    public void setPicNum(int picNum) {
+        this.picNum = picNum;
+    }
+    public static String getDateString(Date date)
+    {
+        if(date==null)
+        {
+            return "A";
+        }
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy-HH:mm:ss");  
+        return formatter.format(date);
+    }
+    public Date getWinTime() {
+        return this.winTime;
+    }
+
+    public void setWinTime(Date winTime) {
+        this.winTime = winTime;
+    }
+
+    public Date getLoginTime() {
+        return this.loginTime;
+    }
+
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
+    }
+    public void setAllFriendShipRequests(ArrayList<Request> allFriendShipRequests) {
+        this.allFriendShipRequests = allFriendShipRequests;
+    }
+    public void setAllSentRequests(ArrayList<Request> allSentRequests) {
+        this.allSentRequests = allSentRequests;
+    }
+    public void setFriendsUsernames(ArrayList<String> friendsUsernames) {
+        this.friendsUsernames = friendsUsernames;
+    }
+
+
+    
 
     public String getUrl() {
         return url;
@@ -45,11 +92,35 @@ public class User implements Comparable{
     // }
     @Override
     public int compareTo(Object o) {
-        if(Integer.compare(((User)o).getScore(),this.score )==0)
+
+        int score=Integer.compare(((User)o).getScore(),this.score );
+        int name=this.username.compareTo(((User)o).getUsername());
+        int time;
+
+        if(winTime==null||((User ) o).getWinTime()==null)
         {
-            return this.username.compareTo(((User)o).getUsername());
+            time=0;
+        }else
+        {
+            time=this.winTime.compareTo(((User) o).getWinTime());
+            // if(this.winTime.after(((User) o).getWinTime()))
+            // {
+            //     return 1;
+            // }
+            // if(this.winTime.)
         }
-        return Integer.compare(((User)o).getScore(),this.score );
+        
+        
+
+        if(score==0)
+        {
+            if(name==0)
+            {
+                return time;
+            }
+            return name;
+        }
+        return score;
     }
 
 

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class ClientNetworkController {
+public class ClientNetworkController{
     private static DataInputStream invitationDataInputStream;
     private static DataOutputStream invitationDataOutputStream;
 
@@ -51,6 +51,11 @@ public class ClientNetworkController {
             } else if (action.equals(Actions.updateMessages.getCharacter())) {
                 Platform.runLater(() -> ChatController.updateMessages(obj.toString()));
             } else if (action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())) {
+            }else if (action.equals(Actions.updateMessages.getCharacter())) {
+                Platform.runLater(()->ChatController.updateMessages(obj.toString()));
+            }else if(action.equals(Actions.gameOver.getCharacter())){
+                Platform.runLater(()-> CivilizationApplication.changeMenu(Menus.MAIN));
+            }else if(action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())){
                 Platform.runLater(() -> CivilizationApplication.mapPageController.changeTurnForOthers());
             } else System.out.println(message + "a fucking thing is wrong");
         } catch (JSONException e) {

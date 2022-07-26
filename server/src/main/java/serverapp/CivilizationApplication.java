@@ -11,9 +11,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.text.ParseException;
 
 public class CivilizationApplication {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         UserController.importSavedUsers();
         //make a thread to handle in time requests
         try {

@@ -97,8 +97,10 @@ public enum Actions {
     getTechnologyInfo("getTechnologyInfo"),
     getBuildingInfo("getBuildingInfo"),
     getImprovementNameOfWoorker("getImprovementNameOfWoorker"),
+    playerMainInfo("playerMainInfo"),
+    gameOver("gameOver"),
     acceptFriendship("acceptFriendship"),
-    rejectFriendship("rejectFriendship");;
+    rejectFriendship("rejectFriendship");
 
     private final String character;
 
