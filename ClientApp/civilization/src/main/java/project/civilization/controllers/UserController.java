@@ -211,6 +211,26 @@ public class UserController {
         }
         return null;
     }
+    public static String setPicUrl(String url) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.PROFILE.getCharacter());
+            json.put("action", Actions.setPicUrl);
+            json.put("UUID", User.getUuid());
+            json.put("url", url);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+           return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return null;
+    }
+
 
 
     public void setUsers(HashMap<String, User> users) {
