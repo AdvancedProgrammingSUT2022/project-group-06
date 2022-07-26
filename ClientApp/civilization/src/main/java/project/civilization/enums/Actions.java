@@ -89,7 +89,6 @@ public enum Actions {
     getAvailableBuildings("getAvailableBuildings"),
     buildBuilding("buildBuilding"),
     showHappiness("showHappiness"),
-    buildBuilding("buildBuilding"),
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit"),
     makeUnit("makeUnit");
