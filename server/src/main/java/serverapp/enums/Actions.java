@@ -98,7 +98,9 @@ public enum Actions {
     getBuildingInfo("getBuildingInfo"),
     getImprovementNameOfWoorker("getImprovementNameOfWoorker"),
     playerMainInfo("playerMainInfo"),
-    gameOver("gameOver");
+    gameOver("gameOver"),
+    updateScoreBoard("updateScoreBoard"),
+    exit("exit");
 
     private final String character;
 

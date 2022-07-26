@@ -154,17 +154,38 @@ public class UserController {
     public static String logout(String uuid) {
         userHashMap.remove(uuid);
         NetWorkController.getLoggedInClientsSocket().remove(uuid);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action",Actions.updateScoreBoard.getCharacter());
+        for(User temp:UserController.getUsersArray())
+        {
+            NetWorkController.broadCast(temp, jsonObject.toString());
+        }
         return "logged out";
+    }
+    public static String exit(String uuid)
+    {
+        userHashMap.remove(uuid);
+        NetWorkController.getLoggedInClientsSocket().remove(uuid);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("action",Actions.updateScoreBoard.getCharacter());
+        for(User temp:UserController.getUsersArray())
+        {
+            NetWorkController.broadCast(temp, jsonObject.toString());
+        }
+        return "";
     }
     public static String getTopUsers(){
         Collections.sort(UserController.getUsersArray());
         ArrayList<String> topUsers = new ArrayList<>();
         for (int i = 0; i< UserController.getUsersArray().size()&& i < 8; i++) {
+            Boolean online= userHashMap.containsValue(UserController.getUsersArray().get(i));
+
             topUsers.add(UserController.getUsersArray().get(i).getUsername() +
                     " "+ UserController.getUsersArray().get(i).getScore()+
                     " "+UserController.getUsersArray().get(i).getUrl()+
                     " "+User.getDateString(UserController.getUsersArray().get(i).getLoginTime())+
-                    " "+User.getDateString(UserController.getUsersArray().get(i).getWinTime()));
+                    " "+User.getDateString(UserController.getUsersArray().get(i).getWinTime())+ 
+                    " "+online);
         }
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         return gson.toJson(topUsers);

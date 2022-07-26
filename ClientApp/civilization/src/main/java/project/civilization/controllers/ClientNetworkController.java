@@ -3,6 +3,8 @@ package project.civilization.controllers;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import project.civilization.CivilizationApplication;
@@ -10,6 +12,7 @@ import project.civilization.enums.Actions;
 import project.civilization.enums.MenuCategory;
 import project.civilization.enums.Menus;
 import project.civilization.models.User;
+import project.civilization.views.ScorePage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -54,10 +57,24 @@ public class ClientNetworkController{
             }else if (action.equals(Actions.updateMessages.getCharacter())) {
                 Platform.runLater(()->ChatController.updateMessages(obj.toString()));
             }else if(action.equals(Actions.gameOver.getCharacter())){
-                Platform.runLater(()-> CivilizationApplication.changeMenu(Menus.MAIN));
+                Platform.runLater(() -> {
+                    if(obj.getString("show").equals("yes"))
+                    {
+                        Alert alert=new Alert(AlertType.INFORMATION,obj.getString("winners"));
+                        alert.showAndWait();
+                    }
+                    CivilizationApplication.changeMenu(Menus.MAIN);
+                });
             }else if(action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())){
                 Platform.runLater(() -> CivilizationApplication.mapPageController.changeTurnForOthers());
-            } else System.out.println(message + "a fucking thing is wrong");
+            }else if(action.equals(Actions.updateScoreBoard.getCharacter())){
+                if(CivilizationApplication.currentMenu.equals(Menus.SCORE))
+                {   
+                    Platform.runLater(() -> CivilizationApplication.scorePageController.update());
+                    
+                }
+                
+            }else System.out.println(message + "a fucking thing is wrong");
         } catch (JSONException e) {
             e.printStackTrace();
         }

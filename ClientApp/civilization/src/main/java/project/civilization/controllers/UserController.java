@@ -345,7 +345,24 @@ public class UserController {
             x.printStackTrace();
         }
     }
-
+    public static void exit()
+    {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.MAIN.getCharacter());
+            json.put("action", Actions.exit.getCharacter());
+            json.put("UUID", User.getUuid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+    }
     public static void importSavedUsers() {
         try {
             URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UserInfo.txt")).toExternalForm());

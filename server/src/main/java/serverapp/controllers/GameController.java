@@ -157,7 +157,7 @@ public class GameController {
             int x=random.nextInt(0,world.getHexInWidth());
             int y=random.nextInt(0,world.getHexInHeight());
             
-            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean"))
+            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean")||(hex[x][y].getMilitaryUnit()!=null)||(hex[x][y].getCivilianUnit()!=null))
             {   
                 
                 i--;
@@ -183,28 +183,35 @@ public class GameController {
                     UnitController.makeUnit("Settler", hex[i][j], "gold");
                     //City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
+                    String name = currentPlayer.getName()+currentPlayer.getCities().size();
+                    City newCity = new City(currentPlayer, name, hex[i][j]);
+                    GameController.setSelectedHex(hex[i][j]);
+                    
+                    GameController.addCapital(newCity);
+                    CityController.buildPalace(newCity);
+                    GameController.getCurrentPlayer().addCity(newCity);
                     return;
                 }
             }
         }
     }
 
-    private static int calculateScore()
+    private static int calculateScore(Player temp)
     {
         int score=0;
-        score+=currentPlayer.getPopulation()*2;
-        score+=currentPlayer.getCities().size()*2;
+        score+=temp.getPopulation()*2;
+        score+=temp.getCities().size()*2;
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if(hex[i][j].getOwner()!=null)
                 {
-                    if(hex[i][j].getOwner().equals(currentPlayer)){
+                    if(hex[i][j].getOwner().equals(temp)){
                         score++;
                     }
                 }
             }
         }
-        for(City city:currentPlayer.getCities())
+        for(City city:temp.getCities())
         {
             score+=3*city.getBuiltBuildings().size();
         }
@@ -578,6 +585,10 @@ public class GameController {
     private static boolean winByCapital()
     {
         int stillHaveCapitals=0;
+        if(turn<=4)    
+        {
+            return false;
+        }
         for(int i=0;i<capitals.size();i++)
         {
             if(capitals.get(i).getOwner().equals(origialOwners.get(i)))
@@ -614,8 +625,16 @@ public class GameController {
 
         if(gameOver())
         {
-            calculateScore();
-
+            for(Player temp:InitializeGameInfo.getPlayers()){
+                UserController.getUserByUserName(temp.getName()).setScore(calculateScore(temp));
+            }
+            
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("action",Actions.updateScoreBoard.getCharacter());
+            for (Player player : InitializeGameInfo.getPlayers()) {
+                NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
+                        , jsonObject.toString());
+            }
             StringBuilder winners=new StringBuilder();
             winners.append("game over\n");
 
@@ -2117,13 +2136,24 @@ public class GameController {
         }
         if(outPut.startsWith("game over"))
         {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("action",Actions.gameOver.getCharacter());
-            jsonObject.put("winners", outPut);
+            
             for (Player player:players) {
+                
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("action",Actions.gameOver.getCharacter());
+                jsonObject.put("winners", outPut);
+                if(!player.equals(currentPlayer))
+                {
+                   jsonObject.put("show", "yes"); 
+                }else{
+                    jsonObject.put("show", "no");
+                }
+                
                 NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
                         ,jsonObject.toString());
             }
+
+        
         }
         return outPut;
     }
