@@ -467,7 +467,7 @@ public class InitializeGameInfo {
     }
 
     private static void addBuildingsToList() {
-        Building barracks = new Building("Barracks", 80, 1, 2, "Bronze working");
+        Building barracks = new Building("Barracks", 80, 1, 2, "BronzeWorking");
         allBuildings.add(barracks);
 
         Building granary = new Building("Granary", 100, 1, 2, "Pottery");
@@ -482,16 +482,16 @@ public class InitializeGameInfo {
         Building walls = new Building("Walls", 100, 1, 2, "Masonry");
         allBuildings.add(walls);
 
-        Building waterMill = new Building("Watermill", 120, 2, 2, "The Wheel");
+        Building waterMill = new Building("Watermill", 120, 2, 2, "TheWheel");
         allBuildings.add(waterMill);
 
-        Building armory = new Building("Armory", 130, 3, 2, "Iron working");
+        Building armory = new Building("Armory", 130, 3, 2, "IronWorking");
         allBuildings.add(armory);
 
         Building burialTomb = new Building("Burial Tomb", 120, 0, 2, "Philosophy");
         allBuildings.add(burialTomb);
 
-        Building circus = new Building("Circus", 150, 3, 2, "Horseback Riding");
+        Building circus = new Building("Circus", 150, 3, 2, "HorsebackRiding");
         allBuildings.add(circus);
 
         Building colosseum = new Building("Colosseum", 150, 3, 2, "Construction");
@@ -500,7 +500,7 @@ public class InitializeGameInfo {
         Building courtHouse = new Building("Court House", 200, 5, 2, "Mathematics");
         allBuildings.add(courtHouse);
 
-        Building stable = new Building("Stable", 100, 1, 2, "Horseback Riding");
+        Building stable = new Building("Stable", 100, 1, 2, "HorsebackRiding");
         allBuildings.add(stable);
 
         Building temple = new Building("Temple", 120, 2, 2, "Philosophy");
@@ -509,7 +509,7 @@ public class InitializeGameInfo {
         Building castle = new Building("Castle", 200, 3, 2, "Chivalry");
         allBuildings.add(castle);
 
-        Building forge = new Building("Forge", 150, 2, 2, "metalCasting");
+        Building forge = new Building("Forge", 150, 2, 2, "MetalCasting");
         allBuildings.add(forge);
 
         Building garden = new Building("Garden", 120, 2, 2, "Theology");
@@ -527,13 +527,13 @@ public class InitializeGameInfo {
         Building university = new Building("University", 200, 3, 2, "Education");
         allBuildings.add(university);
 
-        Building workshop = new Building("Workshop", 100, 2, 2, "Metal casting");
+        Building workshop = new Building("Workshop", 100, 2, 2, "MetalCasting");
         allBuildings.add(workshop);
 
         Building bank = new Building("Bank", 220, 0, 2, "Banking");
         allBuildings.add(bank);
 
-        Building militaryAcademy = new Building("Military Academy", 350, 3, 2, "Military Science");
+        Building militaryAcademy = new Building("Military Academy", 350, 3, 2, "MilitaryScience");
         allBuildings.add(militaryAcademy);
 
         Building museum = new Building("Museum", 350, 3, 2, "Archeology");
@@ -542,13 +542,13 @@ public class InitializeGameInfo {
         Building operaHouse = new Building("Opera House", 220, 3, 2, "Acoustics");
         allBuildings.add(operaHouse);
 
-        Building publicSchool = new Building("Public School", 350, 3, 2, "Scientific Theory");
+        Building publicSchool = new Building("Public School", 350, 3, 2, "ScientificTheory");
         allBuildings.add(publicSchool);
 
         Building satrapCourt = new Building("Satrap's Court", 220, 0, 2, "Banking");
         allBuildings.add(satrapCourt);
 
-        Building theater = new Building("Theater", 300, 5, 2, "Printing Press");
+        Building theater = new Building("Theater", 300, 5, 2, "PrintingPress");
         allBuildings.add(theater);
 
         Building windmill = new Building("Windmill", 180, 2, 2, "Economics");
@@ -560,7 +560,7 @@ public class InitializeGameInfo {
         Building broadcastTower = new Building("Broadcast Tower", 600, 3, 2, "Radio");
         allBuildings.add(broadcastTower);
 
-        Building factory = new Building("Factory", 300, 3, 2, "Steam Power");
+        Building factory = new Building("Factory", 300, 3, 2, "SteamPower");
         allBuildings.add(factory);
 
         Building hospital = new Building("Hospital", 400, 2, 2, "Biology");

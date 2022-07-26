@@ -96,7 +96,10 @@ public class Game {
             return GameController.handelFogOfWarRemoverButton();
         }if(command.equals(Actions.changeTurn.getCharacter())){
             return GameController.changeTurn();
-        }
+        }if (command.equals(Actions.getAvailableBuildings.getCharacter()))
+            return CityController.getAvailableBuildings(jsonObject);
+        if (command.equals(Actions.buildBuilding.getCharacter()))
+            return CityController.buildABuilding(jsonObject);
         return "bad request format";
     }
 }

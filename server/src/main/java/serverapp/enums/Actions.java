@@ -80,7 +80,9 @@ public enum Actions {
     deleteMessage("deleteMessage"),
     editMessageButton("editMessage"),
     editMessageFinal("editMessageFinal"),
-    startRoom("startRoom");
+    startRoom("startRoom"),
+    getAvailableBuildings("getAvailableBuildings"),
+    buildBuilding("buildBuilding");
 
     private final String character;
 

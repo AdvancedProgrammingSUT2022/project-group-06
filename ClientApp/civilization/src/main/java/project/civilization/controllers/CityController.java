@@ -3,6 +3,8 @@ package project.civilization.controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.json.JSONException;
 import org.json.JSONObject;
 import project.civilization.CivilizationApplication;
@@ -303,5 +305,39 @@ public class CityController {
             }
         }
         return null;
+    }
+
+    public static ArrayList<String> getAvailableBuildings(String cityName) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.getAvailableBuildings.getCharacter());
+        object.put("menu", MenuCategory.GAMEMenu.getCharacter());
+        object.put("cityName", cityName);
+        Gson gson = new Gson();
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            String buildingsJson = CivilizationApplication.dataInputStream.readUTF();
+            ArrayList<String> names = new Gson().fromJson(buildingsJson, new TypeToken<ArrayList<String>>() {
+            }.getType());
+            return names;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void buildABuilding(String buildingName, String cityName) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.buildBuilding.getCharacter());
+        object.put("menu", MenuCategory.GAMEMenu.getCharacter());
+        object.put("cityName", cityName);
+        object.put("buildingName", buildingName);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
