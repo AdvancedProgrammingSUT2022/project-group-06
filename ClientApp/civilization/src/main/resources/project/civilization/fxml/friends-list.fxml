@@ -18,13 +18,13 @@
 
     <center>
         <VBox fx:id="vbox" spacing="10" alignment="CENTER" maxWidth="480" maxHeight="571" styleClass="menu-bar" >
-            <VBox fx:id="search">
+            <VBox fx:id="search" layoutX="500">
             <Label id="error" fx:id="error" alignment="CENTER" prefHeight="55.0" prefWidth="438.0" text="" textAlignment="CENTER" />
-            <TextField layoutX="400" alignment="CENTER" fx:id="username" promptText="search username" />
-            <Button layoutX="400" alignment="CENTER"  fx:id="searchButton" onMouseClicked="#searchUser" text="search" />
+            <TextField layoutX="500" alignment="CENTER" fx:id="username" promptText="search username" />
+            <Button layoutX="500" alignment="CENTER"  fx:id="searchButton" onMouseClicked="#searchUser" text="search" />
             </VBox>
             <Button onMouseClicked="#back" prefHeight="0.0" text="back" />
-            <VBox fx:id="friendsVbox" />
+            <VBox fx:id="friendsVbox" alignment="CENTER" layoutX="550"/>
         </VBox>
 
     </center>

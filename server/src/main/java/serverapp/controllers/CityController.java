@@ -210,12 +210,16 @@ public class CityController {
         UnitController.getSelectedUnit().setOrdered(true);
         City newCity = new City(GameController.getCurrentPlayer(), name, UnitController.getSelectedUnit().getCurrentHex());
         if (GameController.getCurrentPlayer().getCities().size() == 0)
+        {
+            GameController.addCapital(newCity);
             buildPalace(newCity);
-        GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
+        }
+                GameController.getCurrentPlayer().decreaseHappiness(1); //happiness decrease as num of cities increase
         if (GameController.getCurrentPlayer().getHappiness() < 0) GameController.unhappinessEffects();
         City.addCities(newCity);
         GameController.getCurrentPlayer().addCity(newCity);
         getCurrentPlayer().decreaseHappiness(2);//happiness decrease as the number of cities grow
+        
         return "new city created successfully";
     }
 

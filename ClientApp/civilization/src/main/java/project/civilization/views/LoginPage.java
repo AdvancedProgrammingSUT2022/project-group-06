@@ -1,5 +1,6 @@
 package project.civilization.views;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,7 +25,6 @@ public class LoginPage extends GameMenus{
     private Label error;
     @FXML
     private Button loginButton;
-
 
 
     public void login(MouseEvent mouseEvent) {
@@ -52,6 +52,7 @@ public class LoginPage extends GameMenus{
     public void exit(MouseEvent mouseEvent)
     {
         UserController.saveUsers();
+        UserController.exit();
         System.exit(0);
 
     }

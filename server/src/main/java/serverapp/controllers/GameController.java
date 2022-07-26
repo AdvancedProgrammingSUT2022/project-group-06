@@ -24,6 +24,7 @@ import serverapp.models.Player;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GameController {
@@ -40,7 +41,15 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Game> allGames = new ArrayList<>();
-
+    private static int year=2045;
+    private static ArrayList<City> capitals=new ArrayList<City>();
+    private static ArrayList<Player> origialOwners=new ArrayList<Player>();
+    private static Player capitalWinner=null;
+    public static void addCapital(City city)
+    {
+        capitals.add(city);
+        origialOwners.add(currentPlayer);
+    }
     public static int getTurn() {
         return turn;
     }
@@ -138,7 +147,35 @@ public class GameController {
         Melee military3 = new Melee("Spearman", world.getHex()[0][1], InitializeGameInfo.getPlayers().get(1));
         world.getHex()[0][1].setMilitaryUnit(military3);*/
     }
+    private static boolean createdRuins=false;
+
+    private static void createRuinTiles()
+    {
+        Random random=new Random();
+        for(int i=1;i<6;i++)
+        {
+            int x=random.nextInt(0,world.getHexInWidth());
+            int y=random.nextInt(0,world.getHexInHeight());
+
+            if(hex[x][y].getOwner()!=null||hex[x][y].getTerrain().getName().matches("Mountain|Ocean")||(hex[x][y].getMilitaryUnit()!=null)||(hex[x][y].getCivilianUnit()!=null))
+            {
+
+                i--;
+                continue;
+            }
+
+            hex[x][y].setRuinsValue(i);
+        }
+
+    }
+
+
     public static void startGame() {
+        if(!createdRuins)
+        {
+            createRuinTiles();
+            createdRuins=true;
+        }
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
@@ -146,10 +183,44 @@ public class GameController {
                     UnitController.makeUnit("Settler", hex[i][j], "gold");
                     //City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
+                    String name = currentPlayer.getName()+currentPlayer.getCities().size();
+                    City newCity = new City(currentPlayer, name, hex[i][j]);
+                    GameController.setSelectedHex(hex[i][j]);
+
+                    GameController.addCapital(newCity);
+                    CityController.buildPalace(newCity);
+                    GameController.getCurrentPlayer().addCity(newCity);
                     return;
                 }
             }
         }
+    }
+
+    private static int calculateScore(Player temp)
+    {
+        int score=0;
+        score+=temp.getPopulation()*2;
+        score+=temp.getCities().size()*2;
+        for (int i = 0; i < world.getHexInHeight(); i++) {
+            for (int j = 0; j < world.getHexInWidth(); j++) {
+                if(hex[i][j].getOwner()!=null)
+                {
+                    if(hex[i][j].getOwner().equals(temp)){
+                        score++;
+                    }
+                }
+            }
+        }
+        for(City city:temp.getCities())
+        {
+            score+=3*city.getBuiltBuildings().size();
+        }
+
+        return score;
+    }
+    public static String getPlayerMainInfo()
+    {
+        return currentPlayer.getGold()+" "+currentPlayer.getHappiness()+" "+currentPlayer.getProduction()+" "+currentPlayer.getPopulation()+" "+currentPlayer.getTrophies()+" "+year;
     }
 
 
@@ -511,11 +582,84 @@ public class GameController {
             currentPlayer.increaseGold(city.getGold());
         }
     }
+    private static boolean winByCapital()
+    {
+        int stillHaveCapitals=0;
+        if(turn<=4)
+        {
+            return false;
+        }
+        for(int i=0;i<capitals.size();i++)
+        {
+            if(capitals.get(i).getOwner().equals(origialOwners.get(i)))
+            {
+                stillHaveCapitals++;
+            }
+        }
 
+        if(stillHaveCapitals==1)
+        {
+            return true;
+        }
+        return false;
+
+    }
+    private static boolean gameOver()
+    {
+        if(year>=2050)
+        {
+            return true;
+        }
+        if(!winByCapital())
+        {
+            return false;
+        }
+
+        return true;
+    }
     public static String changeTurn() {
         // TODO: 7/14/2022 :
 /*        String unitOrders = unitActions();
         if (unitOrders != null) return unitOrders;*/
+
+
+        if(gameOver())
+        {
+            for(Player temp:InitializeGameInfo.getPlayers()){
+                UserController.getUserByUserName(temp.getName()).setScore(calculateScore(temp));
+            }
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("action",Actions.updateScoreBoard.getCharacter());
+            for (Player player : InitializeGameInfo.getPlayers()) {
+                NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
+                        , jsonObject.toString());
+            }
+            StringBuilder winners=new StringBuilder();
+            winners.append("game over\n");
+
+            if(capitalWinner!=null)
+            {
+                winners.append(capitalWinner.getName()+" "+capitalWinner.getScore()+"\n");
+                Date date = new Date();
+                UserController.getUserByUserName(capitalWinner.getName()).setWinTime(date);
+                return winners.toString();
+            }
+
+            Collections.sort(players);
+
+            winners.append(players.get(0).getName()+" "+players.get(0).getScore()+"\n");
+            for(int i=1;i<players.size()&&(players.get(i).getScore()==players.get(0).getScore());i++)
+            {
+                winners.append(players.get(i).getName()+" "+players.get(i).getScore()+"\n");
+            }
+
+            return winners.toString();
+        }
+
+
+
+
         int goldPerTurn = 0;
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             goldPerTurn += temp.getGold();
@@ -554,6 +698,7 @@ public class GameController {
         resetMovePoints();
         if (playerCount == players.size() - 1) {
             playerCount = 0;
+            year++;
             turn++;
         } else {
             playerCount++;
@@ -1935,6 +2080,7 @@ public class GameController {
     }
 
     public static String cityScreen(String cityName) {
+
         StringBuilder economicInfo = new StringBuilder();
         int count = 1;
         for (City temp : currentPlayer.getCities()) {
@@ -1942,6 +2088,7 @@ public class GameController {
                 continue;
             }
             GameController.setSelectedCity(temp);
+
             ArrayList<Construction> technologies = new ArrayList<Construction>();
 
             economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
@@ -1989,13 +2136,34 @@ public class GameController {
             //GameController.getAvailableWorkOfActiveWorkers
             if (GameController.getTurn() == 1) GameController.startGame();
         }
+        if(outPut.startsWith("game over"))
+        {
+
+            for (Player player:players) {
+
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("action",Actions.gameOver.getCharacter());
+                jsonObject.put("winners", outPut);
+                if(!player.equals(currentPlayer))
+                {
+                   jsonObject.put("show", "yes");
+                }else{
+                    jsonObject.put("show", "no");
+                }
+
+                NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
+                        ,jsonObject.toString());
+            }
+
+
+        }
         return outPut;
     }
 
     public static String handelFogOfWarRemoverButton() {
-        if (GameController.getSelectedHex() == null) return "choose a tile first";
-        if (!GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar))
-            return "it's not wise to waste this token :)";
+        if(GameController.getSelectedHex()==null) return "choose a tile first";
+        if(!(GameController.getSelectedHex().getState(GameController.getCurrentPlayer()).equals(HexState.FogOfWar)))
+        return "it's not wise to waste this token :)";
         GameController.getSelectedHex().setState(HexState.Visible, GameController.getCurrentPlayer());
         return "successfully";
     }

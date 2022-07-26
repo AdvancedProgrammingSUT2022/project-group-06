@@ -116,6 +116,8 @@ public class Game {
             return GameController.getBuildingInfo(jsonObject);
         }if(command.equals(Actions.getImprovementNameOfWoorker.getCharacter())){
             return CityController.getImprovementNameOfWoorker(jsonObject.getInt("i"), jsonObject.getInt("j"));
+        }if(command.equals(Actions.playerMainInfo.getCharacter())){
+            return GameController.getPlayerMainInfo();
         }if (command.equals(Actions.REMOVECITIZENFROMWORK.getCharacter())) {
             return CityController.removeCitizenFromWork(jsonObject.getInt("i"),jsonObject.getInt("j"));
         }if(command.equals(Actions.LOCKINGCITIZENTOTILE.getCharacter())){

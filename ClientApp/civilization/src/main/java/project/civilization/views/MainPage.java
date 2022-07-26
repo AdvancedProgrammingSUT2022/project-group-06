@@ -50,6 +50,7 @@ public class MainPage extends GameMenus{
 
     public void exit(MouseEvent mouseEvent) {
         UserController.saveUsers();
+        UserController.exit();
         System.exit(0);
     }
 

@@ -160,4 +160,35 @@ public class ChatController {
             return null;
         }
     }
+
+    public static void acceptFriendRequest(String username) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.acceptFriendship.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("invitedUuid", User.getUuid());
+        object.put("inviterUsername", username);
+
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void rejectFriendRequest(String username) {
+        JSONObject object = new JSONObject();
+        object.put("action", Actions.rejectFriendship.getCharacter());
+        object.put("menu", MenuCategory.Chat.getCharacter());
+        object.put("invitedUuid", User.getUuid());
+        object.put("inviterUsername", username);
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(object.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,15 +1,19 @@
 package project.civilization;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import project.civilization.enums.Menus;
 import project.civilization.views.MapPage;
 import project.civilization.views.Music;
+import project.civilization.views.ScorePage;
 
 import java.awt.*;
 import java.io.DataInputStream;
@@ -24,7 +28,10 @@ public class CivilizationApplication extends Application {
     public static DataOutputStream dataOutputStream;
     public static AnchorPane chatPane;
     public static Pane mapPane;
+    public static Scene mainScene;
     public static MapPage mapPageController;
+    public static Menus currentMenu;
+    public static ScorePage scorePageController;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -56,6 +63,7 @@ public class CivilizationApplication extends Application {
     }
 
     public static void changeMenu(Menus menuName) {
+        currentMenu=menuName;
         Parent root = loadFXML(menuName);
         assert root != null;
         Scene scene = new Scene(root);
@@ -64,6 +72,8 @@ public class CivilizationApplication extends Application {
         } else if (menuName.equals(Menus.MAPPAGE)) {
             mapPane = (Pane) root;
         }
+
+        mainScene = scene;
         stages.setScene(scene);
     }
 
@@ -88,6 +98,10 @@ public class CivilizationApplication extends Application {
                 MapPage mapPage = new MapPage();
                 mapPageController = mapPage;
                 loader.setController(mapPage);
+            }else if(menuName.equals(Menus.SCORE)){
+                ScorePage scorePage=new ScorePage();
+                scorePageController=scorePage;
+                loader.setController(scorePage);
             }
             return loader.load();
         } catch (IOException e) {

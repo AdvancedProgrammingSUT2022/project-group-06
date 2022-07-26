@@ -21,6 +21,8 @@ public class Profile {
         if(command.equals(Actions.getAllFreinShipRequests.getCharacter())){
             return UserController.getAllFreinShipRequests(jsonObject.getString("UUID"));
         }
+        if (command.equals(Actions.getRejectedRequests.getCharacter()))
+            return UserController.getRejectedRequests(jsonObject.getString("UUID"));
         if(command.equals(Actions.getAllFriendsNames.getCharacter())){
             return UserController.getAllFriendsNames(jsonObject.getString("UUID"));
         }

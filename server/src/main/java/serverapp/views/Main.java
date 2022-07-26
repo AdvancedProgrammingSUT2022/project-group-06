@@ -12,6 +12,9 @@ public class Main {
         if(command.equals(Actions.SCOREBOARD.getCharacter())){
             return UserController.getTopUsers();
         }
+        if(command.equals(Actions.exit.getCharacter())){
+            return UserController.exit(jsonObject.getString("UUID"));
+        }
         return "bad request format";
     }
 }
