@@ -4,11 +4,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import project.civilization.controllers.UserController;
@@ -46,6 +48,24 @@ public class ScorePage extends GameMenus {
             avatarPic.setFitWidth(40);
             avatarPic.setFitHeight(40);
             avatarPic.setLayoutX(defaultAvatarX);
+            avatarPic.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    UserController.sendFriendShipRequest(temp[0]);
+                }
+            });
+            avatarPic.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    avatarPic.setOpacity(0.5);
+                }
+            });
+            avatarPic.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    avatarPic.setOpacity(1);
+                }
+            });
             hBox.getChildren().add(avatarPic);
 
             Label userLabel=new Label();

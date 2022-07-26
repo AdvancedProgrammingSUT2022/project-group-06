@@ -80,6 +80,7 @@ public enum Actions {
     editMessageFinal("editMessageFinal"),
     startRoom("startRoom"),
     getAllFreinShipRequests("getAllFreinShipRequests"),
+    getRejectedRequests("getRejectedRequests"),
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),
     getPicUrl("getPicUrl"),
@@ -96,6 +97,9 @@ public enum Actions {
     getBuildingInfo("getBuildingInfo"),
     getImprovementNameOfWoorker("getImprovementNameOfWoorker"),
     playerMainInfo("playerMainInfo"),
+    gameOver("gameOver"),
+    acceptFriendship("acceptFriendship"),
+    rejectFriendship("rejectFriendship");
     gameOver("gameOver"),
     updateScoreBoard("updateScoreBoard"),
     exit("exit");

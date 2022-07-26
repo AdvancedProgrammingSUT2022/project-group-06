@@ -3,6 +3,7 @@ package project.civilization.views;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -152,6 +153,18 @@ public class PublicChatMenu {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
                     initializeOptionsVbox(index, hBox);
+                }
+            });
+            hBox.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    CivilizationApplication.mainScene.setCursor(Cursor.HAND);
+                }
+            });
+            hBox.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    CivilizationApplication.mainScene.setCursor(Cursor.DEFAULT);
                 }
             });
             pane.getChildren().add(hBox);

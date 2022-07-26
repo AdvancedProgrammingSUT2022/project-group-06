@@ -1,9 +1,12 @@
 package project.civilization;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -25,6 +28,7 @@ public class CivilizationApplication extends Application {
     public static DataOutputStream dataOutputStream;
     public static AnchorPane chatPane;
     public static Pane mapPane;
+    public static Scene mainScene;
     public static MapPage mapPageController;
     public static Menus currentMenu;
     public static ScorePage scorePageController;
@@ -67,7 +71,9 @@ public class CivilizationApplication extends Application {
             chatPane = (AnchorPane) root;
         } else if (menuName.equals(Menus.MAPPAGE)) {
             mapPane = (Pane) root;
-        } 
+        }
+
+        mainScene = scene;
         stages.setScene(scene);
     }
 

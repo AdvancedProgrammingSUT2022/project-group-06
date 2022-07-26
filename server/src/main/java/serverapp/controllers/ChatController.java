@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import serverapp.enums.Actions;
 import serverapp.models.Chat;
 import serverapp.models.Message;
+import serverapp.models.Request;
 import serverapp.models.User;
 
 import java.io.DataOutputStream;
@@ -263,6 +264,38 @@ public class ChatController {
             NetWorkController.broadCast(user, respond.toString());
         }
         return respond.toString();
+    }
+
+
+
+    public static String acceptFriendship(JSONObject jsonObject) {
+        String inviterUsername = (String) jsonObject.get("inviterUsername");
+        String invitedUuid = (String) jsonObject.get("invitedUuid");
+        User invited = UserController.getUserHashMap().get(invitedUuid);
+        Request request = getRequestByParticipants(inviterUsername, invited);
+        invited.getAllFriendShipRequests().remove(request);
+        invited.getFriendsUsernames().add(inviterUsername);
+        User inviter = UserController.getUserByUserName(inviterUsername);
+        inviter.getFriendsUsernames().add(invited.getUsername());
+        return "accepted";
+    }
+
+    public static String rejectFriendship(JSONObject jsonObject) {
+        String inviterUsername = (String) jsonObject.get("inviterUsername");
+        String invitedUuid = (String) jsonObject.get("invitedUuid");
+        User invited = UserController.getUserHashMap().get(invitedUuid);
+        Request request = getRequestByParticipants(inviterUsername, invited);
+        invited.getAllFriendShipRequests().remove(request);
+        invited.getRejectedInviters().add(inviterUsername);
+        return "rejected";
+    }
+
+    public static Request getRequestByParticipants(String inviterUsername, User invited) {
+        for (Request request : invited.getAllFriendShipRequests()) {
+            if (request.getSenderName().equals(inviterUsername))
+                return request;
+        }
+        return null;
     }
 
 }

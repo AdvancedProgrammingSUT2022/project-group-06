@@ -292,6 +292,7 @@ public class UserController {
 
     public static String getAllFriendsNames(String uuid) {
         Gson gson = new GsonBuilder().create();
+        System.out.println(userHashMap.get(uuid).getFriendsUsernames().size());//todo???
         return (gson.toJson(userHashMap.get(uuid).getFriendsUsernames()));
     }
 
@@ -302,6 +303,10 @@ public class UserController {
         }
         Gson gson = new GsonBuilder().create();
         return (gson.toJson(allRequestNames));
+    }
+
+    public static String getRejectedRequests(String uuid) {
+        return new Gson().toJson(userHashMap.get(uuid).getRejectedInviters());
     }
 
     public static String sendFriendShipRequest(String uuid, String anotherUsername) {

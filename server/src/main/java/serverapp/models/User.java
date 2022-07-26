@@ -85,6 +85,8 @@ public class User implements Comparable{
     }
 
     private ArrayList<String> friendsUsernames = new ArrayList<>();
+
+    private ArrayList<String> rejectedInviters = new ArrayList<>();
     // @Override
     // public String toString()
     // {
@@ -184,4 +186,7 @@ public class User implements Comparable{
     }
 
 
+    public ArrayList<String> getRejectedInviters() {
+        return rejectedInviters;
+    }
 }

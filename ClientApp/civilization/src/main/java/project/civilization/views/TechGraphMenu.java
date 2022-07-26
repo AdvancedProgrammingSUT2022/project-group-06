@@ -667,9 +667,7 @@ public class TechGraphMenu {
         Label label = (Label) hBox.getChildren().get(0);
         String name = label.getText();
 
-        if (Objects.equals(GameController.isAchieved(name), "null")) {
-            hBox.setStyle("-fx-border-color:#FF0000; -fx-border-width:2px");
-        } else if (Objects.equals(GameController.isAchieved(name), "true")) {
+        if (Objects.equals(GameController.isAchieved(name), "true")) {
             hBox.setStyle("-fx-border-color:#00FF00; -fx-border-width:2px");
         } else
             hBox.setStyle("-fx-border-color:#555555; -fx-border-width:2px");

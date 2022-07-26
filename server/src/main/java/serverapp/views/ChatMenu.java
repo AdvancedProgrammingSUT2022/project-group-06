@@ -23,6 +23,10 @@ public class ChatMenu {
             return ChatController.editMessageFinal(object);
         else if (command.equals(Actions.startRoom.getCharacter()))
             return ChatController.startRoom(object);
+        else if (command.equals(Actions.acceptFriendship.getCharacter()))
+            return ChatController.acceptFriendship(object);
+        else if (command.equals(Actions.rejectFriendship.getCharacter()))
+            return ChatController.rejectFriendship(object);
         else
             return "invalid command";
     }
