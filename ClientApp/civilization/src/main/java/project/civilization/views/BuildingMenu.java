@@ -3,6 +3,7 @@ package project.civilization.views;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -48,6 +49,7 @@ public class BuildingMenu {
         vBox.setSpacing(25);
         Image image;
 
+        names.remove("Palace");
         for (String name : names) {
             initializeLabel(name, vBox);
             String address = "pictures/building/" + name.toLowerCase() + ".png";
@@ -64,6 +66,8 @@ public class BuildingMenu {
         button.setPrefWidth(100);
         button.setPrefHeight(30);
         vBox.getChildren().add(button);
+        String tooltipString = GameController.getBuildingInfo(name);
+        button.setTooltip(new Tooltip(tooltipString));
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

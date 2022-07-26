@@ -93,7 +93,9 @@ public enum Actions {
     showHappiness("showHappiness"),
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit"),
-    makeUnit("makeUnit");
+    makeUnit("makeUnit"),
+    getTechnologyInfo("getTechnologyInfo"),
+    getBuildingInfo("getBuildingInfo");
 
     private final String character;
 

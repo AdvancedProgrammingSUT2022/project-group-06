@@ -440,10 +440,11 @@ public class MapPage {
 
     private void initializeBuildings(String buildingsNames, int i, int j) {
         ArrayList<String> names = new Gson().fromJson(buildingsNames, new TypeToken<ArrayList<String>>() {}.getType());
-        for (String name:names) {
+        for (int k = 0; k < names.size(); k++) {
+            String name = names.get(k);
             ImageView buildingView = getBuildingView(name);
             buildingView.setX(tilesImageViews[i][j].getX() + 25);
-            buildingView.setY(tilesImageViews[i][j].getY() + 20 + (i * 7));
+            buildingView.setY(tilesImageViews[i][j].getY() + 20 + (k * 50));
             pane.getChildren().add(buildingView);
         }
     }
