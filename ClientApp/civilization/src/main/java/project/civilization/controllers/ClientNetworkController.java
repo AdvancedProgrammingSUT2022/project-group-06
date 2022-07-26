@@ -49,6 +49,8 @@ public class ClientNetworkController{
                 Platform.runLater(() -> CivilizationApplication.changeMenu(Menus.MAPPAGE));
             }else if (action.equals(Actions.updateMessages.getCharacter())) {
                 Platform.runLater(()->ChatController.updateMessages(obj.toString()));
+            }else if(action.equals(Actions.gameOver.getCharacter())){
+                Platform.runLater(()-> CivilizationApplication.changeMenu(Menus.MAIN));
             }else if(action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())){
                 Platform.runLater(() -> CivilizationApplication.mapPageController.changeTurnForOthers());
             }else System.out.println(message+"a fucking thing is wrong");

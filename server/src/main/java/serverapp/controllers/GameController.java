@@ -40,7 +40,7 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Game> allGames = new ArrayList<>();
-    private static int year=2040;
+    private static int year=2045;
     private static ArrayList<City> capitals=new ArrayList<City>();
     private static ArrayList<Player> origialOwners=new ArrayList<Player>();
     private static Player capitalWinner=null;
@@ -147,9 +147,12 @@ public class GameController {
         score+=currentPlayer.getCities().size()*2;
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
-                if(hex[i][j].getOwner().equals(currentPlayer)){
-                    score++;
-                }
+                if(hex[i][j].getOwner()!=null)
+                {
+                    if(hex[i][j].getOwner().equals(currentPlayer)){
+                        score++;
+                    }
+                }    
             }
         }
         for(City city:currentPlayer.getCities())
@@ -543,9 +546,9 @@ public class GameController {
     }
     private static boolean gameOver()
     {
-        if(year<2050)
+        if(year>=2050)
         {
-            return false;
+            return true;
         }
         if(!winByCapital())
         {
@@ -582,6 +585,7 @@ public class GameController {
             {
                 winners.append(players.get(i).getName()+" "+players.get(i).getScore()+"\n");
             }
+            
             return winners.toString();
         }
 
@@ -1997,12 +2001,15 @@ public class GameController {
     }
 
     public static String cityScreen(String cityName) {
+        
         StringBuilder economicInfo = new StringBuilder();
         int count = 1;
         for (City temp : currentPlayer.getCities()) {
             if (!temp.getName().equals(cityName)) {
                 continue;
             }
+            GameController.setSelectedCity(temp);
+
             ArrayList<Construction> technologies = new ArrayList<Construction>();
 
             economicInfo.append(count + ") cityname: " + temp.getName() + "\n");
@@ -2049,6 +2056,16 @@ public class GameController {
             GameController.checkTimeVariantProcesses();
             //GameController.getAvailableWorkOfActiveWorkers
             if (GameController.getTurn() == 1) GameController.startGame();
+        }
+        if(outPut.startsWith("game over"))
+        {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("action",Actions.gameOver.getCharacter());
+            jsonObject.put("winners", outPut);
+            for (Player player:players) {
+                NetWorkController.broadCast(UserController.getUserByUserName(player.getName())
+                        ,jsonObject.toString());
+            }   
         }
         return outPut;
     }

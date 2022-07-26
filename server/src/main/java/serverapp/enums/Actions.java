@@ -93,7 +93,8 @@ public enum Actions {
     setPicUrl("setPicUrl"),
     buyUnit("buyUnit"),
     makeUnit("makeUnit"),
-    playerMainInfo("playerMainInfo");
+    playerMainInfo("playerMainInfo"),
+    gameOver("gameOver");
 
     private final String character;
 
