@@ -83,7 +83,8 @@ public enum Actions {
     getAllFriendsNames("getAllFriendsNames"),
     sendFriendShipRequest("sendFriendShipRequest"),
     getPicUrl("getPicUrl"),
-    setPicUrl("setPicUrl");
+    setPicUrl("setPicUrl"),
+    buyUnit("buyUnit");
     private final String character;
 
     Actions(String color) {
