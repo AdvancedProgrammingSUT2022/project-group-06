@@ -12,7 +12,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.GameController;
-import project.civilization.models.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -13,7 +13,6 @@ import javafx.scene.layout.VBox;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.CityController;
 import project.civilization.controllers.GameController;
-import project.civilization.models.maprelated.City;
 
 import java.util.ArrayList;
 

@@ -149,6 +149,12 @@ public class CombatController {
 
     private static String meleeUnitCombat(int x, int y) {
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("warAlert", true);
+        return jsonObject.toString();
+    }
+    public static String startWar(int x, int y){
+        GameController.setIsEnemy(hex[x][y].getMilitaryUnit().getName());
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("combatType","meleeToMilitary");
         int defenderStrength = hex[x][y].getMilitaryUnit().calculateCombatModifier();
         int attackerStrength = UnitController.getSelectedUnit().calculateCombatModifier();
@@ -169,6 +175,8 @@ public class CombatController {
         }
         else if(UnitController.getSelectedUnit().getHealth() <= 0 && hex[x][y].getMilitaryUnit().getHealth() <= 0){
             //equal
+            System.out.println(x+" "+ y+" "+hex[x][y]);
+            System.out.println(hex[x][y].getMilitaryUnit().getName()+" "+hex[x][y].getMilitaryUnit().getOwner().getName());
             UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
             UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             jsonObject.put("result","in melee to military combat both units are death");
@@ -178,7 +186,6 @@ public class CombatController {
         jsonObject.put("result","in melee to military combat no winner both are damage");
         return jsonObject.toString();
     }
-
     private static String rangedUnitCombat(int x, int y) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("combatType","rangedToMilitary");
@@ -196,7 +203,9 @@ public class CombatController {
     }
 
     private static String meleeCivilianCombat(int x, int y) {
-        return null;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result","oooooooo");
+        return jsonObject.toString();
     }
 
     private static String RangedToCivilianCombat(int x, int y) {

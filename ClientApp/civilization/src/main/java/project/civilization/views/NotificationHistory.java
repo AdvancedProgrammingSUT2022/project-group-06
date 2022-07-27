@@ -12,7 +12,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import project.civilization.controllers.GameController;
-import project.civilization.models.Player;
 
 public class NotificationHistory {
  

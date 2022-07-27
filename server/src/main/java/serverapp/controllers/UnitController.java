@@ -220,6 +220,7 @@ public class UnitController {
     public static String deleteMilitaryUnit(Unit unit) {
         unit.getOwner().removeUnit(unit);
         unit.getCurrentHex().setMilitaryUnit(null);
+        System.out.println(unit.getCurrentHex());
         if(selectedUnit == unit) selectedUnit = null;
         return "unit deleted";
     }

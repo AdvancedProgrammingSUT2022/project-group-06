@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.InitializeGameInfo;
 import project.civilization.enums.Menus;
-import project.civilization.models.maprelated.World;
 
 public class GamePage extends GameMenus{
 

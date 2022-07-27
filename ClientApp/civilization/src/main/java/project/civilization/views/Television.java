@@ -42,6 +42,7 @@ public class Television {
             }
         }
         initializePane();
+        handleKeyEvent();
         Platform.runLater(() -> {
             pane.requestFocus();
         });
@@ -49,11 +50,17 @@ public class Television {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                initializePane();//todo: replace with the function you want to be called repeatedly
-            }
-        },0, 10000);
-    }
+                Platform.runLater(() -> {
+                    resetPane();
+                });
 
+            }
+        },0, 2000);
+    }
+    private void resetPane(){
+        pane.getChildren().removeAll(pane.getChildren());
+        initializePane();
+    }
     private void handleKeyEvent() {
         pane.setOnKeyPressed(e -> {
             int[] directions = new int[]{0, 0, 0, 0};

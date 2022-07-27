@@ -109,7 +109,8 @@ public enum Actions {
     getHealth("getHealth"),
     increaseHealth("increaseHealth"),
     getIsEnemy("getIsEnemy"),
-    setIsEnemy("setIsEnemy");
+    setIsEnemy("setIsEnemy"),
+    STARTWAR("STARTWAR");
     
     private final String character;
 

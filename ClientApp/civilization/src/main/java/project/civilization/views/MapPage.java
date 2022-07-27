@@ -18,11 +18,6 @@ import javafx.stage.Popup;
 import org.json.JSONObject;
 import project.civilization.CivilizationApplication;
 import project.civilization.controllers.*;
-import project.civilization.models.Player;
-import project.civilization.models.gainable.Construction;
-import project.civilization.models.gainable.Improvement;
-import project.civilization.models.maprelated.City;
-import project.civilization.models.units.Unit;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,7 +46,7 @@ public class MapPage {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "city is death select a number: \n 1.delete it \n 2.add it to your territory", delete, add);
         alert.showAndWait();
         if (alert.getResult() == delete) {
-            Alert alert2 = new Alert(Alert.AlertType.INFORMATION,City.deleteCity(cityName));
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION,CityController.deleteCity(cityName));
             alert2.showAndWait();
         } else {
             Alert alert2 = new Alert(Alert.AlertType.INFORMATION,CombatController.addCityToTerritory(cityName, playerName));
@@ -559,14 +554,12 @@ public class MapPage {
             resetPane();
             
             selectMilitaryUnit(i, j, isOwner);
-
+        if(isOwner){
             int health=Integer.parseInt(UnitController.getUnitHealth());
-
 
             Label label=new Label("health: "+health);
             label.setLayoutY(600);
             pane.getChildren().add(label);
-
 
             if(health<maxHealth)
             {
@@ -579,7 +572,7 @@ public class MapPage {
 
                     @Override
                     public void handle(MouseEvent event) {
-                        
+
                         String[] mainInfo=GameController.getPlayerMainInfo().split(" ");
                         int gold=Integer.parseInt(mainInfo[0]);
                         if(gold>=10)
@@ -594,13 +587,14 @@ public class MapPage {
                             Alert alert=new Alert(AlertType.INFORMATION,"not enough money");
                             alert.showAndWait();
                         }
-                        
-                        
+
+
                     }
-                    
+
                 });
             }
 
+        }
         });
     }
     int maxHealth=10;
@@ -611,47 +605,47 @@ public class MapPage {
         initializeWorkingWorkers(i, j, unitView);
         unitView.setOnMouseClicked(event -> {
             resetPane();
-            
             selectCivilianUnit(i, j, isOwner);
-            
-            int health=Integer.parseInt(UnitController.getUnitHealth());
+            if(isOwner){
+                int health=Integer.parseInt(UnitController.getUnitHealth());
 
-            Label label=new Label("health: "+health);
-            label.setLayoutY(600);
-            pane.getChildren().add(label);
+                Label label=new Label("health: "+health);
+                label.setLayoutY(600);
+                pane.getChildren().add(label);
 
-            
-            if(health<maxHealth)
-            {
-                Button button=new Button();
-                button.setText("repair unit");
-                button.setLayoutY(500);
-                pane.getChildren().add(button);
 
-                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                if(health<maxHealth)
+                {
+                    Button button=new Button();
+                    button.setText("repair unit");
+                    button.setLayoutY(500);
+                    pane.getChildren().add(button);
 
-                    @Override
-                    public void handle(MouseEvent event) {
-                        
-                        String[] mainInfo=GameController.getPlayerMainInfo().split(" ");
-                        int gold=Integer.parseInt(mainInfo[0]);
-                        if(gold>=10)
-                        {
-                            UnitController.increaseHealth(maxHealth-health);
-                            GameController.cheatGold(-10);
-                            pane.getChildren().remove(button);
-                            Alert alert=new Alert(AlertType.INFORMATION,"unit repaired successfully");
-                            alert.showAndWait();
-                        }else
-                        {
-                            Alert alert=new Alert(AlertType.INFORMATION,"not enough money");
-                            alert.showAndWait();
+                    button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                        @Override
+                        public void handle(MouseEvent event) {
+
+                            String[] mainInfo=GameController.getPlayerMainInfo().split(" ");
+                            int gold=Integer.parseInt(mainInfo[0]);
+                            if(gold>=10)
+                            {
+                                UnitController.increaseHealth(maxHealth-health);
+                                GameController.cheatGold(-10);
+                                pane.getChildren().remove(button);
+                                Alert alert=new Alert(AlertType.INFORMATION,"unit repaired successfully");
+                                alert.showAndWait();
+                            }else
+                            {
+                                Alert alert=new Alert(AlertType.INFORMATION,"not enough money");
+                                alert.showAndWait();
+                            }
+
+
                         }
-                        
-                        
-                    }
-                    
-                });
+
+                    });
+                }
             }
             // TODO: 7/15/2022 : check is ordered
             if (isOwner&&Objects.equals(name, "Worker") /*&& !unit.isOrdered()*/) {
@@ -913,10 +907,19 @@ public class MapPage {
                 wantToMove = false;
             } else if (wantToAttack) {
                 JSONObject res =  new JSONObject(CombatController.attackUnit(i, j));
-                String alertresult =(res.has("result")) ?res.getString("result"): res.toString();
-                Alert alert = new Alert(Alert.AlertType.INFORMATION, alertresult);
-                alert.showAndWait();
-                if(res.has("combatType"))attackResultView(res);
+                if(res.has("warAlert")){
+                    Alert alert = new Alert(AlertType.CONFIRMATION, "do you want to start war?",ButtonType.YES,ButtonType.NO);
+                    alert.showAndWait();
+                    if(alert.getResult() == ButtonType.YES){
+                        Alert alertt = new Alert(Alert.AlertType.INFORMATION,CombatController.startWar(i, j));
+                        alertt.showAndWait();
+                    }
+                }else{
+                    String alertresult =(res.has("result")) ?res.getString("result"): res.toString();
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, alertresult);
+                    alert.showAndWait();
+                    if(res.has("combatType"))attackResultView(res);
+                }
                 resetPane();
                 wantToAttack = false;
             } else if (cityWantToattack) {

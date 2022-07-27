@@ -53,9 +53,6 @@ public class ClientNetworkController{
                 Platform.runLater(() -> CivilizationApplication.changeMenu(Menus.MAPPAGE));
             } else if (action.equals(Actions.updateMessages.getCharacter())) {
                 Platform.runLater(() -> ChatController.updateMessages(obj.toString()));
-            } else if (action.equals(Actions.CHANGETURNOFOTHEROLAYERS.getCharacter())) {
-            }else if (action.equals(Actions.updateMessages.getCharacter())) {
-                Platform.runLater(()->ChatController.updateMessages(obj.toString()));
             }else if(action.equals(Actions.gameOver.getCharacter())){
                 Platform.runLater(() -> {
                     if(obj.getString("show").equals("yes"))

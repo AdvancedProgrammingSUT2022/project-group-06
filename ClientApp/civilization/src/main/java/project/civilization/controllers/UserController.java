@@ -24,26 +24,6 @@ import project.civilization.enums.MenuCategory;
 import project.civilization.models.User;
 
 public class UserController {
-    public static User loggedInUser = null;
-    private static HashMap<String, User> users = new HashMap<String, User>();
-    private static ArrayList<String> nicknames = new ArrayList<String>();
-    private static ArrayList<User> usersArray = new ArrayList<User>();
-
-    public static void setLoggedInUser(User user) {
-        loggedInUser = user;
-    }
-
-    public static ArrayList<User> getUsersArray() {
-        return usersArray;
-    }
-
-    public static User getLoggedInUser() {
-        return loggedInUser;
-    }
-
-    public static HashMap<String, User> getUsers() {
-        return users;
-    }
 
     public static String register(String username, String password, String nickname,String url) {
         JSONObject json = new JSONObject();
@@ -232,25 +212,6 @@ public class UserController {
     }
 
 
-
-    public void setUsers(HashMap<String, User> users) {
-        UserController.users = users;
-    }
-
-    public static void setNicknames(ArrayList<String> nicknames) {
-        UserController.nicknames = nicknames;
-    }
-
-    public ArrayList<String> getNicknames() {
-        return nicknames;
-    }
-
-    public void createUser(String username, String password, String nickname) {
-        User user = new User(username, password, nickname);
-        users.put(username, user);
-        nicknames.add(nickname);
-    }
-
     public static String changeNickname(String nickname) {
         JSONObject json = new JSONObject();
         try {
@@ -317,18 +278,6 @@ public class UserController {
         }
     }
 
-    public void Login(String username, String password) {
-        loggedInUser = users.get(username);
-    }
-
-    public static String logout() {
-        if (loggedInUser == null) {
-            return "you have not logged in yet";
-        }
-        loggedInUser = null;
-        return "logout successfully";
-    }
-
     public static void saveUsers() {
         JSONObject json = new JSONObject();
         try {
@@ -363,51 +312,6 @@ public class UserController {
             x.printStackTrace();
         }
     }
-    public static void importSavedUsers() {
-        try {
-            URL address = new URL(Objects.requireNonNull(CivilizationApplication.class.getResource("files/UserInfo.txt")).toExternalForm());
-            String user = new String(Files.readAllBytes(Paths.get(address.toURI())));
-            if (user.equals("")) {
-                return;
-            }
-            String[] readUser = user.split("\n");
-            for (String temp : readUser) {
-                String[] read = temp.split(" ");
-                String Username = read[0];
-                String Password = read[1];
-                String Nickname = read[2];
-                int score = Integer.parseInt(read[3]);
-                int picNum = Integer.parseInt(read[4]);
-
-
-                User addUser = new User(Username, Password, Nickname);
-
-                addUser.setAvatarPic(new Image(CivilizationApplication.class.getResource("pictures/avatar/" + picNum + ".png").toExternalForm()), picNum);
-                addUser.increaseScore(score);
-                users.put(Username, addUser);
-                usersArray.add(addUser);
-                nicknames.add(Nickname);
-            }
-
-        } catch (IOException | URISyntaxException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean isNicknameUsed(String newNickname) {
-        for (String nickname : nicknames) {
-            if (nickname.equals(newNickname))
-                return true;
-        }
-        return false;
-    }
-
-    public static boolean isPasswordValid(String password) {
-        return loggedInUser.getPassword().equals(password);
-    }
-
-
 
     public static String changePassword( String newPass) {
 

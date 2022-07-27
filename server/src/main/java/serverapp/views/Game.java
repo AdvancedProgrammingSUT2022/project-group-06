@@ -136,6 +136,8 @@ public class Game {
             return GameController.isEnemy(jsonObject.getString("name"));
         }if(command.equals(Actions.setIsEnemy.getCharacter())){
             GameController.setIsEnemy(jsonObject.getString("name"));
+        }if(command.equals(Actions.STARTWAR.getCharacter())){
+            return CombatController.startWar(jsonObject.getInt("i"),jsonObject.getInt("j"));
         }
         return "bad request format";
     }

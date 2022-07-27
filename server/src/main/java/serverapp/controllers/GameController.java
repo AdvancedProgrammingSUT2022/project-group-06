@@ -117,26 +117,25 @@ public class GameController {
         military2.setOwner(InitializeGameInfo.getPlayers().get(1));
 */
 
-/*        world.getHex()[0][0].setTerrain(new Terrain("Hills"));
-
-        world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
-        world.getHex()[0][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
-        Ranged military = new Ranged("Archer", world.getHex()[0][0], GameController.getCurrentPlayer());
-        GameController.getCurrentPlayer().addUnit(military);
-        world.getHex()[0][0].setMilitaryUnit(military);
-        military.setOwner(GameController.getCurrentPlayer());*/
         world.getHex()[0][0].setTerrain(new Terrain("Hills"));
         world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
         world.getHex()[0][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
-        Settler civilian = new Settler("Settler", world.getHex()[0][0], GameController.getCurrentPlayer());
-        world.getHex()[0][0].setCivilianUnit(civilian);
-        GameController.getCurrentPlayer().addUnit(civilian);
-        civilian.setOwner(GameController.getCurrentPlayer());
+
+        Melee military = new Melee("Spearman", world.getHex()[0][0], InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[0][0].setMilitaryUnit(military);
+        GameController.getCurrentPlayer().addUnit(military);
+        military.setOwner(GameController.getCurrentPlayer());
+
+        //Settler civilian = new Settler("Settler", world.getHex()[0][0], GameController.getCurrentPlayer());
+        //world.getHex()[0][0].setCivilianUnit(civilian);
+        //GameController.getCurrentPlayer().addUnit(civilian);
+        //civilian.setOwner(GameController.getCurrentPlayer());
 
         world.getHex()[1][0].setTerrain(new Terrain("Hills"));
         world.getHex()[1][0].setOwner(InitializeGameInfo.getPlayers().get(1));
         world.getHex()[1][0].setState(HexState.Visible, GameController.getCurrentPlayer());
         world.getHex()[1][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+
         Ranged military2 = new Ranged("Archer", world.getHex()[1][0], InitializeGameInfo.getPlayers().get(1));
         InitializeGameInfo.getPlayers().get(1).addUnit(military2);
         world.getHex()[1][0].setMilitaryUnit(military2);
@@ -146,8 +145,24 @@ public class GameController {
         world.getHex()[0][1].setOwner(InitializeGameInfo.getPlayers().get(1));
         world.getHex()[0][1].setState(HexState.Visible, GameController.getCurrentPlayer());
         world.getHex()[0][1].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+
         Melee military3 = new Melee("Spearman", world.getHex()[0][1], InitializeGameInfo.getPlayers().get(1));
+        InitializeGameInfo.getPlayers().get(1).addUnit(military3);
         world.getHex()[0][1].setMilitaryUnit(military3);
+        military3.setOwner(InitializeGameInfo.getPlayers().get(1));
+
+
+
+        world.getHex()[0][4].setTerrain(new Terrain("Hills"));
+        world.getHex()[0][4].setOwner(InitializeGameInfo.getPlayers().get(1));
+        world.getHex()[0][4].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[0][4].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
+
+        Melee military4 = new Melee("Spearman", world.getHex()[0][4], InitializeGameInfo.getPlayers().get(1));
+        InitializeGameInfo.getPlayers().get(1).addUnit(military4);
+        world.getHex()[0][4].setMilitaryUnit(military4);
+        military4.setOwner(InitializeGameInfo.getPlayers().get(1));
+
     }
     private static boolean createdRuins=false;
 
