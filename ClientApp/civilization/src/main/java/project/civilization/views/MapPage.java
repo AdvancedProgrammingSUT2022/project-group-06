@@ -51,9 +51,11 @@ public class MapPage {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "city is death select a number: \n 1.delete it \n 2.add it to your territory", delete, add);
         alert.showAndWait();
         if (alert.getResult() == delete) {
-            System.out.println(City.deleteCity(cityName));
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION,City.deleteCity(cityName));
+            alert2.showAndWait();
         } else {
-            System.out.println(CombatController.addCityToTerritory(cityName, playerName));
+            Alert alert2 = new Alert(Alert.AlertType.INFORMATION,CombatController.addCityToTerritory(cityName, playerName));
+            alert2.showAndWait();
         }
     }
 
@@ -827,7 +829,7 @@ public class MapPage {
                 String alertresult =(res.has("result")) ?res.getString("result"): res.toString();
                 Alert alert = new Alert(Alert.AlertType.INFORMATION, alertresult);
                 alert.showAndWait();
-                attackResultView(res);
+                if(res.has("combatType"))attackResultView(res);
                 resetPane();
                 wantToAttack = false;
             } else if (cityWantToattack) {

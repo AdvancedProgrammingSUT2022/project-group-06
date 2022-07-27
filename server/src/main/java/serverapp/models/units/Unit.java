@@ -135,7 +135,7 @@ public class Unit implements Combatable, Construction {
         return combatType;
     }
 
-    public int calculateCombatModifier(Combatable defender) {
+    public int calculateCombatModifier() {
         combatStrength = combatStrength * (100 + this.currentHex.getTerrain().getCombatModifiersPercentage()) / 100;
         combatStrength = combatStrength * (100 + (1 - (this.health / this.maxHealth)) * 100) / 100;
         return this.combatStrength;

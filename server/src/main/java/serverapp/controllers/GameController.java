@@ -41,7 +41,7 @@ public class GameController {
     private static City selectedCity;
     private static int playerCount;
     private static ArrayList<Game> allGames = new ArrayList<>();
-    private static int year=2045;
+    private static int year=2020;
     private static ArrayList<City> capitals=new ArrayList<City>();
     private static ArrayList<Player> origialOwners=new ArrayList<Player>();
     private static Player capitalWinner=null;
@@ -118,14 +118,16 @@ public class GameController {
 */
 
 /*        world.getHex()[0][0].setTerrain(new Terrain("Hills"));
-        world.getHex()[0][0].setOwner(GameController.getCurrentPlayer());
+
         world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
         world.getHex()[0][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
         Ranged military = new Ranged("Archer", world.getHex()[0][0], GameController.getCurrentPlayer());
         GameController.getCurrentPlayer().addUnit(military);
         world.getHex()[0][0].setMilitaryUnit(military);
-        military.setOwner(GameController.getCurrentPlayer());
-
+        military.setOwner(GameController.getCurrentPlayer());*/
+        world.getHex()[0][0].setTerrain(new Terrain("Hills"));
+        world.getHex()[0][0].setState(HexState.Visible, GameController.getCurrentPlayer());
+        world.getHex()[0][0].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
         Settler civilian = new Settler("Settler", world.getHex()[0][0], GameController.getCurrentPlayer());
         world.getHex()[0][0].setCivilianUnit(civilian);
         GameController.getCurrentPlayer().addUnit(civilian);
@@ -145,7 +147,7 @@ public class GameController {
         world.getHex()[0][1].setState(HexState.Visible, GameController.getCurrentPlayer());
         world.getHex()[0][1].setState(HexState.Visible, InitializeGameInfo.getPlayers().get(1));
         Melee military3 = new Melee("Spearman", world.getHex()[0][1], InitializeGameInfo.getPlayers().get(1));
-        world.getHex()[0][1].setMilitaryUnit(military3);*/
+        world.getHex()[0][1].setMilitaryUnit(military3);
     }
     private static boolean createdRuins=false;
 
@@ -180,7 +182,7 @@ public class GameController {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&
                         !hex[i][j].getTerrain().getName().matches("Mountain|Ocean")) {
-                    UnitController.makeUnit("Settler", hex[i][j], "gold");
+/*                    UnitController.makeUnit("Settler", hex[i][j], "gold");
                     //City newCity = new City(GameController.getCurrentPlayer(), "fuck", hex[i][j]);
                     UnitController.makeUnit("Warrior", hex[i][j], "gold");
                     String name = currentPlayer.getName()+currentPlayer.getCities().size();
@@ -189,7 +191,7 @@ public class GameController {
 
                     GameController.addCapital(newCity);
                     CityController.buildPalace(newCity);
-                    GameController.getCurrentPlayer().addCity(newCity);
+                    GameController.getCurrentPlayer().addCity(newCity);*/
                     return;
                 }
             }

@@ -382,6 +382,17 @@ public class CityController {
         return cityBanner.toString();
     }
     public static City getCityWithName(String name) {
+        for (Player player:InitializeGameInfo.getPlayers()) {
+            for (City temp : player.getCities()) {
+                if (temp.getName().equals(name)) {
+                    return temp;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static City getCityWithNameBetweenAllCities(String name) {
         for (City temp : GameController.getCurrentPlayer().getCities()) {
             if (temp.getName().equals(name)) {
                 return temp;
@@ -389,8 +400,6 @@ public class CityController {
         }
         return null;
     }
-
-
 
     public static boolean hasBuilding(City city, String buildingName) {
         for (Building building : city.getBuiltBuildings()) {

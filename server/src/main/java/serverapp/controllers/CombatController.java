@@ -92,23 +92,15 @@ public class CombatController {
         return null;
     }
 
-    private static String meleeCivilianCombat(int x, int y) {
-        return null;
-    }
-
-    private static String RangedToCivilianCombat(int x, int y) {
-        return null;
-    }
 
     private static String meleeCityCombat(City city) {
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("combatType","meleeToCity");
-        int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier(city);
+        int unitStrength = UnitController.getSelectedUnit().calculateCombatModifier();
         int cityStrength = city.getMeleeCombatStrength();
         //todo : saze defaie divar
         if (city.getCapital().getMilitaryUnit() != null) {
-            cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier(attacker);
+            cityStrength += city.getCapital().getMilitaryUnit().calculateCombatModifier();
         }
         city.decreaseHitPoint(unitStrength);
         UnitController.getSelectedUnit().decreaseHealth(cityStrength);
@@ -126,10 +118,10 @@ public class CombatController {
         }
         if (UnitController.getSelectedUnit().getHealth() <= 0
                 && city.getHitPoint() <= 0) {
-            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             jsonObject.put("cityName",city.getName());
             jsonObject.put("playerName",UnitController.getSelectedUnit().getOwner().getName());
             jsonObject.put("result","in melee to city combat unit and city are death");
+            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
             return jsonObject.toString();
         }
         UnitController.getSelectedUnit().setMP(0);
@@ -156,13 +148,60 @@ public class CombatController {
     }
 
     private static String meleeUnitCombat(int x, int y) {
-        return "";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("combatType","meleeToMilitary");
+        int defenderStrength = hex[x][y].getMilitaryUnit().calculateCombatModifier();
+        int attackerStrength = UnitController.getSelectedUnit().calculateCombatModifier();
+        UnitController.getSelectedUnit().decreaseHealth(defenderStrength);
+        hex[x][y].getMilitaryUnit().decreaseHealth(attackerStrength);
+
+        if( UnitController.getSelectedUnit().getHealth() > 0 && hex[x][y].getMilitaryUnit().getHealth() <= 0){
+            //win
+            UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
+            jsonObject.put("result","in melee to military combat you win the battle");
+            return jsonObject.toString();
+        }
+        else if(UnitController.getSelectedUnit().getHealth() <= 0 && hex[x][y].getMilitaryUnit().getHealth() > 0){
+            //loose
+            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
+            jsonObject.put("result","in melee to military combat you loose the battle unit is death");
+            return jsonObject.toString();
+        }
+        else if(UnitController.getSelectedUnit().getHealth() <= 0 && hex[x][y].getMilitaryUnit().getHealth() <= 0){
+            //equal
+            UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
+            UnitController.deleteMilitaryUnit(UnitController.getSelectedUnit());
+            jsonObject.put("result","in melee to military combat both units are death");
+            return jsonObject.toString();
+        }
+        //nothing just damage
+        jsonObject.put("result","in melee to military combat no winner both are damage");
+        return jsonObject.toString();
     }
 
     private static String rangedUnitCombat(int x, int y) {
-        return "";
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("combatType","rangedToMilitary");
+        int attackerStrength = UnitController.getSelectedUnit().calculateCombatModifier();
+        hex[x][y].getMilitaryUnit().decreaseHealth(attackerStrength);
+        if(hex[x][y].getMilitaryUnit().getHealth() <= 0){
+            //win
+            UnitController.deleteMilitaryUnit(hex[x][y].getMilitaryUnit());
+            jsonObject.put("result","in ranged to military combat you win the battle");
+            return jsonObject.toString();
+        }
+        //nothing just damage
+        jsonObject.put("result","in ranged to military combat no winner both are damage");
+        return jsonObject.toString();
     }
 
+    private static String meleeCivilianCombat(int x, int y) {
+        return null;
+    }
+
+    private static String RangedToCivilianCombat(int x, int y) {
+        return null;
+    }
     public static String addCityToTerritory(City city, Player player) {
         //todo: check correction : yanni nemikad dige kar dige ba azafe kardan be teritory kard?
         Player looser = city.getOwner();
