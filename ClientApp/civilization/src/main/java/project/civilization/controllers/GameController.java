@@ -58,6 +58,44 @@ public class GameController {
     public static void setSelectedCity(City newCity) {
         selectedCity = newCity;
     }
+
+    public static void setIsEnemy(String name){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.setIsEnemy.getCharacter());
+            json.put("name",name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        
+    }
+    public static String getIsEnemy(String name)
+    {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getIsEnemy.getCharacter());
+            json.put("name",name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+        return "";
+    }
     public static void setSelectedCityByName(String cityName) {
         JSONObject json = new JSONObject();
         try {

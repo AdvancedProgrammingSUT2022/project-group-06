@@ -170,12 +170,24 @@ public class GameController {
     }
 
 
+    public static void setIsEnemy(String name){
+        currentPlayer.atWar.add(InitializeGameInfo.getPlayerByName(name));
+    }
+    public static String isEnemy(String name)
+    {
+        if(currentPlayer.atWar.contains(InitializeGameInfo.getPlayerByName(name)))
+        {
+            return "yes";
+        }
+        return "no";
+    }
     public static void startGame() {
         if(!createdRuins)
         {
             createRuinTiles();
             createdRuins=true;
         }
+
         for (int i = 0; i < world.getHexInHeight(); i++) {
             for (int j = 0; j < world.getHexInWidth(); j++) {
                 if (hex[i][j].getState(currentPlayer).equals(HexState.Visible) &&

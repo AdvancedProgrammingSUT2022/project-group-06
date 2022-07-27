@@ -107,7 +107,7 @@ public class Unit implements Combatable, Construction {
         MP = Integer.parseInt(info[4]);
         backUpMP = MP;
         combatType = info[7];
-        health = maxHealth;
+        health = 5;
 
 
         String tech = info[6];

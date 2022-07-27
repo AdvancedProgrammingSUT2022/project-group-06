@@ -105,7 +105,12 @@ public enum Actions {
     LOCKINGCITIZENTOTILE("LOCKINGCITIZENTOTILE"),
     REMOVECITIZENFROMWORK("REMOVECITIZENFROMWORK"),
     showUnEmployedCitizen("showUnEmployedCitizen"),
-    CITYATTACKTOUNIT("CITYATTACKTOUNIT");
+    CITYATTACKTOUNIT("CITYATTACKTOUNIT"),
+    getHealth("getHealth"),
+    increaseHealth("increaseHealth"),
+    getIsEnemy("getIsEnemy"),
+    setIsEnemy("setIsEnemy");
+    
     private final String character;
 
     Actions(String color) {

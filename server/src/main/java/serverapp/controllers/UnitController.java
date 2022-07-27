@@ -35,6 +35,7 @@ public class UnitController {
         return unfinishedMovements;
     }
 
+    
     public static void setCurrentPlayer(Player player) {
         GameController.setCurrentPlayer(player);
     }
@@ -553,5 +554,15 @@ public class UnitController {
             }
         }
         return " ";
+    }
+
+    public static void increaseHealth(int amount)
+    {
+        // int amount=Integer.parseInt(health);
+        selectedUnit.increaseHealth(amount);
+    }
+    public static String getHealth()
+    {
+        return Integer.toString(selectedUnit.getHealth());
     }
 }

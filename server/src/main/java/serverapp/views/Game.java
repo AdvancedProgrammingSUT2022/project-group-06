@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import javax.swing.Action;
+
 public class Game {
     public static String run(String command, JSONObject jsonObject) {
         if(command.equals(Actions.SENDINITATION.getCharacter())){
@@ -126,6 +128,14 @@ public class Game {
             return CityController.showUnEmployedCitizen();
         }if(command.equals(Actions.CITYATTACKTOUNIT.getCharacter())){
             return CombatController.attackCity(jsonObject.getInt("i"),jsonObject.getInt("j"));
+        }if(command.equals(Actions.getHealth.getCharacter())){
+             return UnitController.getHealth();
+        }if(command.equals(Actions.increaseHealth.getCharacter())){
+            UnitController.increaseHealth(jsonObject.getInt("amount"));
+        }if(command.equals(Actions.getIsEnemy.getCharacter())){
+            return GameController.isEnemy(jsonObject.getString("name"));
+        }if(command.equals(Actions.setIsEnemy.getCharacter())){
+            GameController.setIsEnemy(jsonObject.getString("name"));
         }
         return "bad request format";
     }

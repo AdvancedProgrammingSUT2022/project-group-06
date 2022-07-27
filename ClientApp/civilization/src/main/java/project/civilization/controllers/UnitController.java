@@ -167,6 +167,43 @@ public class UnitController {
 
     }
 
+    public static String getUnitHealth()
+    {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.getHealth.getCharacter());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            return CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+            return "something is wrong";
+        }
+    }
+    public static void increaseHealth(int amount)
+    {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("menu", MenuCategory.GAMEMenu.getCharacter());
+            json.put("action", Actions.increaseHealth.getCharacter());
+            json.put("amount", amount);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            CivilizationApplication.dataOutputStream.writeUTF(json.toString());
+            CivilizationApplication.dataOutputStream.flush();
+            CivilizationApplication.dataInputStream.readUTF();
+        } catch (IOException x) {
+            x.printStackTrace();
+        }
+    }
     public static String setUpSiegeForRangeAttack() {
         JSONObject json = new JSONObject();
         try {
@@ -580,6 +617,8 @@ public class UnitController {
         return "";
     }
 
+    
+
     public static void setSelectedUnit(String type, int i, int j) {
         JSONObject json = new JSONObject();
         try {
@@ -599,4 +638,5 @@ public class UnitController {
             x.printStackTrace();
         }
     }
+    
 }
