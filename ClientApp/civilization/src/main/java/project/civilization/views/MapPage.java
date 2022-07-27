@@ -556,16 +556,103 @@ public class MapPage {
                                             String state,int alignX, int alignY) {
         ImageView unitView = makeView(i,j,name, state, alignX, alignY);
         unitView.setOnMouseClicked(event -> {
+            resetPane();
+            
             selectMilitaryUnit(i, j, isOwner);
+
+            int health=Integer.parseInt(UnitController.getUnitHealth());
+
+
+            Label label=new Label("health: "+health);
+            label.setLayoutY(600);
+            pane.getChildren().add(label);
+
+
+            if(health<maxHealth)
+            {
+                Button button=new Button();
+                button.setText("repair unit");
+                button.setLayoutY(500);
+                pane.getChildren().add(button);
+
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        
+                        String[] mainInfo=GameController.getPlayerMainInfo().split(" ");
+                        int gold=Integer.parseInt(mainInfo[0]);
+                        if(gold>=10)
+                        {
+                            UnitController.increaseHealth(maxHealth-health);
+                            GameController.cheatGold(-10);
+                            pane.getChildren().remove(button);
+                            Alert alert=new Alert(AlertType.INFORMATION,"unit repaired successfully");
+                            alert.showAndWait();
+                        }else
+                        {
+                            Alert alert=new Alert(AlertType.INFORMATION,"not enough money");
+                            alert.showAndWait();
+                        }
+                        
+                        
+                    }
+                    
+                });
+            }
+
         });
     }
+    int maxHealth=10;
 
     private void initializeCivilianView(int i, int j,String name ,boolean isOwner,
                                         String state, int alignX, int alignY) {
         ImageView unitView = makeView(i,j,name, state, alignX, alignY);
         initializeWorkingWorkers(i, j, unitView);
         unitView.setOnMouseClicked(event -> {
+            resetPane();
+            
             selectCivilianUnit(i, j, isOwner);
+            
+            int health=Integer.parseInt(UnitController.getUnitHealth());
+
+            Label label=new Label("health: "+health);
+            label.setLayoutY(600);
+            pane.getChildren().add(label);
+
+            
+            if(health<maxHealth)
+            {
+                Button button=new Button();
+                button.setText("repair unit");
+                button.setLayoutY(500);
+                pane.getChildren().add(button);
+
+                button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+                    @Override
+                    public void handle(MouseEvent event) {
+                        
+                        String[] mainInfo=GameController.getPlayerMainInfo().split(" ");
+                        int gold=Integer.parseInt(mainInfo[0]);
+                        if(gold>=10)
+                        {
+                            UnitController.increaseHealth(maxHealth-health);
+                            GameController.cheatGold(-10);
+                            pane.getChildren().remove(button);
+                            Alert alert=new Alert(AlertType.INFORMATION,"unit repaired successfully");
+                            alert.showAndWait();
+                        }else
+                        {
+                            Alert alert=new Alert(AlertType.INFORMATION,"not enough money");
+                            alert.showAndWait();
+                        }
+                        
+                        
+                    }
+                    
+                });
+            }
             // TODO: 7/15/2022 : check is ordered
             if (isOwner&&Objects.equals(name, "Worker") /*&& !unit.isOrdered()*/) {
                 loadPanel("worker-action-panel");

@@ -18,6 +18,8 @@ import project.civilization.enums.Menus;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Television {
     public Pane pane;
@@ -25,6 +27,8 @@ public class Television {
     ImageView[][] tilesImageViews;
     int hexInHeight;
     int hexInWidth;
+
+    private Timer timer;
 
     public void initialize() {
         mapBoundaries = new int[]{0, 4, 0, 8};
@@ -41,6 +45,13 @@ public class Television {
         Platform.runLater(() -> {
             pane.requestFocus();
         });
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                initializePane();//todo: replace with the function you want to be called repeatedly
+            }
+        },0, 10000);
     }
 
     private void handleKeyEvent() {

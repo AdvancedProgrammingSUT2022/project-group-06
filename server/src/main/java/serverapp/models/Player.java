@@ -28,7 +28,7 @@ public class Player implements Comparable{
     private ArrayList<String> notifications = new ArrayList<String>();
     private HashMap<String, Boolean> achievedTechnologies = new HashMap<String, Boolean>();
     private ArrayList<Integer> notificationsTurns = new ArrayList<Integer>();
-
+    public ArrayList<Player> atWar=new ArrayList<>();
 
     @Override
     public int compareTo(Object o) {
